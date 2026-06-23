@@ -480,7 +480,9 @@
         "name": "Tantallon Castle",
         "tipo": "vedere",
         "note": "Spettacolari rovine di castello rosso a picco sul mare di fronte al Bass Rock. Tip: a pochi km dal centro, panorama mozzafiato.",
-        "q": "Tantallon Castle North Berwick"
+        "q": "Tantallon Castle North Berwick",
+        "transferMin": 20,
+        "transferNote": "~5 km fuori North Berwick: bus o taxi dalla stazione (~20')"
       },
       {
         "name": "North Berwick Law",

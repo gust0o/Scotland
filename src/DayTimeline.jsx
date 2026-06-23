@@ -12,7 +12,7 @@ const fmt = (min) => pad(Math.floor(min / 60)) + ":" + pad(Math.round(min % 60))
 // Events are positioned by start and sized by duration; day trips also render
 // their travel time as transfer blocks before/after the visit. Drag the top
 // handle to move, the bottom handle to change duration (touch-friendly).
-export default function DayTimeline({ events, flights, editable, nowMin, onChangeStart, onResize, onRemove }) {
+export default function DayTimeline({ events, flights, editable, nowMin, onChangeStart, onResize, onRemove, onSelect }) {
   const [drag, setDrag] = useState(null); // { idx, mode, start, dur }
   const st = useRef(null);
   const scroller = useRef(null);
@@ -113,27 +113,37 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
           const top = yOf(start);
           const h = Math.max((dur / 60) * HOUR_PX, 30);
           const train = e.train || 0;
+          const isTripBlock = e.kind === "trip";
+          const isVenueBlock = e.kind === "tvenue";
+          const leftPx = GUTTER + (isVenueBlock ? 16 : 0);
           return (
             <React.Fragment key={e.idx}>
               {/* day-trip travel blocks (move with the visit) */}
               {train > 0 && (
                 <>
-                  <div style={{ position: "absolute", top: yOf(start - train), left: GUTTER, right: 4, height: Math.max((train / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
+                  <div style={{ position: "absolute", top: yOf(start - train), left: leftPx, right: 4, height: Math.max((train / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
                     <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>🚆 Andata · {fmt(start - train)}</div>
                   </div>
-                  <div style={{ position: "absolute", top: yOf(start + dur), left: GUTTER, right: 4, height: Math.max((train / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
+                  <div style={{ position: "absolute", top: yOf(start + dur), left: leftPx, right: 4, height: Math.max((train / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
                     <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>🚆 Ritorno · {fmt(start + dur)}</div>
                   </div>
                 </>
               )}
-              <div style={{ position: "absolute", top, left: GUTTER, right: 4, height: h, background: e.bg, borderLeft: `4px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "none", zIndex: isDrag ? 10 : 2 }}>
-                {/* drag-to-move header */}
+              <div
+                onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
+                style={{ position: "absolute", top, left: leftPx, right: 4, height: h, background: e.bg, border: isTripBlock ? `2px solid ${e.accent}` : "1px solid rgba(20,16,40,.05)", borderLeft: isVenueBlock ? `4px dashed ${e.accent}` : `5px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "none", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer" }}
+              >
+                {/* trip = container ribbon */}
+                {isTripBlock && (
+                  <span style={{ position: "absolute", top: 0, right: 0, fontSize: 8.5, fontWeight: 900, letterSpacing: ".08em", color: "#fff", background: e.accent, borderRadius: "0 0 0 8px", padding: "2px 7px", zIndex: 3 }}>GITA</span>
+                )}
+                {/* drag-to-move header (drag only in edit mode; tap opens detail in consult) */}
                 <div
                   onPointerDown={begin(e.idx, "move", e.startMin, e.dur)}
                   onPointerMove={move}
                   onPointerUp={up}
                   onPointerCancel={up}
-                  style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: "none", cursor: editable ? "grab" : "default", userSelect: "none" }}
+                  style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", userSelect: "none" }}
                 >
                   {editable && (
                     <span style={{ flex: "none", display: "grid", gridTemplateColumns: "2px 2px", gap: 2, opacity: 0.5 }} aria-hidden>
@@ -143,7 +153,7 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                   <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, color: "#17142C", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.name}</span>
                   <span style={{ flex: "none", fontSize: 10.5, fontWeight: 700, color: "#6B6450", fontFamily: "'Spline Sans Mono',monospace" }}>{fmt(start)}</span>
                   {editable && (
-                    <button onClick={() => onRemove(e.idx)} onPointerDown={(ev) => ev.stopPropagation()} title="Rimuovi" style={{ flex: "none", cursor: "pointer", border: "none", background: "transparent", color: "#E6482A", fontSize: 14, fontWeight: 900, lineHeight: 1, padding: "0 2px" }}>×</button>
+                    <button onClick={(ev) => { ev.stopPropagation(); onRemove(e.idx); }} onPointerDown={(ev) => ev.stopPropagation()} title="Rimuovi" style={{ flex: "none", cursor: "pointer", border: "none", background: "transparent", color: "#E6482A", fontSize: 14, fontWeight: 900, lineHeight: 1, padding: "0 2px" }}>×</button>
                   )}
                 </div>
                 {h > 48 && (
@@ -151,7 +161,8 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                     <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                       <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: e.accent, borderRadius: 999, padding: "1px 6px" }}>{e.kindLabel}</span>
                       <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{this_durLabel(dur)}</span>
-                      {e.maps && <a href={e.maps} target="_blank" rel="noopener" onPointerDown={(ev) => ev.stopPropagation()} style={{ fontSize: 10, fontWeight: 800, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 6, padding: "1px 7px" }}>Maps ↗</a>}
+                      {e.maps && <a href={e.maps} target="_blank" rel="noopener" onPointerDown={(ev) => ev.stopPropagation()} onClick={(ev) => ev.stopPropagation()} style={{ fontSize: 10, fontWeight: 800, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 6, padding: "1px 7px" }}>Maps ↗</a>}
+                      {!editable && <span style={{ fontSize: 9.5, fontWeight: 800, color: "#9a937c" }}>tocca per i dettagli ›</span>}
                     </div>
                     {e.note && h > 76 && <div style={{ marginTop: 4, fontSize: 11, fontWeight: 600, color: "#6B6450", lineHeight: 1.35, overflow: "hidden" }}>{e.note}</div>}
                     {e.warn && <div style={{ marginTop: 3, fontSize: 10.5, fontWeight: 700, color: "#E6482A" }}>⚠ {e.warn}</div>}
@@ -164,6 +175,7 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                     onPointerMove={move}
                     onPointerUp={up}
                     onPointerCancel={up}
+                    onClick={(ev) => ev.stopPropagation()}
                     title="Trascina per la durata"
                     style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 14, cursor: "ns-resize", touchAction: "none", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 2 }}
                   >

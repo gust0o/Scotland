@@ -6,11 +6,13 @@ import {
   AREAS_ORDER,
   mapsUrl,
   getData,
+  venueDetail,
   seedPlan,
   emptyScaffold,
 } from "./data.js";
 import { LogoMark, PlaneIcon, BedIcon, CutleryIcon, TimelineIcon } from "./icons.jsx";
 import { BarIcon } from "./barIcons.jsx";
+import VenueDetail, { SummaryRow } from "./VenueDetail.jsx";
 import DayTimeline from "./DayTimeline.jsx";
 const MONO = "'Spline Sans Mono',monospace";
 const MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
@@ -202,6 +204,8 @@ export default class App extends React.Component {
     simOpen: false,
     navActive: "sNow",
     moreOpen: false,
+    detail: null,
+    editDays: {},
   };
 
   componentDidMount() {
@@ -541,6 +545,10 @@ export default class App extends React.Component {
       else p.favs.splice(i, 1);
     });
   }
+  // ---------- unified venue detail ----------
+  openDetail = (idOrObj) => this.setState({ detail: venueDetail(idOrObj), moreOpen: false });
+  closeDetail = () => this.setState({ detail: null });
+  toggleEditDay = (key) => this.setState((s) => ({ editDays: { ...s.editDays, [key]: !s.editDays[key] } }));
 
   // ---------- weather ----------
   wmo(c) {
@@ -1388,7 +1396,8 @@ export default class App extends React.Component {
         // main (visit) duration: per-entry override, else trip default, else catalog dur
         const base = isTrip ? this.tripVisitOf(en.id, a.baseVisit || a.dur) : a.dur || 60;
         const dur = en.dur != null ? en.dur : base;
-        total += dur + 2 * train;
+        const transferMin = a.transferMin || 0; // extra hop to reach the venue (e.g. Tantallon)
+        total += dur + 2 * train + 2 * transferMin;
         const startMin = this.parseMin(en.start) != null ? this.parseMin(en.start) : 9 * 60;
         const PAL = {
           eat: { a: "#E6482A", b: "#FBEDE9", l: "Mangiare" },
@@ -1403,7 +1412,7 @@ export default class App extends React.Component {
           if (t < a.open[0] || t + dur / 60 > a.open[1]) warn = "aperto " + this.fmtH(a.open[0]) + "–" + this.fmtH(a.open[1]);
         }
         return {
-          idx, id: en.id, name: a.name, note: a.note || "", kindLabel: pal.l,
+          idx, id: en.id, name: a.name, note: a.note || "", kind: a.kind, kindLabel: pal.l,
           durLabel: this.durLabel(dur), dur, train, startMin, accent: pal.a, bg: pal.b, warn,
           maps: this.M(a.q || a.name),
           onResize: (min) => this.setDur(key, idx, min),
@@ -1485,13 +1494,16 @@ export default class App extends React.Component {
       }
       const open = this.state.dayOpen[key] !== undefined ? this.state.dayOpen[key] : isToday;
       const sorted = events.slice().sort((a, b) => a.startMin - b.startMin);
+      const editMode = !frozen && !!this.state.editDays[key];
+      const tripCount = events.filter((e) => e.kind === "trip").length;
       return {
-        key, dayIdx, date, dateLabel, cityLabel: dd.cityLabel, frozen, isToday, editable: !frozen, open,
+        key, dayIdx, date, dateLabel, cityLabel: dd.cityLabel, frozen, isToday, canEdit: !frozen, editMode, open,
         dim: frozen ? "0.62" : "1",
         headBg: isToday ? "#FF2E7E" : frozen ? "#8d8674" : "#0E1542", headFg: "#fff",
         badge: isToday ? "Oggi" : frozen ? "Congelato" : date && date > today ? "In programma" : "",
         badgeBg: isToday ? "#0E1542" : "rgba(255,255,255,.2)",
         events, flightBlocks, flightChips,
+        multiTripWarn: tripCount >= 2,
         summary: {
           count: events.length,
           totalLabel: total ? this.durLabel(total) : "vuoto",
@@ -1500,6 +1512,8 @@ export default class App extends React.Component {
         },
         nowMin: isToday ? now.getHours() * 60 + now.getMinutes() : null,
         onToggle: () => this.toggleDay(key),
+        onToggleEdit: () => this.toggleEditDay(key),
+        onSelect: (idx) => { const ev = events[idx]; if (ev) this.openDetail(ev.id); },
         onChangeStart: (idx, min) => this.setStart(key, idx, min),
         onResize: (idx, min) => this.setDur(key, idx, min),
         onRemove: (idx) => this.removeEntry(key, idx),
@@ -1509,44 +1523,30 @@ export default class App extends React.Component {
       };
     });
 
-    // sections
-    const edinSights = D.sights.map((s) => ({ name: s.name, note: s.note, zone: s.zone || "Altro", maps: this.M(s.q), onFav: () => this.toggleFav(s.id), ...favDeco(s.id) }));
-    // Group Edinburgh sights by zone (in canonical order).
-    const edinByZone = ZONES_ORDER.map((z) => ({ zone: z, items: edinSights.filter((s) => s.zone === z) })).filter((g) => g.items.length);
-    const eats = D.eats.map((e) => ({ name: e.name, tipo: e.tipo || e.cat || "", ordina: e.ordina || "", note: e.note, maps: this.M(e.q), onFav: () => this.toggleFav(e.id), ...favDeco(e.id) }));
-    const tripCard = (t) => {
-      const isOpen = !!this.state.open[t.id];
-      const fv = isFav(t.id);
-      const visitMin = this.tripVisitOf(t.id, t.visit);
-      const total = visitMin + 2 * t.train;
-      return {
-        id: t.id, title: t.title, body: t.body, maps: this.M(t.q), isOpen, area: t.area || "Altro",
-        time: t.mode + " · " + this.durLabel(t.train) + "/tratta",
-        oneWay: this.durLabel(t.train), visit: this.durLabel(visitMin), total: this.durLabel(total), mode: t.mode,
-        venues: (t.venues || []).map((v, i) => { const id = "tv-" + t.id + "-" + i; return { ...v, id, ...favDeco(id), onFav: () => this.toggleFav(id) }; }),
-        onLess: () => this.setTripVisit(t.id, t.visit, -30), onMore: () => this.setTripVisit(t.id, t.visit, 30),
-        chevron: isOpen ? "180deg" : "0deg", onToggle: () => this.toggle(t.id), onFav: () => this.toggleFav(t.id),
-        favLabel: fv ? "Tolto" : "Preferito", favBg: fv ? "#FFD23F" : "#fff",
-        favBorder: fv ? "#FFD23F" : "#D9CFB7", favColor: fv ? "#0E1542" : "#9a937c",
-      };
+    // sections — grouped lists of place IDs; the shared VenueDetail modal holds the
+    // full content, and each row is a tappable 2-line summary (SummaryRow).
+    const groupByKey = (arr, zones, keyOf) => {
+      const groups = zones.map((z) => ({ label: z, ids: arr.filter((o) => keyOf(o) === z).map((o) => o.id) })).filter((g) => g.ids.length);
+      const placed = new Set(groups.flatMap((g) => g.ids));
+      const rest = arr.filter((o) => !placed.has(o.id)).map((o) => o.id);
+      if (rest.length) groups.push({ label: "Altro", ids: rest });
+      return groups;
     };
-    const dayTrips = D.trips.map(tripCard);
-    // Group day trips by area (in canonical order).
-    const tripsByArea = AREAS_ORDER.map((a) => ({ area: a, items: dayTrips.filter((t) => t.area === a) })).filter((g) => g.items.length);
-    const experiences = D.experiences.map((x) => {
-      const isOpen = !!this.state.open[x.id];
-      return { title: x.title, hi: x.hi, body: x.body, isOpen, chevron: isOpen ? "180deg" : "0deg", onToggle: () => this.toggle(x.id), places: (x.places || []).map((p) => ({ name: p.name, maps: this.M(p.q) })) };
-    });
-    const londonSpots = D.london.map((l) => ({ name: l.name, note: l.note, cat: l.cat || "", zone: l.zone || "Shoreditch", maps: this.M(l.q), onFav: () => this.toggleFav(l.id), ...favDeco(l.id) }));
+    const sightsByZone = groupByKey(D.sights, ZONES_ORDER, (s) => s.zone || "");
+    const eatsIds = D.eats.map((e) => e.id);
+    const glasgowIds = D.glasgow.map((g) => g.id);
+    const experiencesIds = D.experiences.map((x) => x.id);
+    const neighborhoodIds = D.neighborhoods.map((n) => n.id);
+    const tripsByArea = groupByKey(D.trips, AREAS_ORDER, (t) => t.area || "");
     const LONDON_ZONES = ["Colazione", "Shoreditch", "Brick Lane", "Spitalfields", "City & South Bank"];
-    const londonByZone = LONDON_ZONES.map((z) => ({ zone: z, items: londonSpots.filter((l) => l.zone === z) }))
-      .concat([{ zone: "__other", items: londonSpots.filter((l) => !LONDON_ZONES.includes(l.zone)) }])
-      .filter((g) => g.items.length);
+    const londonByZone = groupByKey(D.london, LONDON_ZONES, (l) => l.zone || "");
+    // Props for a SummaryRow given a place id (fav only where a master entry exists).
+    const rowProps = (id) => ({ d: D.details[id], onOpen: this.openDetail, isFav: favs.indexOf(id) >= 0, onToggleFav: D.master[id] ? (x) => this.toggleFav(x) : undefined });
     const favorites = favs
       .map((id) => {
         const m = D.master[id];
         if (!m) return null;
-        return { name: m.name, where: m.where, note: m.note, maps: m.maps, onToggle: () => this.toggleFav(id) };
+        return { id, name: m.name, where: m.where, note: m.note, maps: m.maps, onToggle: () => this.toggleFav(id) };
       })
       .filter(Boolean);
 
@@ -1878,14 +1878,31 @@ export default class App extends React.Component {
                         <span style={{ fontSize: 10.5, fontWeight: 800, color: "#b8503f" }}>orari riservati</span>
                       </div>
                     ))}
+                    {d.canEdit && (
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, margin: "8px 0 2px" }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: "#8a836c" }}>
+                          {d.editMode ? "Modifica · trascina e ridimensiona" : "Tocca un blocco per i dettagli"}
+                        </span>
+                        <button onClick={d.onToggleEdit} style={{ cursor: "pointer", fontSize: 11.5, fontWeight: 900, border: "none", borderRadius: 999, padding: "6px 13px", color: d.editMode ? "#fff" : "#0E1542", background: d.editMode ? "#14C08C" : "#FFD23F" }}>
+                          {d.editMode ? "Fine ✓" : "Modifica orari"}
+                        </button>
+                      </div>
+                    )}
+                    {d.multiTripWarn && (
+                      <div style={{ display: "flex", gap: 8, background: "#FFF3CC", border: "1px solid #E9D08A", borderRadius: 10, padding: "8px 11px", margin: "6px 0 2px", fontSize: 11.5, fontWeight: 600, color: "#6a5410", lineHeight: 1.45 }}>
+                        <span style={{ fontWeight: 900 }}>⚠</span>
+                        <span>Due gite nello stesso giorno: l'app conta due andata/ritorno separati. Nella realtà puoi concatenarle (gli orari reali sono più stretti) — aggiusta a mano in « Modifica orari ».</span>
+                      </div>
+                    )}
                     <DayTimeline
                       events={d.events}
                       flights={d.flightBlocks}
-                      editable={d.editable}
+                      editable={d.editMode}
                       nowMin={d.nowMin}
                       onChangeStart={d.onChangeStart}
                       onResize={d.onResize}
                       onRemove={d.onRemove}
+                      onSelect={d.onSelect}
                     />
                     {d.canAdd && (
                       <div style={{ marginTop: 10 }}>
@@ -1930,14 +1947,14 @@ export default class App extends React.Component {
             )}
             <div style={{ display: "grid", gap: 10 }}>
               {favorites.map((fv, i) => (
-                <div key={i} className="paper" style={{ position: "relative", overflow: "hidden", background: "#F6F0E2", borderRadius: 16, boxShadow: tiltShadow(12, 26, -20, 0.4) }}>
+                <div key={i} className="paper" onClick={() => this.openDetail(fv.id)} style={{ position: "relative", overflow: "hidden", background: "#F6F0E2", borderRadius: 16, boxShadow: tiltShadow(12, 26, -20, 0.4), cursor: "pointer" }}>
                   <div style={{ position: "relative", padding: "13px 14px" }}>
                     <div style={{ fontWeight: 900, fontSize: 16, color: "#17142C", lineHeight: 1.12 }}>{fv.name}</div>
                     <div style={{ fontSize: 11, fontWeight: 800, color: "#0a7d5d", textTransform: "uppercase", letterSpacing: ".05em", marginTop: 3 }}>{fv.where}</div>
                     <p style={{ margin: "6px 0 0", fontSize: 12.5, color: "#6B6450", fontWeight: 600, lineHeight: 1.45 }}>{fv.note}</p>
                     <div style={{ marginTop: 10, display: "flex", gap: 7 }}>
-                      <a href={fv.maps} target="_blank" rel="noopener" style={{ fontSize: 11.5, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "5px 12px", borderRadius: 999 }}>Maps ↗</a>
-                      <button onClick={fv.onToggle} style={{ cursor: "pointer", fontSize: 11.5, fontWeight: 900, color: "#E6482A", background: "#fff", border: "1.5px solid #f0c4bb", padding: "5px 12px", borderRadius: 999 }}>Rimuovi ★</button>
+                      <a href={fv.maps} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()} style={{ fontSize: 11.5, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "5px 12px", borderRadius: 999 }}>Maps ↗</a>
+                      <button onClick={(e) => { e.stopPropagation(); fv.onToggle(); }} style={{ cursor: "pointer", fontSize: 11.5, fontWeight: 900, color: "#E6482A", background: "#fff", border: "1.5px solid #f0c4bb", padding: "5px 12px", borderRadius: 999 }}>Rimuovi ★</button>
                     </div>
                   </div>
                 </div>
@@ -1952,46 +1969,20 @@ export default class App extends React.Component {
               <h2 style={h2("#0E1542")}>Edimburgo</h2>
             </div>
             <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Per zona · stella = preferito, poi pianificalo dal Programma</p>
-            {edinByZone.map((g, gi) => (
+            {sightsByZone.map((g, gi) => (
               <div key={gi} style={{ marginBottom: 14 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "2px 2px 8px" }}>
-                  <span style={{ fontSize: 12, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#0E1542" }}>{g.zone}</span>
+                  <span style={{ fontSize: 12, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#0E1542" }}>{g.label}</span>
                   <span style={{ flex: 1, height: 2, borderRadius: 2, background: "#D9CFB7" }} />
                 </div>
-                <div style={{ background: "#fff", borderRadius: 16, padding: "4px 14px" }}>
-                  {g.items.map((s, i) => (
-                    <div key={i} style={{ padding: "12px 0", borderBottom: i < g.items.length - 1 ? "1.5px solid #EFE7D6" : "none" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-                        <div style={{ flex: 1, minWidth: 0, fontSize: 15, fontWeight: 800, color: "#17142C" }}>{s.name}</div>
-                        <div style={{ display: "flex", gap: 6, flex: "none" }}>
-                          <button onClick={s.onFav} title="Preferito" style={{ cursor: "pointer", width: 30, height: 30, borderRadius: 9, border: `1.5px solid ${s.favBorder}`, background: s.favBg, color: s.favColor, fontSize: 15, fontWeight: 900 }}>★</button>
-                          <a href={s.maps} target="_blank" rel="noopener" style={{ display: "flex", alignItems: "center", fontSize: 11.5, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "0 11px", borderRadius: 9 }}>Maps</a>
-                        </div>
-                      </div>
-                      <div style={{ fontSize: 12.5, color: "#6B6450", marginTop: 4, fontWeight: 600, lineHeight: 1.45 }}>{s.note}</div>
-                    </div>
-                  ))}
+                <div style={{ background: "#fff", borderRadius: 16, padding: "2px 14px" }}>
+                  {g.ids.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === g.ids.length - 1} />)}
                 </div>
               </div>
             ))}
             <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: ".08em", textTransform: "uppercase", color: "#0E1542", margin: "4px 0 9px" }}>Quartieri da girare</div>
-            <div style={{ display: "grid", gap: 10 }}>
-              {D.neighborhoods.map((n, i) => (
-                <div key={i} style={{ background: "#fff", borderRadius: 14, padding: "13px 14px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
-                    <div style={{ fontSize: 15, fontWeight: 900, color: "#17142C" }}>{n.name}</div>
-                    <a href={n.maps} target="_blank" rel="noopener" style={mapsPill}>Maps</a>
-                  </div>
-                  <div style={{ fontSize: 12.5, color: "#6B6450", marginTop: 3, fontWeight: 600, lineHeight: 1.5 }}>{n.blurb}</div>
-                  {n.see && n.see.length > 0 && (
-                    <div style={{ marginTop: 8, display: "flex", flexWrap: "wrap", gap: 6 }}>
-                      {n.see.map((x, xi) => (
-                        <span key={xi} style={{ fontSize: 11, fontWeight: 700, color: "#0E1542", background: "#ECE3D0", borderRadius: 999, padding: "3px 9px" }}>{x}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+            <div style={{ background: "#fff", borderRadius: 16, padding: "2px 14px" }}>
+              {neighborhoodIds.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === neighborhoodIds.length - 1} />)}
             </div>
           </section>
 
@@ -2002,24 +1993,9 @@ export default class App extends React.Component {
               <h2 style={h2("#fff")}>Mangiare &amp; locali</h2>
               <CutleryIcon fill="#FFD23F" style={{ marginLeft: "auto" }} />
             </div>
-            <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#e3a596" }}>Solo scozzese / locale</p>
-            <div style={{ background: "#F6F0E2", borderRadius: 16, padding: "4px 14px" }}>
-              {eats.map((e, i) => (
-                <div key={i} style={{ padding: "12px 0", borderBottom: "1.5px solid #EAE0CA" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-                    <div style={{ flex: 1, minWidth: 0, fontSize: 15, fontWeight: 800, color: "#17142C" }}>
-                      {e.tipo && <span style={{ fontSize: 9.5, fontWeight: 900, color: "#fff", background: "#E6482A", borderRadius: 999, padding: "1px 7px", marginRight: 6, verticalAlign: 1.5, textTransform: "uppercase", letterSpacing: ".04em" }}>{e.tipo}</span>}
-                      {e.name}
-                    </div>
-                    <div style={{ display: "flex", gap: 6, flex: "none" }}>
-                      <button onClick={e.onFav} style={{ cursor: "pointer", width: 30, height: 30, borderRadius: 9, border: `1.5px solid ${e.favBorder}`, background: e.favBg, color: e.favColor, fontSize: 15, fontWeight: 900 }}>★</button>
-                      <a href={e.maps} target="_blank" rel="noopener" style={{ display: "flex", alignItems: "center", fontSize: 11.5, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "0 11px", borderRadius: 9 }}>Maps</a>
-                    </div>
-                  </div>
-                  <div style={{ fontSize: 12.5, color: "#6B6450", marginTop: 4, fontWeight: 600, lineHeight: 1.45 }}>{e.note}</div>
-                  {e.ordina && <div style={{ fontSize: 12, color: "#17142C", marginTop: 4, fontWeight: 700 }}>👉 Ordina: <span style={{ fontWeight: 600, color: "#5b5644" }}>{e.ordina}</span></div>}
-                </div>
-              ))}
+            <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#e3a596" }}>Solo scozzese / locale · tocca per la scheda</p>
+            <div style={{ background: "#F6F0E2", borderRadius: 16, padding: "2px 14px" }}>
+              {eatsIds.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === eatsIds.length - 1} />)}
             </div>
           </section>
 
@@ -2030,16 +2006,8 @@ export default class App extends React.Component {
               <h2 style={h2("#0E1542")}>Glasgow</h2>
             </div>
             <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Treno da Edimburgo ~50' · gita in giornata</p>
-            <div style={{ background: "#fff", borderRadius: 16, padding: "4px 14px" }}>
-              {D.glasgow.map((g, i) => (
-                <div key={i} style={{ padding: "12px 0", borderBottom: "1.5px solid #EFE7D6" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-                    <div style={{ flex: 1, minWidth: 0, fontSize: 15, fontWeight: 800, color: "#17142C" }}>{g.name}</div>
-                    <a href={g.maps} target="_blank" rel="noopener" style={mapsPill}>Maps</a>
-                  </div>
-                  <div style={{ fontSize: 12.5, color: "#6B6450", marginTop: 4, fontWeight: 600, lineHeight: 1.45 }}>{g.note}</div>
-                </div>
-              ))}
+            <div style={{ background: "#fff", borderRadius: 16, padding: "2px 14px" }}>
+              {glasgowIds.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === glasgowIds.length - 1} />)}
             </div>
           </section>
 
@@ -2049,72 +2017,15 @@ export default class App extends React.Component {
               <span style={numBadge("#14C08C", "#fff")}>06</span>
               <h2 style={h2("#0E1542")}>Dintorni &amp; gite</h2>
             </div>
-            <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Per zona · tocca per aprire · forse <strong style={{ color: "#0E1542" }}>una</strong> gita vera</p>
+            <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Per zona · tocca per la scheda della gita · forse <strong style={{ color: "#0E1542" }}>una</strong> gita vera</p>
             {tripsByArea.map((grp, gi) => (
               <div key={gi} style={{ marginBottom: 12 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "2px 2px 8px" }}>
-                  <span style={{ fontSize: 12, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#0E1542" }}>{grp.area}</span>
+                  <span style={{ fontSize: 12, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#0E1542" }}>{grp.label}</span>
                   <span style={{ flex: 1, height: 2, borderRadius: 2, background: "#D9CFB7" }} />
                 </div>
-                <div style={{ display: "grid", gap: 9 }}>
-                  {grp.items.map((d, i) => (
-                    <div key={i} style={{ background: "#fff", borderRadius: 14, overflow: "hidden" }}>
-                  <div onClick={d.onToggle} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 14px", cursor: "pointer", gap: 10 }}>
-                    <div style={{ fontSize: 14.5, fontWeight: 800, color: "#17142C" }}>{d.title}</div>
-                    <div style={{ display: "flex", alignItems: "center", gap: 9, flex: "none" }}><span style={{ fontSize: 11, fontWeight: 800, color: "#9a937c" }}>{d.time}</span><span style={{ fontSize: 17, color: "#0E1542", transform: `rotate(${d.chevron})` }}>⌄</span></div>
-                  </div>
-                  {d.isOpen && (
-                    <div style={{ padding: "0 14px 14px" }}>
-                      <div style={{ fontSize: 13, color: "#5b5644", lineHeight: 1.6, borderTop: "1.5px solid #EFE7D6", paddingTop: 11, fontWeight: 600 }}>{d.body}</div>
-                      <div style={{ marginTop: 10, display: "grid", gridTemplateColumns: "1fr 1fr 1.2fr", gap: 6 }}>
-                        <div style={{ background: "#F6F0E2", borderRadius: 9, padding: "7px 8px", textAlign: "center" }}>
-                          <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: ".03em", textTransform: "uppercase", color: "#9a937c" }}>🚆 Andata</div>
-                          <div style={{ fontSize: 13, fontWeight: 900, color: "#17142C", fontFamily: MONO }}>{d.oneWay}</div>
-                        </div>
-                        <div style={{ background: "#F6F0E2", borderRadius: 9, padding: "7px 8px", textAlign: "center" }}>
-                          <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: ".03em", textTransform: "uppercase", color: "#9a937c" }}>🚆 Ritorno</div>
-                          <div style={{ fontSize: 13, fontWeight: 900, color: "#17142C", fontFamily: MONO }}>{d.oneWay}</div>
-                        </div>
-                        <div style={{ background: "#F6F0E2", borderRadius: 9, padding: "5px 6px", textAlign: "center" }}>
-                          <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: ".03em", textTransform: "uppercase", color: "#9a937c" }}>Visita</div>
-                          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginTop: 1 }}>
-                            <button onClick={d.onLess} title="Meno tempo" style={{ cursor: "pointer", border: "1.5px solid #D9CFB7", background: "#fff", borderRadius: 7, width: 22, height: 22, fontWeight: 900, color: "#0E1542", lineHeight: 1 }}>−</button>
-                            <span style={{ fontSize: 13, fontWeight: 900, color: "#17142C", fontFamily: MONO, minWidth: 38 }}>{d.visit}</span>
-                            <button onClick={d.onMore} title="Più tempo" style={{ cursor: "pointer", border: "1.5px solid #D9CFB7", background: "#fff", borderRadius: 7, width: 22, height: 22, fontWeight: 900, color: "#0E1542", lineHeight: 1 }}>+</button>
-                          </div>
-                        </div>
-                      </div>
-                      <div style={{ marginTop: 6, fontSize: 11.5, fontWeight: 700, color: "#6B6450" }}>{d.mode} · in giornata ~{d.total} totali · durata regolabile</div>
-                      {d.venues.length > 0 && (
-                        <div style={{ marginTop: 12 }}>
-                          <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#0E1542", marginBottom: 7 }}>Cosa vedere & dove mangiare</div>
-                          <div style={{ display: "grid", gap: 7 }}>
-                            {d.venues.map((v, vi) => (
-                              <div key={vi} style={{ display: "flex", gap: 9, alignItems: "flex-start", background: v.tipo === "mangiare" ? "#FBEDE9" : "#EEF0F8", borderLeft: `4px solid ${v.tipo === "mangiare" ? "#E6482A" : "#0E1542"}`, borderRadius: 9, padding: "8px 10px" }}>
-                                <div style={{ flex: 1, minWidth: 0 }}>
-                                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-                                    <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: v.tipo === "mangiare" ? "#E6482A" : "#0E1542", borderRadius: 999, padding: "1px 6px" }}>{v.tipo === "mangiare" ? "Mangiare" : "Vedere"}</span>
-                                    <span style={{ fontSize: 13.5, fontWeight: 800, color: "#17142C" }}>{v.name}</span>
-                                  </div>
-                                  {v.note && <div style={{ fontSize: 11.5, fontWeight: 600, color: "#6B6450", marginTop: 3, lineHeight: 1.4 }}>{v.note}</div>}
-                                </div>
-                                <div style={{ display: "flex", gap: 5, flex: "none" }}>
-                                  <button onClick={v.onFav} title="Preferito" style={{ cursor: "pointer", width: 28, height: 28, borderRadius: 8, border: `1.5px solid ${v.favBorder}`, background: v.favBg, color: v.favColor, fontSize: 13, fontWeight: 900 }}>★</button>
-                                  <a href={this.M(v.q || v.name)} target="_blank" rel="noopener" style={{ display: "flex", alignItems: "center", fontSize: 10.5, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "0 9px", borderRadius: 8 }}>Maps</a>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      <div style={{ marginTop: 11, display: "flex", gap: 7 }}>
-                        <a href={d.maps} target="_blank" rel="noopener" style={{ fontSize: 11.5, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "5px 12px", borderRadius: 999 }}>Maps ↗</a>
-                        <button onClick={d.onFav} style={{ cursor: "pointer", fontSize: 11.5, fontWeight: 900, color: d.favColor, background: d.favBg, border: `1.5px solid ${d.favBorder}`, padding: "5px 12px", borderRadius: 999 }}>★ {d.favLabel}</button>
-                      </div>
-                    </div>
-                  )}
-                    </div>
-                  ))}
+                <div style={{ background: "#fff", borderRadius: 14, padding: "2px 14px" }}>
+                  {grp.ids.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === grp.ids.length - 1} />)}
                 </div>
               </div>
             ))}
@@ -2126,32 +2037,9 @@ export default class App extends React.Component {
               <span style={numBadge("#FF2E7E", "#fff")}>07</span>
               <h2 style={h2("#0E1542")}>Esperienze</h2>
             </div>
-            <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Per tema · tocca per aprire</p>
-            <div style={{ display: "grid", gap: 9 }}>
-              {experiences.map((x, i) => (
-                <div key={i} style={{ background: "#fff", borderRadius: 14, overflow: "hidden" }}>
-                  <div onClick={x.onToggle} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 14px", cursor: "pointer", gap: 10 }}>
-                    <div style={{ fontSize: 14.5, fontWeight: 800, color: "#17142C" }}>{x.title}</div>
-                    <span style={{ fontSize: 17, color: "#0E1542", flex: "none", transform: `rotate(${x.chevron})` }}>⌄</span>
-                  </div>
-                  {x.isOpen && (
-                    <div style={{ padding: "0 14px 14px" }}>
-                      {x.hi && <div style={{ fontSize: 11.5, fontWeight: 900, color: "#0E1542", background: "#FFD23F", display: "inline-block", padding: "4px 10px", borderRadius: 999, marginBottom: 9 }}>★ {x.hi}</div>}
-                      <div style={{ fontSize: 13, color: "#5b5644", lineHeight: 1.6, borderTop: "1.5px solid #EFE7D6", paddingTop: 11, fontWeight: 600 }}>{x.body}</div>
-                      {x.places && x.places.length > 0 && (
-                        <div style={{ marginTop: 10, display: "grid", gap: 6 }}>
-                          {x.places.map((p, pi) => (
-                            <div key={pi} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, background: "#F6F0E2", borderRadius: 9, padding: "7px 10px" }}>
-                              <span style={{ fontSize: 13, fontWeight: 800, color: "#17142C", minWidth: 0 }}>{p.name}</span>
-                              <a href={p.maps} target="_blank" rel="noopener" style={{ flex: "none", fontSize: 10.5, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "3px 10px", borderRadius: 8 }}>Maps ↗</a>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
+            <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Per tema · tocca per la scheda</p>
+            <div style={{ background: "#fff", borderRadius: 16, padding: "2px 14px" }}>
+              {experiencesIds.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === experiencesIds.length - 1} />)}
             </div>
           </section>
 
@@ -2164,23 +2052,9 @@ export default class App extends React.Component {
             <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#9aa2d4" }}>Sera d'arrivo + colazione · a piedi dall'hotel a Shoreditch</p>
             {londonByZone.map((grp, gi) => (
               <div key={gi} style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#FFD23F", margin: "0 2px 8px" }}>{grp.zone === "__other" ? "Altro" : grp.zone === "City & South Bank" ? "City & South Bank · opzionali" : grp.zone}</div>
-                <div style={{ background: "#F6F0E2", borderRadius: 16, padding: "4px 14px" }}>
-                  {grp.items.map((l, i) => (
-                    <div key={i} style={{ padding: "12px 0", borderBottom: i < grp.items.length - 1 ? "1.5px solid #EAE0CA" : "none" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-                        <div style={{ flex: 1, minWidth: 0, fontSize: 15, fontWeight: 800, color: "#17142C" }}>
-                          {l.cat && <span style={{ fontSize: 9.5, fontWeight: 900, color: "#0E1542", background: "#FFD23F", borderRadius: 999, padding: "1px 7px", marginRight: 6, verticalAlign: 1.5, textTransform: "uppercase", letterSpacing: ".04em" }}>{l.cat}</span>}
-                          {l.name}
-                        </div>
-                        <div style={{ display: "flex", gap: 6, flex: "none" }}>
-                          <button onClick={l.onFav} title="Preferito" style={{ cursor: "pointer", width: 30, height: 30, borderRadius: 9, border: `1.5px solid ${l.favBorder}`, background: l.favBg, color: l.favColor, fontSize: 15, fontWeight: 900 }}>★</button>
-                          <a href={l.maps} target="_blank" rel="noopener" style={mapsPill}>Maps</a>
-                        </div>
-                      </div>
-                      <div style={{ fontSize: 12.5, color: "#6B6450", marginTop: 4, fontWeight: 600, lineHeight: 1.45 }}>{l.note}</div>
-                    </div>
-                  ))}
+                <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#FFD23F", margin: "0 2px 8px" }}>{grp.label === "City & South Bank" ? "City & South Bank · opzionali" : grp.label}</div>
+                <div style={{ background: "#F6F0E2", borderRadius: 16, padding: "2px 14px" }}>
+                  {grp.ids.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === grp.ids.length - 1} />)}
                 </div>
               </div>
             ))}
@@ -2317,6 +2191,16 @@ export default class App extends React.Component {
             extra={nav.filter((n) => !NAV_TABS.includes(n.href.slice(1)))}
           />
         </div>
+
+        {/* ===== VENUE DETAIL (shared) ===== */}
+        {this.state.detail && (
+          <VenueDetail
+            d={this.state.detail}
+            onClose={this.closeDetail}
+            isFav={favs.indexOf(this.state.detail.id) >= 0}
+            onToggleFav={D.master[this.state.detail.id] ? (id) => this.toggleFav(id) : undefined}
+          />
+        )}
 
         {/* ===== SIM SHEET ===== */}
         {this.state.simOpen && (

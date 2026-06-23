@@ -131,7 +131,7 @@ function build() {
     const vs = t.venues || [];
     tripPools[t.id] = vs.map((v, i) => {
       const id = "tv-" + t.id + "-" + i;
-      catalog[id] = { id, name: v.name, dur: v.tipo === "mangiare" ? 60 : 90, open: null, kind: "tvenue", q: v.q, note: v.note, trip: t.id, tipo: v.tipo };
+      catalog[id] = { id, name: v.name, dur: v.tipo === "mangiare" ? 60 : 90, open: null, kind: "tvenue", q: v.q, note: v.note, trip: t.id, tipo: v.tipo, transferMin: v.transferMin || 0 };
       master[id] = { name: v.name, where: "Gita · " + t.title, note: v.note, maps: mapsUrl(v.q) };
       return id;
     });
@@ -142,12 +142,32 @@ function build() {
   trips.forEach((t) => (master[t.id] = { name: t.title, where: "Dintorni", note: t.body, maps: mapsUrl(t.q) }));
   london.forEach((l) => (master[l.id] = { name: l.name, where: "Londra", note: l.note, maps: mapsUrl(l.q) }));
 
+  // Unified detail index (one normalized record per place), used by the shared
+  // VenueDetail modal and the 2-line summary rows across the app. photo/curiosita/
+  // info/transport are optional and filled in later content/photo/transport rounds.
+  const details = {};
+  const add = (o) => { details[o.id] = o; };
+  sights.forEach((s) => add({ id: s.id, name: s.name, kind: "sight", where: "Edimburgo", zone: s.zone || "", dur: s.dur, open: s.open || null, note: s.note, maps: mapsUrl(s.q) }));
+  eats.forEach((e) => add({ id: e.id, name: e.name, kind: "eat", where: "Mangiare a Edimburgo", zone: e.zone || "", tipo: e.tipo || e.cat || "", cat: e.cat || "", ordina: e.ordina || "", dur: e.dur, open: e.open || null, note: e.note, maps: mapsUrl(e.q) }));
+  trips.forEach((t) => add({ id: t.id, name: t.title, kind: "trip", where: "Gita in giornata", area: t.area || "", mode: t.mode || "", train: t.train, visit: t.visit, dur: t.visit + 2 * t.train, note: t.body, maps: mapsUrl(t.q), venues: (t.venues || []).map((v, i) => ({ id: "tv-" + t.id + "-" + i, name: v.name, tipo: v.tipo, note: v.note, maps: mapsUrl(v.q) })) }));
+  trips.forEach((t) => (t.venues || []).forEach((v, i) => add({ id: "tv-" + t.id + "-" + i, name: v.name, kind: "tvenue", where: "In gita · " + t.title, tipo: v.tipo, dur: v.tipo === "mangiare" ? 60 : 90, note: v.note, maps: mapsUrl(v.q), trip: t.id, tripName: t.title, transferMin: v.transferMin || 0, transferNote: v.transferNote || "" })));
+  london.forEach((l) => add({ id: l.id, name: l.name, kind: "london", where: "Londra", zone: l.zone || "", cat: l.cat || "", tipo: l.cat || "", dur: l.dur, open: l.open || null, note: l.note, maps: mapsUrl(l.q) }));
+  neighborhoods.forEach((n) => add({ id: n.id, name: n.name, kind: "neighborhood", where: "Quartiere · Edimburgo", note: n.blurb, see: n.see || [], maps: n.maps }));
+  experiences.forEach((x) => add({ id: x.id, name: x.title, kind: "experience", where: "Esperienza a tema", hi: x.hi || "", note: x.body, places: (x.places || []).map((p) => ({ name: p.name, maps: mapsUrl(p.q) })), maps: "" }));
+  glasgow.forEach((g, i) => { g.id = "gl-" + i; add({ id: g.id, name: g.name, kind: "glasgow", where: "Glasgow", note: g.note, maps: g.maps }); });
+
   return {
     sights, eats, trips, london, experiences, neighborhoods, glasgow,
-    catalog, master, tripPools,
+    catalog, master, tripPools, details,
     poolEdi: [...sights.map((s) => s.id), ...eats.map((e) => e.id), ...trips.map((t) => t.id)],
     poolLon: london.map((l) => l.id),
   };
+}
+
+// Normalized detail record for any place id (or pass an object through unchanged).
+export function venueDetail(idOrObj) {
+  if (idOrObj && typeof idOrObj === "object") return idOrObj;
+  return getData().details[idOrObj] || null;
 }
 
 let _data = null;
