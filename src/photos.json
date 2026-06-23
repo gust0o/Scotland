@@ -3,10 +3,6 @@
   "credit": "Steven Straiton · CC BY 2.0",
   "source": "https://commons.wikimedia.org/wiki/File:The_Kelpies_at_The_Helix_in_Falkirk,_Scotland,_June_2014.jpg"
  },
- "dt-glasgow": {
-  "credit": "Thomas Annan · Public domain",
-  "source": "https://commons.wikimedia.org/wiki/File:Slum_in_Glasgow,_1871.jpg"
- },
  "dt-lochlomond": {
   "credit": "Frombowen · CC BY-SA 4.0",
   "source": "https://commons.wikimedia.org/wiki/File:Balloch_Castle,earthwork,Loch_Lomond_Park.jpg"
@@ -22,10 +18,6 @@
  "dt-queensferry": {
   "credit": "Nigel Mykura · CC BY-SA 2.0",
   "source": "https://commons.wikimedia.org/wiki/File:South_Queensferry_-_geograph.org.uk_-_7026830.jpg"
- },
- "dt-standrews": {
-  "credit": "Subhrajyoti07 · CC0",
-  "source": "https://commons.wikimedia.org/wiki/File:St._Andrews_Church_situated_in_Darjeeling.jpg"
  },
  "dt-stirling": {
   "credit": "DeFacto · CC BY-SA 4.0",
@@ -134,10 +126,6 @@
  "gl-5": {
   "credit": "TomZoy · CC BY-SA 4.0",
   "source": "https://commons.wikimedia.org/wiki/File:Statue_Of_James_Watt.jpg"
- },
- "gl-6": {
-  "credit": "François Bonvin · Public domain",
-  "source": "https://commons.wikimedia.org/wiki/File:Fran%C3%A7ois_Bonvin_(1817-1887)_-_Still_Life_with_a_Copper_Pot_-_35.14_-_Burrell_Collection.jpg"
  },
  "gl-7": {
   "credit": "Ragsssss · CC0",
@@ -402,5 +390,13 @@
  "tv-dt-stirling-5": {
   "credit": "",
   "source": ""
+ },
+ "dt-glasgow": {
+  "credit": "Stinglehammer · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:University_of_Glasgow_Main_Building_-_rear_aspect.jpg"
+ },
+ "dt-standrews": {
+  "credit": "Maciej Lewandowski · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Graveyard_in_St_Andrews_Cathedral,_Scotland.jpg"
  }
 }
