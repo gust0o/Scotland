@@ -100,10 +100,19 @@ const experiences = [
 // Enriched neighbourhoods (blurb + things to see) from CONTENT.
 const neighborhoods = CONTENT.neighborhoods.map((n) => ({ ...n, maps: mapsUrl(n.q) }));
 
+// Copy optional enriched fields (Round 2 content) onto a base object.
+const enrich = (o, c) => {
+  if (!c) return;
+  if (c.summary) o.summary = c.summary;
+  if (c.descrizione) o.descrizione = c.descrizione;
+  if (c.curiosita) o.curiosita = c.curiosita;
+  if (Array.isArray(c.info)) o.info = c.info;
+};
+
 // Merge the enriched descriptions/zones into the base lists.
-sights.forEach((s) => { const c = CONTENT.sights[s.id]; if (c) { s.note = c.note; s.zone = c.zone; } });
-eats.forEach((e) => { const c = CONTENT.eats[e.id]; if (c) { e.note = c.note; e.zone = c.zone; e.tipo = c.tipo; e.ordina = c.ordina; } });
-trips.forEach((t) => { const c = CONTENT.trips[t.id]; if (c) { t.body = c.note; t.area = c.area; } t.venues = (CONTENT.tripVenues && CONTENT.tripVenues[t.id]) || []; });
+sights.forEach((s) => { const c = CONTENT.sights[s.id]; if (c) { s.note = c.note || s.note; s.zone = c.zone; enrich(s, c); } });
+eats.forEach((e) => { const c = CONTENT.eats[e.id]; if (c) { e.note = c.note || e.note; e.zone = c.zone; e.tipo = c.tipo; e.ordina = c.ordina; enrich(e, c); } });
+trips.forEach((t) => { const c = CONTENT.trips[t.id]; if (c) { t.body = c.note || t.body; t.area = c.area; t.transport = c.transport || t.transport; enrich(t, c); } t.venues = (CONTENT.tripVenues && CONTENT.tripVenues[t.id]) || []; });
 
 const glasgow = [
   { name: "Kelvingrove Art Gallery", note: "Museo gratuito e amatissimo, dai Dalí ai Spitfire. Tip: recital d'organo gratis verso le 13.", q: "Kelvingrove Art Gallery Glasgow" },
@@ -114,7 +123,14 @@ const glasgow = [
   { name: "George Square & Merchant City", note: "La piazza monumentale e il quartiere mercantile di bar e ristoranti. Tip: base per girare il centro a piedi.", q: "George Square Glasgow" },
   { name: "The Pot Still", note: "Storico whisky bar con centinaia di etichette e pie fatte in casa. Tip: fatti consigliare un dram al bancone.", q: "The Pot Still Glasgow" },
   { name: "Ubiquitous Chip", note: "Istituzione del West End per la cucina scozzese moderna, in un cortile-giardino. Tip: brunch o pranzo più abbordabili della cena.", q: "Ubiquitous Chip Glasgow" },
-].map((g) => ({ ...g, maps: mapsUrl(g.q) }));
+].map((g, i) => ({ ...g, id: "gl-" + i, maps: mapsUrl(g.q) }));
+
+// Enriched content for the lists that live in code (keyed by id in content.json).
+const enrichById = (arr, table) => { if (!table) return; arr.forEach((o) => enrich(o, table[o.id])); };
+enrichById(glasgow, CONTENT.glasgow);
+enrichById(experiences, CONTENT.experiences);
+// neighborhoods & london carry enriched fields directly via their content arrays;
+// trip venues can carry them inside content.tripVenues[*][i].
 
 // Build catalog (for the scheduler) and master index (for favorites).
 function build() {
@@ -147,14 +163,16 @@ function build() {
   // info/transport are optional and filled in later content/photo/transport rounds.
   const details = {};
   const add = (o) => { details[o.id] = o; };
-  sights.forEach((s) => add({ id: s.id, name: s.name, kind: "sight", where: "Edimburgo", zone: s.zone || "", dur: s.dur, open: s.open || null, note: s.note, maps: mapsUrl(s.q) }));
-  eats.forEach((e) => add({ id: e.id, name: e.name, kind: "eat", where: "Mangiare a Edimburgo", zone: e.zone || "", tipo: e.tipo || e.cat || "", cat: e.cat || "", ordina: e.ordina || "", dur: e.dur, open: e.open || null, note: e.note, maps: mapsUrl(e.q) }));
-  trips.forEach((t) => add({ id: t.id, name: t.title, kind: "trip", where: "Gita in giornata", area: t.area || "", mode: t.mode || "", train: t.train, visit: t.visit, dur: t.visit + 2 * t.train, note: t.body, maps: mapsUrl(t.q), venues: (t.venues || []).map((v, i) => ({ id: "tv-" + t.id + "-" + i, name: v.name, tipo: v.tipo, note: v.note, maps: mapsUrl(v.q) })) }));
-  trips.forEach((t) => (t.venues || []).forEach((v, i) => add({ id: "tv-" + t.id + "-" + i, name: v.name, kind: "tvenue", where: "In gita · " + t.title, tipo: v.tipo, dur: v.tipo === "mangiare" ? 60 : 90, note: v.note, maps: mapsUrl(v.q), trip: t.id, tripName: t.title, transferMin: v.transferMin || 0, transferNote: v.transferNote || "" })));
-  london.forEach((l) => add({ id: l.id, name: l.name, kind: "london", where: "Londra", zone: l.zone || "", cat: l.cat || "", tipo: l.cat || "", dur: l.dur, open: l.open || null, note: l.note, maps: mapsUrl(l.q) }));
-  neighborhoods.forEach((n) => add({ id: n.id, name: n.name, kind: "neighborhood", where: "Quartiere · Edimburgo", note: n.blurb, see: n.see || [], maps: n.maps }));
-  experiences.forEach((x) => add({ id: x.id, name: x.title, kind: "experience", where: "Esperienza a tema", hi: x.hi || "", note: x.body, places: (x.places || []).map((p) => ({ name: p.name, maps: mapsUrl(p.q) })), maps: "" }));
-  glasgow.forEach((g, i) => { g.id = "gl-" + i; add({ id: g.id, name: g.name, kind: "glasgow", where: "Glasgow", note: g.note, maps: g.maps }); });
+  // Spreadable enriched fields (Round 2): summary / descrizione / curiosita / info.
+  const enr = (o) => ({ summary: o.summary || "", descrizione: o.descrizione || "", curiosita: o.curiosita || "", info: Array.isArray(o.info) ? o.info : [], photo: o.photo || "", credit: o.credit || "" });
+  sights.forEach((s) => add({ id: s.id, name: s.name, kind: "sight", where: "Edimburgo", zone: s.zone || "", dur: s.dur, open: s.open || null, note: s.note, maps: mapsUrl(s.q), ...enr(s) }));
+  eats.forEach((e) => add({ id: e.id, name: e.name, kind: "eat", where: "Mangiare a Edimburgo", zone: e.zone || "", tipo: e.tipo || e.cat || "", cat: e.cat || "", ordina: e.ordina || "", dur: e.dur, open: e.open || null, note: e.note, maps: mapsUrl(e.q), ...enr(e) }));
+  trips.forEach((t) => add({ id: t.id, name: t.title, kind: "trip", where: "Gita in giornata", area: t.area || "", mode: t.mode || "", train: t.train, visit: t.visit, dur: t.visit + 2 * t.train, note: t.body, maps: mapsUrl(t.q), transport: t.transport || null, venues: (t.venues || []).map((v, i) => ({ id: "tv-" + t.id + "-" + i, name: v.name, tipo: v.tipo, note: v.note, maps: mapsUrl(v.q) })), ...enr(t) }));
+  trips.forEach((t) => (t.venues || []).forEach((v, i) => add({ id: "tv-" + t.id + "-" + i, name: v.name, kind: "tvenue", where: "In gita · " + t.title, tipo: v.tipo, dur: v.tipo === "mangiare" ? 60 : 90, note: v.note, maps: mapsUrl(v.q), trip: t.id, tripName: t.title, transferMin: v.transferMin || 0, transferNote: v.transferNote || "", ...enr(v) })));
+  london.forEach((l) => add({ id: l.id, name: l.name, kind: "london", where: "Londra", zone: l.zone || "", cat: l.cat || "", tipo: l.cat || "", dur: l.dur, open: l.open || null, note: l.note, maps: mapsUrl(l.q), ...enr(l) }));
+  neighborhoods.forEach((n) => add({ id: n.id, name: n.name, kind: "neighborhood", where: "Quartiere · Edimburgo", note: n.blurb, see: n.see || [], maps: n.maps, ...enr(n) }));
+  experiences.forEach((x) => add({ id: x.id, name: x.title, kind: "experience", where: "Esperienza a tema", hi: x.hi || "", note: x.body, places: (x.places || []).map((p) => ({ name: p.name, maps: mapsUrl(p.q) })), maps: "", ...enr(x) }));
+  glasgow.forEach((g) => add({ id: g.id, name: g.name, kind: "glasgow", where: "Glasgow", note: g.note, maps: g.maps, ...enr(g) }));
 
   return {
     sights, eats, trips, london, experiences, neighborhoods, glasgow,

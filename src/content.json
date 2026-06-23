@@ -22,63 +22,354 @@
   "sights": {
     "es-castle": {
       "zone": "Old Town",
-      "note": "Fortezza simbolo della città, in cima alla rocca vulcanica da quasi mille anni: custodisce i gioielli della Corona, la Stone of Destiny e la cappella più antica di Edimburgo. Tip: biglietti online per saltare le code."
+      "note": "Fortezza simbolo della città, in cima alla rocca vulcanica da quasi mille anni: custodisce i gioielli della Corona, la Stone of Destiny e la cappella più antica di Edimburgo. Tip: biglietti online per saltare le code.",
+      "summary": "La fortezza che domina la città dall'alto della rocca vulcanica, con i Gioielli della Corona e la Stone of Destiny",
+      "descrizione": "Arroccato su una rupe di basalto da quasi mille anni, l'Edinburgh Castle è il simbolo della Scozia e il monumento più visitato del Paese. Dentro le mura trovi i Gioielli della Corona, la Stone of Destiny, la St Margaret's Chapel (l'edificio più antico della città) e una vista che spazia su tutta Edimburgo. A mezzogiorno preciso, ogni giorno tranne la domenica, l'One O'Clock Gun spara il suo colpo: aspettalo, fa sobbalzare tutti.",
+      "curiosita": "La St Margaret's Chapel, una minuscola cappella normanna del XII secolo, è l'edificio più antico ancora in piedi a Edimburgo ed è sopravvissuta a secoli di assedi e demolizioni.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "~£21,50 online (più caro in cassa)"
+        },
+        {
+          "k": "Orari",
+          "v": "9:30-18 in estate, 9:30-17 in inverno"
+        },
+        {
+          "k": "Durata",
+          "v": "2-3 ore"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Compra online per saltare la coda"
+        }
+      ]
     },
     "es-royalmile": {
       "zone": "Old Town",
-      "note": "La spina dorsale della Old Town, cinque vie che scendono dal Castello a Holyrood tra tenements, closes e pub. Tip: infilati in un vicolo laterale per scoprire cortili nascosti lontani dalla folla."
+      "note": "La spina dorsale della Old Town, cinque vie che scendono dal Castello a Holyrood tra tenements, closes e pub. Tip: infilati in un vicolo laterale per scoprire cortili nascosti lontani dalla folla.",
+      "summary": "La spina dorsale della Old Town: cinque vie in discesa dal Castello a Holyrood tra closes, tenements e pub",
+      "descrizione": "Il Royal Mile è il cuore medievale di Edimburgo, una sequenza di cinque strade che scendono dalla rupe del Castello fino al Palace of Holyroodhouse. Lungo il percorso si aprono i closes, gli stretti vicoli laterali che conducono a cortili nascosti e scalinate dimenticate. È turistico, sì, ma basta infilarsi in un vicolo per ritrovare il silenzio e il fascino della città vecchia.",
+      "curiosita": "I tenements del Royal Mile erano tra gli edifici residenziali più alti d'Europa nel Seicento: alcuni superavano i dieci piani, una sorta di grattacieli ante litteram nati per stipare la popolazione dentro le mura.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratis (passeggiata)"
+        },
+        {
+          "k": "Durata",
+          "v": "1-2 ore con le deviazioni"
+        },
+        {
+          "k": "Quando andare",
+          "v": "Mattina presto, prima della folla"
+        }
+      ]
     },
     "es-victoria": {
       "zone": "Old Town",
-      "note": "La via curva e colorata più fotografata di Edimburgo, con botteghe indipendenti e la terrazza di Victoria Terrace sopra. Tip: arrivaci dal Grassmarket salendo le scale di Upper Bow per la vista migliore."
+      "note": "La via curva e colorata più fotografata di Edimburgo, con botteghe indipendenti e la terrazza di Victoria Terrace sopra. Tip: arrivaci dal Grassmarket salendo le scale di Upper Bow per la vista migliore.",
+      "summary": "La curva colorata più fotografata di Edimburgo, con botteghe indipendenti e la terrazza panoramica sopra",
+      "descrizione": "Victoria Street è la via a mezzaluna che tutti fotografano: facciate dai colori vivaci, negozietti indipendenti, librerie e botteghe di whisky. Sopra corre la Victoria Terrace, una passeggiata sopraelevata da cui guardare la strada dall'alto. Si dice abbia ispirato la Diagon Alley di Harry Potter, e in effetti l'atmosfera c'è tutta.",
+      "curiosita": "Costruita negli anni 1830 come parte degli sventramenti vittoriani della Old Town, la via collega il Grassmarket alla George IV Bridge: per questo è curva e su due livelli.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratis"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Sali dal Grassmarket per Upper Bow"
+        },
+        {
+          "k": "Quando andare",
+          "v": "Luce del mattino per le foto"
+        }
+      ]
     },
     "es-dean": {
       "zone": "Dean Village & Stockbridge",
-      "note": "Antico borgo di mulini del XII secolo lungo il Water of Leith, oggi angolo di quiete con case a graticcio e ponti in pietra. Tip: dal Water of Leith Footbridge la vista è da cartolina."
+      "note": "Antico borgo di mulini del XII secolo lungo il Water of Leith, oggi angolo di quiete con case a graticcio e ponti in pietra. Tip: dal Water of Leith Footbridge la vista è da cartolina.",
+      "summary": "Antico borgo di mulini del XII secolo sul Water of Leith, oggi angolo silenzioso a pochi passi dal centro",
+      "descrizione": "Fondato nel XII secolo, il Dean Village era un villaggio di mugnai che macinavano grano lungo il Water of Leith. Oggi è un'oasi di quiete sorprendente, con case in pietra, ponti e l'acqua che scorre, a soli cinque minuti dal trambusto di Princes Street. Si esplora a piedi, seguendo il sentiero lungo il fiume verso lo Scottish National Gallery of Modern Art.",
+      "curiosita": "Il nome 'Dean' deriva dall'antico scozzese 'dene', cioè valle profonda: per secoli qui hanno macinato la farina per Edimburgo, fino a undici mulini in attività contemporaneamente.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratis"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "A piedi da Bell's Brae, sopra Queensferry Rd"
+        },
+        {
+          "k": "Durata",
+          "v": "30-60 min con la passeggiata sul fiume"
+        }
+      ]
     },
     "es-holyrood": {
       "zone": "Holyrood & Arthur's Seat",
-      "note": "Residenza ufficiale dei reali in Scozia, teatro delle vicende di Maria Stuart e dell'omicidio Rizzio. Si visitano gli appartamenti reali e le rovine dell'abbazia. Tip: prendi l'audioguida."
+      "note": "Residenza ufficiale dei reali in Scozia, teatro delle vicende di Maria Stuart e dell'omicidio Rizzio. Si visitano gli appartamenti reali e le rovine dell'abbazia. Tip: prendi l'audioguida.",
+      "summary": "La residenza ufficiale dei reali in Scozia, teatro delle vicende di Maria Stuart e dell'omicidio Rizzio",
+      "descrizione": "Il Palace of Holyroodhouse è la residenza ufficiale del sovrano in Scozia da oltre cinque secoli, ai piedi dell'Arthur's Seat in fondo al Royal Mile. Si visitano gli appartamenti di Stato, gli appartamenti privati di Maria Stuart e le suggestive rovine dell'abbazia del XII secolo. L'audioguida, inclusa, racconta bene gli intrighi di corte, dall'omicidio del segretario Rizzio sotto gli occhi della regina in poi.",
+      "curiosita": "Nella camera di Maria Stuart una targa segna il punto in cui nel 1566 fu pugnalato a morte il suo segretario David Rizzio, davanti alla regina incinta: per anni si è mostrata una macchia sul pavimento spacciandola per il suo sangue.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "~£20 (audioguida inclusa)"
+        },
+        {
+          "k": "Orari",
+          "v": "9:30-18 in estate, 9:30-16:30 in inverno"
+        },
+        {
+          "k": "Durata",
+          "v": "1,5-2 ore"
+        },
+        {
+          "k": "Quando andare",
+          "v": "Chiuso durante le visite reali, verifica prima"
+        }
+      ]
     },
     "es-arthurs": {
       "zone": "Holyrood & Arthur's Seat",
-      "note": "Vulcano estinto (251 m) che domina lo skyline: 45 minuti di salita per un panorama a 360 gradi sulla città e il Firth of Forth. Tip: scarpe con buona suola, le rocce dopo la pioggia scivolano."
+      "note": "Vulcano estinto (251 m) che domina lo skyline: 45 minuti di salita per un panorama a 360 gradi sulla città e il Firth of Forth. Tip: scarpe con buona suola, le rocce dopo la pioggia scivolano.",
+      "summary": "Vulcano estinto a 251 m che domina lo skyline: 45 minuti di salita per un panorama a 360 gradi",
+      "descrizione": "L'Arthur's Seat è il picco di un vulcano spento da 340 milioni di anni, l'elemento più riconoscibile dello skyline di Edimburgo. La salita richiede circa 45 minuti dalla base del Royal Mile e ripaga con una vista a 360 gradi sulla città, sul mare e fino al Fife. È pieno parco cittadino: in mezz'ora passi dal centro a una collina selvaggia.",
+      "curiosita": "Nel 1836 cinque ragazzi vi scoprirono diciassette minuscole bare di legno con dentro figurine intagliate: un mistero mai risolto, oggi in parte esposto al National Museum of Scotland.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratis"
+        },
+        {
+          "k": "Durata",
+          "v": "45 min di salita, 1,5-2 ore in tutto"
+        },
+        {
+          "k": "Quando andare",
+          "v": "Giornate limpide; rocce scivolose dopo la pioggia"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Dalla base del Royal Mile, vicino a Holyrood"
+        }
+      ]
     },
     "es-calton": {
       "zone": "Calton Hill",
-      "note": "Collina-belvedere a est della New Town con il Nelson Monument e il National Monument incompiuto stile Partenone (la 'Scotland's Folly'). Tip: salici al tramonto per la vista più bella su Old Town e mare."
+      "note": "Collina-belvedere a est della New Town con il Nelson Monument e il National Monument incompiuto stile Partenone (la 'Scotland's Folly'). Tip: salici al tramonto per la vista più bella su Old Town e mare.",
+      "summary": "Collina-belvedere con il Nelson Monument e il 'Partenone' incompiuto, la migliore vista al tramonto",
+      "descrizione": "La Calton Hill è la collina-belvedere a est della New Town, facilissima da salire e ricca di monumenti: il Nelson Monument a forma di cannocchiale rovesciato e il National Monument, una colonnata in stile Partenone rimasta incompiuta per mancanza di fondi (i locali la chiamano 'Scotland's Disgrace'). È il punto migliore per fotografare la Old Town e il Firth of Forth, soprattutto al tramonto.",
+      "curiosita": "Sul Nelson Monument c'è una palla del tempo che ogni giorno alle 13 scende lungo l'asta, in sincrono con l'One O'Clock Gun del Castello: serviva alle navi nel porto per regolare i cronometri.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratis (a pagamento solo il Nelson Monument)"
+        },
+        {
+          "k": "Quando andare",
+          "v": "Al tramonto per la luce migliore"
+        },
+        {
+          "k": "Durata",
+          "v": "30-45 min"
+        }
+      ]
     },
     "es-maryking": {
       "zone": "Old Town",
-      "note": "Vicolo seicentesco murato e sepolto sotto il Royal Mile, visitabile solo con tour guidato tra case conservate e storie di fantasmi. Tip: prenota prima, gli ingressi vanno a esaurimento."
+      "note": "Vicolo seicentesco murato e sepolto sotto il Royal Mile, visitabile solo con tour guidato tra case conservate e storie di fantasmi. Tip: prenota prima, gli ingressi vanno a esaurimento.",
+      "summary": "Vicolo seicentesco murato e sepolto sotto il Royal Mile, visitabile solo con tour guidato tra storie di fantasmi",
+      "descrizione": "Il Real Mary King's Close è un labirinto di vicoli e case del Seicento murati e sepolti sotto gli edifici del Royal Mile, riportato alla luce e visitabile solo con tour guidato. Le guide raccontano la vita quotidiana, la peste e le leggende di fantasmi degli abitanti di un tempo. Un'ora sottoterra che cala bruscamente nella Edimburgo più cupa e affascinante.",
+      "curiosita": "In una delle stanze i visitatori lasciano da generazioni piccoli doni per Annie, una bambina che secondo la leggenda morì di peste qui: l'angolo trabocca di giocattoli e monete.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "~£21 online"
+        },
+        {
+          "k": "Durata",
+          "v": "Circa 1 ora"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Prenota prima, i posti vanno a esaurimento"
+        },
+        {
+          "k": "Quando andare",
+          "v": "Non adatto ai bambini sotto i 5 anni"
+        }
+      ]
     },
     "es-greyfriars": {
       "zone": "Old Town",
-      "note": "Cimitero suggestivo sul fianco della collina, con tombe ingabbiate dai mortsafe e la statua del fedele cane Greyfriars Bobby. Tip: cerca i cognomi (Riddell, McGonagall) che ispirarono J.K. Rowling."
+      "note": "Cimitero suggestivo sul fianco della collina, con tombe ingabbiate dai mortsafe e la statua del fedele cane Greyfriars Bobby. Tip: cerca i cognomi (Riddell, McGonagall) che ispirarono J.K. Rowling.",
+      "summary": "Cimitero suggestivo con tombe ingabbiate e la statua del fedele cane Greyfriars Bobby",
+      "descrizione": "Il Greyfriars Kirkyard è un cimitero atmosferico sul fianco della collina, con tombe ingabbiate dai mortsafe, le gabbie di ferro pensate per scoraggiare i ladri di cadaveri. È legato alla storia di Greyfriars Bobby, il cagnolino che secondo la leggenda vegliò per quattordici anni sulla tomba del padrone. Tra le lapidi, gli appassionati cercano i cognomi che avrebbero ispirato i personaggi di J.K. Rowling.",
+      "curiosita": "Su una tomba del cimitero si legge il nome di Thomas Riddell, omonimo del Lord Voldemort di Harry Potter: J.K. Rowling scriveva poco lontano e passeggiava spesso da queste parti.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratis"
+        },
+        {
+          "k": "Durata",
+          "v": "30-45 min"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Vicino al National Museum, su Candlemaker Row"
+        }
+      ]
     },
     "es-camera": {
       "zone": "Old Town",
-      "note": "Attrazione vittoriana di 170 anni: dall'Outlook Tower la camera oscura proietta la città in diretta, sotto cinque piani di illusioni ottiche e labirinti di specchi. Tip: ideale con bambini, calcola un paio d'ore."
+      "note": "Attrazione vittoriana di 170 anni: dall'Outlook Tower la camera oscura proietta la città in diretta, sotto cinque piani di illusioni ottiche e labirinti di specchi. Tip: ideale con bambini, calcola un paio d'ore.",
+      "summary": "Attrazione vittoriana di 170 anni: la camera oscura proietta la città dal vivo, più cinque piani di illusioni",
+      "descrizione": "La Camera Obscura & World of Illusions è l'attrazione più antica di Edimburgo, aperta da oltre 170 anni. Dall'Outlook Tower la storica camera oscura proietta in diretta la città su un grande tavolo concavo, mentre sotto si snodano cinque piani di illusioni ottiche, labirinti di specchi e giochi di luce. Divertente e un po' folle, è perfetta in giornata di pioggia o con i bambini.",
+      "curiosita": "La camera oscura originale risale al 1853 e funziona ancora oggi con lo stesso principio ottico, senza elettricità: solo lenti e specchi che catturano la luce dall'esterno.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "~£22 adulti"
+        },
+        {
+          "k": "Durata",
+          "v": "1,5-2 ore"
+        },
+        {
+          "k": "Quando andare",
+          "v": "Ideale con bambini o in giornate di pioggia"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "In cima al Royal Mile, accanto al Castello"
+        }
+      ]
     },
     "es-dynamic": {
       "zone": "Holyrood & Arthur's Seat",
-      "note": "Museo scientifico interattivo che racconta la Terra dal Big Bang ai biomi tra pavimenti che tremano e planetario ad alta risoluzione. Tip: divertente per tutta la famiglia, ai piedi dell'Arthur's Seat."
+      "note": "Museo scientifico interattivo che racconta la Terra dal Big Bang ai biomi tra pavimenti che tremano e planetario ad alta risoluzione. Tip: divertente per tutta la famiglia, ai piedi dell'Arthur's Seat.",
+      "summary": "Museo scientifico interattivo che racconta la Terra dal Big Bang a oggi, con planetario e pavimenti che tremano",
+      "descrizione": "Dynamic Earth è un museo scientifico interattivo che ripercorre la storia del pianeta, dal Big Bang alle ere glaciali fino ai biomi attuali. Si attraversano ambienti immersivi tra pavimenti che tremano, blocchi di ghiaccio veri e un planetario ad alta risoluzione. È pensato per le famiglie, ma diverte chiunque, e sorge proprio ai piedi dell'Arthur's Seat.",
+      "curiosita": "L'edificio dalla copertura a tenda bianca si trova esattamente dove James Hutton, il padre della geologia moderna, studiò le rocce di Salisbury Crags formulando le sue teorie sull'età della Terra.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "~£21,50 adulti"
+        },
+        {
+          "k": "Orari",
+          "v": "Generalmente 10-17:30 (verifica il calendario)"
+        },
+        {
+          "k": "Durata",
+          "v": "2-2,5 ore"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Ai piedi dell'Arthur's Seat, vicino a Holyrood"
+        }
+      ]
     },
     "es-natmuseum": {
       "zone": "Old Town",
-      "note": "Grande museo gratuito che spazia da reperti scozzesi alla pecora Dolly clonata, fino a scienza e culture del mondo. Tip: sali sulla terrazza panoramica sul tetto per la vista sul Castello."
+      "note": "Grande museo gratuito che spazia da reperti scozzesi alla pecora Dolly clonata, fino a scienza e culture del mondo. Tip: sali sulla terrazza panoramica sul tetto per la vista sul Castello.",
+      "summary": "Grande museo gratuito che spazia dai reperti scozzesi alla pecora Dolly, fino a scienza e culture del mondo",
+      "descrizione": "Il National Museum of Scotland è un museo vasto e gratuito che mescola storia scozzese, scienza, tecnologia e culture del mondo sotto un'imponente sala vittoriana a vetri. Tra i pezzi più celebri c'è Dolly, la prima pecora clonata. Facile passarci mezza giornata: c'è di tutto, dai dinosauri ai gioielli celtici.",
+      "curiosita": "Sul tetto del museo c'è una terrazza panoramica, poco conosciuta e gratuita, con una bella vista sul Castello e su Edimburgo: si raggiunge con l'ascensore o per le scale a chiocciola dalle gallerie superiori.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratis (mostre temporanee a pagamento)"
+        },
+        {
+          "k": "Orari",
+          "v": "Tutti i giorni 10-17"
+        },
+        {
+          "k": "Durata",
+          "v": "2-3 ore"
+        },
+        {
+          "k": "Quando andare",
+          "v": "Sali sulla terrazza sul tetto"
+        }
+      ]
     },
     "es-natgallery": {
       "zone": "New Town",
-      "note": "Edificio neoclassico nei Princes Street Gardens con una collezione di arte europea di primo piano. Tip: cerca la 'Testa di contadina' di Van Gogh, che cela un autoritratto scoperto nel 2022."
+      "note": "Edificio neoclassico nei Princes Street Gardens con una collezione di arte europea di primo piano. Tip: cerca la 'Testa di contadina' di Van Gogh, che cela un autoritratto scoperto nel 2022.",
+      "summary": "Edificio neoclassico nei Princes Street Gardens con una collezione di arte europea di primo piano",
+      "descrizione": "La Scottish National Gallery è il museo d'arte principale di Edimburgo, ospitato in un grandioso edificio neoclassico incuneato tra i Princes Street Gardens, sotto il Castello. La collezione spazia dal Rinascimento all'Impressionismo, con opere di Tiziano, Raffaello, Botticelli, Vermeer e Van Gogh, oltre a un'ampia sezione di arte scozzese. Ingresso gratuito alla collezione permanente.",
+      "curiosita": "Dietro la 'Testa di contadina' di Van Gogh, nel 2022, una radiografia ha rivelato un autoritratto nascosto del pittore, dipinto sul retro della tela e poi coperto.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratis (mostre temporanee a pagamento)"
+        },
+        {
+          "k": "Orari",
+          "v": "Tutti i giorni 10-17"
+        },
+        {
+          "k": "Durata",
+          "v": "1-1,5 ore"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Nei Princes Street Gardens, in centro"
+        }
+      ]
     },
     "es-britannia": {
       "zone": "Leith",
-      "note": "Il panfilo reale (1953-1997), 'palazzo galleggiante' caro a Elisabetta II: cinque ponti dagli appartamenti reali anni '50 alla sala macchine. Tip: ci si arriva attraversando l'Ocean Terminal, con audioguida inclusa."
+      "note": "Il panfilo reale (1953-1997), 'palazzo galleggiante' caro a Elisabetta II: cinque ponti dagli appartamenti reali anni '50 alla sala macchine. Tip: ci si arriva attraversando l'Ocean Terminal, con audioguida inclusa.",
+      "summary": "Il panfilo reale (1953-1997), 'palazzo galleggiante' caro a Elisabetta II, su cinque ponti da esplorare",
+      "descrizione": "Il Royal Yacht Britannia fu il panfilo reale dal 1953 al 1997 e accompagnò Elisabetta II in centinaia di viaggi: spesso chiamato 'palazzo galleggiante', si dice fosse la sua dimora preferita. Oggi è ormeggiato a Leith e si visita con audioguida su cinque ponti, dagli appartamenti reali arredati anni '50 alla sala macchine perfettamente conservata. Si raggiunge attraversando il centro commerciale Ocean Terminal.",
+      "curiosita": "Si racconta che la regina versò una lacrima durante la cerimonia di disarmo del Britannia, momento ripreso anche nella serie The Crown: per oltre quarant'anni era stato la sua casa galleggiante in giro per il mondo.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "~£21 (audioguida inclusa)"
+        },
+        {
+          "k": "Durata",
+          "v": "Circa 1,5 ore"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "A Leith, attraverso l'Ocean Terminal"
+        }
+      ]
     },
     "es-johnnie": {
       "zone": "New Town",
-      "note": "Show immersivo e scenografico sulla storia del celebre blended whisky, con questionario sui gusti e degustazione finale. Tip: il prezzo include tre drink, quindi può valerne la pena nonostante il tono sopra le righe."
+      "note": "Show immersivo e scenografico sulla storia del celebre blended whisky, con questionario sui gusti e degustazione finale. Tip: il prezzo include tre drink, quindi può valerne la pena nonostante il tono sopra le righe.",
+      "summary": "Show immersivo sul celebre blended whisky, con questionario sui gusti e degustazione finale",
+      "descrizione": "La Johnnie Walker Experience occupa un grande edificio su Princes Street e racconta in modo scenografico la storia del blended whisky più famoso al mondo. Si parte con un questionario sui propri gusti, poi un percorso immersivo e una degustazione personalizzata, con un bar panoramico in cima affacciato sul Castello. Il tono è molto sopra le righe, ma le guide sono giovani e preparate e il prezzo include i drink.",
+      "curiosita": "Le guide compilano un profilo dei tuoi gusti all'inizio e poi ti servono cocktail su misura: due persone della stessa comitiva possono finire con bicchieri completamente diversi.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "~£30 (esperienza con 3 drink)"
+        },
+        {
+          "k": "Durata",
+          "v": "Circa 1,5 ore"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Prenota online in anticipo"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Su Princes Street, nel West End"
+        }
+      ]
     }
   },
   "neighborhoods": [
@@ -91,7 +382,24 @@
         "passeggiata lungo The Shore",
         "Port of Leith Distillery"
       ],
-      "q": "Leith The Shore Edinburgh"
+      "q": "Leith The Shore Edinburgh",
+      "summary": "L'ex porto di Edimburgo, oggi quartiere creativo e gastronomico affacciato sul Firth of Forth.",
+      "descrizione": "Leith e il suo lungomare The Shore sono il cuore goloso di Edimburgo: accanto a ristoranti stellati come The Kitchin e Martin Wishart convivono gastropub, locali di pesce e caffetterie per buongustai. L'ex dogana georgiana ospita atelier di arte e design, mentre le birrerie all'aperto si animano nelle sere d'estate. Qui sono ormeggiati il Royal Yacht Britannia e le nuove distillerie verticali del whisky cittadino.",
+      "curiosita": "A Leith Links, nel 1744, la Honourable Company fissò per la prima volta le regole ufficiali del golf, prima ancora di St Andrews.",
+      "info": [
+        {
+          "k": "Come arrivare",
+          "v": "20 min in bus o tram dal centro; circa un'ora a piedi lungo il Water of Leith"
+        },
+        {
+          "k": "Da vedere",
+          "v": "The Shore, Royal Yacht Britannia, Custom House, distillerie Port of Leith e Lind & Lime"
+        },
+        {
+          "k": "Zona",
+          "v": "Nord di Edimburgo, sul Firth of Forth"
+        }
+      ]
     },
     {
       "id": "nb-stockbridge",
@@ -102,7 +410,24 @@
         "Stockbridge Colonies",
         "passeggiata sul Water of Leith"
       ],
-      "q": "Stockbridge Edinburgh"
+      "q": "Stockbridge Edinburgh",
+      "summary": "Quartiere bohémien di vie acciottolate, negozi di beneficenza e atmosfera da villaggio sul Water of Leith.",
+      "descrizione": "Stockbridge unisce un ricco patrimonio architettonico a un'aria paesana, con vie acciottolate, gastronomie e gastropub come lo Stockbridge Tap. I suoi celebri negozi di beneficenza lungo Raeburn Pl offrono capi e oggetti quasi nuovi a prezzi scontati. Sul Water of Leith si allineano le Colonies, undici file di terraced houses in pietra nate come case operaie e oggi tra le più ambite della città.",
+      "curiosita": "Il 27 marzo 1871, attorno a Raeburn Pl, 4000 tifosi assistettero al primo incontro di rugby fra nazioni, Scozia contro Inghilterra.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Stockbridge Colonies, Stockbridge Market, negozi di beneficenza, vicino Inverleith Park"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "A piedi dal centro lungo il Water of Leith o a nord della New Town"
+        },
+        {
+          "k": "Zona",
+          "v": "Nord di Edimburgo, sul Water of Leith"
+        }
+      ]
     },
     {
       "id": "nb-botanic",
@@ -112,7 +437,24 @@
         "serre tropicali e temperate",
         "Inverleith House e prati panoramici sull'Old Town"
       ],
-      "q": "Royal Botanic Garden Edinburgh"
+      "q": "Royal Botanic Garden Edinburgh",
+      "summary": "Giardino botanico storico con oltre 250.000 piante e splendide serre vittoriane.",
+      "descrizione": "Fondato nel 1670 come orto di erbe medicinali, il Royal Botanic Garden Edinburgh vanta oggi una collezione di oltre 250.000 piante. Ogni stagione offre un volto diverso, dai bucaneve invernali ai tappeti autunnali profumati di caramello del katsura giapponese. Dai prati davanti all'Inverleith House si gode una bella vista sulla Old Town, ed è facile combinare la visita con una passeggiata a Stockbridge.",
+      "curiosita": "Il nome del vicino Inverleith deriva dal gaelico Inbhir Lite, 'foce del Leith'.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Ingresso al giardino gratuito; biglietto per le serre (Glasshouses)"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Serre vittoriane, Inverleith House, Terrace Café"
+        },
+        {
+          "k": "Zona",
+          "v": "Nord di Edimburgo, vicino a Stockbridge e Inverleith Park"
+        }
+      ]
     },
     {
       "id": "nb-portobello",
@@ -122,7 +464,24 @@
         "passeggiata sul lungomare fino a Joppa",
         "Portobello Swim Centre vittoriano"
       ],
-      "q": "Portobello Beach Edinburgh"
+      "q": "Portobello Beach Edinburgh",
+      "summary": "La spiaggia di Edimburgo: due miglia di sabbia dorata sul Firth of Forth con vista sul Fife.",
+      "descrizione": "Un tempo famosa più per il contrabbando che per il mare, Portobello è località balneare apprezzata da quando vi arrivò la ferrovia nell'Ottocento. Il litorale sabbioso si estende verso ovest, verso Leith, lungo il Firth of Forth, con una lunga passeggiata fino a Joppa. Lungo la spiaggia spicca l'edificio in arenaria rossa del Portobello Swim Centre; immancabile un gelato 99 Flake.",
+      "curiosita": "Si può raggiungere a piedi da Leith Links in circa 15 minuti, poi proseguire per due miglia di sabbia dorata fino a Joppa.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Spiaggia e promenade, Portobello Swim Centre, passeggiata fino a Joppa"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Bus dal centro; circa 15 min a piedi da Leith Links"
+        },
+        {
+          "k": "Zona",
+          "v": "Est di Edimburgo, sul Firth of Forth"
+        }
+      ]
     },
     {
       "id": "nb-southside",
@@ -133,7 +492,24 @@
         "Surgeons' Hall Museums",
         "i Meadows"
       ],
-      "q": "Summerhall Edinburgh"
+      "q": "Summerhall Edinburgh",
+      "summary": "Quartiere eclettico a sud della Old Town, tra musei, pub storici, distillerie di gin e arti contemporanee.",
+      "descrizione": "Esteso a sud della Old Town e a ovest di Holyrood Park, il Southside abbraccia Newington, Bruntsfield e Morningside, ed è uno dei quartieri più eclettici della città. Convivono musei d'anatomia e centri d'arte contemporanea, vecchi pub e moderne distillerie di gin, teatri vittoriani e nuovi spazi musicali. Il suo fulcro creativo è la Summerhall, ex Facoltà di Veterinaria oggi prestigioso centro per le arti, con tanto di distilleria interna.",
+      "curiosita": "Alla Summerhall si tengono i ceilidh, le serate di musica e danze scozzesi in cui un insegnante mostra i passi prima di ogni ballo.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Summerhall, Edinburgh Festival Theatre, The Meadows, distillerie di gin"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "A piedi a sud della Old Town, oltre i Meadows"
+        },
+        {
+          "k": "Zona",
+          "v": "Sud di Edimburgo, porta d'accesso alle Pentland Hills"
+        }
+      ]
     },
     {
       "id": "nb-craigmillar",
@@ -142,7 +518,24 @@
       "see": [
         "Craigmillar Castle e il panorama dalla torre"
       ],
-      "q": "Craigmillar Castle Edinburgh"
+      "q": "Craigmillar Castle Edinburgh",
+      "summary": "Quartiere a sud-est noto per il suggestivo castello medievale legato a Maria Stuart.",
+      "descrizione": "La prima tappa di Edimburgo Sud è Craigmillar Castle, suggestivo rudere medievale legato a Maria Stuart: fu qui che i suoi cortigiani tramarono l'omicidio del marito Enrico Stuart. Dall'alto della torre quattrocentesca si gode un fantastico panorama sulla città. Da qui si raggiungono in breve altre mete di Edimburgo Sud, dal National Mining Museum Scotland alla Rosslyn Chapel.",
+      "curiosita": "A circa 20 minuti d'auto sorge la Rosslyn Chapel, resa celebre dal romanzo 'Il codice Da Vinci' di Dan Brown.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Craigmillar Castle, e nei dintorni National Mining Museum e Rosslyn Chapel"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Bus o auto, a sud-est del centro"
+        },
+        {
+          "k": "Zona",
+          "v": "Sud-est di Edimburgo, verso le Pentland Hills"
+        }
+      ]
     },
     {
       "id": "nb-fountainbridge",
@@ -153,7 +546,24 @@
         "Söderberg",
         "Union Canal"
       ],
-      "q": "Fountainbridge Edinburgh"
+      "q": "Fountainbridge Edinburgh",
+      "summary": "Ex zona industriale a ovest dei Meadows, oggi rinnovata lungo l'Union Canal.",
+      "descrizione": "Fountainbridge si sviluppa a ovest dei Meadows lungo l'Edinburgh and Glasgow Union Canal, inaugurato nel 1822 per trasportare merci da e per la capitale. L'alzaia parte dal Lochrin Basin, a circa 10 minuti a piedi a nord-ovest dei Meadows, ed è oggi un piacevole percorso pedonale e ciclabile. Il canale collega Edimburgo fino a Falkirk, dove la Falkirk Wheel lo unisce al Forth & Clyde Canal.",
+      "curiosita": "Da qui parte l'alzaia dell'Union Canal che porta, oltre 50 km più a ovest, alla spettacolare Falkirk Wheel del 2002.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Union Canal, Lochrin Basin, alzaia pedonale e ciclabile"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Circa 10 min a piedi a nord-ovest dei Meadows"
+        },
+        {
+          "k": "Zona",
+          "v": "Ovest del centro di Edimburgo"
+        }
+      ]
     }
   ],
   "eats": {
@@ -161,101 +571,496 @@
       "zone": "Old Town",
       "tipo": "Street food",
       "ordina": "Panino di pulled pork con haggis e crackling",
-      "note": "Minuscola bottega da asporto sul Royal Mile, con maiale arrosto sfilacciato al momento. Coda veloce e clima informale: ordinate il panino con aggiunta di haggis e ciccioli. 11-17 £, perfetto per il pranzo al volo."
+      "note": "Minuscola bottega da asporto sul Royal Mile, con maiale arrosto sfilacciato al momento. Coda veloce e clima informale: ordinate il panino con aggiunta di haggis e ciccioli. 11-17 £, perfetto per il pranzo al volo.",
+      "summary": "Hog roast da asporto sul Royal Mile: pulled pork sfilacciato al momento per un pranzo veloce e goloso.",
+      "descrizione": "Minuscola bottega di street food sul Royal Mile dove un intero maiale arrosto viene sfilacciato al momento e infilato in un panino morbido. L'ordine è rapido e l'atmosfera spiccia: si sceglie la pezzatura, la salsa (mela o chilli) e si aggiunge l'haggis. Niente tavoli, solo coda che scorre veloce.",
+      "curiosita": "Il tocco che fa la differenza è il crackling, la cotenna croccante che si può chiedere come extra sopra la carne.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Hog roast / street food"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Panino pulled pork + haggis"
+        },
+        {
+          "k": "Prezzo",
+          "v": "£"
+        },
+        {
+          "k": "Zona",
+          "v": "Old Town"
+        }
+      ]
     },
     "ea-makars": {
       "zone": "Old Town",
       "tipo": "Comfort food",
       "ordina": "Purè di patate con haggis di verdure",
-      "note": "Mash bar accogliente in Market St, ideale per uno spuntino prima di esplorare il Greyfriars Kirkyard. Servono purè di patate abbinato ad agnello, salsicce, funghi o haggis di verdure: comfort food scozzese sostanzioso e a buon prezzo."
+      "note": "Mash bar accogliente in Market St, ideale per uno spuntino prima di esplorare il Greyfriars Kirkyard. Servono purè di patate abbinato ad agnello, salsicce, funghi o haggis di verdure: comfort food scozzese sostanzioso e a buon prezzo.",
+      "summary": "Mash bar in Market St: purè fumante con haggis, agnello o salsicce, comfort food scozzese a buon prezzo.",
+      "descrizione": "Locale accogliente specializzato nel \"mash\", il purè di patate servito come piatto principale e abbinato a stufati, salsicce, funghi o haggis (anche in versione vegetariana). Porzioni sostanziose e atmosfera informale lo rendono perfetto per una pausa robusta prima di esplorare il Greyfriars Kirkyard. Comfort food caldo e senza pretese, a prezzi onesti.",
+      "curiosita": "È una tappa ideale per assaggiare l'haggis in un contesto rilassato, senza dover affrontare un menù da ristorante completo.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Scozzese / comfort food"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Mash con haggis"
+        },
+        {
+          "k": "Prezzo",
+          "v": "£"
+        },
+        {
+          "k": "Zona",
+          "v": "Old Town"
+        }
+      ]
     },
     "ea-witchery": {
       "zone": "Old Town",
       "tipo": "Alta cucina",
       "ordina": "Bistecca scozzese di manzo",
-      "note": "Ristorante leggendario ai piedi del castello, tra mobili antichi, velluti e cene a lume di candela. Atmosfera teatrale e romantica: prenotate per la sera e puntate su una bistecca scozzese. Tariffe da locale di lusso (£££)."
+      "note": "Ristorante leggendario ai piedi del castello, tra mobili antichi, velluti e cene a lume di candela. Atmosfera teatrale e romantica: prenotate per la sera e puntate su una bistecca scozzese. Tariffe da locale di lusso (£££).",
+      "summary": "Ristorante leggendario ai piedi del Castello: cene a lume di candela tra velluti per un'occasione speciale.",
+      "descrizione": "Indirizzo iconico e teatrale accanto al Castello, con sale dai mobili antichi, pannelli di legno scuro, velluti e candele che creano un'atmosfera gotica e romantica. La cucina punta su carni e prodotti scozzesi di qualità, su tutti le bistecche di manzo. Una scelta da serata speciale, con prezzi all'altezza dell'ambiente.",
+      "curiosita": "La sua carta dei vini, monumentale, è una delle più vaste della Scozia e parte del fascino dell'esperienza.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Scozzese / alta cucina"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Bistecca di manzo"
+        },
+        {
+          "k": "Prezzo",
+          "v": "£££"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Consigliata"
+        },
+        {
+          "k": "Zona",
+          "v": "Old Town"
+        }
+      ]
     },
     "ea-ondine": {
       "zone": "Old Town",
       "tipo": "Pesce",
       "ordina": "Ostriche fresche e seafood",
-      "note": "Raffinato ristorante d'alta cucina con le migliori ostriche di Edimburgo e succulente bistecche. Ambiente elegante ma vivace attorno al banco dei crostacei: andate a pranzo per spendere meno. 12-22 mar-sab £££."
+      "note": "Raffinato ristorante d'alta cucina con le migliori ostriche di Edimburgo e succulente bistecche. Ambiente elegante ma vivace attorno al banco dei crostacei: andate a pranzo per spendere meno. 12-22 mar-sab £££.",
+      "summary": "Pesce e crostacei d'autore: le migliori ostriche di Edimburgo in un ambiente elegante ma vivace.",
+      "descrizione": "Raffinato ristorante di pesce noto per le ostriche freschissime, i crostacei e i piatti di mare cucinati con cura, oltre a qualche taglio di carne. Il banco dei frutti di mare è il cuore della sala, animata ed elegante allo stesso tempo. A pranzo il menù a prezzo fisso permette di spendere meno.",
+      "curiosita": "Il banco crudo (raw bar) è il posto migliore per gustare ostriche scozzesi appena aperte affacciati sul via vai della cucina.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Pesce / crostacei"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Ostriche"
+        },
+        {
+          "k": "Prezzo",
+          "v": "£££"
+        },
+        {
+          "k": "Quando",
+          "v": "Pranzo per risparmiare"
+        },
+        {
+          "k": "Zona",
+          "v": "Old Town"
+        }
+      ]
     },
     "ea-angels": {
       "zone": "Old Town",
       "tipo": "Cucina scozzese",
       "ordina": "Salmone o cervo scozzese",
-      "note": "Sul Royal Mile, cucina scozzese di alta qualità con tocchi fantasiosi e impiattamenti curati. Locale chic ma rilassato: piatti di stagione come salmone o cervo. Aperto 12-21, una scelta affidabile in Old Town. ££"
+      "note": "Sul Royal Mile, cucina scozzese di alta qualità con tocchi fantasiosi e impiattamenti curati. Locale chic ma rilassato: piatti di stagione come salmone o cervo. Aperto 12-21, una scelta affidabile in Old Town. ££",
+      "summary": "Cucina scozzese di stagione con tocchi creativi sul Royal Mile: chic ma rilassata, scelta affidabile.",
+      "descrizione": "Ristorante elegante ma alla mano sul Royal Mile, con piatti scozzesi di stagione interpretati in modo fantasioso e impiattamenti curati. In carta proposte come salmone e cervo, valorizzate da prodotti locali. Atmosfera moderna e accogliente, adatta sia a pranzo sia a cena.",
+      "curiosita": "È una delle indicazioni più sicure in Old Town per provare la cucina scozzese contemporanea senza salire ai prezzi dei locali di lusso.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Scozzese contemporanea"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Salmone o cervo"
+        },
+        {
+          "k": "Prezzo",
+          "v": "££"
+        },
+        {
+          "k": "Zona",
+          "v": "Old Town"
+        }
+      ]
     },
     "ea-marymilk": {
       "zone": "Old Town",
       "tipo": "Gelato",
       "ordina": "Gusto del giorno cremoso",
-      "note": "Mary's Milk Bar, gelateria di culto nel Grassmarket: gusti cremosi che cambiano ogni giorno, qualità sempre garantita. Locale piccolissimo, spesso con la fila. Andate nel pomeriggio e ordinate il gusto del giorno. 11-19.20 mer-dom £"
+      "note": "Mary's Milk Bar, gelateria di culto nel Grassmarket: gusti cremosi che cambiano ogni giorno, qualità sempre garantita. Locale piccolissimo, spesso con la fila. Andate nel pomeriggio e ordinate il gusto del giorno. 11-19.20 mer-dom £",
+      "summary": "Mary's Milk Bar nel Grassmarket: gelato cremoso artigianale con gusti che cambiano ogni giorno.",
+      "descrizione": "Gelateria di culto affacciata sul Grassmarket, dove i gusti vengono preparati a mano e ruotano ogni giorno secondo l'ispirazione del momento. Il locale è piccolissimo e spesso si forma la fila, ma la qualità cremosa ripaga l'attesa. Si ordina il gusto del giorno e si gusta passeggiando.",
+      "curiosita": "Il banco propone anche cioccolatini artigianali e gusti insoliti che cambiano in continuazione, per cui ogni visita riserva una sorpresa.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Gelato artigianale"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Gusto del giorno"
+        },
+        {
+          "k": "Prezzo",
+          "v": "£"
+        },
+        {
+          "k": "Quando",
+          "v": "Mer-dom, pomeriggio"
+        },
+        {
+          "k": "Zona",
+          "v": "Grassmarket"
+        }
+      ]
     },
     "ea-lovecrumbs": {
       "zone": "Old Town",
       "tipo": "Caffè/torte",
       "ordina": "Fetta di torta e caffè",
-      "note": "Invitante panetteria-caffè dall'ambiente intimo e accogliente, ottima per una sosta dolce prima del Grassmarket. Squisite torte e dolci fatti in casa: prendete una fetta con un buon caffè. Aperto 9-18, atmosfera rilassata. €"
+      "note": "Invitante panetteria-caffè dall'ambiente intimo e accogliente, ottima per una sosta dolce prima del Grassmarket. Squisite torte e dolci fatti in casa: prendete una fetta con un buon caffè. Aperto 9-18, atmosfera rilassata. €",
+      "summary": "Caffè-pasticceria intimo vicino al Grassmarket: torte a strati fatte in casa e ottimo caffè.",
+      "descrizione": "Accogliente caffè e bottega di torte dall'ambiente intimo e volutamente disordinato, con stoviglie spaiate e un grande bancone di dolci. Le torte a strati, fatte in casa, cambiano spesso (limone e timo, carota e noci, cioccolato e nocciola) e si accompagnano a caffè, tè e cioccolata calda. Perfetto per una sosta dolce.",
+      "curiosita": "Nato nel 2011 e qui dal 2012, è dichiaratamente votato al dolce: niente panini né zuppe, solo torte e bevande.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Caffè / torte"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Torta a strati"
+        },
+        {
+          "k": "Prezzo",
+          "v": "£"
+        },
+        {
+          "k": "Zona",
+          "v": "West Port"
+        }
+      ]
     },
     "ea-fishers": {
       "zone": "Leith",
       "tipo": "Pesce",
       "ordina": "Astice di Anstruther al burro all'aglio",
-      "note": "Storico pub di pesce sul lungomare di Leith, tra legno scuro, specchi e dipinti a tema nautico. Atmosfera marinara e calorosa: provate l'astice di Anstruther con burro all'aglio e patatine, o la seafood chowder."
+      "note": "Storico pub di pesce sul lungomare di Leith, tra legno scuro, specchi e dipinti a tema nautico. Atmosfera marinara e calorosa: provate l'astice di Anstruther con burro all'aglio e patatine, o la seafood chowder.",
+      "summary": "Storico pub di pesce sul lungomare di Leith: astice, chowder e atmosfera marinara calorosa.",
+      "descrizione": "Locale storico affacciato sul porto di Leith, con interni in legno scuro, specchi e dipinti a tema nautico che creano un'atmosfera marinara avvolgente. La specialità è il pesce: astice di Anstruther con burro all'aglio e patatine, zuppa di mare e piatti del giorno freschissimi. Ambiente caldo e accogliente.",
+      "curiosita": "Affacciato su The Shore, è uno dei punti di riferimento storici per il pesce nella zona portuale di Leith.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Pesce / seafood"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Astice / seafood chowder"
+        },
+        {
+          "k": "Prezzo",
+          "v": "££"
+        },
+        {
+          "k": "Zona",
+          "v": "Leith / The Shore"
+        }
+      ]
     },
     "ea-sandybells": {
       "zone": "Old Town",
       "tipo": "Pub folk",
       "ordina": "Una pinta di ale scozzese",
-      "note": "Tempio della musica folk tradizionale dal vivo, tra i posti preferiti per il bicchiere della staffa. Pub piccolo e schietto, frequentato da musicisti: andate la sera per le session, ordinate una pinta di ale e godetevi il violino."
+      "note": "Tempio della musica folk tradizionale dal vivo, tra i posti preferiti per il bicchiere della staffa. Pub piccolo e schietto, frequentato da musicisti: andate la sera per le session, ordinate una pinta di ale e godetevi il violino.",
+      "summary": "Tempio della musica folk dal vivo: pub schietto dove ascoltare le session davanti a una pinta di ale.",
+      "descrizione": "Pub piccolo e autentico, vero punto di riferimento per la musica tradizionale scozzese dal vivo. La sera musicisti e avventori si ritrovano per le session di violino e fisarmonica davanti a una pinta di ale. Atmosfera schietta e calorosa, ideale per il bicchiere della staffa.",
+      "curiosita": "È uno dei locali più amati di Edimburgo per la musica folk spontanea, suonata attorno ai tavoli quasi ogni sera.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Pub / birre"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Pinta di ale"
+        },
+        {
+          "k": "Prezzo",
+          "v": "£"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera, per le session"
+        },
+        {
+          "k": "Zona",
+          "v": "Old Town"
+        }
+      ]
     },
     "ea-sheepheid": {
       "zone": "Duddingston",
       "tipo": "Pub storico",
       "ordina": "Un dram di whisky single malt",
-      "note": "Uno dei pub più antichi del paese (metà XIV secolo), nel villaggio di Duddingston ai piedi dell'Arthur's Seat, già frequentato da Maria Stuart. Sorseggiate un dram di whisky e prenotate una corsia per giocare a skittles."
+      "note": "Uno dei pub più antichi del paese (metà XIV secolo), nel villaggio di Duddingston ai piedi dell'Arthur's Seat, già frequentato da Maria Stuart. Sorseggiate un dram di whisky e prenotate una corsia per giocare a skittles.",
+      "summary": "Tra i pub più antichi di Scozia, a Duddingston sotto l'Arthur's Seat: whisky, cucina e una pista da skittles.",
+      "descrizione": "Antico pub del villaggio di Duddingston, ai piedi dell'Arthur's Seat, con interni accoglienti e un'aria fuori dal tempo. In cucina piatti scozzesi sostanziosi, dalle carni al pesce, da accompagnare con un dram di whisky single malt. Il vero richiamo è la storica pista da skittles, prenotabile per una partita.",
+      "curiosita": "Esiste una locanda su questo sito dal 1360 circa e frequentata da Maria Stuart; la pista da skittles, del 1880, è la più antica di Scozia.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Pub scozzese"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Whisky single malt"
+        },
+        {
+          "k": "Prezzo",
+          "v": "££"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Per gli skittles"
+        },
+        {
+          "k": "Zona",
+          "v": "Duddingston"
+        }
+      ]
     },
     "ea-cannyman": {
       "zone": "Morningside",
       "tipo": "Pub whisky",
       "ordina": "Un single malt scozzese",
-      "note": "Uno dei migliori whisky bar di Edimburgo, a Morningside, perfetto per concludere una passeggiata da Bruntsfield. Locale dal fascino eccentrico e d'altri tempi: lasciatevi consigliare un single malt al bancone e prendetevi tempo."
+      "note": "Uno dei migliori whisky bar di Edimburgo, a Morningside, perfetto per concludere una passeggiata da Bruntsfield. Locale dal fascino eccentrico e d'altri tempi: lasciatevi consigliare un single malt al bancone e prendetevi tempo.",
+      "summary": "Tra i migliori whisky bar di Edimburgo, a Morningside: tanti single malt in un locale eccentrico e d'epoca.",
+      "descrizione": "Whisky bar dal fascino eccentrico e d'altri tempi, con interni stipati di oggetti e atmosfera intima. La selezione di single malt è una delle migliori della città e il personale al bancone sa consigliare il dram giusto. Perfetto per concludere con calma una passeggiata da Bruntsfield a Morningside.",
+      "curiosita": "L'ambiente curioso e affollato di cimeli ne fa un luogo da scoprire senza fretta, lasciandosi guidare nella scelta del whisky.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "Whisky bar"
+        },
+        {
+          "k": "Piatto top",
+          "v": "Single malt"
+        },
+        {
+          "k": "Prezzo",
+          "v": "££"
+        },
+        {
+          "k": "Zona",
+          "v": "Morningside"
+        }
+      ]
     }
   },
   "trips": {
     "dt-glasgow": {
       "area": "Glasgow",
-      "note": "Treni frequenti da Edimburgo (50 min). Vivace e ribelle: la Kelvingrove Art Gallery, lo stile Mackintosh, i musei gratuiti e i pub di Ashton Lane nel West End. Tip: a piedi dalla stazione di Queen Street verso George Square."
+      "note": "Treni frequenti da Edimburgo (50 min). Vivace e ribelle: la Kelvingrove Art Gallery, lo stile Mackintosh, i musei gratuiti e i pub di Ashton Lane nel West End. Tip: a piedi dalla stazione di Queen Street verso George Square.",
+      "summary": "La grande città ribelle della Scozia: musei gratuiti, stile Mackintosh e i pub del West End.",
+      "descrizione": "A meno di un'ora di treno da Edimburgo, Glasgow è vivace, creativa e senza fronzoli: prima Città della Musica UNESCO del Regno Unito e patria di una scena culturale tra le più vivaci della Scozia. Tra musei gratuiti di prim'ordine, architettura vittoriana e il segno di Charles Rennie Mackintosh, è una città che si vive a piedi e con energia. L'atmosfera del West End, attorno a Ashton Lane, è il suo cuore conviviale.",
+      "curiosita": "Da locali come il King Tut's Wah Wah Hut sono passate band poi diventate famosissime, dagli Oasis ai Travis: qui la musica dal vivo è una religione.",
+      "info": [
+        {
+          "k": "Durata",
+          "v": "Una giornata intera"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Kelvingrove, stile Mackintosh, West End e musei gratuiti"
+        },
+        {
+          "k": "Tipo",
+          "v": "Città d'arte e cultura"
+        }
+      ]
     },
     "dt-stirling": {
       "area": "Stirling & Trossachs",
-      "note": "Treno diretto da Edimburgo (50 min). Lo Stirling Castle domina dall'alto il guado sul Forth e i campi di Bannockburn e Stirling Bridge, dove Wallace e Bruce fecero la storia. Tip: salita dalla stazione, vedute fino alle Highlands."
+      "note": "Treno diretto da Edimburgo (50 min). Lo Stirling Castle domina dall'alto il guado sul Forth e i campi di Bannockburn e Stirling Bridge, dove Wallace e Bruce fecero la storia. Tip: salita dalla stazione, vedute fino alle Highlands.",
+      "summary": "Città-fortezza tra Highlands e Lowlands: castello in cima alla rocca e campi di battaglia leggendari.",
+      "descrizione": "A 50 minuti di treno da Edimburgo, Stirling fu per secoli la chiave strategica della Scozia, dove si decisero le sorti delle guerre d'indipendenza. Lo Stirling Castle domina dall'alto il guado sul fiume Forth, punto di passaggio tra Highlands e Lowlands, mentre nei dintorni si combatterono le battaglie di Stirling Bridge e Bannockburn. È una giornata immersa nella storia di Wallace e Robert the Bruce, con vedute che arrivano fino alle Highlands.",
+      "curiosita": "Durante le guerre d'indipendenza il castello cambiò di mano otto volte in cinquant'anni.",
+      "info": [
+        {
+          "k": "Durata",
+          "v": "Una giornata intera"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Il castello, il Wallace Monument e Bannockburn"
+        },
+        {
+          "k": "Tipo",
+          "v": "Città storica e castelli"
+        }
+      ]
     },
     "dt-standrews": {
       "area": "Fife",
-      "note": "In treno fino a Leuchars, poi bus (10 min). Patria del golf con l'Old Course, le rovine della cattedrale e del castello, e la lunga West Sands battuta dal vento. Tip: gelato da Jannettas e una passeggiata sulle dune."
+      "note": "In treno fino a Leuchars, poi bus (10 min). Patria del golf con l'Old Course, le rovine della cattedrale e del castello, e la lunga West Sands battuta dal vento. Tip: gelato da Jannettas e una passeggiata sulle dune.",
+      "summary": "Patria del golf sul mare di Fife: l'Old Course, rovine medievali e le dune della West Sands.",
+      "descrizione": "Raggiungibile in treno fino a Leuchars e poi un breve bus, St Andrews è la 'casa del golf' e un'elegante cittadina universitaria affacciata sul Mare del Nord. Oltre al leggendario Old Course, conserva le imponenti rovine della cattedrale e del castello e la lunga spiaggia ventosa della West Sands. Atmosfera raffinata e marina, perfetta per una passeggiata tra storia, dune e gelato.",
+      "curiosita": "Il golf si gioca su queste links da oltre 600 anni: fu proprio a St Andrews che nel 1764 si fissò lo standard delle 18 buche.",
+      "info": [
+        {
+          "k": "Durata",
+          "v": "Una giornata intera"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Old Course, cattedrale, castello e West Sands"
+        },
+        {
+          "k": "Tipo",
+          "v": "Cittadina costiera e storica"
+        }
+      ]
     },
     "dt-lochlomond": {
       "area": "Stirling & Trossachs",
-      "note": "Treno da Glasgow a Balloch (45 min), sulla riva sud del lago più grande della Scozia. Crociere, sentieri lungo l'acqua e l'ingresso al parco di Loch Lomond & the Trossachs. Tip: noleggia una barca o cammina un tratto del West Highland Way."
+      "note": "Treno da Glasgow a Balloch (45 min), sulla riva sud del lago più grande della Scozia. Crociere, sentieri lungo l'acqua e l'ingresso al parco di Loch Lomond & the Trossachs. Tip: noleggia una barca o cammina un tratto del West Highland Way.",
+      "summary": "Il lago più grande della Scozia, porta del primo parco nazionale: crociere, sentieri e villaggi.",
+      "descrizione": "Loch Lomond è il lago più grande della Scozia e l'ingresso meridionale al Loch Lomond & the Trossachs National Park, raggiungibile via Glasgow con treno fino a Balloch. Le sue rive offrono crociere tra le isole, sentieri lungo l'acqua e tratti del West Highland Way, con Ben Lomond a fare da sfondo. Atmosfera serena e luminosa, tra natura, villaggi e battelli.",
+      "curiosita": "Il lago e i suoi paesaggi ispirarono la celebre canzone tradizionale 'The Bonnie Banks o' Loch Lomond'.",
+      "info": [
+        {
+          "k": "Durata",
+          "v": "Una giornata intera"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Crociera sul lago, Luss e i sentieri"
+        },
+        {
+          "k": "Tipo",
+          "v": "Lago e parco nazionale"
+        }
+      ]
     },
     "dt-musselburgh": {
       "area": "East Lothian",
-      "note": "A pochi minuti in treno o bus da Edimburgo. Antica cittadina di mare con campo da golf storico, ippodromo e la lunga spiaggia di Fisherrow. Tip: passeggiata sul lungomare e fish & chips, poi le riserve naturali per il birdwatching."
+      "note": "A pochi minuti in treno o bus da Edimburgo. Antica cittadina di mare con campo da golf storico, ippodromo e la lunga spiaggia di Fisherrow. Tip: passeggiata sul lungomare e fish & chips, poi le riserve naturali per il birdwatching.",
+      "summary": "Antica cittadina costiera a est di Edimburgo, la 'Honest Toun', tra golf storico, porto di pescatori e lagune piene di uccelli.",
+      "descrizione": "Affacciata sulla foce dell'Esk a pochi minuti da Edimburgo, Musselburgh e una cittadina di mare dalle radici romane, soprannominata la 'Honest Toun'. Qui si trova uno dei campi da golf piu antichi del mondo, accanto a un ippodromo storico e a un lungomare disteso. Il porticciolo di Fisherrow, le spiagge e le lagune di Levenhall offrono passeggiate tranquille lontano dalla folla.",
+      "curiosita": "Il celebre diametro di 108 mm della buca da golf nacque proprio qui: era la misura dell'attrezzo usato per ritagliare i fori, poi adottata come standard mondiale nel 1893.",
+      "info": [
+        {
+          "k": "Durata",
+          "v": "Mezza giornata"
+        },
+        {
+          "k": "Quando andare",
+          "v": "Tutto l'anno, meglio con bel tempo per la costa"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Old Golf Course, Fisherrow Harbour, lagune di Levenhall"
+        },
+        {
+          "k": "Tipo",
+          "v": "Cittadina costiera e gita facile"
+        }
+      ]
     },
     "dt-nberwick": {
       "area": "East Lothian",
-      "note": "Treno diretto da Edimburgo (35 min). Graziosa cittadina balneare con lo Scottish Seabird Centre, vista sul Bass Rock pieno di sule e le rovine di Tantallon Castle a picco sul mare. Tip: scala North Berwick Law per il panorama."
+      "note": "Treno diretto da Edimburgo (35 min). Graziosa cittadina balneare con lo Scottish Seabird Centre, vista sul Bass Rock pieno di sule e le rovine di Tantallon Castle a picco sul mare. Tip: scala North Berwick Law per il panorama.",
+      "summary": "Graziosa cittadina balneare a 35 minuti da Edimburgo, tra spiagge, fauna marina e una rocca a picco sul mare.",
+      "descrizione": "North Berwick e un'elegante localita di mare dell'East Lothian, con due baie sabbiose, un porticciolo e un centro vivace. E la base ideale per scoprire la natura del Firth of Forth: dalle colonie di uccelli marini della Bass Rock alle gite in barca, fino alle passeggiate sul cono vulcanico del Law. Poco fuori citta svetta la spettacolare rovina di Tantallon Castle.",
+      "curiosita": "Di fronte alla cittadina, la Bass Rock ospita la piu grande colonia di sule del mondo, con circa 150.000 esemplari.",
+      "info": [
+        {
+          "k": "Durata",
+          "v": "Giornata intera"
+        },
+        {
+          "k": "Quando andare",
+          "v": "Primavera-estate per uccelli marini e barche"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Bass Rock, Tantallon Castle, North Berwick Law"
+        },
+        {
+          "k": "Tipo",
+          "v": "Cittadina balneare e natura"
+        }
+      ]
     },
     "dt-falkirk": {
       "area": "Forth & West Lothian",
-      "note": "Treno da Edimburgo o Glasgow (30 min). La Falkirk Wheel, ascensore rotante per barche del 2002, e a 15 min The Kelpies, teste di cavallo in acciaio alte 30 m. Tip: il tour della ruota dura un'ora e si prenota online; le sculture sono gratis."
+      "note": "Treno da Edimburgo o Glasgow (30 min). La Falkirk Wheel, ascensore rotante per barche del 2002, e a 15 min The Kelpies, teste di cavallo in acciaio alte 30 m. Tip: il tour della ruota dura un'ora e si prenota online; le sculture sono gratis.",
+      "summary": "A 30 minuti da Edimburgo o Glasgow: la Falkirk Wheel e i giganteschi Kelpies, capolavori di ingegneria e scultura.",
+      "descrizione": "Falkirk e una citta della Scozia centrale famosa per due meraviglie moderne lungo i suoi canali. La Falkirk Wheel e l'unico ascensore rotante per barche al mondo, mentre i Kelpies sono due colossali teste di cavallo in acciaio. Tutto intorno si estende l'Helix Park, e in citta la storica Callendar House racconta sei secoli di storia scozzese.",
+      "curiosita": "L'energia necessaria a una rotazione completa della Falkirk Wheel equivale a quella di appena otto tostapane.",
+      "info": [
+        {
+          "k": "Durata",
+          "v": "Mezza giornata o giornata intera"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Falkirk Wheel, The Kelpies, Helix Park, Callendar House"
+        },
+        {
+          "k": "Tipo",
+          "v": "Ingegneria, arte e parchi"
+        }
+      ]
     },
     "dt-queensferry": {
       "area": "Forth & West Lothian",
-      "note": "Treno da Edimburgo a Dalmeny (15 min). Borgo affacciato sui tre ponti del Forth, tra cui il rosso Forth Bridge vittoriano. Tip: gita in barca all'isola di Inchcolm con la sua abbazia, o pranzo nei pub sul lungomare."
+      "note": "Treno da Edimburgo a Dalmeny (15 min). Borgo affacciato sui tre ponti del Forth, tra cui il rosso Forth Bridge vittoriano. Tip: gita in barca all'isola di Inchcolm con la sua abbazia, o pranzo nei pub sul lungomare.",
+      "summary": "Borgo affacciato sul Firth of Forth, all'ombra del Forth Bridge UNESCO, base per l'isola di Inchcolm.",
+      "descrizione": "South Queensferry e un grazioso borgo a quindici minuti da Edimburgo, stretto tra i tre grandi ponti sul Firth of Forth. Il piu celebre e il Forth Bridge ferroviario, capolavoro vittoriano patrimonio UNESCO. Dal porticciolo partono le barche per l'isola di Inchcolm con la sua abbazia medievale, mentre nei dintorni si trova la dimora storica di Dalmeny House.",
+      "curiosita": "Nel 2016 il Forth Bridge fu votato la piu grande meraviglia artificiale della Scozia.",
+      "info": [
+        {
+          "k": "Durata",
+          "v": "Mezza giornata o giornata intera con Inchcolm"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Forth Bridge, gita a Inchcolm, Dalmeny House"
+        },
+        {
+          "k": "Tipo",
+          "v": "Borgo costiero e ponti"
+        }
+      ]
     }
   },
   "london": {
@@ -278,43 +1083,166 @@
         "name": "Kelvingrove Art Gallery & Museum",
         "tipo": "vedere",
         "note": "Museo civico gratuito nel West End, dipinti, arte e curiosita. Tip: alle 13 c'e il concerto d'organo.",
-        "q": "Kelvingrove Art Gallery and Museum Glasgow"
+        "q": "Kelvingrove Art Gallery and Museum Glasgow",
+        "summary": "Museo civico gratuito in un palazzo edoardiano: dal Cristo di Dalí allo Spitfire sospeso.",
+        "descrizione": "La Kelvingrove Art Gallery & Museum è il museo più amato di Glasgow, ospitato in un grandioso edificio in arenaria rossa del 1901 ai margini dell'omonimo parco. Le sue 22 gallerie spaziano dall'arte europea (Rembrandt, Monet, i Colourist scozzesi) alla storia naturale, con uno Spitfire sospeso nella grande sala. È completamente gratuito e adatto a tutte le età.",
+        "curiosita": "Il pezzo più celebre è il 'Cristo di San Giovanni della Croce' di Salvador Dalí, in una sala in penombra; il museo ospita anche regolari concerti d'organo a metà giornata.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Ingresso gratuito"
+          },
+          {
+            "k": "Durata",
+            "v": "2-3 ore"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Il Cristo di Dalí e lo Spitfire"
+          },
+          {
+            "k": "Tipo",
+            "v": "Museo d'arte e storia"
+          }
+        ]
       },
       {
         "name": "Riverside Museum & Tall Ship",
         "tipo": "vedere",
         "note": "Museo dei trasporti firmato Zaha Hadid sul fiume Clyde, con il veliero Glenlee ormeggiato. Tip: ingresso libero.",
-        "q": "Riverside Museum Glasgow"
+        "q": "Riverside Museum Glasgow",
+        "summary": "Museo dei trasporti dall'audace architettura, con accanto il veliero Glenlee sul Clyde.",
+        "descrizione": "Il Riverside Museum è il pluripremiato museo dei trasporti di Glasgow, in un edificio dalle linee a zig-zag firmato Zaha Hadid sulle rive del Clyde. Oltre 3000 oggetti, da tram e locomotive a biciclette e auto, sono allestiti tra strade ricostruite in cui si entra nei negozi e si sale a bordo dei mezzi. È gratuito e perfetto per famiglie.",
+        "curiosita": "Ormeggiato all'esterno c'è il Tall Ship Glenlee, l'unico veliero costruito sul Clyde ancora galleggiante nel Regno Unito.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Museo gratuito (Tall Ship a pagamento)"
+          },
+          {
+            "k": "Durata",
+            "v": "1-2 ore"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Strade ricostruite e il veliero Glenlee"
+          },
+          {
+            "k": "Tipo",
+            "v": "Museo dei trasporti"
+          }
+        ]
       },
       {
         "name": "Glasgow Cathedral & Necropolis",
         "tipo": "vedere",
         "note": "Cattedrale gotica scampata alla Riforma con la tomba di San Mungo, accanto la collinare citta dei morti vittoriana.",
-        "q": "Glasgow Cathedral Glasgow"
+        "q": "Glasgow Cathedral Glasgow",
+        "summary": "Cattedrale gotica medievale sopravvissuta alla Riforma, accanto alla collina-cimitero vittoriana.",
+        "descrizione": "Meraviglia dell'architettura gotica, la Glasgow Cathedral è l'edificio più antico della città e la più antica cattedrale della terraferma scozzese, scampata quasi indenne alla Riforma del 1560. Fu eretta sul presunto luogo di sepoltura di san Mungo, fondatore e patrono di Glasgow, e il suo interno è un caleidoscopio di colonne, archi e vetrate. Alle spalle si sale alla Necropolis, scenografico cimitero vittoriano su una collina.",
+        "curiosita": "Dalla Necropolis si gode una delle viste più belle sulla città, tra monumenti funebri imponenti e statue di personaggi illustri vittoriani.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Ingresso gratuito"
+          },
+          {
+            "k": "Durata",
+            "v": "1-1,5 ore"
+          },
+          {
+            "k": "Da vedere",
+            "v": "La cripta di san Mungo e la vista dalla Necropolis"
+          },
+          {
+            "k": "Tipo",
+            "v": "Cattedrale e cimitero monumentale"
+          }
+        ]
       },
       {
         "name": "Mackintosh at the Willow",
         "tipo": "vedere",
         "note": "Sale da te storiche in Sauchiehall St disegnate da Charles Rennie Mackintosh. Tip: ammira gli interni anche solo per un te.",
-        "q": "Mackintosh at the Willow Sauchiehall Street Glasgow"
+        "q": "Mackintosh at the Willow Sauchiehall Street Glasgow",
+        "summary": "Le sale da tè di Mackintosh in Sauchiehall St, capolavoro Art Nouveau del 1903 restaurato.",
+        "descrizione": "Le storiche Willow Tea Rooms al 217 di Sauchiehall Street sono l'opera d'interni più completa di Charles Rennie Mackintosh, aperte nel 1903 per Miss Cranston e disegnate con la moglie Margaret Macdonald. Mackintosh curò ogni dettaglio, dall'architettura agli arredi, in pieno stile Glasgow Style. Restaurate tra il 2014 e il 2018, sono di nuovo sale da tè funzionanti dove sedersi per una pausa.",
+        "curiosita": "Il nome 'Sauchiehall' deriva dallo scozzese 'saugh' (salice): proprio il salice ispirò il tema decorativo delle sale.",
+        "info": [
+          {
+            "k": "Durata",
+            "v": "Circa 1 ora"
+          },
+          {
+            "k": "Da vedere",
+            "v": "La Room de Luxe e gli arredi originali"
+          },
+          {
+            "k": "Tipo",
+            "v": "Sala da tè storica / design"
+          }
+        ]
       },
       {
         "name": "Ubiquitous Chip",
         "tipo": "mangiare",
         "note": "Istituzione del West End in Ashton Lane dal 1971, pioniere della cucina scozzese di stagione. Tip: il brasserie al piano sopra costa meno.",
-        "q": "Ubiquitous Chip Ashton Lane Glasgow"
+        "q": "Ubiquitous Chip Ashton Lane Glasgow",
+        "summary": "Istituzione del West End dal 1971: cucina scozzese di qualità in un cortile sotto le viti.",
+        "descrizione": "L'Ubiquitous Chip è il ristorante a conduzione familiare più longevo di Glasgow, fondato nel 1971 e da decenni anima di Ashton Lane. È stato il primo locale della città a celebrare apertamente i produttori e le ricette regionali scozzesi. La sala principale si apre su un suggestivo cortile coperto di viti; al piano superiore una brasserie più informale.",
+        "curiosita": "Nato in un'ex stalla di pompe funebri, all'inizio funzionava con la formula 'bring your own', portando il vino da casa.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "££-£££"
+          },
+          {
+            "k": "Tipo",
+            "v": "Ristorante scozzese"
+          },
+          {
+            "k": "Prenotazione",
+            "v": "Consigliata per cena"
+          }
+        ]
       },
       {
         "name": "Jinty McGuinty's",
         "tipo": "mangiare",
         "note": "Tipico pub del West End in Ashton Lane con beer garden e musica dal vivo. Tip: pinta nel cortile acciottolato in estate.",
-        "q": "Jinty McGuinty's Ashton Lane Glasgow"
+        "q": "Jinty McGuinty's Ashton Lane Glasgow",
+        "summary": "Pub irlandese di Ashton Lane dal 1991, con musica dal vivo tutte le sere e Guinness.",
+        "descrizione": "Jinty McGuinty's è un pub irlandese a conduzione familiare ad Ashton Lane, aperto dal 1991. L'arredo tradizionale tra mahogany, camino e citazioni di scrittori irlandesi crea un'atmosfera calda e schietta. Propone musica dal vivo sette sere su sette, con spazio alla musica folk irlandese e scozzese.",
+        "curiosita": "Il grande beer garden riscaldato è considerato tra i migliori della via, e i prezzi sono più contenuti rispetto ai vicini.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "£-££"
+          },
+          {
+            "k": "Tipo",
+            "v": "Pub irlandese con musica dal vivo"
+          }
+        ]
       },
       {
         "name": "Inn Deep",
         "tipo": "mangiare",
         "note": "Bar di birre artigianali ricavato sotto le arcate del Kelvin Bridge, con tavoli sul fiume. Tip: siediti lungo il sentiero del Kelvin.",
-        "q": "Inn Deep Great Western Road Glasgow"
+        "q": "Inn Deep Great Western Road Glasgow",
+        "summary": "Bar di birra artigianale negli archi ferroviari sul fiume Kelvin, a Kelvinbridge.",
+        "descrizione": "Inn Deep è un bar indipendente del West End nato nel 2012, ricavato negli archi di un'antica stazione ferroviaria sulle rive del fiume Kelvin, sotto Great Western Road. Conta decine di spine tra birre artigianali e analcoliche, con cucina affidata a una pizzeria. I tavoli all'aperto in riva al fiume lo rendono perfetto in una bella giornata.",
+        "curiosita": "È di proprietà dello stesso team del birrificio Williams Brothers ed è a meno di un minuto dalla metro di Kelvinbridge.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "£-££"
+          },
+          {
+            "k": "Tipo",
+            "v": "Bar di birra artigianale"
+          }
+        ]
       }
     ],
     "dt-stirling": [
@@ -322,37 +1250,135 @@
         "name": "Stirling Castle",
         "tipo": "vedere",
         "note": "Fortezza reale sulla rocca che domina il Forth, con la Great Hall e gli arazzi della caccia all'unicorno. Tip: vedute fino alle Highlands.",
-        "q": "Stirling Castle Stirling"
+        "q": "Stirling Castle Stirling",
+        "summary": "Fortezza reale sulla rupe vulcanica, con testimonianze scritte fin dal 1107.",
+        "descrizione": "Lo Stirling Castle è uno dei castelli più importanti della Scozia, arroccato su una rupe vulcanica con documenti che ne attestano l'esistenza già dal 1107. Costruito vicino al guado sul Forth, fu per secoli una postazione strategica ambitissima, scenario delle guerre d'indipendenza guidate da Wallace e Robert the Bruce. Oggi si visitano il sontuoso Palazzo rinascimentale, la Great Hall e i camminamenti panoramici.",
+        "curiosita": "Dall'alto delle mura il castello domina i campi dove si combatterono Stirling Bridge (1297) e Bannockburn (1314).",
+        "info": [
+          {
+            "k": "Durata",
+            "v": "2-3 ore"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Il Palazzo rinascimentale e la Great Hall"
+          },
+          {
+            "k": "Tipo",
+            "v": "Castello reale"
+          },
+          {
+            "k": "Prenotazione",
+            "v": "Biglietti online consigliati"
+          }
+        ]
       },
       {
         "name": "National Wallace Monument",
         "tipo": "vedere",
         "note": "Torre vittoriana sull'Abbey Craig dedicata a William Wallace, con la sua spada. Tip: 246 scalini ma panorama sul campo di Stirling Bridge.",
-        "q": "National Wallace Monument Stirling"
+        "q": "National Wallace Monument Stirling",
+        "summary": "Torre vittoriana di 67 m sull'Abbey Craig, dedicata all'eroe ribelle William Wallace.",
+        "descrizione": "Il National Wallace Monument è una torre in arenaria alta 67 m, completata nel 1869 sulla sommità dell'Abbey Craig che domina Stirling. Si dice che da questa rupe Wallace osservasse l'esercito inglese prima della battaglia di Stirling Bridge del 1297. Si salgono 246 gradini a chiocciola fino alla corona panoramica, tra tre sale espositive sull'eroe scozzese.",
+        "curiosita": "All'interno è esposta la 'Wallace Sword', una spada a due mani lunga 1,63 m attribuita a William Wallace.",
+        "info": [
+          {
+            "k": "Durata",
+            "v": "1-1,5 ore"
+          },
+          {
+            "k": "Da vedere",
+            "v": "La spada di Wallace e la vista sulla Forth Valley"
+          },
+          {
+            "k": "Tipo",
+            "v": "Monumento e torre panoramica"
+          }
+        ]
       },
       {
         "name": "Battle of Bannockburn Experience",
         "tipo": "vedere",
         "note": "Centro interattivo 2 miglia a sud, dove rivive con la tecnologia la vittoria di Bruce del 1314. Tip: bus ogni 20 min dall'autostazione.",
-        "q": "Battle of Bannockburn Experience Stirling"
+        "q": "Battle of Bannockburn Experience Stirling",
+        "summary": "Centro multimediale del National Trust che rivive in 3D la battaglia del 1314.",
+        "descrizione": "La Battle of Bannockburn Experience è un'attrazione del National Trust for Scotland dedicata alla decisiva vittoria di Robert the Bruce nel giugno 1314. È stata la prima al mondo a usare il motion capture per ricreare in 3D a grandezza naturale i guerrieri e le tattiche della battaglia medievale. I visitatori possono persino comandare eserciti virtuali in un gioco interattivo.",
+        "curiosita": "All'esterno si trova la celebre statua bronzea di Robert the Bruce a cavallo, realizzata negli anni '60 da Pilkington Jackson.",
+        "info": [
+          {
+            "k": "Durata",
+            "v": "Circa 1-1,5 ore"
+          },
+          {
+            "k": "Da vedere",
+            "v": "La battle room in 3D e la statua di Bruce"
+          },
+          {
+            "k": "Tipo",
+            "v": "Centro visitatori interattivo"
+          },
+          {
+            "k": "Prenotazione",
+            "v": "Consigliata per gli slot in 3D"
+          }
+        ]
       },
       {
         "name": "The Portcullis",
         "tipo": "mangiare",
         "note": "Pub tradizionale e accogliente vicino al castello, con beer garden e sostanziosi piatti tipici. Tip: comodo dopo la visita alla rocca.",
-        "q": "The Portcullis pub Stirling"
+        "q": "The Portcullis pub Stirling",
+        "summary": "Pub-hotel storico accanto alla spianata del castello, tra pietra a vista e camini.",
+        "descrizione": "The Portcullis è un pub-hotel in un edificio storico del 1787, a due passi dalla spianata dello Stirling Castle. Le pareti in pietra a vista, le boiserie e l'ampio camino creano un'atmosfera accogliente e calda. È apprezzato per la buona cucina, le ale alla spina e una buona selezione di whisky di malto.",
+        "curiosita": "La posizione, proprio sotto il castello, ne fa la sosta naturale dopo la visita alla fortezza.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "££"
+          },
+          {
+            "k": "Tipo",
+            "v": "Pub storico con cucina"
+          }
+        ]
       },
       {
         "name": "Settle Inn",
         "tipo": "mangiare",
         "note": "Il piu antico pub di Stirling (1733), soffitti bassi, caminetto e musica folk il venerdi sera. Tip: atmosfera schietta d'altri tempi.",
-        "q": "Settle Inn Stirling"
+        "q": "Settle Inn Stirling",
+        "summary": "Il pub più antico di Stirling, del 1733, sulla salita verso il castello.",
+        "descrizione": "Costruito nel 1733, il Settle Inn è il pub più antico di Stirling, lungo la via in salita che porta al castello. La sala principale è piccola e accogliente, scaldata da un camino con vecchie pietre da curling nel focolare; sul retro una saletta a volta ospita serate di musica. È un locale schietto e autentico, amato dai musicisti.",
+        "curiosita": "Non ha cucina: qui si viene per la pinta, la musica dal vivo e il quiz della domenica sera.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "£"
+          },
+          {
+            "k": "Tipo",
+            "v": "Pub storico (no cucina)"
+          }
+        ]
       },
       {
         "name": "Curly Coo",
         "tipo": "mangiare",
         "note": "L'unico vero whisky bar di Stirling, con oltre 130 single malt tra cui scegliere. Tip: fatti consigliare un dram al bancone.",
-        "q": "Curly Coo whisky bar Stirling"
+        "q": "Curly Coo whisky bar Stirling",
+        "summary": "L'unico whisky bar di Stirling, intimo e con oltre 130 single malt.",
+        "descrizione": "Il Curly Coo è l'unico whisky bar di Stirling, un locale piccolo e accogliente a pochi passi dal centro. Nato nel 2009 da una collezione di sole sei bottiglie, oggi propone oltre 130 single malt scozzesi. L'ambiente intimo, con i suoi dettagli originali, invita a farsi consigliare un dram al bancone.",
+        "curiosita": "Il nome 'Coo' è il vezzeggiativo scozzese per la mucca pelosa delle Highlands, la highland cattle.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "££"
+          },
+          {
+            "k": "Tipo",
+            "v": "Whisky bar"
+          }
+        ]
       }
     ],
     "dt-standrews": [
@@ -360,37 +1386,131 @@
         "name": "St Andrews Old Course",
         "tipo": "vedere",
         "note": "Il campo da golf piu famoso del mondo con lo storico Swilcan Bridge. Tip: la domenica e chiuso al gioco e si passeggia sul fairway.",
-        "q": "St Andrews Old Course St Andrews"
+        "q": "St Andrews Old Course St Andrews",
+        "summary": "Il campo da golf più famoso al mondo, dove si gioca da oltre 600 anni.",
+        "descrizione": "L'Old Course di St Andrews è considerato la 'casa del golf': il gioco si pratica su queste links dal XV secolo, il che ne fa il campo più antico del mondo. Fu qui che nel 1764 il percorso assunse il formato delle 18 buche poi adottato ovunque. Anche chi non gioca può passeggiare attorno al campo, specie la domenica quando per tradizione è chiuso ai giocatori.",
+        "curiosita": "Sulla 18ª buca si trova lo Swilcan Bridge, un piccolo ponte di pietra antico di secoli su cui i campioni dell'Open posano in segno d'addio.",
+        "info": [
+          {
+            "k": "Quando andare",
+            "v": "Domenica per passeggiare sul campo"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Lo Swilcan Bridge sulla 18ª buca"
+          },
+          {
+            "k": "Tipo",
+            "v": "Campo da golf storico"
+          }
+        ]
       },
       {
         "name": "St Andrews Cathedral",
         "tipo": "vedere",
         "note": "Rovine di uno dei piu grandi edifici medievali britannici, con la St Rule's Tower scalabile. Tip: ingresso libero al recinto, vista sulla baia.",
-        "q": "St Andrews Cathedral St Andrews"
+        "q": "St Andrews Cathedral St Andrews",
+        "summary": "Rovine della più grande chiesa mai costruita in Scozia, con l'antica St Rule's Tower.",
+        "descrizione": "La St Andrews Cathedral, consacrata nel 1318, fu la chiesa più grande mai eretta in Scozia, lunga quasi 120 metri, e cuore della Chiesa medievale scozzese. Oggi ne restano suggestive rovine affacciate sul mare, circondate da un antico cimitero. Accanto svetta la St Rule's Tower, alta 33 m, da cui si gode una bella vista sulla città e sulla costa.",
+        "curiosita": "La torre di San Regolo, più antica della cattedrale, faceva forse da faro per i pellegrini diretti al santuario di sant'Andrea.",
+        "info": [
+          {
+            "k": "Durata",
+            "v": "1 ora"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Le rovine e la salita di St Rule's Tower"
+          },
+          {
+            "k": "Tipo",
+            "v": "Rovine medievali"
+          }
+        ]
       },
       {
         "name": "St Andrews Castle",
         "tipo": "vedere",
         "note": "Castello vescovile a picco sul mare con umide gallerie d'assedio da esplorare. Tip: sotto c'e la spiaggetta di Castle Sands per un tuffo.",
-        "q": "St Andrews Castle St Andrews"
+        "q": "St Andrews Castle St Andrews",
+        "summary": "Castello vescovile sul mare, celebre per la prigione a bottiglia e la mina del 1546.",
+        "descrizione": "Il St Andrews Castle è una rovina spettacolare arroccata su una scogliera sul Mare del Nord, residenza dei vescovi e arcivescovi della città. Custodisce due rarità: la 'bottle dungeon', una cella a forma di bottiglia scavata 7 metri nella roccia, e la mina con la contromina del 1546, gallerie scavate nella pietra durante un assedio.",
+        "curiosita": "La contromina dei difensori, scavata seguendo a orecchio il rumore degli scavi nemici, ebbe tre falsi inizi prima di trovare la direzione giusta.",
+        "info": [
+          {
+            "k": "Durata",
+            "v": "Circa 1 ora"
+          },
+          {
+            "k": "Da vedere",
+            "v": "La bottle dungeon e la mina/contromina"
+          },
+          {
+            "k": "Tipo",
+            "v": "Rovine di castello"
+          }
+        ]
       },
       {
         "name": "Jannettas Gelateria",
         "tipo": "mangiare",
         "note": "Gelateria artigianale a gestione familiare dal 1908, decine di gusti fantasiosi. Tip: la fila nei giorni di sole dice tutto.",
-        "q": "Jannettas Gelateria South Street St Andrews"
+        "q": "Jannettas Gelateria South Street St Andrews",
+        "summary": "Gelateria di famiglia italiana in South Street dal 1908, gelato artigianale da cinque generazioni.",
+        "descrizione": "Jannettas Gelateria è un'istituzione di St Andrews, aperta nel 1908 al numero 31 di South Street da una famiglia italiana che portò qui l'arte del gelato. Oggi, alla quinta generazione e dopo oltre un secolo, continua a produrre gelato artigianale con le tecniche tramandate nello stesso edificio. Una tappa golosa irrinunciabile.",
+        "curiosita": "La gamma di gusti spazia di continuo, ma è l'eredità italiana di oltre 100 anni a fare la differenza.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "£"
+          },
+          {
+            "k": "Tipo",
+            "v": "Gelateria storica"
+          }
+        ]
       },
       {
         "name": "The Criterion",
         "tipo": "mangiare",
         "note": "Storico pub tradizionale con tavoli all'aperto e ampio menu tipico. Tip: prova uno dei famosi e ben ripieni Cri Pies.",
-        "q": "The Criterion pub St Andrews"
+        "q": "The Criterion pub St Andrews",
+        "summary": "Pub tradizionale scozzese in South Street dal 1874, con ale, gin e tanti malti.",
+        "descrizione": "The Criterion è un pub tradizionale a conduzione familiare nel cuore di St Andrews, attivo dal 1874. È noto per le cask ale a rotazione, spesso di birrifici scozzesi, e per i classici piatti da pub con ingredienti locali. Atmosfera autentica e accogliente, lontana dalle pretese.",
+        "curiosita": "Dietro il bancone si contano oltre 170 whisky di malto e una settantina di gin.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "££"
+          },
+          {
+            "k": "Tipo",
+            "v": "Pub tradizionale"
+          }
+        ]
       },
       {
         "name": "Fisher & Donaldson",
         "tipo": "mangiare",
         "note": "Panetteria imperdibile rinomata per la ciambella al fudge ripiena di crema custard (ricetta segreta). Tip: prendila calda al mattino.",
-        "q": "Fisher and Donaldson bakery St Andrews"
+        "q": "Fisher and Donaldson bakery St Andrews",
+        "summary": "Storico panificio di Fife dal 1919, famoso per i fudge doughnut.",
+        "descrizione": "Fisher & Donaldson è un panificio-pasticceria a conduzione familiare fondato in Fife nel 1919, con una sede anche a St Andrews. Sforna oltre 400 specialità artigianali, dai pani tradizionali ai dolci. La sosta perfetta per un caffè con un dolce di qualità.",
+        "curiosita": "Il prodotto più celebre è il fudge doughnut, una ciambella ripiena diventata un piccolo culto locale.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "£"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Il celebre fudge doughnut"
+          },
+          {
+            "k": "Tipo",
+            "v": "Panificio-pasticceria"
+          }
+        ]
       }
     ],
     "dt-lochlomond": [
@@ -398,37 +1518,135 @@
         "name": "Loch Lomond Shores",
         "tipo": "vedere",
         "note": "Porticciolo a Balloch con negozi, noleggio canoe e l'acquario Sea Life. Tip: punto di partenza per le crociere sul lago.",
-        "q": "Loch Lomond Shores Balloch"
+        "q": "Loch Lomond Shores Balloch",
+        "summary": "Polo per il tempo libero e lo shopping a Balloch, con acquario e centro rapaci.",
+        "descrizione": "Loch Lomond Shores è uno dei punti di accesso più popolari del lago, a Balloch: un complesso che unisce shopping e attività affacciato sulle acque. Ospita l'acquario SEA LIFE, il Loch Lomond Bird of Prey Centre con i suoi spettacoli di volo, noleggi, minigolf e l'imbarco delle crociere. Un buon punto di partenza per la giornata.",
+        "curiosita": "Da qui si vede la Maid of the Loch, l'ultimo piroscafo a pale del lago, in servizio dal 1953.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Accesso libero (attrazioni a pagamento)"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Acquario, centro rapaci e lungolago"
+          },
+          {
+            "k": "Tipo",
+            "v": "Centro visitatori e shopping"
+          }
+        ]
       },
       {
         "name": "Balloch Castle Country Park",
         "tipo": "vedere",
         "note": "Ampio parco affacciato sul lago con prati e sentieri attorno a un castello ottocentesco. Tip: a piedi dalla stazione di Balloch.",
-        "q": "Balloch Castle Country Park Balloch"
+        "q": "Balloch Castle Country Park Balloch",
+        "summary": "Parco di 80 ettari sul lago, con castello ottocentesco e ingresso gratuito.",
+        "descrizione": "Il Balloch Castle Country Park è un parco pubblico di circa 80 ettari all'estremità meridionale di Loch Lomond, dominato da un castello in stile neogotico del XIX secolo. Tra prati, boschi e giardini affacciati sull'acqua, è ideale per una passeggiata tranquilla a contatto con la natura. L'ingresso è gratuito.",
+        "curiosita": "Il parco si trova sulla sponda opposta del fiume Leven rispetto a Loch Lomond Shores, a circa un miglio di distanza.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Ingresso gratuito"
+          },
+          {
+            "k": "Durata",
+            "v": "1-2 ore"
+          },
+          {
+            "k": "Tipo",
+            "v": "Parco e castello"
+          }
+        ]
       },
       {
         "name": "Crociera sul Loch Lomond (Sweeney's Cruises)",
         "tipo": "vedere",
         "note": "Gite in battello sul lago piu grande della Scozia tra isolette e colline. Tip: imbarco al ponte di Balloch.",
-        "q": "Sweeney's Cruises Balloch Loch Lomond"
+        "q": "Sweeney's Cruises Balloch Loch Lomond",
+        "summary": "Crociere sul lago con una storica compagnia di famiglia attiva dagli anni 1880.",
+        "descrizione": "Sweeney's Cruises offre il modo migliore per vivere Loch Lomond dall'acqua: una compagnia familiare che naviga sul lago dagli anni 1880, tra le più antiche di Scozia. Partono crociere circolari da Balloch e da Loch Lomond Shores, oltre a un servizio waterbus che collega Balloch, Luss e Balmaha. Si scoprono le isole e i panorami del bacino meridionale con Ben Lomond sullo sfondo.",
+        "curiosita": "Il waterbus permette di arrivare in treno a Balloch e salire direttamente a bordo per attraversare il lago.",
+        "info": [
+          {
+            "k": "Durata",
+            "v": "Crociere da circa 1 a 2 ore"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Le isole del lago e Ben Lomond"
+          },
+          {
+            "k": "Tipo",
+            "v": "Crociera sul lago"
+          },
+          {
+            "k": "Prenotazione",
+            "v": "Consigliata in alta stagione"
+          }
+        ]
       },
       {
         "name": "Village of Luss",
         "tipo": "vedere",
         "note": "Pittoresco borgo di cottage in pietra sulla riva ovest, con spiaggetta e chiesa. Tip: bus o battello da Balloch.",
-        "q": "Luss village Loch Lomond"
+        "q": "Luss village Loch Lomond",
+        "summary": "Villaggio di conservazione sulla sponda ovest, tra cottage in pietra, spiaggia e molo.",
+        "descrizione": "Luss è il villaggio più pittoresco di Loch Lomond, sulla sponda occidentale a 9 miglia da Balloch. I suoi cottage in pietra furono costruiti tra XVIII e XIX secolo per gli operai delle vicine cave di ardesia ed è oggi un conservation village. Ha una lunga spiaggia di ciottoli amata per i picnic e un molo con vista su Ben Lomond.",
+        "curiosita": "Il molo di Luss accoglie battelli dal 1850 e da qui partono i collegamenti via lago verso Balloch e Balmaha.",
+        "info": [
+          {
+            "k": "Durata",
+            "v": "1-2 ore"
+          },
+          {
+            "k": "Da vedere",
+            "v": "I cottage, la spiaggia e la vista dal molo"
+          },
+          {
+            "k": "Tipo",
+            "v": "Villaggio storico"
+          }
+        ]
       },
       {
         "name": "The Village Rest",
         "tipo": "mangiare",
         "note": "Accogliente ristorante-cafe nel cuore di Luss con piatti scozzesi e dolci fatti in casa. Tip: sosta dopo la passeggiata sul lungolago.",
-        "q": "The Village Rest Luss Loch Lomond"
+        "q": "The Village Rest Luss Loch Lomond",
+        "summary": "Bistro accogliente a conduzione familiare nel cuore di Luss, a due passi dal lago.",
+        "descrizione": "The Village Rest è un ristorante-bistro a conduzione familiare nel cuore di Luss, a pochi passi dalle rive del lago. Atmosfera rilassata e ospitalità genuina, con una cucina semplice e confortante: colazioni abbondanti, pranzi freschi e classici serviti per tutto il giorno. Disponibili tavoli sia all'interno sia all'aperto.",
+        "curiosita": "È spesso indicato come il ristorante più apprezzato del piccolo villaggio di Luss.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "££"
+          },
+          {
+            "k": "Tipo",
+            "v": "Bistro / ristorante"
+          }
+        ]
       },
       {
         "name": "The Tullie Inn",
         "tipo": "mangiare",
         "note": "Pub-locanda accanto alla stazione di Balloch con birre e classici da pub. Tip: comodissimo prima o dopo il treno.",
-        "q": "The Tullie Inn Balloch"
+        "q": "The Tullie Inn Balloch",
+        "summary": "Locanda-pub del 1895 a Balloch in stile Tudor, con cucina scozzese e camere.",
+        "descrizione": "The Tullie Inn è un pub con camere a Balloch, costruito nel 1895 in caratteristico stile Tudor, proprio vicino a Loch Lomond. È tra i locali più vivaci della zona, con bar e ristorante che propongono piatti classici scozzesi e colazioni generose. Comodo punto d'appoggio per chi arriva in treno a Balloch.",
+        "curiosita": "Tra le specialità della cucina figurano stinco d'agnello e bistecca di ribeye.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "££"
+          },
+          {
+            "k": "Tipo",
+            "v": "Pub-locanda con cucina"
+          }
+        ]
       }
     ],
     "dt-musselburgh": [
@@ -436,37 +1654,131 @@
         "name": "Musselburgh Links, The Old Golf Course",
         "tipo": "vedere",
         "note": "Uno dei campi da golf piu antichi al mondo, giocato fin dal XVI secolo. Tip: green pubblico, si gioca anche per poche ore.",
-        "q": "Musselburgh Links The Old Golf Course Musselburgh"
+        "q": "Musselburgh Links The Old Golf Course Musselburgh",
+        "summary": "Il campo da golf in attivita piu antico del mondo: nove buche dove si gioca da oltre 350 anni.",
+        "descrizione": "I Musselburgh Links sono riconosciuti dal Guinness dei primati come il piu antico campo da golf ancora in uso al mondo, con una partita documentata gia nel 1672. Il tracciato a nove buche, racchiuso dentro l'ippodromo, ha ospitato sei edizioni dell'Open tra il 1874 e il 1889. Si puo giocare ancora oggi, anche noleggiando mazze e palline d'epoca.",
+        "curiosita": "La leggenda vuole che persino Maria Stuart abbia giocato qui nel 1567.",
+        "info": [
+          {
+            "k": "Tipo",
+            "v": "Campo da golf storico, 9 buche par 34"
+          },
+          {
+            "k": "Prenotazione",
+            "v": "Consigliata per giocare"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Tracciato dentro l'ippodromo, attrezzatura d'epoca a noleggio"
+          }
+        ]
       },
       {
         "name": "Fisherrow Harbour & Beach",
         "tipo": "vedere",
         "note": "Antico porto di pescatori e lunga spiaggia sabbiosa sul Firth of Forth. Tip: passeggiata sul lungomare con vista su Edimburgo.",
-        "q": "Fisherrow Harbour Musselburgh"
+        "q": "Fisherrow Harbour Musselburgh",
+        "summary": "Pittoresco porticciolo seicentesco e ampia spiaggia di sabbia affacciati sul Firth of Forth.",
+        "descrizione": "Fisherrow e l'antico cuore peschereccio di Musselburgh: si pesca qui fin dai tempi romani e il porto attuale risale al Seicento. Oggi le barche da lavoro hanno lasciato il posto a yacht e canoe, e il molo in pietra e un luogo piacevole per passeggiare. La lunga spiaggia di sabbia (Fisherrow Sands) e ideale per una sosta vista mare.",
+        "curiosita": "Erano le 'Fisherrow wives' a portare a piedi il pesce fino a Edimburgo per venderlo nei mercati cittadini.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Gratuito"
+          },
+          {
+            "k": "Quando andare",
+            "v": "Bella con la bassa marea e al tramonto"
+          },
+          {
+            "k": "Tipo",
+            "v": "Porto e spiaggia"
+          }
+        ]
       },
       {
         "name": "Levenhall Links & lagune (riserva naturale)",
         "tipo": "vedere",
         "note": "Lagune artificiali e capanni per il birdwatching a est della cittadina. Tip: porta il binocolo per gli uccelli acquatici.",
-        "q": "Levenhall Links Musselburgh Lagoons"
+        "q": "Levenhall Links Musselburgh Lagoons",
+        "summary": "Riserva naturale costiera tra lagune e capanni: uno dei migliori siti di birdwatching della Scozia.",
+        "descrizione": "Levenhall Links e un'area di terra strappata al mare e in parte rinaturalizzata, con lagune poco profonde nate dalle ceneri della vecchia centrale di Cockenzie. La vicinanza alle fangose ricche di cibo della foce dell'Esk attira moltissimi uccelli acquatici, tra cui chiurli e pettegole. Diversi capanni di osservazione permettono di avvistare i limicoli da vicino.",
+        "curiosita": "Le lagune di Musselburgh sono considerate uno dei migliori siti per il birdwatching di tutta la Scozia.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Gratuito"
+          },
+          {
+            "k": "Quando andare",
+            "v": "Ottimo per i migratori in autunno e inverno"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Capanni di osservazione, limicoli e anatre"
+          },
+          {
+            "k": "Tipo",
+            "v": "Riserva naturale"
+          }
+        ]
       },
       {
         "name": "Luca's Ice Cream",
         "tipo": "mangiare",
         "note": "Storica gelateria italiana di Musselburgh, in attivita da inizio Novecento. Tip: il gelato qui e un'istituzione locale.",
-        "q": "Luca's Ice Cream High Street Musselburgh"
+        "q": "Luca's Ice Cream High Street Musselburgh",
+        "summary": "Storica gelateria italiana di Musselburgh, aperta dal 1908 e ancora un'istituzione locale.",
+        "descrizione": "S. Luca e una gelateria fondata nel 1908 da Luca Scappaticcio, emigrato da Cassino, e dalla moglie Anastasia. La ricetta del gelato e rimasta praticamente immutata da allora e viene ancora prodotta nello stesso stabilimento. E un classico fine giornata sulla High Street, tra coni cremosi e atmosfera d'altri tempi.",
+        "curiosita": "Luca chiamo il locale 'S. Luca' e non con il suo cognome per non far inciampare la lingua dei clienti scozzesi.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Economico"
+          },
+          {
+            "k": "Tipo",
+            "v": "Gelateria storica italiana"
+          }
+        ]
       },
       {
         "name": "The Honest Toun (fish & chips)",
         "tipo": "mangiare",
         "note": "Friggitoria classica per il fish and chips da gustare sul lungomare. Tip: prendilo da asporto e mangialo a Fisherrow.",
-        "q": "fish and chips Musselburgh"
+        "q": "fish and chips Musselburgh",
+        "summary": "Fish & chips nel cuore della 'Honest Toun', perfetto per un pranzo veloce in riva al mare.",
+        "descrizione": "Il nome richiama il soprannome di Musselburgh, la 'Honest Toun', citta da sempre orgogliosa della sua tradizione di pesce fresco. Qui si gusta il classico fish & chips scozzese, da portare via e mangiare passeggiando lungo la costa. Una sosta semplice e schietta tra una visita e l'altra.",
+        "curiosita": "Musselburgh sfoggia il soprannome 'Honest Toun' da secoli, tanto da celebrarlo ogni anno con una festa cittadina dedicata.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Economico"
+          },
+          {
+            "k": "Tipo",
+            "v": "Fish & chips da asporto"
+          }
+        ]
       },
       {
         "name": "Staggs Bar (The Volunteer Arms)",
         "tipo": "mangiare",
         "note": "Pub tradizionale e schietto, una vera istituzione cittadina. Tip: pinta di ale scozzese in un locale d'altri tempi.",
-        "q": "Staggs Bar Volunteer Arms Musselburgh"
+        "q": "Staggs Bar Volunteer Arms Musselburgh",
+        "summary": "Pub tradizionale a conduzione familiare dal 1858, tempio delle real ale premiato dal CAMRA.",
+        "descrizione": "Conosciuto da tutti come Staggs, il Volunteer Arms e gestito dalla stessa famiglia dal 1858. Il bancone e il piccolo snug conservano pavimenti in legno, boiserie e specchi delle antiche birrerie locali. Famoso per le numerose real ale a rotazione e una vasta scelta di rum, e stato eletto piu volte miglior pub.",
+        "curiosita": "E stato nominato Pub of the Year nazionale del CAMRA nel 1998 e ha continuato a collezionare premi negli anni.",
+        "info": [
+          {
+            "k": "Tipo",
+            "v": "Pub tradizionale di real ale"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Snug d'epoca, real ale a rotazione e selezione di rum"
+          }
+        ]
       }
     ],
     "dt-nberwick": [
@@ -474,7 +1786,28 @@
         "name": "Scottish Seabird Centre",
         "tipo": "vedere",
         "note": "Centro sulla fauna marina con telecamere dal vivo sulle colonie di sule del Bass Rock. Tip: gite in barca alle isole in stagione.",
-        "q": "Scottish Seabird Centre North Berwick"
+        "q": "Scottish Seabird Centre North Berwick",
+        "summary": "Centro di conservazione marina con telecamere dal vivo sulle colonie di uccelli e gite in barca alla Bass Rock.",
+        "descrizione": "Lo Scottish Seabird Centre e un ente di conservazione marina aperto nel 2000 sul lungomare di North Berwick. La sua Discovery Experience permette di osservare con telecamere interattive sule, pulcinella di mare, cormorani e altri uccelli delle isole del Firth of Forth. Da qui partono le gite in barca attorno alla Bass Rock e verso l'Isle of May.",
+        "curiosita": "Il centro ha telecamere a 360 gradi che trasmettono in diretta dalla Bass Rock e gode dei diritti esclusivi di sbarco sull'isola.",
+        "info": [
+          {
+            "k": "Quando andare",
+            "v": "Da aprile a fine estate per la stagione degli uccelli"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Telecamere dal vivo, gite in barca, caffe vista mare"
+          },
+          {
+            "k": "Prenotazione",
+            "v": "Consigliata per le gite in barca"
+          },
+          {
+            "k": "Tipo",
+            "v": "Centro naturalistico"
+          }
+        ]
       },
       {
         "name": "Tantallon Castle",
@@ -482,31 +1815,112 @@
         "note": "Spettacolari rovine di castello rosso a picco sul mare di fronte al Bass Rock. Tip: a pochi km dal centro, panorama mozzafiato.",
         "q": "Tantallon Castle North Berwick",
         "transferMin": 20,
-        "transferNote": "~5 km fuori North Berwick: bus o taxi dalla stazione (~20')"
+        "transferNote": "~5 km fuori North Berwick: bus o taxi dalla stazione (~20')",
+        "summary": "Drammatica fortezza in rovina del XIV secolo a picco sul mare, di fronte alla Bass Rock (a ~5 km dalla citta).",
+        "descrizione": "Tantallon Castle e una fortezza in rovina della meta del Trecento, arroccata su un promontorio circa 5 km a est di North Berwick, proprio di fronte alla Bass Rock. E l'ultimo castello scozzese a cortina muraria: un'unica imponente parete di arenaria rossa chiude il promontorio, mentre il mare protegge gli altri tre lati con le sue scogliere. Fu per secoli roccaforte dei conti di Angus, della famiglia Douglas, e subi numerosi assedi.",
+        "curiosita": "Le sue mura furono assediate dai re Giacomo IV e Giacomo V e gravemente danneggiate dall'esercito di Cromwell nel 1651.",
+        "info": [
+          {
+            "k": "Tipo",
+            "v": "Castello in rovina (Historic Environment Scotland)"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Cortina in arenaria rossa, vista sulla Bass Rock"
+          },
+          {
+            "k": "Quando andare",
+            "v": "Bella con cielo limpido per il panorama costiero"
+          }
+        ]
       },
       {
         "name": "North Berwick Law",
         "tipo": "vedere",
         "note": "Collina conica che domina la cittadina, con un arco fatto d'ossa di balena in cima. Tip: salita breve ma ripida, vista a 360 gradi.",
-        "q": "North Berwick Law North Berwick"
+        "q": "North Berwick Law North Berwick",
+        "summary": "Cono vulcanico di 187 m che domina la cittadina: in cima viste a 360 gradi e una mascella di balena.",
+        "descrizione": "North Berwick Law e una collina conica che si erge isolata sopra la cittadina, un tappo vulcanico alto 187 metri. Il sentiero sale fino alla vetta, segnata da un punto trigonometrico e dai resti di un forte dell'eta del ferro e di postazioni militari napoleoniche e della Seconda guerra mondiale. Dall'alto lo sguardo spazia sulla costa, sulla Bass Rock e fino a Edimburgo e ai Pentlands.",
+        "curiosita": "Dal 1709 la vetta e ornata da una mascella di balena; quella attuale e una replica donata alla citta nel 2007.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Gratuito"
+          },
+          {
+            "k": "Durata",
+            "v": "Circa 1-1,5 ore di salita andata e ritorno"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Vetta con mascella di balena e panorama a 360 gradi"
+          },
+          {
+            "k": "Tipo",
+            "v": "Collina panoramica"
+          }
+        ]
       },
       {
         "name": "Steampunk Coffee",
         "tipo": "mangiare",
         "note": "Torrefazione e caffe artigianale in un ex garage, molto amato in citta. Tip: caffe di qualita e tavoli all'aperto.",
-        "q": "Steampunk Coffee North Berwick"
+        "q": "Steampunk Coffee North Berwick",
+        "summary": "Torrefazione artigianale dentro un vecchio magazzino, per caffe di qualita e torte fatte in casa.",
+        "descrizione": "Steampunk Coffee e una torrefazione nascosta dietro gli edifici del lungomare, ricavata in una vecchia falegnameria dall'atmosfera calda e leggermente steampunk. Specializzata in caffe fresco ed eticamente selezionato, lo serve accompagnato da torte, con opzioni senza glutine e vegane. Si possono anche acquistare i chicchi appena macinati da portare a casa.",
+        "curiosita": "I locali occupano un'ex falegnameria, con arredi e dettagli che richiamano lo stile steampunk.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Economico"
+          },
+          {
+            "k": "Tipo",
+            "v": "Torrefazione e caffetteria"
+          }
+        ]
       },
       {
         "name": "The Lobster Shack",
         "tipo": "mangiare",
         "note": "Chiosco di frutti di mare sul porto, aragosta e granchio appena pescati. Tip: aperto in stagione, da gustare guardando il Bass Rock.",
-        "q": "The Lobster Shack North Berwick harbour"
+        "q": "The Lobster Shack North Berwick harbour",
+        "summary": "Chiosco di pesce sul porto: aragosta, granchio e fish & chips presi direttamente dalle barche.",
+        "descrizione": "The Lobster Shack e un take-away di pesce sul molo del porto di North Berwick, dove si gusta pescato freschissimo acquistato direttamente dalle barche. In menu aragosta, granchio, cozze, lobster roll e l'immancabile fish & chips, spesso con la coda di chi aspetta. Tutto e selezionato in modo etico e sostenibile, fino alle posate biodegradabili.",
+        "curiosita": "Essendo registrato come primo acquirente di pesce, compra il pescato del giorno direttamente dalle barche in porto.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Medio"
+          },
+          {
+            "k": "Quando andare",
+            "v": "Stagionale, soprattutto nella bella stagione"
+          },
+          {
+            "k": "Tipo",
+            "v": "Pesce da asporto sul porto"
+          }
+        ]
       },
       {
         "name": "The Ship Inn",
         "tipo": "mangiare",
         "note": "Pub affacciato sul porto con buoni piatti tipici e pesce. Tip: tavoli con vista sulle barche e sul mare.",
-        "q": "The Ship Inn North Berwick"
+        "q": "The Ship Inn North Berwick",
+        "summary": "Pub tradizionale nel cuore di North Berwick, con cucina da pub e atmosfera marinara accogliente.",
+        "descrizione": "The Ship Inn e un pub tradizionale e accogliente nel centro di North Berwick, molto frequentato da abitanti e visitatori. Propone una cucina da pub sostanziosa, dal classico fish & chips alla fish pie, con anche opzioni vegane. Tra interni caldi e posti all'aperto, e una sosta piacevole in questa cittadina costiera.",
+        "curiosita": "Tra i piatti piu apprezzati ci sono il fish & chips e la fish pie con copertura di formaggio gratinato.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Medio"
+          },
+          {
+            "k": "Tipo",
+            "v": "Pub con cucina"
+          }
+        ]
       }
     ],
     "dt-falkirk": [
@@ -514,37 +1928,139 @@
         "name": "Falkirk Wheel",
         "tipo": "vedere",
         "note": "Ascensore rotante per barche del 2002 che collega Forth & Clyde e Union Canal. Tip: il tour di un'ora si prenota online.",
-        "q": "Falkirk Wheel Falkirk"
+        "q": "Falkirk Wheel Falkirk",
+        "summary": "L'unico ascensore rotante per barche al mondo, capolavoro d'ingegneria che collega due canali.",
+        "descrizione": "Completata nel 2002, la Falkirk Wheel e un ascensore rotante per imbarcazioni capace di sollevare barche lunghe fino a 35 m, trasferendole dal Forth & Clyde Canal allo Union Canal. Il tour di circa un'ora consente di salire a bordo dentro la ruota, raggiungere il canale superiore e attraversare il Roughcastle Tunnel prima di ridiscendere. Ci sono anche un centro visitatori, un cafe e un'area giochi d'acqua.",
+        "curiosita": "L'energia necessaria per una rotazione completa della ruota e pari a quella di appena otto tostapane.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Tour per barca a pagamento; area esterna gratuita"
+          },
+          {
+            "k": "Durata",
+            "v": "Tour in barca circa 1 ora"
+          },
+          {
+            "k": "Prenotazione",
+            "v": "Consigliata online per il tour"
+          },
+          {
+            "k": "Tipo",
+            "v": "Ascensore per barche / attrazione"
+          }
+        ]
       },
       {
         "name": "The Kelpies",
         "tipo": "vedere",
         "note": "Due enormi teste di cavallo in acciaio alte 30 m all'Helix Park, omaggio ai cavalli da traino. Tip: ammirale gratis, tour interno a pagamento.",
-        "q": "The Kelpies Helix Park Falkirk"
+        "q": "The Kelpies Helix Park Falkirk",
+        "summary": "Due colossali teste di cavallo in acciaio alte 30 m, tributo ai cavalli da traino dei canali.",
+        "descrizione": "I Kelpies sono due enormi teste equine in acciaio inossidabile alte 30 m, collocate all'ingresso orientale del Forth & Clyde Canal, opera dello scultore Andy Scott. Prendono nome dagli spiriti acquatici del folclore scozzese, che potevano assumere forma di cavallo, e rendono omaggio ai cavalli che un tempo trainavano le chiatte lungo il canale. Si ammirano gratuitamente, ma una visita guidata permette di entrare all'interno delle sculture.",
+        "curiosita": "Sono talmente imponenti da essere ben visibili anche dall'autostrada tra Edimburgo e Stirling.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Gratuito; tour interno a pagamento"
+          },
+          {
+            "k": "Durata",
+            "v": "Visita guidata interna circa 30 minuti"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Le sculture e il bacino del canale"
+          },
+          {
+            "k": "Tipo",
+            "v": "Sculture monumentali"
+          }
+        ]
       },
       {
         "name": "Helix Park",
         "tipo": "vedere",
         "note": "Grande parco attorno ai Kelpies con laghetto, sentieri ciclabili e parco giochi. Tip: ideale per una passeggiata o un picnic.",
-        "q": "The Helix Park Falkirk"
+        "q": "The Helix Park Falkirk",
+        "summary": "Eco-parco di 350 ettari attorno ai Kelpies, con lagune, aree gioco e chilometri di sentieri.",
+        "descrizione": "L'Helix Park e un eco-parco di 350 ettari nato dalla rigenerazione di un'area industriale tra Falkirk e Grangemouth, con i Kelpies come fulcro. Offre una laguna, aree gioco avventura, orti urbani e oltre 26 km di percorsi pedonali e ciclabili collegati, attraversati anche dal John Muir Way. L'ingresso e gratuito ed e una meta perfetta per famiglie e amanti dell'aria aperta.",
+        "curiosita": "Il parco e attraversato da due itinerari ciclabili nazionali e dal lungo cammino John Muir Way.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Gratuito"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Laguna, sentieri, aree gioco e i Kelpies"
+          },
+          {
+            "k": "Tipo",
+            "v": "Parco e area ricreativa"
+          }
+        ]
       },
       {
         "name": "Callendar House",
         "tipo": "vedere",
         "note": "Dimora storica in stile chateau immersa in un parco, con cucina georgiana funzionante. Tip: ingresso libero, ottimo se piove.",
-        "q": "Callendar House Falkirk"
+        "q": "Callendar House Falkirk",
+        "summary": "Dimora storica con nucleo trecentesco, museo di Falkirk e una cucina georgiana ancora funzionante.",
+        "descrizione": "Callendar House e una grande dimora immersa nel Callendar Park, il cui nucleo e una torre del XIV secolo. Nei suoi 600 anni di storia ha ospitato personaggi come Maria Stuart, Cromwell, Bonnie Prince Charlie e la regina Vittoria. Oggi accoglie un museo sulla storia di Falkirk, una biblioteca rivestita in quercia e una cucina georgiana funzionante con interpreti in costume; l'ingresso e gratuito.",
+        "curiosita": "Nella cucina georgiana figuranti in costume mostrano dal vivo i metodi di cottura di un tempo.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Gratuito"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Cucina georgiana, museo di Falkirk, parco"
+          },
+          {
+            "k": "Tipo",
+            "v": "Dimora storica e museo"
+          }
+        ]
       },
       {
         "name": "The Wheelhouse Cafe",
         "tipo": "mangiare",
         "note": "Caffe del centro visitatori della Falkirk Wheel, con vista sull'ascensore. Tip: sosta comoda tra il tour e i canali.",
-        "q": "Falkirk Wheel cafe Falkirk"
+        "q": "Falkirk Wheel cafe Falkirk",
+        "summary": "Cafe-ristorante con grandi vetrate panoramiche affacciate direttamente sulla Falkirk Wheel.",
+        "descrizione": "Situato presso la Falkirk Wheel, questo cafe-ristorante offre ampie vetrate panoramiche affacciate sulla ruota e sul canale. Propone colazioni, brunch e pranzi con piatti leggeri e dolci, comodo per una pausa prima o dopo il tour in barca. E il punto di ristoro ideale durante la visita all'attrazione.",
+        "curiosita": "Le vetrate consentono di guardare la grande ruota in movimento mentre si pranza.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Economico-medio"
+          },
+          {
+            "k": "Tipo",
+            "v": "Cafe-ristorante"
+          }
+        ]
       },
       {
         "name": "Plough Hotel",
         "tipo": "mangiare",
         "note": "Pub-locanda del centro con piatti tipici scozzesi e ales locali. Tip: comodo a piedi dalla stazione di Falkirk High.",
-        "q": "Plough Hotel Falkirk"
+        "q": "Plough Hotel Falkirk",
+        "summary": "Storico hotel e pub-ristorante a Falkirk, punto di ritrovo per un pasto sostanzioso in citta.",
+        "descrizione": "Il Plough Hotel e un albergo con pub e ristorante nella zona di Falkirk, comodo per fermarsi a mangiare durante la visita. Offre la classica cucina da pub scozzese in un ambiente accogliente. Una scelta pratica per concludere la giornata tra le attrazioni della citta.",
+        "curiosita": "E uno dei locali storici frequentati dalla comunita di Falkirk per pranzi e ritrovi.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Medio"
+          },
+          {
+            "k": "Tipo",
+            "v": "Hotel con pub e ristorante"
+          }
+        ]
       }
     ],
     "dt-queensferry": [
@@ -552,37 +2068,139 @@
         "name": "Forth Bridge",
         "tipo": "vedere",
         "note": "Iconico ponte ferroviario rosso vittoriano del 1890, patrimonio UNESCO. Tip: ammiralo dal lungomare di South Queensferry.",
-        "q": "Forth Bridge South Queensferry"
+        "q": "Forth Bridge South Queensferry",
+        "summary": "Iconico ponte ferroviario a sbalzo del 1890, simbolo della Scozia e patrimonio mondiale UNESCO.",
+        "descrizione": "Il Forth Bridge e un ponte ferroviario a struttura cantilever che attraversa il Firth of Forth tra South e North Queensferry, lungo oltre 2,4 km. Aperto nel 1890 e progettato da John Fowler e Benjamin Baker, ebbe a lungo la campata a sbalzo piu lunga del mondo. Dal 2015 e Patrimonio dell'Umanita UNESCO ed e considerato un simbolo della Scozia.",
+        "curiosita": "Il suo inconfondibile colore rosso ha dato origine al modo di dire 'come dipingere il Forth Bridge', sinonimo di lavoro senza fine.",
+        "info": [
+          {
+            "k": "Da vedere",
+            "v": "Vista dal lungomare e dai pressi di Hawes Pier"
+          },
+          {
+            "k": "Tipo",
+            "v": "Ponte ferroviario UNESCO"
+          }
+        ]
       },
       {
         "name": "Inchcolm Island & Abbey",
         "tipo": "vedere",
         "note": "Isoletta nel Forth con una ben conservata abbazia medievale e foche. Tip: traghetto Maid of the Forth dal molo, prenota.",
-        "q": "Inchcolm Abbey ferry South Queensferry"
+        "q": "Inchcolm Abbey ferry South Queensferry",
+        "summary": "Isola del Firth of Forth con un'abbazia medievale, raggiungibile in barca da South Queensferry.",
+        "descrizione": "Inchcolm e una piccola isola nel Firth of Forth, soprannominata la 'Iona dell'Est' per la sua splendida abbazia medievale, fondata nel XII secolo da re Davide I. Vi si arriva con la crociera da Hawes Pier, avvistando lungo il tragitto foche, uccelli marini e, in stagione, pulcinella di mare. Sull'isola si esplorano l'abbazia ben conservata e le fortificazioni belliche.",
+        "curiosita": "L'abbazia di Inchcolm e tra i complessi monastici medievali meglio conservati di tutta la Scozia.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Crociera a pagamento + biglietto di sbarco"
+          },
+          {
+            "k": "Durata",
+            "v": "Circa 3 ore con tempo sull'isola"
+          },
+          {
+            "k": "Quando andare",
+            "v": "Da aprile a ottobre"
+          },
+          {
+            "k": "Prenotazione",
+            "v": "Consigliata per la barca"
+          }
+        ]
       },
       {
         "name": "Dalmeny House",
         "tipo": "vedere",
         "note": "Elegante dimora di campagna gotica con parco affacciato sul Forth. Tip: aperta in giorni limitati, controlla in anticipo.",
-        "q": "Dalmeny House South Queensferry"
+        "q": "Dalmeny House South Queensferry",
+        "summary": "Elegante dimora in stile Tudor Gothic del 1817, residenza dei conti di Rosebery.",
+        "descrizione": "Dalmeny House e una sontuosa dimora neogotica completata nel 1817 per il IV conte di Rosebery, prima casa in Scozia costruita in stile Tudor Revival. Conserva dipinti e arredi delle collezioni Rosebery e Rothschild, oltre a una delle maggiori raccolte di cimeli napoleonici della Gran Bretagna. Resta una residenza privata, aperta al pubblico solo in alcuni periodi estivi.",
+        "curiosita": "L'architetto William Wilkins firmo anche la National Gallery di Londra.",
+        "info": [
+          {
+            "k": "Quando andare",
+            "v": "Aperture limitate ai mesi estivi"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Interni Regency, cimeli napoleonici"
+          },
+          {
+            "k": "Prenotazione",
+            "v": "Verificare aperture prima della visita"
+          },
+          {
+            "k": "Tipo",
+            "v": "Dimora storica privata"
+          }
+        ]
       },
       {
         "name": "The Hawes Inn",
         "tipo": "mangiare",
         "note": "Storica locanda del XVII secolo ai piedi del Forth Bridge, citata da R.L. Stevenson in Rapito. Tip: birra con vista sui ponti.",
-        "q": "The Hawes Inn South Queensferry"
+        "q": "The Hawes Inn South Queensferry",
+        "summary": "Locanda del Seicento sotto il Forth Bridge, resa celebre da 'Kidnapped' di Robert Louis Stevenson.",
+        "descrizione": "The Hawes Inn e una storica locanda del XVII secolo dal caratteristico frontone a gradoni, proprio sotto il Forth Bridge e davanti a Hawes Pier. Robert Louis Stevenson vi soggiorno nel 1886 e vi ambiento una scena chiave del suo romanzo 'Kidnapped', dove si organizza il rapimento del protagonista. Oggi e un pub-locanda accogliente con vista sui ponti.",
+        "curiosita": "Si dice che in una finestra della locanda sopravviva ancora un vetro con incise le iniziali 'RLS'.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Medio"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Frontone seicentesco, vista sul Forth Bridge"
+          },
+          {
+            "k": "Tipo",
+            "v": "Locanda-pub storico"
+          }
+        ]
       },
       {
         "name": "Orocco Pier",
         "tipo": "mangiare",
         "note": "Bar-ristorante sul lungomare con terrazza affacciata sui tre ponti del Forth. Tip: aperitivo al tramonto sulla terrazza.",
-        "q": "Orocco Pier South Queensferry"
+        "q": "Orocco Pier South Queensferry",
+        "summary": "Ristorante e bar contemporaneo sul lungomare di South Queensferry, con vista sul Firth of Forth.",
+        "descrizione": "Orocco Pier e un locale contemporaneo affacciato sul Firth of Forth, nel cuore del lungomare di South Queensferry. Unisce ristorante, bar e camere, con vedute sui ponti e sull'estuario. E una sosta piacevole per un pasto o un drink dopo la passeggiata sul fronte mare.",
+        "curiosita": "L'edificio, un tempo Queensferry Arms Hotel, e stato a lungo legato al tradizionale tuffo invernale del 'Loony Dook'.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Medio"
+          },
+          {
+            "k": "Da vedere",
+            "v": "Terrazza con vista sui ponti"
+          },
+          {
+            "k": "Tipo",
+            "v": "Ristorante e bar sul lungomare"
+          }
+        ]
       },
       {
         "name": "Down the Hatch",
         "tipo": "mangiare",
         "note": "Cafe sul lungomare per colazioni, dolci e pranzi leggeri. Tip: tavolo vista mare prima del battello per Inchcolm.",
-        "q": "Down the Hatch cafe South Queensferry"
+        "q": "Down the Hatch cafe South Queensferry",
+        "summary": "Locale informale sul lungomare di South Queensferry per piatti di pesce e atmosfera marinara.",
+        "descrizione": "Down the Hatch e un locale informale lungo il fronte mare di South Queensferry, ideale per una pausa a base di pesce e frutti di mare con vista sull'estuario. L'ambiente rilassato e marinaro lo rende una scelta piacevole tra una visita ai ponti e la gita in barca. Una tappa semplice e affacciata sull'acqua.",
+        "curiosita": "Si trova lungo lo stesso fronte mare da cui partono le crociere verso l'isola di Inchcolm.",
+        "info": [
+          {
+            "k": "Prezzo",
+            "v": "Economico-medio"
+          },
+          {
+            "k": "Tipo",
+            "v": "Locale di pesce sul lungomare"
+          }
+        ]
       }
     ]
   },
@@ -594,7 +2212,24 @@
       "note": "Torrefazione neozelandese a 2 min dall'hotel: ottimo flat white e cornetti per la colazione veloce prima del volo.",
       "dur": 25,
       "q": "Allpress Espresso Redchurch Street London",
-      "cat": "Caffè"
+      "cat": "Caffè",
+      "summary": "Torrefazione neozelandese a Shoreditch, regno del flat white: colazione veloce e di qualità su Redchurch Street.",
+      "descrizione": "Allpress nasce in Nuova Zelanda e a Shoreditch porta la sua scuola di caffè antipodea, fatta di tostatura curata e flat white impeccabili. Locale piccolo e luminoso su Redchurch Street, perfetto per un espresso e un cornetto al volo prima di rimettersi in viaggio. L'atmosfera è informale e veloce, da vero coffee bar di quartiere.",
+      "curiosita": "Il flat white, oggi ovunque a Londra, arriva proprio dalla cultura del caffè di Australia e Nuova Zelanda che torrefazioni come Allpress hanno contribuito a diffondere in città.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Caffetteria e torrefazione"
+        },
+        {
+          "k": "Zona",
+          "v": "Redchurch Street, Shoreditch"
+        },
+        {
+          "k": "Quando",
+          "v": "Colazione, prima del volo"
+        }
+      ]
     },
     {
       "id": "lo-colazione-friends",
@@ -603,7 +2238,24 @@
       "note": "Caffetteria australiana vicino a Old Street: avocado toast, uova e brunch curato. Perfetta per iniziare la mattina con calma.",
       "dur": 40,
       "q": "Friends of Ours cafe Pitfield Street London",
-      "cat": "Colazione"
+      "cat": "Colazione",
+      "summary": "Caffetteria di ispirazione australiana vicino a Old Street: brunch curato, avocado toast e uova per iniziare con calma.",
+      "descrizione": "Friends of Ours è un piccolo cafe nei pressi di Old Street, con l'aria rilassata e accogliente dei locali brunch australiani. La carta punta su avocado toast, uova e piatti del mattino preparati con attenzione, accompagnati da un buon caffè. Ideale per una colazione senza fretta prima di esplorare Shoreditch.",
+      "curiosita": "La scena del brunch londinese deve molto ai cafe gestiti da neozelandesi e australiani, che hanno reso normali piatti come l'avocado toast in tutta la città.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Brunch e caffetteria"
+        },
+        {
+          "k": "Zona",
+          "v": "Hoxton / Old Street"
+        },
+        {
+          "k": "Quando",
+          "v": "Mattina, brunch"
+        }
+      ]
     },
     {
       "id": "lo-colazione-ozone",
@@ -612,7 +2264,24 @@
       "note": "A pochi minuti da Old Street: caffè tostato in loco e colazione cooked sostanziosa, ideale prima del check-out alle 11.",
       "dur": 45,
       "q": "Ozone Coffee Roasters Leonard Street London",
-      "cat": "Colazione"
+      "cat": "Colazione",
+      "summary": "Torrefazione e cafe vicino a Old Street: caffè tostato in loco e robuste colazioni cooked prima del check-out.",
+      "descrizione": "Ozone Coffee Roasters tosta il proprio caffè nel locale di Leonard Street, a pochi minuti da Old Street, e lo serve in un ambiente industriale su due livelli. Oltre all'espresso di livello propone una colazione cooked sostanziosa, perfetta per affrontare l'ultima mattina a Londra. Punto di riferimento per gli appassionati di specialty coffee in città.",
+      "curiosita": "Anche Ozone ha radici neozelandesi, da Auckland a Shoreditch: un altro tassello della rivoluzione del caffè antipodeo che ha cambiato il gusto londinese.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Torrefazione e colazione"
+        },
+        {
+          "k": "Zona",
+          "v": "Leonard Street, Shoreditch"
+        },
+        {
+          "k": "Quando",
+          "v": "Colazione, prima del check-out"
+        }
+      ]
     },
     {
       "id": "lo-beigel",
@@ -621,7 +2290,28 @@
       "note": "Istituzione aperta 24h: prendi il salt beef bagel, economico e leggendario. Cena rapida e sfiziosa appena arrivati.",
       "dur": 25,
       "q": "Beigel Bake Brick Lane London",
-      "cat": "Bagel"
+      "cat": "Bagel",
+      "summary": "Istituzione di Brick Lane aperta 24 ore: il leggendario salt beef bagel a prezzo minimo, di giorno e di notte.",
+      "descrizione": "Beigel Bake è un'istituzione dell'East End che sforna bagel senza sosta, 24 ore su 24, da decenni. Il piatto cult è il salt beef bagel, carne di manzo salata, senape e cetriolino, economico e leggendario tra londinesi e nottambuli. Niente fronzoli: si ordina al banco e si mangia in piedi o per strada, magari appena arrivati.",
+      "curiosita": "Il bagel arriva a Brick Lane con la comunità ebraica dell'Europa orientale stabilitasi nell'East End: la grafia 'beigel' richiama proprio quella origine yiddish.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Bagel da asporto"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Economico"
+        },
+        {
+          "k": "Orari",
+          "v": "Aperto 24 ore"
+        },
+        {
+          "k": "Zona",
+          "v": "Brick Lane"
+        }
+      ]
     },
     {
       "id": "lo-bricklane",
@@ -629,7 +2319,24 @@
       "zone": "Brick Lane",
       "note": "La via piu colorata dell'East End: street art, vintage e luci serali. Passeggiata d'atmosfera dopo cena.",
       "dur": 40,
-      "q": "Brick Lane London"
+      "q": "Brick Lane London",
+      "summary": "La via piu colorata dell'East End: street art, negozi vintage, curry house e luci serali tutte da passeggiare.",
+      "descrizione": "Brick Lane e' il cuore multiculturale dell'East End londinese, un tempo capitale del tessile e oggi mosaico di curry house bengalesi, vintage shop e gallerie. Le facciate sono coperte di street art e i muri cambiano di continuo, mentre la sera l'atmosfera si accende di insegne e locali. Una passeggiata dopo cena qui e' il modo migliore per respirare Shoreditch.",
+      "curiosita": "Brick Lane e' un museo a cielo aperto della street art: tra questi muri hanno lasciato il segno artisti come Banksy e ROA.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Via di street art e mercati"
+        },
+        {
+          "k": "Zona",
+          "v": "East End / Shoreditch"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera"
+        }
+      ]
     },
     {
       "id": "lo-truman",
@@ -637,7 +2344,24 @@
       "zone": "Brick Lane",
       "note": "Ex birreria oggi hub creativo con murales, bar e mercatini. Bello da girare la sera per respirare la scena di Shoreditch.",
       "dur": 30,
-      "q": "Old Truman Brewery Brick Lane London"
+      "q": "Old Truman Brewery Brick Lane London",
+      "summary": "Ex birreria storica diventata hub creativo: murales, bar, negozi e mercatini nel cuore di Brick Lane.",
+      "descrizione": "La Old Truman Brewery fu una delle birrerie piu grandi di Londra e oggi e' un vasto complesso creativo a cavallo di Brick Lane. Tra ex magazzini e ciminiere trovano spazio studi di design, bar, street food, mercatini ed eventi. Girarla la sera significa immergersi nella scena giovane e artistica di Shoreditch.",
+      "curiosita": "La Truman fu fondata nel XVII secolo e nel Settecento era tra i maggiori produttori di birra al mondo, prima della sua reinvenzione creativa.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Hub creativo ed eventi"
+        },
+        {
+          "k": "Zona",
+          "v": "Brick Lane"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera, weekend per i mercatini"
+        }
+      ]
     },
     {
       "id": "lo-spitalfields",
@@ -645,7 +2369,24 @@
       "zone": "Spitalfields",
       "note": "Mercato coperto vittoriano con cibo da strada, design e artigianato. A 5 min dall'hotel, ottimo per una cena informale.",
       "dur": 40,
-      "q": "Old Spitalfields Market London"
+      "q": "Old Spitalfields Market London",
+      "summary": "Mercato coperto vittoriano a due passi: street food, design e artigianato sotto una grande tettoia in ferro.",
+      "descrizione": "Old Spitalfields Market e' uno dei mercati coperti storici di Londra, ospitato sotto un'elegante struttura vittoriana in ferro e vetro. Oggi mescola bancarelle di artigianato, design e moda con un'ampia offerta di street food da tutto il mondo. E' il posto giusto per una cena informale o due passi tra i banchi nel cuore di Spitalfields.",
+      "curiosita": "Qui si commercia da oltre tre secoli: la 'spital' del nome rimanda all'antico ospedale medievale di St Mary Spital che sorgeva nella zona.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Mercato coperto e street food"
+        },
+        {
+          "k": "Zona",
+          "v": "Spitalfields"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera per una cena informale"
+        }
+      ]
     },
     {
       "id": "lo-christ-church",
@@ -653,7 +2394,24 @@
       "zone": "Spitalfields",
       "note": "Imponente chiesa barocca di Hawksmoor che domina Commercial Street: facciata spettacolare illuminata di sera.",
       "dur": 15,
-      "q": "Christ Church Spitalfields London"
+      "q": "Christ Church Spitalfields London",
+      "summary": "Imponente chiesa barocca di Hawksmoor che domina Commercial Street, con la guglia spettacolare illuminata di sera.",
+      "descrizione": "Christ Church Spitalfields e' un capolavoro del barocco inglese disegnato da Nicholas Hawksmoor nel primo Settecento. La grande facciata con portico e l'alta guglia bianca dominano Commercial Street, soprattutto quando sono illuminate al calare della sera. Anche solo ammirarla dall'esterno vale una sosta passando per Spitalfields.",
+      "curiosita": "Hawksmoor, allievo di Christopher Wren, firmo' alcune delle chiese londinesi piu enigmatiche e teatrali, e questa e' tra le sue piu celebri.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Chiesa barocca di Hawksmoor"
+        },
+        {
+          "k": "Zona",
+          "v": "Commercial Street, Spitalfields"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera, facciata illuminata"
+        }
+      ]
     },
     {
       "id": "lo-boxpark",
@@ -662,7 +2420,24 @@
       "note": "Mall pop-up dentro container: street food da tutto il mondo e drink. A 3 min dall'hotel, perfetto per la prima sera.",
       "dur": 40,
       "q": "Boxpark Shoreditch London",
-      "cat": "Street food"
+      "cat": "Street food",
+      "summary": "Mall pop-up dentro container riciclati: street food da tutto il mondo e drink, a pochi passi a Shoreditch.",
+      "descrizione": "Boxpark Shoreditch e' nato come primo 'pop-up mall' al mondo, ricavato da container navali impilati accanto alla stazione di Shoreditch High Street. Oggi e' soprattutto un ritrovo per street food internazionale e drink, vivace e informale. Perfetto per una cena rapida e variegata la prima sera, scegliendo tra cucine diverse.",
+      "curiosita": "Quando apri' nel 2011 venne presentato come il primo centro commerciale pop-up del mondo, simbolo della rinascita creativa di Shoreditch.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Street food in container"
+        },
+        {
+          "k": "Zona",
+          "v": "Shoreditch High Street"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera, prima cena"
+        }
+      ]
     },
     {
       "id": "lo-redchurch",
@@ -670,7 +2445,24 @@
       "zone": "Shoreditch",
       "note": "Strada cool di boutique indipendenti, gallerie e locali. Passeggiata serale nel cuore hipster di Shoreditch.",
       "dur": 25,
-      "q": "Redchurch Street Shoreditch London"
+      "q": "Redchurch Street Shoreditch London",
+      "summary": "Strada cool di Shoreditch: boutique indipendenti, gallerie e locali, ideale per una passeggiata serale hipster.",
+      "descrizione": "Redchurch Street e' una delle vie piu trendy di Shoreditch, fiancheggiata da boutique indipendenti, concept store, gallerie e caffe. L'atmosfera e' quella creativa e ricercata del quartiere, tra vetrine di design e murales. Una passeggiata qui, anche solo per curiosare, e' il modo giusto per assaporare lo stile dell'East End.",
+      "curiosita": "Da via di magazzini dismessi, Redchurch Street e' diventata in pochi anni un indirizzo simbolo della gentrificazione creativa di Shoreditch.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Via di boutique e gallerie"
+        },
+        {
+          "k": "Zona",
+          "v": "Shoreditch"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera, passeggiata"
+        }
+      ]
     },
     {
       "id": "lo-ten-bells",
@@ -679,7 +2471,24 @@
       "note": "Storico pub vittoriano di fronte al mercato, legato alle leggende di Jack lo Squartatore. Una pinta tra interni d'epoca.",
       "dur": 35,
       "q": "The Ten Bells pub Commercial Street London",
-      "cat": "Pub"
+      "cat": "Pub",
+      "summary": "Storico pub vittoriano di fronte allo Spitalfields Market, legato alla leggenda di Jack lo Squartatore.",
+      "descrizione": "The Ten Bells e' un pub vittoriano davanti a Christ Church e al mercato di Spitalfields, celebre per gli interni d'epoca con piastrelle decorate. Il locale e' avvolto dalle storie su Jack lo Squartatore, ad alcune cui vittime fu frequentatrice della zona. Una pinta qui, tra atmosfera storica e un po' macabra, e' un'esperienza molto East End.",
+      "curiosita": "Si racconta che alcune vittime di Jack lo Squartatore bevessero proprio al Ten Bells, il che ha reso il pub una tappa dei tour sul mistero vittoriano.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Pub storico vittoriano"
+        },
+        {
+          "k": "Zona",
+          "v": "Commercial Street, Spitalfields"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera, per una pinta"
+        }
+      ]
     },
     {
       "id": "lo-stpauls",
@@ -687,7 +2496,28 @@
       "zone": "City & South Bank",
       "note": "Opzionale: la cupola di Wren illuminata di sera. ~20 min a piedi o 10 in tube da Liverpool St; si torna in hotel facilmente.",
       "dur": 25,
-      "q": "St Paul's Cathedral London"
+      "q": "St Paul's Cathedral London",
+      "summary": "La grande cattedrale di Wren con la cupola simbolo di Londra: di sera, illuminata, e' uno spettacolo.",
+      "descrizione": "St Paul's Cathedral e' il capolavoro di Sir Christopher Wren, ricostruito dopo il Grande Incendio del 1666 e dominato dalla celebre cupola. All'interno si visitano il pavimento della cattedrale, la cripta e le gallerie della cupola, tra cui la sussurrante Whispering Gallery. Anche di sera, illuminata, la sagoma resta uno dei simboli piu riconoscibili della City.",
+      "curiosita": "La cupola sopravvisse quasi intatta ai bombardamenti del Blitz: la foto di St Paul's tra il fumo divenne un'icona della resistenza londinese.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Cattedrale di Wren"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Ingresso a pagamento (~£27)"
+        },
+        {
+          "k": "Orari",
+          "v": "Visite lun-sab dalle 8.30"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Tube St Paul's; ~10 min da Liverpool St"
+        }
+      ]
     },
     {
       "id": "lo-millennium",
@@ -695,7 +2525,28 @@
       "zone": "City & South Bank",
       "note": "Opzionale: ponte pedonale con vista sul Tamigi e su St Paul's. ~25 min a piedi; rientro comodo in tube per la notte.",
       "dur": 20,
-      "q": "Millennium Bridge London"
+      "q": "Millennium Bridge London",
+      "summary": "Ponte pedonale sul Tamigi che collega St Paul's alla Tate Modern, con vista perfetta sulla cattedrale.",
+      "descrizione": "Il Millennium Bridge e' un elegante ponte pedonale in acciaio che attraversa il Tamigi collegando la City alla South Bank. Da qui si gode una delle viste piu belle su St Paul's da un lato e sulla Tate Modern dall'altro. Una breve traversata, soprattutto al tramonto o di sera, regala scorci memorabili sul fiume.",
+      "curiosita": "Appena aperto nel 2000 oscillava cosi tanto da essere soprannominato 'Wobbly Bridge' e venne chiuso per mesi per essere stabilizzato.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Ponte pedonale sul Tamigi"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Gratuito"
+        },
+        {
+          "k": "Zona",
+          "v": "Tra St Paul's e South Bank"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera, vista sul fiume"
+        }
+      ]
     },
     {
       "id": "lo-tate-modern",
@@ -703,7 +2554,246 @@
       "zone": "City & South Bank",
       "note": "Opzionale: vista sul Tamigi dalla terrazza dell'ex centrale elettrica. ~30 min a piedi; si rientra in tempo per dormire.",
       "dur": 30,
-      "q": "Tate Modern London"
+      "q": "Tate Modern London",
+      "summary": "Museo d'arte moderna nell'ex centrale elettrica di Bankside: ingresso gratuito e terrazza con vista sul Tamigi.",
+      "descrizione": "La Tate Modern occupa l'imponente ex centrale elettrica di Bankside, sulla riva sud del Tamigi, ed e' uno dei musei d'arte moderna e contemporanea piu visitati al mondo. La spettacolare Turbine Hall e le sale dalla collezione permanente sono a ingresso gratuito, mentre le mostre temporanee sono a pagamento. Dai piani alti e dalla terrazza si gode una vista magnifica sulla City e su St Paul's.",
+      "curiosita": "La gigantesca Turbine Hall, un tempo cuore della centrale, ospita installazioni monumentali che hanno reso celebre il museo in tutto il mondo.",
+      "info": [
+        {
+          "k": "Cosa",
+          "v": "Museo d'arte moderna"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Collezione gratuita; mostre a pagamento"
+        },
+        {
+          "k": "Orari",
+          "v": "10-18; ven-sab fino alle 21"
+        },
+        {
+          "k": "Zona",
+          "v": "Bankside, South Bank"
+        }
+      ]
     }
-  ]
+  ],
+  "glasgow": {
+    "gl-0": {
+      "summary": "Sfarzoso museo vittoriano che spazia dall'arte all'archeologia alla storia naturale, capolavoro del West End.",
+      "descrizione": "Costruito nello stile sfarzoso dell'epoca imperiale, questo museo vittoriano spazia dall'arte all'archeologia fino alla storia naturale. Accanto ai capolavori trovano posto un elefante impagliato, spade della Micronesia e uno Spitfire della seconda guerra mondiale. Tra le opere più celebri il 'Cristo di San Giovanni della Croce' di Salvador Dalí e 'Un uomo in armatura' di Rembrandt.",
+      "curiosita": "Da lunedì a sabato alle 13 (domenica alle 15) si tiene un concerto d'organo gratuito; il museo merita mezza giornata.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Ingresso gratuito alla collezione permanente"
+        },
+        {
+          "k": "Quando",
+          "v": "Lun-gio e sab 10-17, ven e dom 11-17"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Dalí, Rembrandt, l'elefante Sir Roger, i paesaggi delle Highlands"
+        },
+        {
+          "k": "Zona",
+          "v": "West End, vicino a Kelvingrove Park e all'Università di Glasgow"
+        }
+      ]
+    },
+    "gl-1": {
+      "summary": "La spina dorsale bohémien del West End: negozi indipendenti, vicoli nascosti e la fotogenica Ashton Lane.",
+      "descrizione": "L'animata Byres Road è la spina dorsale della zona bohémien del West End, ricca di negozi indipendenti, caffè e pub. Dai suoi lati si dipartono strette vie un tempo chiamate mews, come Ruthven Lane con i suoi negozi vintage e di vinili. La più fotogenica è Ashton Lane, vicolo acciottolato pieno di pub e ristoranti, tra cui il celebre Ubiquitous Chip.",
+      "curiosita": "In Ashton Lane si trova Jinty McGuinty's, tipico pub del West End con beer garden, musica live e un occhio di riguardo per i grandi scrittori.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Ashton Lane, Ruthven Lane, negozi e pub indipendenti"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Metropolitana, fermata Hillhead"
+        },
+        {
+          "k": "Zona",
+          "v": "West End, vicino all'Università e ai Botanic Gardens"
+        }
+      ]
+    },
+    "gl-2": {
+      "summary": "Cattedrale gotica medievale sopravvissuta alla Riforma, con la tomba di san Mungo nella chiesa inferiore.",
+      "descrizione": "La Cattedrale di Glasgow è una magnifica struttura gotica che, a differenza di gran parte delle cattedrali scozzesi, sopravvisse quasi intatta alla Riforma. L'ambiente semibuio evoca atmosfere medievali, con travi originali del XIV secolo e vetrate istoriate moderne. Una scala scende all'antica chiesa inferiore, dove una selva di colonne circonda la tomba di san Mungo, che qui fondò una comunità monastica nel VI secolo.",
+      "curiosita": "Alle spalle della cattedrale, la Necropoli ottocentesca conta circa 3500 lapidi, alcune disegnate da architetti come Alexander 'Greek' Thomson e Charles Rennie Mackintosh.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Ingresso gratuito alla cattedrale; Necropolis a accesso libero"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Chiesa inferiore e tomba di san Mungo, Necropolis, St Mungo's Museum"
+        },
+        {
+          "k": "Zona",
+          "v": "East End di Glasgow"
+        }
+      ]
+    },
+    "gl-3": {
+      "summary": "Museo dei trasporti firmato Zaha Hadid sul Clyde, con il veliero Glenlee ormeggiato accanto.",
+      "descrizione": "L'imponente edificio contemporaneo sul Glasgow Harbour, progettato da Zaha Hadid, ospita un affascinante museo dei trasporti. Tra automobili scozzesi, locomotive, tram e la prima bicicletta a pedali del 1847, i veicoli sono inseriti nella ricostruzione di una via commerciale di Glasgow dei primi del Novecento. Davanti al museo è ormeggiato il Glenlee, magnifico veliero a tre alberi varato nel 1896.",
+      "curiosita": "La visita al veliero Glenlee è gestita separatamente dal museo e prevede un piccolo supplemento (circa £4,50) per le spese di manutenzione.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Ingresso al museo gratuito; supplemento per il veliero Glenlee"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Auto e tram d'epoca, via ricostruita primi '900, Tall Ship Glenlee"
+        },
+        {
+          "k": "Zona",
+          "v": "Glasgow Harbour, sul fiume Clyde"
+        }
+      ]
+    },
+    "gl-4": {
+      "summary": "Collezione d'arte di rilevanza mondiale immersa nel verde del Pollok Country Park.",
+      "descrizione": "Donata alla città nel 1944 dall'industriale William Burrell, questa collezione d'arte di rilevanza internazionale ha sede dal 1983 in un museo dedicato dentro il Pollok Country Park. Spazia da porcellane cinesi a mobili medievali, da arazzi del XVI secolo a quadri impressionisti di Cézanne e Degas. Particolarmente pregiate le gallerie degli arazzi, realizzati tra il XIII e il XVI secolo.",
+      "curiosita": "Burrell (1861-1958) collezionò opere fino alla morte a 96 anni; nel 2024 il museo è stato premiato come miglior edificio della Scozia.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Ingresso gratuito"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Gallerie degli arazzi, impressionisti, Pollok Country Park"
+        },
+        {
+          "k": "Zona",
+          "v": "Southside, nel Pollok Country Park"
+        }
+      ]
+    },
+    "gl-5": {
+      "summary": "Il salotto civico di Glasgow e il quartiere dei mercanti, tra palazzi vittoriani, bar e ristoranti.",
+      "descrizione": "George Square, dominata dal municipio (City Chambers), è la piazza simbolo di Glasgow e punto di partenza ideale per esplorare Merchant City. Quest'ultima è il quartiere dei 'lord del tabacco', un tempo zona di magazzini e oggi animata da bar, ristoranti e centri commerciali tra splendidi palazzi vittoriani. Tra le tappe la Gallery of Modern Art, l'elegante Corinthian Club e la Merchant Square, ex mercato ortofrutticolo.",
+      "curiosita": "Le fortune dei mercanti nascevano dal commercio transatlantico basato sulla schiavitù: vie come Ingram, Wilson e Glassford portano i nomi di schiavisti dell'epoca.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "City Chambers, Gallery of Modern Art, Corinthian Club, Merchant Square"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Stazione di Queen St e autostazione di Buchanan St, poi a piedi"
+        },
+        {
+          "k": "Zona",
+          "v": "Centro di Glasgow"
+        }
+      ]
+    },
+    "gl-6": {
+      "summary": "Whisky bar d'altri tempi con pavimenti cigolanti e tavoli in ferro battuto, tappa fissa dei pub crawl.",
+      "descrizione": "The Pot Still è uno storico whisky bar dal fascino d'altri tempi, con pavimenti cigolanti e tavoli in ferro battuto. È una tappa immancabile nei giri dei pub di Glasgow, accanto a istituzioni come l'Horseshoe Bar. Il locale offre una vasta scelta di single malt in un'atmosfera tradizionale e accogliente.",
+      "curiosita": "Figura tra i pub tradizionali da non saltare in un giro per il centro, insieme al mitico Horseshoe Bar.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Ampia selezione di whisky single malt"
+        },
+        {
+          "k": "Zona",
+          "v": "Centro di Glasgow, zona Sauchiehall St"
+        }
+      ]
+    },
+    "gl-7": {
+      "summary": "Ristorante storico di Ashton Lane, dal 1971 paladino dei prodotti agricoli scozzesi.",
+      "descrizione": "In attività dal 1971, l'Ubiquitous Chip è stato il primo ristorante a promuovere i prodotti agricoli scozzesi ed è un'istituzione del West End. Si trova nella fotogenica Ashton Lane, vicolo acciottolato pieno di pub e ristoranti. Una viuzza laterale riconduce direttamente a Byres Road.",
+      "curiosita": "È considerato un pioniere della cucina del territorio scozzese, una tradizione che porta avanti da oltre mezzo secolo.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "12-24, ven-sab fino all'1; fascia alta (£££)"
+        },
+        {
+          "k": "Zona",
+          "v": "Ashton Lane, West End di Glasgow"
+        }
+      ]
+    }
+  },
+  "experiences": {
+    "ex-castelli": {
+      "summary": "Fortezze, rovine e regge che raccontano mille anni di storia scozzese, dentro e attorno a Edimburgo.",
+      "descrizione": "Un percorso tra le pietre della storia: dall'Edinburgh Castle sulla rocca vulcanica al Palace of Holyroodhouse, teatro delle vicende di Maria Stuart. Fuori città le rovine medievali di Craigmillar Castle e Tantallon, lo Stirling Castle in cima alla sua rocca e il Castello di Glasgow con la sua Necropoli. Storie di re, regine e congiure che attraversano i secoli.",
+      "curiosita": "Maria Stuart ricorre in molti di questi luoghi: a Craigmillar i suoi cortigiani tramarono l'omicidio del marito Enrico Stuart.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Edinburgh Castle, Holyroodhouse, Craigmillar, Stirling Castle, Tantallon Castle"
+        }
+      ]
+    },
+    "ex-whisky": {
+      "summary": "Distillerie, whisky bar e degustazioni per scoprire il distillato nazionale, dalla città al fiume.",
+      "descrizione": "Il viaggio nel whisky scozzese tocca distillerie urbane e bar storici. A Leith la 'distilleria verticale' Port of Leith propone tour di 90 minuti con vista sul Firth of Forth, mentre a Glasgow la Clydeside Distillery, ricavata da una stazione di pompaggio sul Clyde, chiude la visita con tre single malt. In città non mancano whisky bar d'altri tempi come The Pot Still e, a Edimburgo, esperienze immersive come la Johnnie Walker.",
+      "curiosita": "Alla Clydeside Distillery l'acqua usata non proviene dal Clyde ma dal Loch Katrine, lontano dal fiume.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Port of Leith Distillery, Clydeside Distillery, The Pot Still, Johnnie Walker Experience"
+        }
+      ]
+    },
+    "ex-loch": {
+      "summary": "Laghi, montagne e villaggi delle Highlands a portata di treno, dal Loch Lomond alle Pentland Hills.",
+      "descrizione": "L'avventura tra natura selvaggia e laghi inizia spesso dal Loch Lomond, raggiungibile in treno fino a Balloch, con crociere, il villaggio di Luss e il Balloch Castle Country Park. Più vicino a Edimburgo, le morbide Pentland Hills offrono sentieri escursionistici, mentre l'Arthur's Seat regala un assaggio di Highlands dentro la città. Acque, brughiere e panorami che profumano di erica.",
+      "curiosita": "Il Loch Lomond si raggiunge in treno da Glasgow a Balloch in circa 45 minuti, sulla riva sud del lago.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Loch Lomond, villaggio di Luss, crociere sul lago, Pentland Hills, Arthur's Seat"
+        }
+      ]
+    },
+    "ex-costa": {
+      "summary": "Spiagge, scogliere e riserve naturali lungo il Firth of Forth, dalla città alla costa dell'East Lothian.",
+      "descrizione": "La costa scozzese si esplora tra sabbia e fauna selvatica. La spiaggia di Portobello regala due miglia di sabbia dorata con vista sul Fife, mentre a North Berwick lo Scottish Seabird Centre, le rovine di Tantallon Castle e la collina del North Berwick Law affacciano sul mare. A South Queensferry il Forth Bridge e l'isola di Inchcolm completano il quadro di un litorale ricco di natura e storia.",
+      "curiosita": "Dalla spiaggia di Portobello, nelle giornate limpide, lo sguardo arriva fino al Fife, oltre il Firth of Forth.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Portobello Beach, Scottish Seabird Centre, Tantallon Castle, Forth Bridge, Inchcolm"
+        }
+      ]
+    },
+    "ex-cinema": {
+      "summary": "Vicoli sepolti, cimiteri gotici e luoghi che ispirarono romanzi e film, dal Da Vinci Code a Harry Potter.",
+      "descrizione": "Il lato misterioso di Edimburgo si svela tra i closes sepolti di Mary King's Close, visitabili solo con tour guidato tra storie di fantasmi, e il cimitero di Greyfriars con le sue tombe ingabbiate dai mortsafe. Qui J.K. Rowling trovò cognomi come McGonagall per Harry Potter. Fuori città la Rosslyn Chapel, resa celebre da 'Il codice Da Vinci', mentre la Britannia compare anche nella serie The Crown.",
+      "curiosita": "Nel Greyfriars Kirkyard riposa anche un certo Tom Riddell, cognome che ispirò il nome del villain di Harry Potter.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Mary King's Close, Greyfriars Kirkyard, Rosslyn Chapel, Camera Obscura"
+        }
+      ]
+    },
+    "ex-locali": {
+      "summary": "Pub storici, session di musica folk e whisky bar dove vive l'anima conviviale scozzese.",
+      "descrizione": "La vita notturna scozzese passa per pub d'atmosfera e musica dal vivo. A Edimburgo Sandy Bell's è un tempio della musica folk tradizionale, mentre il Sheep Heid Inn, tra i più antichi del paese, conserva una pista di skittles già frequentata da Maria Stuart. A Glasgow whisky bar come The Pot Still e l'Horseshoe Bar, i pub di Merchant City e il West End di Ashton Lane completano una scena calorosa e schietta.",
+      "curiosita": "Il Sheep Heid Inn, a Duddingston ai piedi dell'Arthur's Seat, risale alla metà del XIV secolo ed era frequentato da Maria Stuart.",
+      "info": [
+        {
+          "k": "Da vedere",
+          "v": "Sandy Bell's, Sheep Heid Inn, The Pot Still, pub di Merchant City e Ashton Lane"
+        }
+      ]
+    }
+  }
 }

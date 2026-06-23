@@ -52,7 +52,7 @@ export function metaText(d) {
 export function SummaryRow({ d, onOpen, isFav, onToggleFav, last }) {
   const c = kindColor(d.kind);
   const meta = metaText(d);
-  const line = firstSentence(d.note);
+  const line = d.summary || firstSentence(d.note);
   return (
     <div
       onClick={() => onOpen(d)}
@@ -109,7 +109,8 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav }) {
       >
         {/* Hero: photo when available, else a coloured placeholder band */}
         <div style={{ position: "relative", height: 168, background: d.photo ? "#000" : `linear-gradient(135deg, ${c} 0%, #0E1542 100%)`, borderRadius: "20px 20px 0 0", overflow: "hidden" }}>
-          {d.photo && <img src={d.photo} alt={d.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />}
+          {d.photo && <img src={d.photo} alt={d.name} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />}
+          {d.photo && d.credit && <span style={{ position: "absolute", bottom: 4, left: 8, fontSize: 8.5, fontWeight: 600, color: "rgba(255,255,255,.7)", textShadow: "0 1px 2px rgba(0,0,0,.6)" }}>{d.credit}</span>}
           {!d.photo && (
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", padding: 16 }}>
               <span style={{ position: "absolute", top: -20, right: 6, fontSize: 150, fontWeight: 900, color: "rgba(255,255,255,.08)", lineHeight: 1 }}>{(d.name || "?").slice(0, 1)}</span>
@@ -136,7 +137,7 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav }) {
             </div>
           )}
 
-          {d.note && <p style={{ margin: "14px 0 0", fontSize: 14, lineHeight: 1.62, color: "#4f4a3a", fontWeight: 500 }}>{d.note}</p>}
+          {(d.descrizione || d.note) && <p style={{ margin: "14px 0 0", fontSize: 14, lineHeight: 1.62, color: "#4f4a3a", fontWeight: 500 }}>{d.descrizione || d.note}</p>}
 
           {d.transferNote && (
             <div style={{ marginTop: 12, padding: "9px 12px", background: "#FFF3CC", border: "1px solid #E9D08A", borderRadius: 10, fontSize: 12.5, color: "#6a5410", fontWeight: 700 }}>
