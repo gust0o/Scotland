@@ -1,0 +1,23 @@
+{
+  "name": "taccuino-scozia-2026",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Taccuino Scozia 2026 — guida da campo offline-first per un viaggio in Scozia (Londra → Edimburgo)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "generate-icons": "pwa-assets-generator"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vite-pwa/assets-generator": "^0.2.6",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.7",
+    "vite-plugin-pwa": "^0.21.1"
+  }
+}

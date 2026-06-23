@@ -1,0 +1,104 @@
+:root {
+  /* Position of the light on the card (0–100%), set per-card by paintLight() from
+     the card's place on screen + device tilt. One light = one reflection. */
+  --lx: 32%;
+  --ly: 22%;
+  /* Drop-shadow offset (unitless px), shifts opposite to the tilt. */
+  --sx: 0;
+  --sy: 0;
+  /* Strength of the reflection (0–1): near 0 at rest, flares only at certain tilts
+     so the print stays legible. Set per-card by paintLight(). */
+  --sheen: 0.12;
+  /* Procedural paper fibre — fine, natural, low-contrast (matte newsprint tooth). */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: #0e1542;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: #ff2e7e;
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
+@keyframes scoziaPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.55);
+    opacity: 0.35;
+  }
+}
+
+/* Native form controls inside the dark sheets should not blow out the palette. */
+input[type="time"],
+input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Realistic matte printed paper (modelled on real newsprint photos):
+   - ::before — the paper fibre/tooth: fine even grain, MULTIPLY, so the texture
+     reads on the pale paper exactly like real stock. Always on.
+   - ::after  — THE reflection: a broad, soft sheen, SCREEN-blended. Because screen
+     is additive, it barely touches the near-white paper but lifts the dark inks
+     into a grey reflective veil — which is precisely how light catches print:
+     "colpisce di più i neri e gli inchiostri". One light, one reflection.
+   The directional paper body-shading, the grain-in-the-highlight and the edge
+   light are added by <Overlays/>. `isolation` contains the blends. */
+.paper {
+  isolation: isolate;
+}
+.paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+  background-image: var(--grain);
+  background-size: 84px 84px;
+  opacity: 0.12;
+  mix-blend-mode: multiply;
+}
+.paper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 4;
+  /* Broad, soft sheen — a matte reflection, not a glossy spot. It is gated by
+     --sheen so it only flares strongly at certain tilts and never washes the text
+     out at rest. Clipped to the card shape by border-radius:inherit + overflow. */
+  background: radial-gradient(
+    140% 78% at var(--lx) var(--ly),
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.27) 32%,
+    rgba(255, 255, 255, 0.09) 54%,
+    rgba(255, 255, 255, 0.02) 72%,
+    rgba(255, 255, 255, 0) 86%
+  );
+  mix-blend-mode: screen;
+  opacity: var(--sheen);
+}
+
