@@ -41,6 +41,17 @@ export default defineConfig({
         // Cache Google Fonts so the app's typography survives offline once seen.
         runtimeCaching: [
           {
+            // Venue photos: bundled but not precached (keeps the install small);
+            // cached on first view so they're available offline afterwards.
+            urlPattern: ({ url }) => url.pathname.endsWith(".webp"),
+            handler: "CacheFirst",
+            options: {
+              cacheName: "venue-photos",
+              cacheableResponse: { statuses: [0, 200] },
+              expiration: { maxEntries: 140, maxAgeSeconds: 60 * 60 * 24 * 365 },
+            },
+          },
+          {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: "CacheFirst",
             options: {

@@ -22,6 +22,8 @@ export const FLIGHT_DAYS = { g0: [0], g1: [1], g5: [2, 3] };
 // Enriched, zone-organised content (descriptions, neighbourhoods, venue details)
 // drafted from the Lonely Planet source. Public information only.
 import CONTENT from "./content.json";
+// Bundled venue photos (id → { credit, source }); empty until the photo pipeline runs.
+import PHOTOS from "./photos.json";
 export const ZONES_ORDER = CONTENT.zonesOrder;
 export const AREAS_ORDER = CONTENT.areasOrder;
 
@@ -173,6 +175,11 @@ function build() {
   neighborhoods.forEach((n) => add({ id: n.id, name: n.name, kind: "neighborhood", where: "Quartiere · Edimburgo", note: n.blurb, see: n.see || [], maps: n.maps, ...enr(n) }));
   experiences.forEach((x) => add({ id: x.id, name: x.title, kind: "experience", where: "Esperienza a tema", hi: x.hi || "", note: x.body, places: (x.places || []).map((p) => ({ name: p.name, maps: mapsUrl(p.q) })), maps: "", ...enr(x) }));
   glasgow.forEach((g) => add({ id: g.id, name: g.name, kind: "glasgow", where: "Glasgow", note: g.note, maps: g.maps, ...enr(g) }));
+
+  // Apply bundled photos (Round 3): set photo + credit + source on each detail.
+  Object.keys(PHOTOS).forEach((id) => {
+    if (details[id]) { details[id].photo = "img/" + id + ".webp"; details[id].credit = PHOTOS[id].credit || ""; details[id].photoSource = PHOTOS[id].source || ""; }
+  });
 
   return {
     sights, eats, trips, london, experiences, neighborhoods, glasgow,
