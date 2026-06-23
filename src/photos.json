@@ -1,1 +1,318 @@
-{}
+{
+ "dt-falkirk": {
+  "credit": "Steven Straiton · CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:The_Kelpies_at_The_Helix_in_Falkirk,_Scotland,_June_2014.jpg"
+ },
+ "dt-glasgow": {
+  "credit": "Thomas Annan · Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Slum_in_Glasgow,_1871.jpg"
+ },
+ "dt-lochlomond": {
+  "credit": "Frombowen · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Balloch_Castle,earthwork,Loch_Lomond_Park.jpg"
+ },
+ "dt-musselburgh": {
+  "credit": "Dcameron814 · CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Mussel_Monument_by_Musselburgh_Beach_in_Scotland.jpg"
+ },
+ "dt-nberwick": {
+  "credit": "M J Richardson · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Jetty_at_North_Berwick_-_geograph.org.uk_-_3332451.jpg"
+ },
+ "dt-queensferry": {
+  "credit": "Nigel Mykura · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:South_Queensferry_-_geograph.org.uk_-_7026830.jpg"
+ },
+ "dt-standrews": {
+  "credit": "Subhrajyoti07 · CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:St._Andrews_Church_situated_in_Darjeeling.jpg"
+ },
+ "dt-stirling": {
+  "credit": "DeFacto · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Stirling_Castle_2017.jpg"
+ },
+ "ea-angels": {
+  "credit": "Kim Traynor · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Angel_playing_bagpipes,_Thistle_Chapel,_St._Giles.JPG"
+ },
+ "ea-cannyman": {
+  "credit": "kim traynor · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Head_on_the_Canny_Man%27s,_Morningside_Road_-_geograph.org.uk_-_1954879.jpg"
+ },
+ "ea-fishers": {
+  "credit": "Anthony Parkes · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Fishers_Restaurant,_Tower_Street,_Leith_-_geograph.org.uk_-_4530589.jpg"
+ },
+ "ea-sandybells": {
+  "credit": "Mike Pennington · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Sandy_Bell%27s,_Forrest_Road,_Edinburgh_-_geograph.org.uk_-_5453102.jpg"
+ },
+ "ea-sheepheid": {
+  "credit": "Kim Traynor · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Sheep_Heid_Inn,_Duddingston.jpg"
+ },
+ "ea-witchery": {
+  "credit": "Simon Johnston · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:The_Witchery_-_geograph.org.uk_-_612172.jpg"
+ },
+ "es-arthurs": {
+  "credit": "Ermell · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Edinburgh_Arthur%27s_Seat-20110904-RM-124927.jpg"
+ },
+ "es-britannia": {
+  "credit": "Chris Holifield · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:The_bow_of_the_Royal_Yacht_Britannia_-_geograph.org.uk_-_6305734.jpg"
+ },
+ "es-calton": {
+  "credit": "Daniel Kraft · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Edinburgh_Calton_Hill_from_Salisbury_Crags_20211019.jpg"
+ },
+ "es-camera": {
+  "credit": "Raymond Knapman · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Camera_Obscura_Edinburgh_-_geograph.org.uk_-_742543.jpg"
+ },
+ "es-castle": {
+  "credit": "George Washington Wilson / Adam Cuerden · Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Edinburgh_Castle_from_Grass_Market.jpg"
+ },
+ "es-dean": {
+  "credit": "Enric · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Edinburgh_-_Edinburgh,_Dean_Village,_7_Dean_Path,_Dean_School,_Lodge_-_20140426194411.jpg"
+ },
+ "es-dynamic": {
+  "credit": "Mike Pennington · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Our_Dynamic_Earth,_Edinburgh_-_geograph.org.uk_-_3512356.jpg"
+ },
+ "es-greyfriars": {
+  "credit": "Daniel Kraft · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Edinburgh_Greyfriars_Bobby_monument_20211019.jpg"
+ },
+ "es-holyrood": {
+  "credit": "Daniel Lu (User:dllu) (with special thanks to Bastian Kratzke for help with cloning out the lights) · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Palace_of_Holyroodhouse_quadrangle_Edinburgh_2025_dllu.jpg"
+ },
+ "es-maryking": {
+  "credit": "The Real Mary King's Close at en.wikipedia · Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Marykingsclose006.jpg"
+ },
+ "es-natgallery": {
+  "credit": "Wikimedia Commons · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:National_Gallery_of_Scotland_restitch1_2005-08-07.jpg"
+ },
+ "es-natmuseum": {
+  "credit": "Mike Pennington · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Stegosaurus_skeleton_at_National_Museum_of_Scotland.jpg"
+ },
+ "es-royalmile": {
+  "credit": "Daniel Kraft · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Edinburgh_Royal_Mile_from_Salisbury_Crags_20211019.jpg"
+ },
+ "es-victoria": {
+  "credit": "Daniel Kraft · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Edinburgh_Victora_Street_20211019.jpg"
+ },
+ "gl-0": {
+  "credit": "Zhi Yong Lee from Glasgow, UK · CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Kelvingrove_Art_Gallery_and_Museum_1.jpg"
+ },
+ "gl-1": {
+  "credit": "Lirazelf · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:44-46_Ashton_Lane.jpg"
+ },
+ "gl-2": {
+  "credit": "Stephen Sweeney · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Glasgow_Necropolis_from_near_Glasgow_Cathedral_-_geograph.org.uk_-_665021.jpg"
+ },
+ "gl-3": {
+  "credit": "Cutkiller2018 · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Riverside_Museum_Glasgow_EC2018.jpg"
+ },
+ "gl-4": {
+  "credit": "Didier Descouens · Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:(Toulouse)_M%C3%A8re_et_fille_-_Th%C3%A9odule_Ribot_-_Glasgow._The_Burrell_Collection_UK._Don_de_Sir_William_and_Lady_Burell,_1944.jpg"
+ },
+ "gl-5": {
+  "credit": "TomZoy · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Statue_Of_James_Watt.jpg"
+ },
+ "gl-6": {
+  "credit": "François Bonvin · Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Fran%C3%A7ois_Bonvin_(1817-1887)_-_Still_Life_with_a_Copper_Pot_-_35.14_-_Burrell_Collection.jpg"
+ },
+ "gl-7": {
+  "credit": "Ragsssss · CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Ubiquitous_chip,_glasgow.jpg"
+ },
+ "lo-beigel": {
+  "credit": "Jim Osley · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:%22Beigel_Bake%22,_Brick_Lane_-_geograph.org.uk_-_5041648.jpg"
+ },
+ "lo-bricklane": {
+  "credit": "Marathon · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Street_art_off_Brick_Lane_-_geograph.org.uk_-_4329038.jpg"
+ },
+ "lo-truman": {
+  "credit": "Bikeboy · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Old_Truman_Brewery_-_geograph.org.uk_-_3245522.jpg"
+ },
+ "nb-botanic": {
+  "credit": "Christoph Braun · CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Satureja_subspicata,_Royal_Botanic_Garden_Edinburgh,_Scotland,_GB,_IMG_3779_edit.jpg"
+ },
+ "nb-craigmillar": {
+  "credit": "James Moore · CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:James_Moore_-_Craigmillar_Castle,_Edinburgh,_Scotland_-_B1975.3.711_-_Yale_Center_for_British_Art.jpg"
+ },
+ "nb-fountainbridge": {
+  "credit": "Stinglehammer · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Edinburgh,_116_Fountainbridge,_Fountainbridge_Telephone_Exchange.jpg"
+ },
+ "nb-leith": {
+  "credit": "Rayan de Zeeuw · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:The_Shore_in_Leith_-_Winter_2009_-_geograph.org.uk_-_2166414.jpg"
+ },
+ "nb-portobello": {
+  "credit": "Paul Harrop · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Portobello_beach,_Edinburgh_-_geograph.org.uk_-_4202105.jpg"
+ },
+ "nb-southside": {
+  "credit": "Undefined · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Edinburgh,_1_Summerhall_Square_-_20170917154519.jpg"
+ },
+ "nb-stockbridge": {
+  "credit": "kim traynor · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Inside_Glenogle_Baths,_Stockbridge_-_geograph.org.uk_-_2223381.jpg"
+ },
+ "tv-dt-falkirk-0": {
+  "credit": "Sean Mack · CC BY 2.5",
+  "source": "https://commons.wikimedia.org/wiki/File:FalkirkWheelSide_2004_SeanMcClean.jpg"
+ },
+ "tv-dt-falkirk-1": {
+  "credit": "David-D-Rankin · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:The_Kelpies_,_Helix_park_,_Falkirk_,_Scotland_3906.jpg"
+ },
+ "tv-dt-falkirk-2": {
+  "credit": "Ian Murfitt · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Wetlands_at_Helix_Park,_Falkirk_-_geograph.org.uk_-_3662876.jpg"
+ },
+ "tv-dt-falkirk-3": {
+  "credit": "John Lord · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Callendar_House,_Falkirk_-_geograph.org.uk_-_987087.jpg"
+ },
+ "tv-dt-falkirk-5": {
+  "credit": "Richard Webb · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:The_Plough_Hotel,_Stenhousemuir_-_geograph.org.uk_-_2130005.jpg"
+ },
+ "tv-dt-glasgow-0": {
+  "credit": "Zhi Yong Lee from Glasgow, UK · CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Kelvingrove_Art_Gallery_and_Museum_1.jpg"
+ },
+ "tv-dt-glasgow-1": {
+  "credit": "Cutkiller2018 · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Riverside_Museum_Glasgow_EC2018.jpg"
+ },
+ "tv-dt-glasgow-2": {
+  "credit": "Colin · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Glasgow_Cathedral_-_Nave_Rear.jpg"
+ },
+ "tv-dt-glasgow-3": {
+  "credit": "Christopher Hilton · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Glasgow,_Charles_Rennie_Mackintosh%27s_Willow_Tea_Rooms,_Sauchiehall_Street_-_geograph.org.uk_-_3319197.jpg"
+ },
+ "tv-dt-glasgow-4": {
+  "credit": "Ragsssss · CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Ubiquitous_chip,_glasgow.jpg"
+ },
+ "tv-dt-lochlomond-0": {
+  "credit": "Val Vannet · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Ben_Lomond_from_Loch_Lomond_Shores,_Balloch_-_geograph.org.uk_-_17529.jpg"
+ },
+ "tv-dt-lochlomond-1": {
+  "credit": "Thomas Nugent · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Balloch_Castle_Country_Park_-_geograph.org.uk_-_3415380.jpg"
+ },
+ "tv-dt-lochlomond-2": {
+  "credit": "Stephen Sweeney · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Sweeney%27s_Cruises,_Loch_Lomond_-_geograph.org.uk_-_567474.jpg"
+ },
+ "tv-dt-lochlomond-3": {
+  "credit": "P Flannagan · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Luss_Village_at_Loch_Lomond_-_geograph.org.uk_-_507737.jpg"
+ },
+ "tv-dt-lochlomond-5": {
+  "credit": "Stephen Armstrong · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Tullie_Inn,_Balloch_Road,_Balloch_-_geograph.org.uk_-_7484808.jpg"
+ },
+ "tv-dt-musselburgh-0": {
+  "credit": "ronnie leask · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Starters_Building_Musselburgh_Links_Golf_Course_-_geograph.org.uk_-_1215823.jpg"
+ },
+ "tv-dt-musselburgh-1": {
+  "credit": "Mike Pennington · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Fisherrow_Harbour,_Musselburgh_-_geograph.org.uk_-_1231008.jpg"
+ },
+ "tv-dt-musselburgh-2": {
+  "credit": "M J Richardson · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Sea_wall_at_Musselburgh_Lagoons_-_geograph.org.uk_-_1064338.jpg"
+ },
+ "tv-dt-nberwick-0": {
+  "credit": "Robertaleotta2020 · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Scottish_Seabird_Centre_North_Berwick.jpg"
+ },
+ "tv-dt-nberwick-1": {
+  "credit": "Mike Pennington · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:North_Berwick_Law_from_Tantallon_Castle_-_geograph.org.uk_-_1803482.jpg"
+ },
+ "tv-dt-nberwick-2": {
+  "credit": "Randusr836 · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:North_Berwick_Law_Jawbone_II.jpg"
+ },
+ "tv-dt-nberwick-4": {
+  "credit": "Richard West · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Coastal_East_Lothian_,_The_Lobster_Shack_at_North_Berwick_Harbour_-_geograph.org.uk_-_2407860.jpg"
+ },
+ "tv-dt-nberwick-5": {
+  "credit": "Richard Sutcliffe · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:The_Ship_Inn_-_geograph.org.uk_-_7613735.jpg"
+ },
+ "tv-dt-queensferry-0": {
+  "credit": "David Dixon · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:The_Forth_Bridge,_North_Queensferry_-_geograph.org.uk_-_5422854.jpg"
+ },
+ "tv-dt-queensferry-1": {
+  "credit": "Terry Levinthal · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Inchcolm_Abbey_from_the_ferry_-_geograph.org.uk_-_1536233.jpg"
+ },
+ "tv-dt-queensferry-2": {
+  "credit": "Richard West · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:South_Queensferry_Townscape_,_Doorway_of_The_Old_Parish_Church_-_geograph.org.uk_-_4561438.jpg"
+ },
+ "tv-dt-queensferry-3": {
+  "credit": "Roger Wollstadt from Sarasota, Florida · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:South_Queensferry_-_Hawes_Inn.jpg"
+ },
+ "tv-dt-standrews-0": {
+  "credit": "Optograph · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:R%26A_Clubhouse,_Old_Course,_Swilcan_Burn_bridge.jpg"
+ },
+ "tv-dt-standrews-1": {
+  "credit": "Lilactree201 · CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:St_Andrews_Cathedral_Sky_and_Shade.jpg"
+ },
+ "tv-dt-standrews-2": {
+  "credit": "Tom Parnell · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:General_view_of_castle_from_SE.jpg"
+ },
+ "tv-dt-stirling-0": {
+  "credit": "DeFacto · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Stirling_Castle_2017.jpg"
+ },
+ "tv-dt-stirling-1": {
+  "credit": "Eusebius · CC BY 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Wallace_monument.jpg"
+ },
+ "tv-dt-stirling-4": {
+  "credit": "Robert Cutts from Bristol, England, UK · CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Settle_Inn,_St_Mary%27s_Wynd,_Stirling_(28667239076).jpg"
+ }
+}
