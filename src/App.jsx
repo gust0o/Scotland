@@ -1311,11 +1311,6 @@ export default class App extends React.Component {
     const now = this.nowDate();
     const today = this.iso(now);
     const favs = (this.state.plan && this.state.plan.favs) || [];
-    const isFav = (id) => favs.indexOf(id) >= 0;
-    const favDeco = (id) =>
-      isFav(id)
-        ? { favBg: "#FFD23F", favBorder: "#FFD23F", favColor: "#0E1542" }
-        : { favBg: "#fff", favBorder: "#D9CFB7", favColor: "#c9bf9f" };
 
     const coverVar = this.state.coverVar || this.props.coverVariant || "Manifesto";
     const onSel = (val) => ({
@@ -1608,7 +1603,6 @@ export default class App extends React.Component {
       fontWeight: 900, fontSize: 15, color: fg,
     });
     const h2 = (color) => ({ fontWeight: 900, fontSize: 27, margin: 0, color, letterSpacing: "-0.02em" });
-    const mapsPill = { flex: "none", fontSize: 11.5, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "5px 11px", borderRadius: 9 };
 
     return (
       <div
@@ -2199,6 +2193,9 @@ export default class App extends React.Component {
             onClose={this.closeDetail}
             isFav={favs.indexOf(this.state.detail.id) >= 0}
             onToggleFav={D.master[this.state.detail.id] ? (id) => this.toggleFav(id) : undefined}
+            tripVisit={this.state.detail.kind === "trip" ? this.tripVisitOf(this.state.detail.id, this.state.detail.visit) : null}
+            onTripLess={() => this.setTripVisit(this.state.detail.id, this.state.detail.visit, -30)}
+            onTripMore={() => this.setTripVisit(this.state.detail.id, this.state.detail.visit, 30)}
           />
         )}
 

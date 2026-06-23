@@ -86,8 +86,10 @@ export function SummaryRow({ d, onOpen, isFav, onToggleFav, last }) {
 const chip = (bg, fg) => ({ fontSize: 11.5, fontWeight: 800, color: fg, background: bg, borderRadius: 999, padding: "4px 10px", whiteSpace: "nowrap" });
 
 // Full detail sheet, reused everywhere (sections, timeline taps, favourites, now-cards).
-export default function VenueDetail({ d, onClose, isFav, onToggleFav }) {
+export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit, onTripLess, onTripMore }) {
   if (!d) return null;
+  const adjustable = d.kind === "trip" && typeof tripVisit === "number" && onTripMore;
+  const visitMin = adjustable ? tripVisit : d.visit;
   const k = KIND[d.kind] || KIND.sight;
   const c = k.c;
   const meta = [];
@@ -153,13 +155,47 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav }) {
 
           {/* Trip: travel breakdown + nested venues */}
           {d.kind === "trip" && (
-            <div style={{ marginTop: 14, display: "flex", flexWrap: "wrap", gap: 7 }}>
+            <div style={{ marginTop: 14, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 7 }}>
               <span style={chip("#DBF3E9", "#06382a")}>🚆 Andata {durLabel(d.train)}</span>
-              <span style={chip("#DBF3E9", "#06382a")}>Visita {durLabel(d.visit)}</span>
+              {adjustable ? (
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, ...chip("#DBF3E9", "#06382a") }}>
+                  <button onClick={onTripLess} title="Meno tempo" style={{ cursor: "pointer", border: "none", background: "rgba(6,56,42,.15)", borderRadius: 6, width: 18, height: 18, fontWeight: 900, color: "#06382a", lineHeight: 1 }}>−</button>
+                  Visita {durLabel(visitMin)}
+                  <button onClick={onTripMore} title="Più tempo" style={{ cursor: "pointer", border: "none", background: "rgba(6,56,42,.15)", borderRadius: 6, width: 18, height: 18, fontWeight: 900, color: "#06382a", lineHeight: 1 }}>+</button>
+                </span>
+              ) : (
+                <span style={chip("#DBF3E9", "#06382a")}>Visita {durLabel(visitMin)}</span>
+              )}
               <span style={chip("#DBF3E9", "#06382a")}>🚆 Ritorno {durLabel(d.train)}</span>
-              <span style={chip("#0E1542", "#fff")}>Totale {durLabel(d.dur)}</span>
+              <span style={chip("#0E1542", "#fff")}>Totale {durLabel(visitMin + 2 * d.train)}</span>
             </div>
           )}
+
+          {/* Trip transport options (real operators/lines, verified date + live links) */}
+          {d.kind === "trip" && d.transport && Array.isArray(d.transport.options) && d.transport.options.length > 0 && (
+            <div style={{ marginTop: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: ".1em", textTransform: "uppercase", color: "#7a7560", marginBottom: 8 }}>Come arrivare</div>
+              {d.transport.options.map((o, i) => {
+                const tc = o.mode === "Treno" ? "#0E1542" : o.mode === "Bus" ? "#14C08C" : "#111";
+                const facts = [o.durata_min ? durLabel(o.durata_min) : "", o.frequenza, (o.primo || o.ultimo) ? ("prima " + (o.primo || "—") + " · ultima " + (o.ultimo || "—")) : "", o.costo, o.coperturaUber].filter(Boolean);
+                return (
+                  <div key={i} style={{ padding: "9px 0", borderTop: i ? "1px solid rgba(122,112,84,.16)" : "none" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                      <span style={chip(tc, "#fff")}>{o.mode}</span>
+                      {(o.operatore || o.linea) && <span style={{ fontSize: 13, fontWeight: 800, color: "#17142C" }}>{[o.operatore, o.linea].filter(Boolean).join(" · ")}</span>}
+                      {o.link && <a href={o.link} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()} style={{ marginLeft: "auto", fontSize: 10.5, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "3px 9px", borderRadius: 8 }}>Orari ↗</a>}
+                    </div>
+                    {o.departures && o.departures.length > 0 && <div style={{ fontSize: 11.5, fontWeight: 700, color: "#5b5644", marginTop: 3, fontFamily: "'Spline Sans Mono',monospace" }}>{o.departures.join(" · ")}</div>}
+                    {facts.length > 0 && <div style={{ fontSize: 12, color: "#6B6450", fontWeight: 600, lineHeight: 1.45, marginTop: 2 }}>{facts.join(" · ")}</div>}
+                  </div>
+                );
+              })}
+              <div style={{ marginTop: 9, padding: "8px 11px", background: "#FFF3CC", border: "1px solid #E9D08A", borderRadius: 10, fontSize: 11.5, color: "#6a5410", fontWeight: 600, lineHeight: 1.45 }}>
+                ⚠ {d.transport.note ? d.transport.note + " " : ""}Dati verificati il {d.transport.verificato || "—"} — ricontrolla gli orari live prima di partire.
+              </div>
+            </div>
+          )}
+
           {d.kind === "trip" && d.venues && d.venues.length > 0 && (
             <div style={{ marginTop: 16 }}>
               <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: ".1em", textTransform: "uppercase", color: "#7a7560", marginBottom: 8 }}>Cosa vedere & dove mangiare</div>

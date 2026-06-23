@@ -905,7 +905,42 @@
           "k": "Tipo",
           "v": "Città d'arte e cultura"
         }
-      ]
+      ],
+      "transport": {
+        "verificato": "2026-06-23",
+        "note": "Orari di esempio non confermati per agosto 2026: ricontrolla gli orari vicino alla data sul sito ufficiale.",
+        "options": [
+          {
+            "mode": "Treno",
+            "operatore": "ScotRail",
+            "linea": "Edinburgh Waverley - Glasgow Queen Street",
+            "durata_min": 50,
+            "frequenza": "molto frequente, circa ogni 15-20'",
+            "primo": "05:18",
+            "ultimo": "23:45",
+            "costo": "da ~£8,40 sola andata (no tariffe peak/off-peak)",
+            "link": "https://www.scotrail.co.uk/train-times/edinburgh-waverley-to-glasgow-queen-street"
+          },
+          {
+            "mode": "Bus",
+            "operatore": "Scottish Citylink / Megabus",
+            "linea": "900 (Edinburgh Bus Station - Glasgow Buchanan)",
+            "durata_min": 80,
+            "frequenza": "fino a ogni 12' nelle ore di punta, ogni 30' la sera, servizio 24h",
+            "costo": "da ~£10 andata/ritorno in giornata",
+            "link": "https://www.citylink.co.uk/timetables-service-updates/glasgow-edinburgh/"
+          },
+          {
+            "mode": "Uber",
+            "operatore": "Uber",
+            "linea": "Edinburgh - Glasgow",
+            "durata_min": 60,
+            "costo": "indicativo ~£70-£100 a tratta (lungo, costoso; meglio treno/bus)",
+            "coperturaUber": "Uber attivo sia a Edimburgo sia a Glasgow; corsa diretta possibile ma cara e lunga.",
+            "link": "https://www.uber.com/global/en/r/cities/glasgow-sct-gb/"
+          }
+        ]
+      }
     },
     "dt-stirling": {
       "area": "Stirling & Trossachs",
@@ -926,7 +961,42 @@
           "k": "Tipo",
           "v": "Città storica e castelli"
         }
-      ]
+      ],
+      "transport": {
+        "verificato": "2026-06-23",
+        "note": "Orari di esempio non confermati per agosto 2026: ricontrolla gli orari vicino alla data sul sito ufficiale.",
+        "options": [
+          {
+            "mode": "Treno",
+            "operatore": "ScotRail",
+            "linea": "Edinburgh Waverley - Stirling",
+            "durata_min": 50,
+            "frequenza": "frequente, circa ogni 30'",
+            "primo": "05:18",
+            "ultimo": "23:37",
+            "costo": "da ~£12,60 andata/ritorno",
+            "link": "https://www.scotrail.co.uk/train-times/edinburgh-waverley-to-stirling"
+          },
+          {
+            "mode": "Bus",
+            "operatore": "Scottish Citylink",
+            "linea": "909 (Edinburgh - Stirling - Dunblane)",
+            "durata_min": 90,
+            "frequenza": "circa ogni ora",
+            "costo": "da ~£4 sola andata",
+            "link": "https://www.citylink.co.uk/our-routes-and-timetables/edinburgh-edinburgh-airport-stirling-dunblane/"
+          },
+          {
+            "mode": "Uber",
+            "operatore": "Uber",
+            "linea": "Edinburgh - Stirling",
+            "durata_min": 60,
+            "costo": "indicativo ~£70-£90 a tratta (solo partenza da Edimburgo)",
+            "coperturaUber": "Uber NON opera a Stirling: corsa eventuale solo in partenza da Edimburgo, nessun ritorno garantito; preferire treno/bus.",
+            "link": "https://www.uber.com/gb/en/blog/where-does-uber-operate-in-the-uk/"
+          }
+        ]
+      }
     },
     "dt-standrews": {
       "area": "Fife",
@@ -947,7 +1017,42 @@
           "k": "Tipo",
           "v": "Cittadina costiera e storica"
         }
-      ]
+      ],
+      "transport": {
+        "verificato": "2026-06-23",
+        "note": "St Andrews non ha stazione: treno fino a Leuchars + bus. Orari di esempio non confermati per agosto 2026: ricontrolla vicino alla data.",
+        "options": [
+          {
+            "mode": "Treno",
+            "operatore": "ScotRail",
+            "linea": "Tratta 1: Edinburgh Waverley - Leuchars",
+            "durata_min": 60,
+            "frequenza": "circa ogni 30-60'",
+            "primo": "05:30",
+            "ultimo": "23:00",
+            "costo": "da ~£10,20 sola andata",
+            "link": "https://www.scotrail.co.uk/train-times/edinburgh-waverley-to-leuchars"
+          },
+          {
+            "mode": "Bus",
+            "operatore": "Stagecoach in Fife",
+            "linea": "Tratta 2: bus 99 Leuchars - St Andrews (coincidenza con i treni)",
+            "durata_min": 15,
+            "frequenza": "circa ogni 15'",
+            "costo": "biglietto locale, da ~£3 (pagamento a bordo/app)",
+            "link": "https://www.stagecoachbus.com/routes/east-scotland/99/st-andrews-bus-station-dundee-city-centre/xhao099.o"
+          },
+          {
+            "mode": "Uber",
+            "operatore": "Uber",
+            "linea": "Edinburgh - St Andrews",
+            "durata_min": 90,
+            "costo": "indicativo ~£100-£130 a tratta, se disponibile",
+            "coperturaUber": "Uber NON copre in modo affidabile St Andrews (zona rurale del Fife): spesso 'nessuna auto disponibile'. Corsa solo in partenza da Edimburgo, ritorno non garantito; usare treno+bus 99.",
+            "link": "https://www.standrewscabs474747.com/blog/can-you-get-an-uber-to-st-andrews-scotland-here-s-what-you-need-to-know"
+          }
+        ]
+      }
     },
     "dt-lochlomond": {
       "area": "Stirling & Trossachs",
@@ -968,7 +1073,36 @@
           "k": "Tipo",
           "v": "Lago e parco nazionale"
         }
-      ]
+      ],
+      "transport": {
+        "verificato": "2026-06-23",
+        "note": "Nessun treno diretto Edimburgo-Balloch: cambio a Glasgow Queen Street. Da Edinburgh Waverley si raggiunge Glasgow Queen Street (servizio molto frequente), poi si prende il treno della linea Balloch (Glasgow Queen Street Low Level). Gli orari precisi di agosto 2026 non sono ancora pubblicati: verificare il giorno della partenza sul pianificatore ScotRail. ScotRail ha abolito le tariffe di punta (peak fares), quindi il prezzo non varia per fascia oraria. Balloch e' la porta d'accesso al Loch Lomond.",
+        "options": [
+          {
+            "mode": "Treno",
+            "operatore": "ScotRail",
+            "linea": "Edinburgh Waverley - Glasgow Queen Street, poi Glasgow Queen Street - Balloch (cambio a Glasgow Queen Street)",
+            "durata_min": 126,
+            "frequenza": "Tratta Edimburgo-Glasgow molto frequente (fino a ~4/ora); tratta Glasgow-Balloch circa ogni 30 min",
+            "primo": "",
+            "ultimo": "",
+            "costo": "Indicativo circa GBP 24-27 a tratta (variabile, Advance piu' economico)",
+            "link": "https://www.scotrail.co.uk/train-times/edinburgh-waverley-to-balloch"
+          },
+          {
+            "mode": "Uber",
+            "operatore": "Uber",
+            "linea": "",
+            "durata_min": 0,
+            "frequenza": "",
+            "primo": "",
+            "ultimo": "",
+            "costo": "",
+            "coperturaUber": "Disponibile a Edimburgo (anche aeroporto, 24/7). A Balloch/Loch Lomond la copertura e' molto limitata o assente: non affidarsi a Uber per il ritorno. Una corsa diretta Edimburgo-Balloch sarebbe lunga e molto costosa.",
+            "link": "https://www.uber.com/global/en/r/cities/edinburgh-sct-gb/"
+          }
+        ]
+      }
     },
     "dt-musselburgh": {
       "area": "East Lothian",
@@ -993,7 +1127,47 @@
           "k": "Tipo",
           "v": "Cittadina costiera e gita facile"
         }
-      ]
+      ],
+      "transport": {
+        "verificato": "2026-06-23",
+        "note": "Due opzioni semplici. Treno ScotRail da Edinburgh Waverley a Musselburgh: rapidissimo (la stazione e' pero' fuori dal centro, a circa 1,5 km). In alternativa i bus Lothian arrivano in centro citta'. Orari precisi di agosto 2026 non ancora pubblicati: verificare il giorno stesso.",
+        "options": [
+          {
+            "mode": "Treno",
+            "operatore": "ScotRail",
+            "linea": "Edinburgh Waverley - Musselburgh",
+            "durata_min": 8,
+            "frequenza": "Frequente (circa 2/ora)",
+            "primo": "05:50",
+            "ultimo": "23:14",
+            "costo": "Indicativo circa GBP 4-5 a tratta",
+            "link": "https://www.scotrail.co.uk/train-times/edinburgh-waverley-to-musselburgh"
+          },
+          {
+            "mode": "Bus",
+            "operatore": "Lothian Buses",
+            "linea": "26 (Edimburgo - Musselburgh - Longniddry); anche linea 44",
+            "durata_min": 35,
+            "frequenza": "Molto frequente in giornata",
+            "primo": "",
+            "ultimo": "",
+            "costo": "Tariffa unica adulto GBP 2,40 (revisione 22 febbraio 2026)",
+            "link": "https://www.lothianbuses.com/timetables/"
+          },
+          {
+            "mode": "Uber",
+            "operatore": "Uber",
+            "linea": "",
+            "durata_min": 0,
+            "frequenza": "",
+            "primo": "",
+            "ultimo": "",
+            "costo": "",
+            "coperturaUber": "Buona copertura nell'area di Edimburgo, incluso Musselburgh (sobborgo orientale). Tempi di attesa generalmente brevi.",
+            "link": "https://www.uber.com/global/en/r/cities/edinburgh-sct-gb/"
+          }
+        ]
+      }
     },
     "dt-nberwick": {
       "area": "East Lothian",
@@ -1018,7 +1192,47 @@
           "k": "Tipo",
           "v": "Cittadina balneare e natura"
         }
-      ]
+      ],
+      "transport": {
+        "verificato": "2026-06-23",
+        "note": "Treno diretto ScotRail da Edinburgh Waverley a North Berwick, senza cambi. Orari precisi di agosto 2026 non ancora pubblicati: verificare il giorno stesso. TANTALLON CASTLE (~5 km a est di North Berwick): non raggiungibile a piedi comodamente. Usare il bus linea 120 (operato da East Coast Buses, gruppo Lothian) che collega North Berwick a Dunbar e ferma a Tantallon Castle (~8 min dal centro/Seabird Centre, fermata 'Tantallon Castle'); frequenza circa oraria lun-sab, ridotta la domenica - verificare l'ultima corsa di ritorno. In alternativa taxi/Uber da North Berwick (corsa breve). NB: la linea 120 e' di East Coast Buses, non Borders Buses.",
+        "options": [
+          {
+            "mode": "Treno",
+            "operatore": "ScotRail",
+            "linea": "Edinburgh Waverley - North Berwick (diretto)",
+            "durata_min": 33,
+            "frequenza": "Circa oraria (fino a ~19 corse/giorno)",
+            "primo": "07:15",
+            "ultimo": "",
+            "costo": "Indicativo circa GBP 9 a tratta (Advance da circa GBP 4)",
+            "link": "https://www.scotrail.co.uk/train-times/edinburgh-waverley-to-north-berwick"
+          },
+          {
+            "mode": "Bus",
+            "operatore": "East Coast Buses (gruppo Lothian)",
+            "linea": "120 (North Berwick - Dunbar), fermata 'Tantallon Castle' - per la tratta North Berwick -> Tantallon Castle",
+            "durata_min": 8,
+            "frequenza": "Circa oraria lun-sab; ridotta la domenica",
+            "primo": "",
+            "ultimo": "",
+            "costo": "Tariffa Lothian/East Coast (verificare a bordo)",
+            "link": "https://www.lothianbuses.com/timetables/"
+          },
+          {
+            "mode": "Uber",
+            "operatore": "Uber",
+            "linea": "",
+            "durata_min": 0,
+            "frequenza": "",
+            "primo": "",
+            "ultimo": "",
+            "costo": "",
+            "coperturaUber": "Disponibile a Edimburgo. A North Berwick la copertura Uber e' limitata; per Tantallon Castle puo' essere piu' affidabile un taxi locale prenotato in anticipo rispetto a Uber.",
+            "link": "https://www.uber.com/global/en/r/cities/edinburgh-sct-gb/"
+          }
+        ]
+      }
     },
     "dt-falkirk": {
       "area": "Forth & West Lothian",
@@ -1039,7 +1253,47 @@
           "k": "Tipo",
           "v": "Ingegneria, arte e parchi"
         }
-      ]
+      ],
+      "transport": {
+        "verificato": "2026-06-23",
+        "note": "Gli orari esatti di agosto 2026 non sono ancora pubblicati: verificare prima della partenza su scotrail.co.uk e travelinescotland.com. Frequenze, durate e tariffe indicate sono dati stabili tipici. Importante per la tappa locale: dalla stazione di Falkirk le due attrazioni sono in direzioni opposte e fuori dal centro. The Kelpies (Helix Park) si raggiungono dalla stazione di Falkirk Grahamston con bus locale fino alla fermata 'Stadium Road End' (vicino al Falkirk Stadium) e poi ~15 min a piedi nel parco, oppure in taxi. Il Falkirk Wheel dista circa 1,7 km / ~22 min a piedi dalla stazione di Falkirk Grahamston (percorso lungo il canale), in alternativa bus locale verso Camelon/Tamfourhill o taxi. ATTENZIONE: Uber NON opera a Falkirk; per gli spostamenti locali usare i taxi tradizionali (presenti alle stazioni) o i bus.",
+        "options": [
+          {
+            "mode": "Treno",
+            "operatore": "ScotRail",
+            "linea": "Edinburgh Waverley → Falkirk Grahamston (diretto)",
+            "durata_min": 49,
+            "frequenza": "Fino a 4 treni all'ora (molto frequente in giornata)",
+            "primo": "05:18",
+            "ultimo": "23:45",
+            "costo": "Da circa £12,60 andata e ritorno (tariffa indicativa, varia)",
+            "link": "https://www.scotrail.co.uk/train-times/edinburgh-waverley-to-falkirk-grahamston"
+          },
+          {
+            "mode": "Bus",
+            "operatore": "First Bus (Falkirk) / bus locali",
+            "linea": "Bus urbani dal centro di Falkirk verso Helix/Kelpies (fermata Stadium Road End) e verso Camelon/Falkirk Wheel",
+            "durata_min": 15,
+            "frequenza": "Servizi urbani frequenti in giornata",
+            "primo": "",
+            "ultimo": "",
+            "costo": "Tariffa urbana locale (verificare a bordo / app First Bus)",
+            "link": "https://www.firstbus.co.uk/south-east-and-central-scotland/routes-and-maps/falkirk"
+          },
+          {
+            "mode": "Uber",
+            "operatore": "Uber",
+            "linea": "",
+            "durata_min": 0,
+            "frequenza": "",
+            "primo": "",
+            "ultimo": "",
+            "costo": "",
+            "coperturaUber": "Uber NON è disponibile a Falkirk. Disponibile a Edinburgh (e all'aeroporto EDI) per la partenza, ma a Falkirk usare taxi tradizionali (presenti alle stazioni) per le tappe verso Kelpies e Falkirk Wheel.",
+            "link": "https://www.uber.com/gb/en/blog/where-does-uber-operate-in-the-uk/"
+          }
+        ]
+      }
     },
     "dt-queensferry": {
       "area": "Forth & West Lothian",
@@ -1060,7 +1314,47 @@
           "k": "Tipo",
           "v": "Borgo costiero e ponti"
         }
-      ]
+      ],
+      "transport": {
+        "verificato": "2026-06-23",
+        "note": "Gli orari esatti di agosto 2026 non sono ancora pubblicati: verificare prima della partenza su scotrail.co.uk e lothianbuses.com. Dati stabili tipici. La stazione ferroviaria più vicina a South Queensferry è Dalmeny, da cui si raggiunge a piedi il borgo e il lungomare (breve passeggiata in discesa, ~10-15 min). Da South Queensferry si ammirano i tre ponti sul Firth of Forth: il Forth Bridge ferroviario (patrimonio UNESCO), il Forth Road Bridge e il Queensferry Crossing. In alternativa al treno, il bus Lothian Country 43 collega direttamente il centro di Edinburgh a South Queensferry.",
+        "options": [
+          {
+            "mode": "Treno",
+            "operatore": "ScotRail",
+            "linea": "Edinburgh Waverley → Dalmeny (diretto)",
+            "durata_min": 16,
+            "frequenza": "Servizio frequente in giornata (numerosi treni)",
+            "primo": "06:04",
+            "ultimo": "23:18",
+            "costo": "Da circa £6 sola andata (tariffa indicativa)",
+            "link": "https://www.scotrail.co.uk/train-times/edinburgh-waverley-to-dalmeny"
+          },
+          {
+            "mode": "Bus",
+            "operatore": "Lothian Country Buses",
+            "linea": "43 (Edinburgh ↔ South Queensferry)",
+            "durata_min": 0,
+            "frequenza": "Ogni ~20 min lun-sab in giornata; ogni ~30 min la domenica",
+            "primo": "",
+            "ultimo": "",
+            "costo": "Biglietto singolo adulto £2,40 (tariffa 2026)",
+            "link": "https://www.lothianbuses.com/our-services/lothian-country/"
+          },
+          {
+            "mode": "Uber",
+            "operatore": "Uber",
+            "linea": "",
+            "durata_min": 0,
+            "frequenza": "",
+            "primo": "",
+            "ultimo": "",
+            "costo": "",
+            "coperturaUber": "Uber opera regolarmente a Edinburgh e nell'area metropolitana, inclusi l'aeroporto (EDI) e la zona di Queensferry/South Queensferry, che rientra nei confini cittadini. Disponibilità soggetta agli autisti presenti al momento.",
+            "link": "https://www.uber.com/global/en/r/cities/edinburgh-sct-gb/"
+          }
+        ]
+      }
     }
   },
   "london": {
