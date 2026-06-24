@@ -404,6 +404,7 @@ export default class App extends React.Component {
     moreOpen: false,
     detail: null,
     detailList: [], // sibling ids for swipe-to-next/prev inside the open detail
+    detailStack: [], // parent cards below the visible one (back-navigation)
     editDays: {},
     navCompact: false,
     setOpen: {},
@@ -763,15 +764,35 @@ export default class App extends React.Component {
   addCheck = (t) => { const tx = (t || "").trim(); if (!tx) return; this.planMut((p) => { this.ensureChecklist(p); p.checklist.push({ t: tx, done: false }); }); };
   editCheck = (i, t) => this.planMut((p) => { this.ensureChecklist(p); if (p.checklist[i]) p.checklist[i].t = t; });
   removeCheck = (i) => this.planMut((p) => { this.ensureChecklist(p); p.checklist.splice(i, 1); });
-  // ---------- unified venue detail ----------
-  // Open a venue card. `list` is the ordered sibling ids (its section/group) so the
-  // card can be swiped left/right to the next/previous venue without going back.
+  // ---------- unified venue detail (navigation stack) ----------
+  // `detail`/`detailList` = the visible (top) card + its swipe siblings. `detailStack`
+  // holds the parent cards below it, so opening a venue from inside a trip/experience
+  // pushes a level and closing it returns to the parent instead of dismissing the lot.
+  // `list` is the ordered sibling ids so the card can be swiped left/right.
   openDetail = (idOrObj, list) => {
     const d = venueDetail(idOrObj);
     const detailList = Array.isArray(list) && list.length ? list : (d && d.id ? [d.id] : []);
-    this.setState({ detail: d, detailList, moreOpen: false });
+    this.setState({ detail: d, detailList, detailStack: [], moreOpen: false }); // fresh context
   };
-  closeDetail = () => this.setState({ detail: null });
+  // Open a child card ON TOP of the current one (from a nested item inside a card).
+  pushDetail = (idOrObj, list) => {
+    const d = venueDetail(idOrObj);
+    if (!d) return;
+    this.setState((s) => {
+      if (!s.detail) return { detail: d, detailList: (Array.isArray(list) && list.length ? list : (d.id ? [d.id] : [])), detailStack: [] };
+      const detailList = Array.isArray(list) && list.length ? list : (d.id ? [d.id] : []);
+      return { detail: d, detailList, detailStack: [...s.detailStack, { detail: s.detail, list: s.detailList }] };
+    });
+  };
+  // Back one level: pop the parent card; at the root this closes the sheet.
+  popDetail = () => this.setState((s) => {
+    const st = (s.detailStack || []).slice();
+    const parent = st.pop();
+    if (parent) return { detail: parent.detail, detailList: parent.list || [], detailStack: st };
+    return { detail: null, detailList: [], detailStack: [] };
+  });
+  // Dismiss the whole sheet (✕ / tap outside), regardless of depth.
+  closeDetail = () => this.setState({ detail: null, detailList: [], detailStack: [] });
   // Move to the adjacent venue within the current swipe list (dir = -1 prev, +1 next).
   swipeDetail = (dir) => {
     const { detail, detailList } = this.state;
@@ -2505,7 +2526,9 @@ export default class App extends React.Component {
             <VenueDetail
               d={this.state.detail}
               onClose={this.closeDetail}
-              onOpen={this.openDetail}
+              onOpen={this.pushDetail}
+              onBack={this.popDetail}
+              canBack={(this.state.detailStack || []).length > 0}
               onPrev={di > 0 ? () => this.swipeDetail(-1) : undefined}
               onNext={di >= 0 && di < dl.length - 1 ? () => this.swipeDetail(1) : undefined}
               navPos={di >= 0 && dl.length > 1 ? { i: di + 1, n: dl.length } : null}

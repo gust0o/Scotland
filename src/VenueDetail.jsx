@@ -89,7 +89,7 @@ const tag = (bg, fg) => ({ flex: "none", display: "inline-flex", alignItems: "ce
 
 // Full detail sheet, reused everywhere (sections, timeline taps, favourites, now-cards).
 // onOpen(idOrObj) lets nested items (trip venues, experience places) open their own card.
-export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit, onTripLess, onTripMore, onOpen, onPrev, onNext, navPos }) {
+export default function VenueDetail({ d, onClose, onBack, canBack, isFav, onToggleFav, tripVisit, onTripLess, onTripMore, onOpen, onPrev, onNext, navPos }) {
   // Drag-down-to-dismiss: the grabber/hero can be dragged; past a threshold it closes.
   const [dragY, setDragY] = useState(0);
   const drag = useRef(null);
@@ -114,7 +114,7 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
     if (!drag.current) return;
     const dy = dragY;
     drag.current = null;
-    if (dy > 110) onClose();
+    if (dy > 110) (onBack || onClose)(); // pull-down = back one level (closes at the root)
     else setDragY(0);
   };
   // Horizontal swipe anywhere on the sheet → previous / next venue (touch only;
@@ -171,6 +171,8 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
             </div>
           )}
           <button onClick={onClose} aria-label="Chiudi" style={{ position: "absolute", top: 12, right: 12, zIndex: 4, cursor: "pointer", width: 34, height: 34, borderRadius: 999, border: "none", background: "rgba(0,0,0,.4)", color: "#fff", fontSize: 17, fontWeight: 900, backdropFilter: "blur(4px)" }}>✕</button>
+          {/* Back to the parent card (e.g. the day-trip you opened this venue from). */}
+          {canBack && <button onClick={(e) => { e.stopPropagation(); onBack && onBack(); }} onPointerDown={(e) => e.stopPropagation()} aria-label="Indietro" style={{ position: "absolute", top: 12, left: 12, zIndex: 4, cursor: "pointer", height: 34, display: "flex", alignItems: "center", gap: 5, padding: "0 13px 0 10px", borderRadius: 999, border: "none", background: "rgba(0,0,0,.42)", color: "#fff", fontSize: 13, fontWeight: 800, backdropFilter: "blur(4px)" }}>← Indietro</button>}
           {/* Prev / next venue within the current section — swipe on touch, tap on desktop. */}
           {onPrev && <button onClick={(e) => { e.stopPropagation(); onPrev(); }} onPointerDown={(e) => e.stopPropagation()} aria-label="Precedente" style={navBtn("left")}>‹</button>}
           {onNext && <button onClick={(e) => { e.stopPropagation(); onNext(); }} onPointerDown={(e) => e.stopPropagation()} aria-label="Successivo" style={navBtn("right")}>›</button>}
@@ -278,7 +280,7 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
                 const eat = v.tipo === "mangiare";
                 const clickable = !!(onOpen && v.id);
                 return (
-                  <div key={i} onClick={clickable ? () => onOpen(v.id) : undefined} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderTop: i ? "1px solid rgba(122,112,84,.16)" : "none", cursor: clickable ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
+                  <div key={i} onClick={clickable ? () => onOpen(v.id, d.venues.map((x) => x.id).filter(Boolean)) : undefined} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderTop: i ? "1px solid rgba(122,112,84,.16)" : "none", cursor: clickable ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
                     <span style={tag(eat ? "#FBEDE9" : "#EEF0F8", eat ? "#E6482A" : "#0E1542")}>{eat ? "Mangiare" : "Vedere"}</span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13.5, fontWeight: 800, color: "#17142C" }}>{v.name}</div>
@@ -306,7 +308,7 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
               {d.places.map((p, i) => {
                 const clickable = !!(onOpen && p.ref);
                 return (
-                  <div key={i} onClick={clickable ? () => onOpen(p.ref) : undefined} style={{ display: "flex", alignItems: "center", gap: 9, padding: "10px 0", borderTop: i ? "1px solid rgba(122,112,84,.16)" : "none", cursor: clickable ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
+                  <div key={i} onClick={clickable ? () => onOpen(p.ref, d.places.map((x) => x.ref).filter(Boolean)) : undefined} style={{ display: "flex", alignItems: "center", gap: 9, padding: "10px 0", borderTop: i ? "1px solid rgba(122,112,84,.16)" : "none", cursor: clickable ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
                     <span style={{ flex: 1, minWidth: 0, fontSize: 13.5, fontWeight: 800, color: "#17142C" }}>{p.name}</span>
                     {p.maps && <a href={p.maps} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()} style={{ flex: "none", fontSize: 11, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "5px 10px", borderRadius: 8 }}>Maps ↗</a>}
                     {clickable && <span style={{ flex: "none", color: "#b3a784", fontSize: 17, fontWeight: 900 }}>›</span>}
