@@ -136,14 +136,14 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
     textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", WebkitTapHighlightColor: "transparent",
     transition: "flex .3s cubic-bezier(.22,1,.36,1), max-width .3s cubic-bezier(.22,1,.36,1), opacity .22s",
   });
-  // The "liquid glass" selected pill behind the active tab (icon + label): a brighter,
-  // frosted capsule with a top specular highlight and a soft inner shadow below.
+  // The selected tab is a solid accent (yellow) pill with navy icon+label — a clear,
+  // on-brand "selected" highlight that stands out from the dark glass bar.
   const capsule = (on) => ({
     display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-    gap: compact ? 0 : 3, padding: compact ? 0 : "6px 12px 5px", borderRadius: 999,
-    background: (on && !compact) ? "rgba(255,255,255,0.22)" : "transparent",
-    boxShadow: (on && !compact) ? "inset 0 1px 0.5px rgba(255,255,255,0.65), inset 0 -1px 1px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.18)" : "none",
-    color: on ? "#FFE27A" : "rgba(255,255,255,0.64)",
+    gap: compact ? 0 : 3, padding: compact ? 0 : "6px 13px 5px", borderRadius: 999,
+    background: (on && !compact) ? "#FFD23F" : "transparent",
+    boxShadow: (on && !compact) ? "inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 7px rgba(0,0,0,0.28)" : "none",
+    color: on ? (compact ? "#FFD23F" : "#0E1542") : "rgba(255,255,255,0.72)",
     transition: "background .25s, box-shadow .25s, color .15s",
   });
   return (
@@ -171,7 +171,7 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
         </div>
       )}
       <nav style={{ position: "fixed", left: 0, right: 0, bottom: "calc(env(safe-area-inset-bottom) + 12px)", zIndex: 90, display: "flex", justifyContent: compact ? "flex-end" : "center", pointerEvents: "none" }}>
-        <div style={{ pointerEvents: "auto", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 3, background: "rgba(22,22,38,0.46)", backdropFilter: "blur(26px) saturate(195%)", WebkitBackdropFilter: "blur(26px) saturate(195%)", border: "1px solid rgba(255,255,255,0.18)", boxShadow: "0 14px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.45), inset 0 -8px 18px rgba(0,0,0,0.18)", width: compact ? 56 : "100%", height: compact ? 56 : "auto", maxWidth: compact ? 56 : 430, margin: compact ? "0 16px 0 0" : "0 12px", padding: compact ? 0 : "6px 8px", borderRadius: 999, overflow: "hidden", transition: "width .32s cubic-bezier(.22,1,.36,1), height .32s cubic-bezier(.22,1,.36,1), padding .3s, margin .3s, gap .3s" }}>
+        <div style={{ pointerEvents: "auto", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 3, background: "linear-gradient(180deg, rgba(38,38,56,0.74) 0%, rgba(14,14,26,0.82) 100%)", backdropFilter: "blur(24px) saturate(150%)", WebkitBackdropFilter: "blur(24px) saturate(150%)", border: "1px solid rgba(255,255,255,0.22)", boxShadow: "0 14px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 1.5px rgba(255,255,255,0.4), inset 0 -8px 18px rgba(0,0,0,0.2)", width: compact ? 56 : "100%", height: compact ? 56 : "auto", maxWidth: compact ? 56 : 430, margin: compact ? "0 16px 0 0" : "0 12px", padding: compact ? 0 : "6px 8px", borderRadius: 999, overflow: "hidden", transition: "width .32s cubic-bezier(.22,1,.36,1), height .32s cubic-bezier(.22,1,.36,1), padding .3s, margin .3s, gap .3s" }}>
           {/* specular sheen across the top — the liquid-glass highlight */}
           <span aria-hidden style={{ position: "absolute", inset: 0, borderRadius: "inherit", pointerEvents: "none", background: "linear-gradient(to bottom, rgba(255,255,255,0.20), rgba(255,255,255,0.05) 36%, rgba(255,255,255,0) 60%)" }} />
           {tabs.map((t) => {
