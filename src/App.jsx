@@ -1809,7 +1809,6 @@ export default class App extends React.Component {
     const sightsByZone = groupByKey(D.sights, ZONES_ORDER, (s) => s.zone || "");
     const eatsIds = D.eats.map((e) => e.id);
     const glasgowIds = D.glasgow.map((g) => g.id);
-    const experiencesIds = D.experiences.map((x) => x.id);
     const neighborhoodIds = D.neighborhoods.map((n) => n.id);
     const tripsByArea = groupByKey(D.trips, AREAS_ORDER, (t) => t.area || "");
     const LONDON_ZONES = ["Colazione", "Shoreditch", "Brick Lane", "Spitalfields", "City & South Bank"];
@@ -2303,15 +2302,27 @@ export default class App extends React.Component {
           </section>
 
           {/* ===== 07 ESPERIENZE ===== */}
+          {/* Each themed experience behaves like a section: its venues are listed directly
+              as tappable rows (tap → that venue's card). No theme "submenu" sheet. A venue
+              repeating elsewhere is fine. */}
           <section id="s07" style={{ ...sec, padding: "26px 16px 22px", background: "#ECE3D0" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 5 }}>
               <span style={numBadge("#FF2E7E", "#fff")}>06</span>
               <h2 style={h2("#0E1542")}>Esperienze</h2>
             </div>
-            <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Per tema · tocca per la scheda</p>
-            <div style={{ background: "#fff", borderRadius: 16, padding: "2px 14px" }}>
-              {experiencesIds.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === experiencesIds.length - 1} />)}
-            </div>
+            <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Itinerari per tema · tocca una tappa per la scheda</p>
+            {D.experiences.map((x) => (
+              <div key={x.id} style={{ marginBottom: 16 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 9, margin: "0 2px 6px" }}>
+                  <span style={{ fontSize: 12.5, fontWeight: 900, letterSpacing: ".05em", textTransform: "uppercase", color: "#0E1542" }}>{x.title}</span>
+                  <span style={{ flex: 1, height: 2, borderRadius: 2, background: "#D9CFB7" }} />
+                </div>
+                {x.body && <p style={{ margin: "0 2px 9px", fontSize: 12.5, fontWeight: 600, lineHeight: 1.4, color: "#6B6450" }}>{x.body}</p>}
+                <div style={{ background: "#fff", borderRadius: 16, padding: "2px 14px" }}>
+                  {x.places.map((p, i) => { const pid = p.ref || p.id; return <SummaryRow key={pid} {...rowProps(pid)} last={i === x.places.length - 1} />; })}
+                </div>
+              </div>
+            ))}
           </section>
 
           {/* ===== 08 LONDRA ===== */}
