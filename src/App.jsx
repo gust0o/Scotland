@@ -116,6 +116,22 @@ function Perforation({ notch = 0, notchColor = "#0E1542", weight = 2 }) {
   );
 }
 
+// Progressive-enhancement glass. Only Chromium/Blink actually renders an SVG
+// displacement map fed into backdrop-filter — that's the "viral" refractive glass.
+// WebKit (Safari, and EVERY browser on iOS) silently ignores feDisplacementMap in
+// backdrop-filter; worse, it can drop the whole declaration. So we detect Blink in JS
+// and only ever emit the url() filter there — WebKit never sees it and keeps the
+// proven blur-glass byte-for-byte. Guarded for SSR (smoke test has no navigator).
+//   vendor === 'Google Inc.'  -> Blink (Chrome/Edge/Opera/Brave); Safari is 'Apple…', Firefox is ''.
+//   CriOS/FxiOS/EdgiOS        -> Chrome/Firefox/Edge ON iOS, which are WebKit underneath (exclude).
+const GLASS_REFRACTION = (() => {
+  try {
+    if (typeof navigator === "undefined") return false;
+    const ua = navigator.userAgent || "";
+    return navigator.vendor === "Google Inc." && !/CriOS|FxiOS|EdgiOS/.test(ua);
+  } catch { return false; }
+})();
+
 // Floating "liquid glass" bottom tab bar (detached from the screen edges).
 // 5 primary destinations + a "More" popup; it compacts (icon-only) while scrolling.
 function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, onExpand }) {
@@ -146,6 +162,17 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
     color: on ? (compact ? "#FFD23F" : "#0E1542") : "rgba(255,255,255,0.72)",
     transition: "background .25s, box-shadow .25s, color .15s",
   });
+  // Two glass recipes. WebKit/iOS keep today's proven frosted blur; Blink also bends
+  // the backdrop through the SVG lens (url(#liquidGlass)) — the real refractive glass.
+  // On Blink we drop the frost to a hair so the refraction stays visible, and lighten
+  // the tint so there's something to refract.
+  const glassBg = GLASS_REFRACTION
+    ? "linear-gradient(180deg, rgba(46,46,70,0.30) 0%, rgba(14,14,28,0.44) 100%)"
+    : "linear-gradient(180deg, rgba(38,38,56,0.74) 0%, rgba(14,14,26,0.82) 100%)";
+  const glassFilter = GLASS_REFRACTION
+    ? "url(#liquidGlass) blur(2px) saturate(165%) brightness(1.06)"
+    : "blur(24px) saturate(150%)";
+  const glassPerf = GLASS_REFRACTION ? { isolation: "isolate", willChange: "backdrop-filter" } : null;
   return (
     <>
       {/* Popup menu with everything that doesn't fit in the bar */}
@@ -170,8 +197,21 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
           </div>
         </div>
       )}
+      {/* Refractive lens — only mounted on Blink, where backdrop-filter: url() actually
+          bends the backdrop. feTurbulence makes noise, feGaussianBlur softens it into a
+          molten field, feDisplacementMap shifts the backdrop by it. Tuned small (scale 26,
+          low frequency) for a ~58px pill so icons/labels behind it don't tear. */}
+      {GLASS_REFRACTION && (
+        <svg aria-hidden width="0" height="0" style={{ position: "absolute", width: 0, height: 0, overflow: "hidden", pointerEvents: "none" }}>
+          <filter id="liquidGlass" x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.011 0.011" numOctaves="2" seed="92" stitchTiles="stitch" result="noise" />
+            <feGaussianBlur in="noise" stdDeviation="2" result="softNoise" />
+            <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="26" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </svg>
+      )}
       <nav style={{ position: "fixed", left: 0, right: 0, bottom: "calc(env(safe-area-inset-bottom) + 12px)", zIndex: 90, display: "flex", justifyContent: compact ? "flex-end" : "center", pointerEvents: "none" }}>
-        <div style={{ pointerEvents: "auto", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 3, background: "linear-gradient(180deg, rgba(38,38,56,0.74) 0%, rgba(14,14,26,0.82) 100%)", backdropFilter: "blur(24px) saturate(150%)", WebkitBackdropFilter: "blur(24px) saturate(150%)", border: "1px solid rgba(255,255,255,0.22)", boxShadow: "0 14px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 1.5px rgba(255,255,255,0.4), inset 0 -8px 18px rgba(0,0,0,0.2)", width: compact ? 56 : "100%", height: compact ? 56 : "auto", maxWidth: compact ? 56 : 430, margin: compact ? "0 16px 0 0" : "0 12px", padding: compact ? 0 : "6px 8px", borderRadius: 999, overflow: "hidden", transition: "width .32s cubic-bezier(.22,1,.36,1), height .32s cubic-bezier(.22,1,.36,1), padding .3s, margin .3s, gap .3s" }}>
+        <div style={{ pointerEvents: "auto", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 3, background: glassBg, backdropFilter: glassFilter, WebkitBackdropFilter: glassFilter, ...glassPerf, border: "1px solid rgba(255,255,255,0.22)", boxShadow: "0 14px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 1.5px rgba(255,255,255,0.4), inset 0 -8px 18px rgba(0,0,0,0.2)", width: compact ? 56 : "100%", height: compact ? 56 : "auto", maxWidth: compact ? 56 : 430, margin: compact ? "0 16px 0 0" : "0 12px", padding: compact ? 0 : "6px 8px", borderRadius: 999, overflow: "hidden", transition: "width .32s cubic-bezier(.22,1,.36,1), height .32s cubic-bezier(.22,1,.36,1), padding .3s, margin .3s, gap .3s" }}>
           {/* specular sheen across the top — the liquid-glass highlight */}
           <span aria-hidden style={{ position: "absolute", inset: 0, borderRadius: "inherit", pointerEvents: "none", background: "linear-gradient(to bottom, rgba(255,255,255,0.20), rgba(255,255,255,0.05) 36%, rgba(255,255,255,0) 60%)" }} />
           {tabs.map((t) => {
