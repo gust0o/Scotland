@@ -8,7 +8,9 @@
     "Leith",
     "Fountainbridge",
     "Southside",
-    "Portobello"
+    "Portobello",
+    "Dean / West End",
+    "Duddingston"
   ],
   "areasOrder": [
     "Forth & West Lothian",
@@ -17,7 +19,10 @@
     "Stirling & Trossachs",
     "Glasgow",
     "Highlands & Perthshire",
-    "Borders"
+    "Borders",
+    "West Lothian",
+    "Midlothian",
+    "Scottish Borders"
   ],
   "sights": {
     "es-castle": {
@@ -368,6 +373,237 @@
         {
           "k": "Come arrivare",
           "v": "Su Princes Street, nel West End"
+        }
+      ]
+    },
+    "es-scottmonument": {
+      "note": "Offre la migliore vista ravvicinata del cuore di Edimburgo dopo una salita breve ma scenografica.",
+      "zone": "New Town",
+      "summary": "Guglia gotica vittoriana di 61 m dedicata a Walter Scott. 287 gradini per una vista a 360 gradi sul centro.",
+      "descrizione": "È il più grande monumento al mondo dedicato a uno scrittore, eretto tra il 1840 e il 1844 in memoria di Sir Walter Scott. La salita si snoda su quattro livelli sempre più stretti, con piattaforme panoramiche che dominano Princes Street, il Castello e la Old Town. Alla base, una statua in marmo di Carrara raffigura Scott con il suo cane Maida.",
+      "curiosita": "La pietra arenaria locale, ricca di bitume, ha annerito la guglia col tempo: pulirla rischierebbe di danneggiarla, perciò resta volutamente scura.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "circa 8 sterline (ridotto 6)"
+        },
+        {
+          "k": "Quando",
+          "v": "Apr-Ott 10-16:30; Nov-Mar fino alle 15:30"
+        },
+        {
+          "k": "Dove",
+          "v": "East Princes Street Gardens, accanto a Waverley"
+        }
+      ]
+    },
+    "es-gilescathedral": {
+      "note": "Capolavoro architettonico gratuito nel punto in cui si decise la storia religiosa scozzese.",
+      "zone": "Old Town",
+      "summary": "La chiesa madre del presbiterianesimo scozzese sul Royal Mile, con la celebre corona in pietra.",
+      "descrizione": "Conosciuta come la High Kirk di Edimburgo, domina il Royal Mile con la sua inconfondibile torre a corona del XV secolo. All'interno spiccano le splendide vetrate vittoriane e la Thistle Chapel, gioiello neogotico del 1911 dedicato al massimo ordine cavalleresco scozzese. È legata alla figura del riformatore John Knox, che ne fu ministro nel XVI secolo.",
+      "curiosita": "Una lapide a forma di cuore nel selciato fuori dalla cattedrale, l'Heart of Midlothian, segna l'antica prigione: i passanti del posto ci sputano sopra per tradizione.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Ingresso a donazione (consigliata 6-10 sterline)"
+        },
+        {
+          "k": "Quando",
+          "v": "Estate lun-ven 9-19, sab 9-17, dom 13-17"
+        },
+        {
+          "k": "Dove",
+          "v": "High Street, sul Royal Mile"
+        }
+      ]
+    },
+    "es-scotchwhisky": {
+      "note": "Il modo migliore per capire il whisky scozzese in un'ora, anche per chi non è esperto.",
+      "zone": "Old Town",
+      "summary": "Viaggio guidato nel mondo del whisky scozzese con degustazione e la più grande collezione al mondo.",
+      "descrizione": "A pochi passi dal Castello, questa attrazione a cinque stelle introduce alla produzione del whisky con un tour a bordo di una giostra a forma di botte. Le guide spiegano le differenze tra le regioni produttrici scozzesi e accompagnano una degustazione guidata. Il momento clou è la Diageo Claive Vidiz Collection, oltre 3.300 bottiglie esposte.",
+      "curiosita": "La collezione esposta è considerata la più grande raccolta di whisky scozzese al mondo ed è entrata nel Guinness dei primati.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Tour da circa 24 sterline"
+        },
+        {
+          "k": "Quando",
+          "v": "Aperto ogni giorno"
+        },
+        {
+          "k": "Dove",
+          "v": "Castlehill, in cima al Royal Mile"
+        }
+      ]
+    },
+    "es-scottishnational": {
+      "note": "Unisce grande arte gratuita a un edificio mozzafiato, lontano dalla calca del Royal Mile.",
+      "zone": "New Town",
+      "summary": "Ritratti dei volti che hanno fatto la Scozia, in uno spettacolare palazzo neogotico in arenaria rossa.",
+      "descrizione": "Inaugurata nel 1889 come prima galleria di ritratti costruita appositamente al mondo, raccoglie i volti dei personaggi che hanno plasmato la nazione, da Maria Stuarda a Robert Burns fino a Sean Connery. L'edificio stesso è un'opera d'arte, con la Great Hall ornata da un fregio di figure storiche e soffitti a stelle dorate. L'ingresso è gratuito.",
+      "curiosita": "Il fregio della Great Hall raffigura in processione gli scozzesi più illustri della storia, dalla preistoria a Thomas Carlyle.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratuito"
+        },
+        {
+          "k": "Quando",
+          "v": "Tutti i giorni 10-17 (gio fino alle 19)"
+        },
+        {
+          "k": "Dove",
+          "v": "1 Queen Street, New Town"
+        }
+      ]
+    },
+    "es-scottishnational2": {
+      "note": "Arte di livello mondiale immersa nel verde, perfetta da abbinare a una passeggiata lungo il fiume.",
+      "zone": "Dean / West End",
+      "summary": "Due ville neoclassiche tra prati e sculture: surrealismo, Paolozzi e arte contemporanea, gratis.",
+      "descrizione": "Distribuita in due edifici affacciati l'uno sull'altro tra ampi giardini, la galleria custodisce una straordinaria collezione di surrealismo e arte moderna. Modern One ospita capolavori del Novecento, mentre Modern Two ricrea lo studio dello scultore Eduardo Paolozzi e mostre temporanee. Il parco esterno è un'opera d'arte con landform di Charles Jencks e installazioni al neon.",
+      "curiosita": "Sul prato campeggia la scritta al neon di Nathan Coley 'There Will Be No Miracles Here', diventata una delle opere più fotografate della città.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratuito (alcune mostre a pagamento)"
+        },
+        {
+          "k": "Quando",
+          "v": "Tutti i giorni 10-17"
+        },
+        {
+          "k": "Dove",
+          "v": "Belford Road, lungo il Water of Leith"
+        }
+      ]
+    },
+    "es-surgeonshall": {
+      "note": "Affascinante e non per deboli di stomaco: una finestra unica sulla storia della medicina.",
+      "zone": "Southside",
+      "summary": "Uno dei più antichi musei di anatomia al mondo: storia della chirurgia, reperti e curiosità macabre.",
+      "descrizione": "Ospitato in un imponente edificio neoclassico del Royal College of Surgeons, racconta cinque secoli di storia della chirurgia attraverso strumenti, preparati anatomici e modelli in cera. La collezione patologica è tra le più vaste del Regno Unito. Una sezione è dedicata al caso Burke e Hare e alle origini della medicina legale.",
+      "curiosita": "Tra i reperti c'è un taccuino rilegato con la pelle dell'assassino William Burke, giustiziato e dissezionato pubblicamente nel 1829.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "circa 10 sterline"
+        },
+        {
+          "k": "Quando",
+          "v": "Tutti i giorni 10-17 (ultimo ingresso 16:30)"
+        },
+        {
+          "k": "Dove",
+          "v": "Nicolson Street, Southside"
+        }
+      ]
+    },
+    "es-writersmuseum": {
+      "note": "Gemma gratuita e tranquilla per chi ama i libri, a due passi dal Royal Mile.",
+      "zone": "Old Town",
+      "summary": "Tre giganti della letteratura scozzese: Burns, Scott e Stevenson, in una casa secentesca nascosta.",
+      "descrizione": "In un suggestivo edificio del 1622 in un cortile appartato del Lawnmarket, il museo celebra i tre più grandi scrittori scozzesi: Robert Burns, Sir Walter Scott e Robert Louis Stevenson. Sono esposti oggetti personali, manoscritti e ritratti, tra cui la macchina da stampa di Scott e gli effetti personali di Stevenson. L'ingresso è gratuito.",
+      "curiosita": "Nel selciato del cortile esterno, il Makars' Court, sono incise frasi di scrittori scozzesi: un vero sentiero della letteratura nazionale.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratuito"
+        },
+        {
+          "k": "Quando",
+          "v": "mer-dom 10-17 (orari stagionali)"
+        },
+        {
+          "k": "Dove",
+          "v": "Lady Stair's Close, Lawnmarket"
+        }
+      ]
+    },
+    "es-nelsonmonument": {
+      "note": "La vista più iconica di Edimburgo, con Arthur's Seat e il Castello nello stesso colpo d'occhio.",
+      "zone": "Calton Hill",
+      "summary": "Torre a forma di cannocchiale rovesciato su Calton Hill: 143 gradini per una vista spettacolare.",
+      "descrizione": "Eretto tra il 1807 e il 1815 in onore dell'ammiraglio Nelson e della vittoria di Trafalgar, questo monumento sulla cima di Calton Hill ricorda un telescopio rovesciato. Salendo i 143 gradini si raggiunge una galleria panoramica con vista a 360 gradi su città, mare e colline. Sulla sommità una sfera del tempo segnala mezzogiorno in coordinamento con il cannone del Castello.",
+      "curiosita": "La time ball in cima cade ogni giorno all'una insieme allo sparo del One O'Clock Gun del Castello, antico segnale orario per le navi.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "circa 6 sterline"
+        },
+        {
+          "k": "Quando",
+          "v": "Estate 10-18, inverno fino alle 16"
+        },
+        {
+          "k": "Dove",
+          "v": "Sulla sommità di Calton Hill"
+        }
+      ]
+    },
+    "es-museummound": {
+      "note": "Gratis, curioso e quasi sempre vuoto: una pausa intelligente nel cuore della città.",
+      "zone": "Old Town",
+      "summary": "Museo gratuito e poco noto su denaro ed economia, nella sede storica della Bank of Scotland.",
+      "descrizione": "Nascosto nell'imponente sede della Bank of Scotland sul Mound, questo piccolo museo gratuito racconta la storia del denaro, dell'economia e delle banche in Scozia. Tra i pezzi forti, un milione di sterline in banconote vere e antiche casseforti. È un'attrazione sorprendentemente coinvolgente, ideale anche con bambini, e spesso ignorata dai turisti.",
+      "curiosita": "È esposto un milione di sterline in contanti: banconote vere, anche se ormai fuori corso.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratuito"
+        },
+        {
+          "k": "Quando",
+          "v": "mar-ven 10-17, sab 13-17 (chiuso dom-lun)"
+        },
+        {
+          "k": "Dove",
+          "v": "The Mound, tra Princes Street e la Old Town"
+        }
+      ]
+    },
+    "es-drneils": {
+      "note": "Quiete assoluta e scorci da cartolina, perfetti dopo la salita di Arthur's Seat.",
+      "zone": "Duddingston",
+      "summary": "Il giardino segreto di Edimburgo, ai piedi di Arthur's Seat, affacciato su Duddingston Loch.",
+      "descrizione": "Creato negli anni Sessanta da due medici su un terreno incolto, è un'oasi di pace sulle pendici meridionali di Arthur's Seat. Conifere, eriche, piante alpine e bordure si affacciano sullo specchio d'acqua di Duddingston Loch. In un angolo sorge la Thomson's Tower del 1825, un tempo deposito per le pietre da curling. Ingresso gratuito con offerta libera.",
+      "curiosita": "È soprannominato 'il giardino segreto di Edimburgo' perché, pur a pochi minuti dal centro, resta sconosciuto alla maggior parte dei visitatori.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Gratuito (offerta gradita)"
+        },
+        {
+          "k": "Quando",
+          "v": "Tutti i giorni dalle 10 al tramonto"
+        },
+        {
+          "k": "Dove",
+          "v": "Old Church Lane, villaggio di Duddingston"
+        }
+      ]
+    },
+    "es-gladstonesland": {
+      "note": "Tuffo autentico nella vita della Old Town secentesca, proprio sul Royal Mile.",
+      "zone": "Old Town",
+      "summary": "Casa-torre del Seicento sul Royal Mile, con soffitti dipinti originali e gelateria storica al piano terra.",
+      "descrizione": "Una delle più antiche case a schiera di Edimburgo, restaurata dal National Trust for Scotland, racconta 400 anni di vita su sei piani della Old Town. Si visitano stanze d'epoca con splendidi soffitti dipinti a mano del 1620 e ambienti ricostruiti di diverse epoche. Al piano terra, una gelateria e caffetteria ispirate alla storia commerciale dell'edificio.",
+      "curiosita": "I soffitti a tempera del 1620, riscoperti sotto strati successivi, sono tra i meglio conservati della Scozia di quel periodo.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "Biglietto per la casa (gratis soci NTS)"
+        },
+        {
+          "k": "Quando",
+          "v": "Tutti i giorni 10-16"
+        },
+        {
+          "k": "Dove",
+          "v": "477B Lawnmarket, Royal Mile"
         }
       ]
     }
@@ -883,6 +1119,305 @@
           "v": "Morningside"
         }
       ]
+    },
+    "ea-timberyard": {
+      "note": "Un'esperienza gastronomica scozzese sostenibile e d'autore, tra le migliori della città.",
+      "zone": "Old Town",
+      "tipo": "Ristorante",
+      "ordina": "Il menù degustazione del giorno con abbinamento vini",
+      "summary": "Stella Michelin a gestione familiare in un ex deposito di legname. Cucina stagionale con ingredienti foraggiati.",
+      "descrizione": "Ricavato in un magazzino vittoriano, Timberyard è uno dei templi della cucina di Edimburgo, premiato con una stella Michelin e una Green Star. La famiglia Radford lavora a stretto contatto con piccoli produttori, coltivatori e raccoglitori scozzesi. Il menù cambia ogni settimana e privilegia carni selvatiche, fermentazioni e prodotti locali. L'atmosfera è rustica ma elegante, con tavoli in legno grezzo e una corte interna.",
+      "curiosita": "Ha ottenuto la Michelin Green Star per il suo impegno ambientale, servendo selvaggina e niente carni d'allevamento intensivo.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "£££"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Necessaria, con anticipo"
+        },
+        {
+          "k": "Specialità",
+          "v": "Cucina selvatica e foraggiata"
+        }
+      ]
+    },
+    "ea-littlechartroom": {
+      "note": "Cucina raffinata e personale in un ambiente intimo, lontano dai circuiti turistici.",
+      "zone": "Leith",
+      "tipo": "Ristorante",
+      "ordina": "Il menù degustazione di cinque portate",
+      "summary": "Bistrot intimo della chef Roberta Hall-McCarron. Cucina britannica moderna in chiave stagionale.",
+      "descrizione": "Piccolo e accogliente ristorante a conduzione familiare guidato dalla chef-patron Roberta Hall-McCarron. Dal 2022 si trova in Bonnington Road con una sala più ampia. La proposta è una cucina britannica moderna che valorizza i migliori prodotti scozzesi di stagione. Disponibili menù da tre o cinque portate la sera e un menù pranzo più snello.",
+      "curiosita": "Il nome richiama il passato della chef come navigatrice durante un giro del mondo in barca a vela.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "£££"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Necessaria"
+        },
+        {
+          "k": "Specialità",
+          "v": "Menù degustazione stagionale"
+        }
+      ]
+    },
+    "ea-noto": {
+      "note": "Piatti creativi e condivisibili a prezzi onesti, con il marchio Bib Gourmand.",
+      "zone": "New Town",
+      "tipo": "Ristorante",
+      "ordina": "I bao buns d'anatra e i piatti da condividere",
+      "summary": "Small plates dello chef Stuart Ralston con influenze asiatiche. Premiato Bib Gourmand Michelin.",
+      "descrizione": "Locale indipendente dedicato ai piatti da condividere, ai vini di piccoli produttori e ai cocktail su misura. Le influenze spaziano in tutta l'Asia, dai bao buns all'anatra a dessert al miso e cioccolato. I piatti sono ben concepiti e a prezzi ragionevoli, ideali per condividere. L'ambiente è informale e vivace, perfetto per una cena tra amici.",
+      "curiosita": "Prende il nome da Bob Noto, gastronomo e coinquilino dello chef Stuart Ralston a New York.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "££"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Consigliata"
+        },
+        {
+          "k": "Specialità",
+          "v": "Small plates di fusione asiatica"
+        }
+      ]
+    },
+    "ea-scranscallie": {
+      "note": "Cibo da pub scozzese di alto livello firmato da uno chef stellato, in un quartiere autentico.",
+      "zone": "Stockbridge",
+      "tipo": "Gastropub",
+      "ordina": "La fish pie o i classici del pub scozzese",
+      "summary": "Gastropub dello chef stellato Tom Kitchin. Classici scozzesi in chiave moderna, Bib Gourmand Michelin.",
+      "descrizione": "Nel cuore di Stockbridge, propone i classici del pub con un tocco moderno, firmati dagli chef pluripremiati Tom Kitchin e Dominic Jack. Il menù segue le stagioni e celebra i migliori prodotti scozzesi. Carni e pesce arrivano interi e vengono lavorati in casa con tecniche tradizionali. Atmosfera rilassata e accogliente, con un'anima da vero pub di quartiere.",
+      "curiosita": "Ha ispirato un libro di cucina di Tom Kitchin dedicato al miglior cibo da pub scozzese.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "££"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Consigliata"
+        },
+        {
+          "k": "Specialità",
+          "v": "Fish pie e comfort food scozzese"
+        }
+      ]
+    },
+    "ea-dishoomedinburgh": {
+      "note": "Colazione cult e curry di qualità in un locale dall'atmosfera unica, con ingredienti scozzesi.",
+      "zone": "New Town",
+      "tipo": "Ristorante",
+      "ordina": "Il Bacon Naan Roll a colazione e il black daal",
+      "summary": "Omaggio ai caffè iraniani di Bombay. Colazioni leggendarie e curry, vista su St Andrew Square.",
+      "descrizione": "Ispirato agli antichi caffè iraniani di Bombay, Dishoom unisce atmosfera nostalgica e cucina indiana eccellente. Il famoso Bacon Naan Roll usa pancetta affumicata scozzese di Ramsay of Carluke. Di giorno funziona soprattutto come caffè con ingresso libero, mentre la sera dalle 18 si prenota per gruppi di sei o più. La sala affaccia con grandi vetrate su St Andrew Square.",
+      "curiosita": "La pancetta del Bacon Naan è affumicata con legni di melo e faggio secondo la tradizione dell'Ayrshire.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "££"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Solo cena gruppi 6+, altrimenti walk-in"
+        },
+        {
+          "k": "Specialità",
+          "v": "Bacon Naan Roll e black daal"
+        }
+      ]
+    },
+    "ea-bowbar": {
+      "note": "Il pub tradizionale scozzese per eccellenza, amato dai locali per whisky e birre.",
+      "zone": "Old Town",
+      "tipo": "Whisky bar",
+      "ordina": "Un single malt dalla selezione e una pinta di real ale",
+      "summary": "Classica alehouse scozzese a una sala su Victoria Street. Oltre 400 single malt e real ale alla spina.",
+      "descrizione": "Autentica alehouse a una sola sala nel cuore della Old Town, sulla pittoresca Victoria Street. Vanta più sorgenti tradizionali ad aria compressa di qualsiasi altro pub di Edimburgo. L'imponente bancone fa onore a una selezione premiata di oltre 400 single malt e birre internazionali. A mezzogiorno si servono gustosi pie scozzesi.",
+      "curiosita": "Possiede sette 'founts' ad aria compressa, più di qualunque altro pub della città.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "£"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Non necessaria"
+        },
+        {
+          "k": "Specialità",
+          "v": "Oltre 400 whisky e real ale"
+        }
+      ]
+    },
+    "ea-devilsadvocate": {
+      "note": "Un gioiello nascosto che unisce grandi whisky, cocktail premiati e cucina scozzese.",
+      "zone": "Old Town",
+      "tipo": "Whisky bar",
+      "ordina": "Un cocktail di stagione o un whisky dalla parete dei 300",
+      "summary": "Bar e cucina nascosti in una close, dentro un'ex stazione di pompaggio vittoriana. Oltre 300 whisky.",
+      "descrizione": "Nascosto su Advocate's Close, appena fuori dai percorsi più battuti, occupa un'antica stazione di pompaggio vittoriana. Vanta una collezione di oltre 300 whisky scozzesi e internazionali, oltre a cocktail stagionali creativi premiati. Il ristorante celebra la Scozia con un menù che cambia in base ai prodotti di stagione. Muri in mattoni a vista, legno grezzo e una terrazza coperta creano un'atmosfera intima.",
+      "curiosita": "Si trova in un'antica pump house vittoriana, scendendo per uno dei vicoli più suggestivi della città.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "££"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Consigliata per cenare"
+        },
+        {
+          "k": "Specialità",
+          "v": "Whisky e cocktail di stagione"
+        }
+      ]
+    },
+    "ea-bennetsbar": {
+      "note": "Uno degli interni di pub vittoriani più belli di Scozia, perfetto per un whisky pre-teatro.",
+      "zone": "Tollcross",
+      "tipo": "Pub",
+      "ordina": "Un single malt nel suggestivo snug",
+      "summary": "Splendido pub tardo-vittoriano accanto al King's Theatre. Interni tutelati e oltre 150 single malt.",
+      "descrizione": "Storico e ornato pub di Tollcross, accanto al King's Theatre, dove si beve dal 1839 (locale attuale del 1906). Il magnifico bancone vittoriano è rimasto intatto al punto da essere vincolato come monumento. Spiccano i pannelli incisi della birreria Jeffrey's, le piastrelle decorate, gli specchi Bernard's e un piccolo snug (saletta riservata) con ingresso separato. È noto per gli oltre 150 single malt sul gantry originale.",
+      "curiosita": "L'intero interno è vincolato (listed) per il suo valore architettonico tardo-vittoriano.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "£"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Non necessaria"
+        },
+        {
+          "k": "Specialità",
+          "v": "Oltre 150 single malt"
+        }
+      ]
+    },
+    "ea-caferoyal": {
+      "note": "Storia, atmosfera vittoriana e ostriche fresche in uno dei locali simbolo della città.",
+      "zone": "New Town",
+      "tipo": "Pub e oyster bar",
+      "ordina": "Ostriche fresche con una pinta nel Circle Bar",
+      "summary": "L'oyster bar più antico di Scozia, in un sontuoso interno vittoriano con bancone ovale e murales.",
+      "descrizione": "Iconico oyster bar e ristorante di Edimburgo, aperto nella sede attuale dal 1863, è il più antico oyster bar di Scozia. Vanta uno degli interni di pub vittoriani più belli del Paese, dominato da un imponente bancone ovale a isola con luci in ottone. Le pareti sono decorate da spettacolari murales in ceramica Doulton raffiguranti grandi innovatori. Si servono frutti di mare freschi, piatti classici e birre selezionate.",
+      "curiosita": "I murales in piastrelle Doulton ritraggono inventori famosi e sono comparsi in film come Chariots of Fire.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "££"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Consigliata per l'Oyster Bar"
+        },
+        {
+          "k": "Specialità",
+          "v": "Ostriche e frutti di mare"
+        }
+      ]
+    },
+    "ea-pandasons": {
+      "note": "Uno speakeasy iconico con cocktail tra i migliori al mondo, dietro una porta segreta.",
+      "zone": "New Town",
+      "tipo": "Cocktail bar",
+      "ordina": "Un cocktail della signature list",
+      "summary": "Speakeasy nascosto dietro una barberia vintage. Cocktail pluripremiati, tra i migliori bar al mondo.",
+      "descrizione": "Speakeasy celato dietro la facciata di una barberia d'epoca su Queen Street. Fondato nel 2013 dal celebre barman Iain McPherson, è noto a livello mondiale per i drink innovativi e le tecniche di congelamento. Si entra spingendo una libreria segreta per scendere in un ambiente sotterraneo dal fascino vintage. Cocktail creativi e di altissimo livello in un'atmosfera intima.",
+      "curiosita": "Nel 2025 è stato nominato tra i migliori bar al mondo dalle classifiche internazionali del settore.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "££"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Consigliata"
+        },
+        {
+          "k": "Specialità",
+          "v": "Cocktail d'autore"
+        }
+      ]
+    },
+    "ea-lannanbakery": {
+      "note": "La pasticceria più chiacchierata di Edimburgo, con viennoiserie di livello internazionale.",
+      "zone": "Stockbridge",
+      "tipo": "Pasticceria",
+      "ordina": "Un croissant, una custard slice o una cardamom bun",
+      "summary": "La pasticceria cult di Darcie Maher. Viennoiserie e dolci stagionali, spesso esauriti entro mezzogiorno.",
+      "descrizione": "Prima pasticceria di Darcie Maher, già pastry chef del Palmerston, aperta a Stockbridge nel 2023. Il menù cambia di continuo e unisce viennoiserie classica, custard slice, pains suisses e cardamom buns a creazioni in serie limitata con prodotti locali. La qualità straordinaria ha reso il locale una meta internazionale. Nel 2025 è stata affiancata da Lannan Pantry.",
+      "curiosita": "La fila è talmente lunga da richiedere a volte un addetto all'ingresso, e i dolci finiscono spesso prima di pranzo.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "£"
+        },
+        {
+          "k": "Aperto",
+          "v": "Gio-dom, fino a esaurimento"
+        },
+        {
+          "k": "Specialità",
+          "v": "Viennoiserie e dolci stagionali"
+        }
+      ]
+    },
+    "ea-alandasgelato": {
+      "note": "Gelato artigianale pluripremiato con ingredienti scozzesi, in posizione comodissima.",
+      "zone": "Old Town",
+      "tipo": "Gelateria",
+      "ordina": "Un cono con i gusti scozzesi di stagione",
+      "summary": "Gelato artigianale pluripremiato con crema e latte scozzesi. Davanti alla statua di Greyfriars Bobby.",
+      "descrizione": "Su storica Forrest Road, di fronte alla statua di Greyfriars Bobby, Alandas unisce ingredienti scozzesi e maestria italiana. Usa panna e latte freschi dell'East Lothian per creare gelati premiati con numerosi riconoscimenti. Tra le specialità anche un'ottima cioccolata calda. Una sosta dolce perfetta tra le visite della Old Town.",
+      "curiosita": "Ha conquistato decine di Scottish Ice Cream Awards e premi al Royal Highland Show.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "£"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Non necessaria"
+        },
+        {
+          "k": "Specialità",
+          "v": "Gelato con latte scozzese"
+        }
+      ]
+    },
+    "ea-cairngormcoffee": {
+      "note": "Uno dei migliori caffè di Edimburgo per chi cerca specialty coffee e un toast goloso.",
+      "zone": "New Town",
+      "tipo": "Caffè",
+      "ordina": "Un flat white e il celebre grilled cheese",
+      "summary": "Specialty coffee scozzese nel cuore della New Town. Famoso per il toast al formaggio fuso.",
+      "descrizione": "Torrefazione e caffetteria di Edimburgo dedicata allo specialty coffee, con sede in un seminterrato dal design rustico 'mountain chic', con sacchi di caffè al soffitto. Oltre a un'ottima tazza, è rinomato per l'epico grilled cheese. Ambiente accogliente e informale, ideale per una pausa o un brunch leggero. Il caffè è tostato in proprio.",
+      "curiosita": "Prende il nome dai monti Cairngorms, il più grande parco nazionale del Regno Unito.",
+      "info": [
+        {
+          "k": "Prezzo",
+          "v": "£"
+        },
+        {
+          "k": "Prenotazione",
+          "v": "Non necessaria"
+        },
+        {
+          "k": "Specialità",
+          "v": "Specialty coffee e grilled cheese"
+        }
+      ]
     }
   },
   "trips": {
@@ -1355,6 +1890,153 @@
           }
         ]
       }
+    },
+    "dt-linlithgow": {
+      "note": "Il palazzo reale più scenografico raggiungibile in treno in mezz'ora: storia, lago e centro storico senza folle.",
+      "area": "West Lothian",
+      "summary": "Cittadina del West Lothian con uno dei palazzi reali più suggestivi della Scozia, facilissima in treno.",
+      "descrizione": "Linlithgow Palace è il maestoso palazzo reale, oggi in rovina ma imponente, dove nacque Maria Stuarda nel 1542. Sorge sulle rive del Linlithgow Loch, accanto alla chiesa medievale di St Michael e a una passeggiata lungo il lago amata dalla gente del posto. Dalla stazione il palazzo è raggiungibile in pochi minuti a piedi. Una meta perfetta per chi vuole storia reale e tranquillità a meno di mezz'ora da Edimburgo.",
+      "curiosita": "Qui nacque Maria Stuarda, regina di Scozia, e si dice che il suo fantasma e quello della regina Margherita aleggino ancora tra le mura.",
+      "info": [
+        {
+          "k": "Gestione",
+          "v": "Historic Environment Scotland (a pagamento)"
+        },
+        {
+          "k": "Sconto",
+          "v": "25% arrivando senza auto"
+        },
+        {
+          "k": "A piedi",
+          "v": "Pochi minuti dalla stazione"
+        }
+      ]
+    },
+    "dt-dunfermline": {
+      "note": "Capitale storica della Scozia con abbazia reale, eredità di Carnegie e un grande parco, facile in treno oltre il Forth.",
+      "area": "Fife",
+      "summary": "L'antica capitale della Scozia, oltre il Forth, con abbazia reale, parco e tomba di Robert the Bruce.",
+      "descrizione": "Dunfermline, raggiungibile attraversando in treno il celebre Forth Bridge, fu per secoli capitale del regno di Scozia. La Dunfermline Abbey & Palace custodisce la tomba di Robert the Bruce, mentre la moderna Carnegie Library and Galleries affaccia sul complesso medievale. A pochi passi si apre Pittencrieff Park, vasto parco donato alla città da Andrew Carnegie, con pavoni e sentieri nel verde. Una giornata che unisce re medievali, cultura e spazi aperti.",
+      "curiosita": "Andrew Carnegie, nato qui in una modesta casa, divenne l'uomo più ricco del mondo e regalò alla sua città la primissima delle sue migliaia di biblioteche pubbliche.",
+      "info": [
+        {
+          "k": "Treno",
+          "v": "Circa 35 min via Forth Bridge"
+        },
+        {
+          "k": "Gratis",
+          "v": "Carnegie Birthplace e Pittencrieff Park"
+        },
+        {
+          "k": "Da vedere",
+          "v": "Tomba di Robert the Bruce"
+        }
+      ]
+    },
+    "dt-rosslynchapel": {
+      "note": "Capolavoro gotico di sculture e leggende dei Templari, raggiungibile con un solo bus urbano.",
+      "area": "Midlothian",
+      "summary": "La cappella più misteriosa di Scozia, resa celebre dal Codice Da Vinci. A un'ora di bus dal centro.",
+      "descrizione": "La Rosslyn Chapel, fondata nel 1446, è famosa per le sue sculture in pietra incredibilmente elaborate e per i misteri legati ai Templari e al Santo Graal, popolarizzati dal Codice Da Vinci. Si raggiunge con il bus Lothian 37 in circa un'ora, scendendo a pochi minuti a piedi dalla cappella. La visita prevede una fascia oraria di 90 minuti con un'introduzione guidata. Il vicino villaggio di Roslin e la valle del North Esk offrono belle passeggiate.",
+      "curiosita": "Tra le centinaia di sculture spiccano i misteriosi 'cubi musicali' del soffitto, che alcuni studiosi ritengono codifichino una vera melodia medievale.",
+      "info": [
+        {
+          "k": "Bus",
+          "v": "Lothian 37, circa 1 ora"
+        },
+        {
+          "k": "Visita",
+          "v": "Fascia oraria di 90 min"
+        },
+        {
+          "k": "Aperta",
+          "v": "Lun-Sab dalle 9, Dom dalle 12"
+        }
+      ]
+    },
+    "dt-dunbar": {
+      "note": "Mare, porti e ruderi di castello a mezz'ora di treno, con l'eredità di John Muir e ottimi sentieri costieri.",
+      "area": "East Lothian",
+      "summary": "Cittadina costiera della East Lothian, città natale di John Muir. Velocissima in treno: 20-30 minuti.",
+      "descrizione": "Dunbar è un vivace borgo di mare con due porti (Victoria e Cromwell) e i suggestivi ruderi del Dunbar Castle proprio all'imboccatura del porto. È la città natale di John Muir, padre dei parchi nazionali: la sua casa natale è oggi un museo gratuito sulla High Street. Intorno si estende il John Muir Country Park, con spiagge, dune e sentieri costieri. A soli 20-30 minuti di treno da Edimburgo, è una delle gite di mare più facili in assoluto.",
+      "curiosita": "Da Dunbar, John Muir emigrò in America dove ispirò la creazione dei parchi nazionali: il sentiero John Muir Way attraversa la Scozia fino a casa sua.",
+      "info": [
+        {
+          "k": "Treno",
+          "v": "Circa 20-30 min, frequenza oraria"
+        },
+        {
+          "k": "Gratis",
+          "v": "John Muir's Birthplace"
+        },
+        {
+          "k": "Natura",
+          "v": "John Muir Country Park"
+        }
+      ]
+    },
+    "dt-peebles": {
+      "note": "Il volto raffinato dei Borders: fiume Tweed, boutique, cioccolato d'autore e natura, con un solo bus diretto.",
+      "area": "Scottish Borders",
+      "summary": "Elegante cittadina dei Borders sul fiume Tweed, tra negozi e natura. Unico bus diretto in poco più di un'ora.",
+      "descrizione": "Peebles è una raffinata cittadina dei Scottish Borders adagiata sulle rive del River Tweed, con una graziosa High Street piena di botteghe, caffè e gallerie d'arte. Si raggiunge con il bus diretto Borders Buses X62 dalla Edinburgh Bus Station in circa 1 ora e un quarto. Oltre alle passeggiate lungo il Tweed e ai monumenti come il Mercat Cross, nei dintorni ci sono la foresta di Glentress (mountain bike e sentieri) e il Dawyck Botanic Garden. Da non perdere il museo dedicato a John Buchan.",
+      "curiosita": "Peebles ospita Cocoa Black, considerata una delle migliori cioccolaterie del Regno Unito, fondata da un ex Chocolate Master.",
+      "info": [
+        {
+          "k": "Bus",
+          "v": "Borders Buses X62 diretto, circa 1h15"
+        },
+        {
+          "k": "Natura",
+          "v": "River Tweed, Glentress, Dawyck Garden"
+        },
+        {
+          "k": "Cultura",
+          "v": "The John Buchan Story"
+        }
+      ]
+    },
+    "dt-culross": {
+      "note": "Un borgo seicentesco da fiaba e set di Outlander: vale il viaggio più lungo per chi ama atmosfera e storia.",
+      "area": "Fife",
+      "summary": "Borgo del Sei-Settecento perfettamente conservato, set di Outlander. Richiede treno + bus: viaggio più lungo ma magico.",
+      "descrizione": "Culross è uno dei villaggi più belli e meglio conservati di Scozia, con vicoli acciottolati e case del Sei-Settecento color ocra. Il gioiello è il Culross Palace del National Trust for Scotland, con i suoi giardini all'antica. È celebre come set di Outlander, dove interpreta la cittadina di Cranesmuir. Si raggiunge con treno fino a Dunfermline (o Falkirk) e poi un bus locale: il viaggio richiede circa due ore a tratta, quindi conviene partire presto.",
+      "curiosita": "In Outlander, il giardino del Culross Palace è l'orto di erbe di Claire al castello di Leoch.",
+      "info": [
+        {
+          "k": "Percorso",
+          "v": "Treno a Dunfermline/Falkirk + bus locale"
+        },
+        {
+          "k": "Durata",
+          "v": "Circa 2 ore a tratta"
+        },
+        {
+          "k": "Palace",
+          "v": "National Trust for Scotland"
+        }
+      ]
+    },
+    "dt-anstruthereast": {
+      "note": "Il mare di Fife nella sua forma più autentica: porti di pescatori, frutti di mare e il fish & chips più premiato del Paese.",
+      "area": "Fife",
+      "summary": "I villaggi di pescatori dell'East Neuk, con il miglior fish & chips di Scozia. Lungo ma fattibile in bus.",
+      "descrizione": "L'East Neuk di Fife è una collana di villaggi di pescatori dai porti ancora attivi: Anstruther, Pittenweem, St Monans e Crail, con case dai tetti rossi e vicoli sul mare. Anstruther, il più grande, è famoso per l'Anstruther Fish Bar, premiato come miglior friggitoria del Regno Unito e affacciato sul pittoresco porto. Si raggiunge col bus diretto Stagecoach X60, che impiega circa 2 ore e mezza a tratta: una gita lunga ma molto premiante. Dal porto partono in estate le gite in barca verso la Isle of May, regno di pulcinelle di mare.",
+      "curiosita": "L'Anstruther Fish Bar ha vinto più volte il premio nazionale come miglior fish & chips del Regno Unito.",
+      "info": [
+        {
+          "k": "Bus",
+          "v": "Stagecoach X60 diretto, circa 2h25"
+        },
+        {
+          "k": "Mangiare",
+          "v": "Anstruther Fish Bar"
+        },
+        {
+          "k": "In barca",
+          "v": "Isle of May (pulcinelle) in estate"
+        }
+      ]
     }
   },
   "london": {
@@ -1805,6 +2487,16 @@
             "v": "Panificio-pasticceria"
           }
         ]
+      },
+      {
+        "name": "West Sands Beach",
+        "tipo": "vedere",
+        "note": "Spiaggia di sabbia lunga oltre due miglia, set del film 'Momenti di gloria'.",
+        "q": "West Sands Beach, St Andrews, Scotland",
+        "summary": "Una spiaggia dorata lunga oltre due miglia accanto al campo da golf, set di 'Momenti di gloria'.",
+        "descrizione": "La West Sands è la grande spiaggia di St Andrews, una distesa di sabbia che si allunga per oltre due miglia fino all'estuario del fiume Eden. È perfetta per una passeggiata rilassante con vista sul Mare del Nord e sull'Old Course di golf. Qui fu girata l'iconica scena di apertura del film 'Momenti di gloria' (Chariots of Fire). Facilmente raggiungibile a piedi dal centro città.",
+        "curiosita": "La scena della corsa sulla spiaggia di 'Momenti di gloria', premio Oscar 1982, fu girata proprio qui sulla West Sands.",
+        "info": []
       }
     ],
     "dt-lochlomond": [
@@ -1941,6 +2633,16 @@
             "v": "Pub-locanda con cucina"
           }
         ]
+      },
+      {
+        "name": "Glengoyne Distillery",
+        "tipo": "vedere",
+        "note": "Distilleria di whisky single malt ai piedi delle colline, con tour e degustazione.",
+        "q": "Glengoyne Distillery, Scotland",
+        "summary": "Distilleria di Highland single malt ai margini del Loch Lomond, con tour guidati e degustazione.",
+        "descrizione": "Glengoyne è una pittoresca distilleria di whisky single malt situata a nord di Glasgow, con le montagne del Loch Lomond sullo sfondo. Offre tour guidati che illustrano la lenta distillazione tradizionale e si concludono con una degustazione. Si trova a circa 30 minuti da Stirling e poco più dal lago; dalla zona è raggiungibile in bus o con tour organizzati. È una tappa ideale per abbinare natura e cultura del whisky.",
+        "curiosita": "Glengoyne distilla nelle Highlands ma fa maturare il whisky nelle Lowlands, dato che il confine geografico passa proprio accanto alla distilleria.",
+        "info": []
       }
     ],
     "dt-musselburgh": [
@@ -2496,7 +3198,14 @@
           }
         ]
       }
-    ]
+    ],
+    "dt-linlithgow": [],
+    "dt-dunfermline": [],
+    "dt-rosslynchapel": [],
+    "dt-dunbar": [],
+    "dt-peebles": [],
+    "dt-culross": [],
+    "dt-anstruthereast": []
   },
   "londonSpots": [
     {
@@ -2870,6 +3579,309 @@
           "v": "Bankside, South Bank"
         }
       ]
+    },
+    {
+      "id": "lo-dishoomshoreditch",
+      "name": "Dishoom Shoreditch",
+      "q": "Dishoom Shoreditch, Boundary Street, London",
+      "zone": "Shoreditch",
+      "note": "È il ristorante simbolo di Shoreditch e a pochi passi dall'hotel: perfetto per la prima cena.",
+      "dur": 90,
+      "summary": "Cucina bombayita in un caffè persiano vintage. Code lunghe ma vale: i tavoli grandi vanno per gruppi 6+.",
+      "descrizione": "L'indirizzo iconico di Shoreditch ispirato ai vecchi caffè iraniani di Bombay, con arredi anni '20 e atmosfera calda. Si mangia tutto il giorno, dalla colazione coi naan roll fino ai curry serali e ai cocktail. Il black daal cotto 24 ore e la chicken ruby sono dei classici imperdibili. Non prendono prenotazioni serali per tavoli piccoli, quindi conviene mettersi in lista presto e aspettare al bar.",
+      "curiosita": "Il famoso black daal viene cotto lentamente per oltre 24 ore prima di essere servito.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "Aperto tutti i giorni, sera ideale verso le 18"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Circa 25-35 GBP a persona"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "5 min a piedi dall'hotel"
+        }
+      ],
+      "cat": "Ristorante",
+      "open": [
+        8,
+        23
+      ],
+      "ordina": "Black Daal, Chicken Ruby, Pau Bhaji, Chai"
+    },
+    {
+      "id": "lo-smokinggoat",
+      "name": "Smoking Goat",
+      "q": "Smoking Goat Shoreditch High Street, London",
+      "zone": "Shoreditch",
+      "note": "Alternativa vivace a Dishoom per chi cerca sapori thai intensi a due passi dall'hotel.",
+      "dur": 75,
+      "summary": "Bar e griglia thai-bbq sopra la fermata Shoreditch High St. Sapori intensi del nord-est della Thailandia.",
+      "descrizione": "Un locale informale e rumoroso che porta a Londra lo street food e la cucina alla brace della Thailandia rurale. Le fish sauce wings sono diventate leggendarie, accompagnate da riso fritto al lardo e da curry potenti. L'atmosfera è da bar vivace, con ottime birre e drink. Ideale per una cena dai sapori decisi senza formalità.",
+      "curiosita": "Le sue alette alla salsa di pesce sono spesso citate tra i piatti più copiati di Londra.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "Lun-Sab 12-23, Dom 12-22"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Circa 25-30 GBP a persona"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Adiacente alla Overground Shoreditch High Street"
+        }
+      ],
+      "cat": "Ristorante",
+      "open": [
+        12,
+        23
+      ],
+      "ordina": "Fish sauce wings, lardo & shrimp paste fried rice, curry tailandesi"
+    },
+    {
+      "id": "lo-gunpowderspitalfields",
+      "name": "Gunpowder Spitalfields",
+      "q": "Gunpowder Spitalfields White's Row, London",
+      "zone": "Spitalfields",
+      "note": "Cucina indiana raffinata e originale, perfetta per una cena memorabile vicino all'hotel.",
+      "dur": 75,
+      "summary": "Piccolo gioiello indiano da ricette di famiglia, piatti da condividere. Solo pochi tavoli: prenota.",
+      "descrizione": "Un ristorante minuscolo e molto amato dove le ricette casalinghe del subcontinente vengono reinterpretate con piatti pensati per la condivisione. La carta cambia ed è breve ma intensa, dal granchio fritto alle costolette d'agnello al masala. L'ambiente è intimo e quasi sempre pieno. Conviene assolutamente prenotare perché i tavoli sono pochissimi.",
+      "curiosita": "È segnalato nella Guida Michelin per la qualità della cucina nonostante le dimensioni ridotte.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "Lun-Sab pranzo e cena, domenica chiuso"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Circa 30-40 GBP a persona"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "8 min a piedi, vicino Spitalfields"
+        }
+      ],
+      "cat": "Ristorante",
+      "open": [
+        12,
+        23
+      ],
+      "ordina": "Spicy venison & vermicelli doughnut, crispy soft shell crab, masala lamb chops"
+    },
+    {
+      "id": "lo-tayyabs",
+      "name": "Tayyabs",
+      "q": "Tayyabs Fieldgate Street Whitechapel, London",
+      "zone": "Brick Lane",
+      "note": "Il vero curry dell'East End, lontano dai tout di Brick Lane, con le mitiche lamb chops.",
+      "dur": 75,
+      "summary": "Storica trattoria punjabi a Whitechapel, le costolette d'agnello sono leggendarie. BYOB, no alcol.",
+      "descrizione": "A pochi minuti da Brick Lane, questo locale a conduzione familiare serve cucina punjabi autentica dal 1972 ed è un'istituzione dell'East End. Le costolette d'agnello marinate e grigliate, servite ancora sfrigolanti, sono il piatto da non perdere. L'ambiente è caotico, rumoroso e sempre affollato di gente del posto. Non servono alcolici ma si può portare il proprio (BYOB).",
+      "curiosita": "Il locale non vende alcol: i clienti portano la propria bottiglia di vino o birra.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "Tutti i giorni 12-23:30, meglio prenotare"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Economico, circa 20 GBP a persona"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Vicino Whitechapel, 12 min da Brick Lane"
+        }
+      ],
+      "cat": "Ristorante",
+      "open": [
+        12,
+        23.5
+      ],
+      "ordina": "Lamb chops alla griglia, dry meat, daal, naan"
+    },
+    {
+      "id": "lo-sundayupmarket",
+      "name": "Sunday UpMarket",
+      "q": "Sunday UpMarket Brick Lane Truman Brewery, London",
+      "zone": "Brick Lane",
+      "note": "Tappa mattutina ideale per cibo da strada e vintage nel cuore di Brick Lane.",
+      "dur": 60,
+      "summary": "Mercato del cibo e del vintage nella Truman Brewery. La domenica esplode di bancarelle e stilisti.",
+      "descrizione": "All'interno della Old Truman Brewery, questo mercato unisce street food da tutto il mondo, abiti vintage, vinili e creazioni di giovani designer. La domenica è la giornata clou, quando le sale e i cortili si riempiono di bancarelle e profumi. Perfetto per un pranzo informale assaggiando piatti da decine di Paesi. Atmosfera giovane e creativa, cuore della scena di Brick Lane.",
+      "curiosita": "Molti stilisti emergenti londinesi hanno iniziato proprio vendendo qui le loro prime collezioni.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "Esperienza piena la domenica 10-18"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Ingresso gratis, street food 6-10 GBP"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Su Brick Lane, 8 min a piedi"
+        }
+      ],
+      "open": [
+        10,
+        18
+      ],
+      "ordina": "Street food internazionale: dumpling, etiope, churros"
+    },
+    {
+      "id": "lo-columbiaroad",
+      "name": "Columbia Road Flower Market",
+      "q": "Columbia Road Flower Market, London",
+      "zone": "Hoxton",
+      "note": "Esperienza domenicale unica e fotogenica, facilmente raggiungibile a piedi dall'hotel.",
+      "dur": 60,
+      "summary": "Mercato dei fiori vittoriano, solo la domenica. Strada di negozietti, caffè e venditori urlanti.",
+      "descrizione": "Una stradina vittoriana che ogni domenica si trasforma in un'esplosione di fiori, piante e colori, con i venditori che urlano le offerte in puro stile cockney. Ai lati si aprono botteghe indipendenti, caffè e gallerie perfette da curiosare. Conviene arrivare presto per evitare la folla o tardi per i migliori affari. È una delle esperienze londinesi più fotogeniche e autentiche.",
+      "curiosita": "Verso le 14, prima della chiusura, i venditori svendono i mazzi a prezzi stracciati.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "Solo domenica 8-15"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Ingresso gratis"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "12-15 min a piedi da Shoreditch"
+        }
+      ],
+      "open": [
+        8,
+        15
+      ]
+    },
+    {
+      "id": "lo-queenhoxton",
+      "name": "Queen of Hoxton",
+      "q": "Queen of Hoxton Curtain Road Shoreditch, London",
+      "zone": "Shoreditch",
+      "note": "Aperitivo serale su un rooftop a tema, a pochi passi dall'hotel.",
+      "dur": 60,
+      "summary": "Bar su più piani con celebre rooftop a tema stagionale. D'estate diventa una terrazza tropicale.",
+      "descrizione": "Locale iconico di Shoreditch distribuito su più livelli, con un piano terra vivace, sale per le feste e soprattutto un rooftop che cambia tema ogni stagione. D'estate si trasforma in una terrazza tropicale con cocktail, rum e DJ set. È uno dei posti migliori per un drink con vista sui tetti dell'East End. L'ingresso al tetto è soggetto al meteo.",
+      "curiosita": "Il rooftop viene completamente ridecorato due volte l'anno con un nuovo tema stagionale.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "Rooftop pomeriggio-sera, meteo permettendo"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Cocktail circa 12-14 GBP"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "5 min a piedi dall'hotel"
+        }
+      ],
+      "cat": "Bar",
+      "open": [
+        16,
+        22
+      ],
+      "ordina": "Cocktail, rum, street food sul tetto"
+    },
+    {
+      "id": "lo-oldblue",
+      "name": "The Old Blue Last",
+      "q": "The Old Blue Last Great Eastern Street Shoreditch, London",
+      "zone": "Shoreditch",
+      "note": "Il pub più iconico per la musica live di Shoreditch, vicinissimo all'hotel.",
+      "dur": 60,
+      "summary": "Pub leggendario con musica live al primo piano. Tempio della scena indie e rock di Shoreditch.",
+      "descrizione": "Pub storico di proprietà della rivista Vice, è una vera istituzione della musica dal vivo londinese. Al piano superiore si sono esibiti gruppi poi diventati famosi prima del grande successo. Al piano terra è un classico pub di Shoreditch, vivace e senza pretese. Perfetto per una pinta e magari un concerto a sorpresa.",
+      "curiosita": "Sul suo palco hanno suonato agli esordi band come Arctic Monkeys, Florence and the Machine e Amy Winehouse.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "Tutti i giorni dalle 12, weekend fino alle 2"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Pinta circa 6-7 GBP"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "3 min a piedi dall'hotel"
+        }
+      ],
+      "cat": "Pub",
+      "open": [
+        12,
+        24
+      ],
+      "ordina": "Pinte di birra artigianale, ale locali"
+    },
+    {
+      "id": "lo-skygarden",
+      "name": "Sky Garden",
+      "q": "Sky Garden 20 Fenchurch Street, London",
+      "zone": "City & South Bank",
+      "note": "Vista panoramica gratuita sulla City, raggiungibile in fretta per la mattina o il tramonto.",
+      "dur": 60,
+      "summary": "Il giardino pubblico più alto di Londra, in cima al Walkie Talkie. Vista a 360 gratis, su prenotazione.",
+      "descrizione": "In cima al grattacielo soprannominato Walkie Talkie, questo giardino tropicale offre una vista mozzafiato a 360 gradi sulla City e sul Tamigi. L'ingresso è gratuito ma richiede la prenotazione di una fascia oraria sul sito, rilasciata circa tre settimane prima. Ci sono bar e ristoranti se si vuole sostare più a lungo. Da non perdere al tramonto.",
+      "curiosita": "È il giardino pubblico più alto della città, su tre piani in cima a un grattacielo.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "Prenotazione gratuita online, 3 settimane prima"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Ingresso gratis"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Tube/bus verso Monument, circa 15 min"
+        }
+      ],
+      "open": [
+        10,
+        18
+      ]
+    },
+    {
+      "id": "lo-leadenhallmarket",
+      "name": "Leadenhall Market",
+      "q": "Leadenhall Market Gracechurch Street, London",
+      "zone": "City & South Bank",
+      "note": "Gioiello architettonico della City, abbinabile a Sky Garden per la mattinata.",
+      "dur": 40,
+      "summary": "Splendida galleria vittoriana coperta nella City. Set di Diagon Alley in Harry Potter.",
+      "descrizione": "Un elegante mercato coperto vittoriano con tetto in vetro e ferro, dipinto in verde, oro e bordeaux, nascosto tra i grattacieli della City. Oggi ospita pub, ristoranti e negozi frequentati dai lavoratori della finanza. I fan di Harry Potter lo riconosceranno come location di Diagon Alley e del Paiolo Magico. La struttura è sempre accessibile, ideale per una sosta veloce e fotografica.",
+      "curiosita": "La porta blu dell'ottico al numero 42 di Bull's Head Passage fu l'ingresso del Paiolo Magico nel primo film.",
+      "info": [
+        {
+          "k": "Quando",
+          "v": "Galleria sempre aperta, negozi nei feriali"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Ingresso gratis"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Tube fino a Monument o Bank, circa 4 min a piedi"
+        }
+      ],
+      "open": [
+        10,
+        18
+      ]
     }
   ],
   "glasgow": {
@@ -3033,6 +4045,215 @@
         {
           "k": "Cosa",
           "v": "Sala concerti + bar · cartellone quasi ogni sera"
+        }
+      ]
+    },
+    "gl-9": {
+      "summary": "Leggendaria sala da ballo anni '30 con insegna al neon, oggi tempio del live rock, sopra lo storico mercato delle pulci.",
+      "descrizione": "Inaugurata nel 1934, la Barrowland Ballroom è una delle sale concerti più amate del Regno Unito, con il pavimento elastico e la celebre insegna luminosa. Al piano terra si estende The Barras, lo storico mercato di Glasgow attivo dal 1921, aperto nei weekend. Bancarelle di antiquariato, vinili, cibo di strada e curiosità riempiono i capannoni del quartiere Calton. È il cuore popolare e musicale dell'East End.",
+      "curiosita": "Molti artisti considerano un concerto alla Barrowland una tappa imprescindibile: l'acustica e il pubblico sono diventati leggendari.",
+      "info": [
+        {
+          "k": "Mercato",
+          "v": "Sab-Dom 10-16"
+        },
+        {
+          "k": "Concerti",
+          "v": "controlla calendario serale"
+        },
+        {
+          "k": "Quartiere",
+          "v": "Calton, Gallowgate"
+        }
+      ]
+    },
+    "gl-10": {
+      "summary": "Museo interattivo sulla riva del Clyde con planetario, cinema IMAX e centinaia di exhibit per tutte le età.",
+      "descrizione": "Affacciato sul fiume Clyde a Pacific Quay, il Glasgow Science Centre è un'astronave argentata piena di exhibit interattivi su tre piani. Ospita il planetario più grande della Scozia e un cinema IMAX. È ideale per famiglie ma diverte anche gli adulti curiosi. All'esterno svetta la Glasgow Tower, l'unica torre al mondo capace di ruotare di 360 gradi.",
+      "curiosita": "La Glasgow Tower, alta 127 metri, è la struttura più alta interamente girevole al mondo.",
+      "info": [
+        {
+          "k": "Biglietto",
+          "v": "a pagamento, meglio online"
+        },
+        {
+          "k": "Extra",
+          "v": "IMAX e planetario a parte"
+        },
+        {
+          "k": "Bambini",
+          "v": "<3 anni gratis"
+        }
+      ]
+    },
+    "gl-11": {
+      "summary": "Arte contemporanea gratuita in un palazzo neoclassico, riconoscibile dalla statua del Duca col cono in testa.",
+      "descrizione": "La GoMA è la galleria d'arte moderna più visitata della Scozia, ospitata in un elegante edificio neoclassico in Royal Exchange Square. Quattro spazi espositivi propongono mostre temporanee di artisti contemporanei, oltre a una libreria e un caffè. L'ingresso è gratuito. Davanti all'entrata troneggia la statua equestre del Duca di Wellington, da decenni perennemente decorata con un cono stradale arancione.",
+      "curiosita": "Il cono sulla testa del Duca è diventato simbolo non ufficiale dell'umorismo irriverente di Glasgow.",
+      "info": [
+        {
+          "k": "Ingresso",
+          "v": "gratuito"
+        },
+        {
+          "k": "Giovedì",
+          "v": "aperto fino alle 20"
+        },
+        {
+          "k": "Dom/Ven",
+          "v": "11-17"
+        }
+      ]
+    },
+    "gl-12": {
+      "summary": "Il museo pubblico più antico della Scozia, dentro lo spettacolare campus neogotico dell'Università di Glasgow.",
+      "descrizione": "Fondato nel 1807, l'Hunterian è il più antico museo pubblico della Scozia, custodito nel suggestivo edificio neogotico dell'Università di Glasgow. Le collezioni spaziano da reperti romani dell'Antonine Wall a fossili, monete, strumenti scientifici e meteoriti. Poco distante, la Hunterian Art Gallery ospita la Mackintosh House, ricostruzione fedele degli interni di Charles Rennie Mackintosh. L'ingresso al museo è gratuito.",
+      "curiosita": "Conserva strumenti e reperti legati a William Hunter e al chimico Joseph Lister, pioniere dell'antisettica.",
+      "info": [
+        {
+          "k": "Ingresso",
+          "v": "gratuito"
+        },
+        {
+          "k": "Chiuso",
+          "v": "lunedì"
+        },
+        {
+          "k": "Vicino",
+          "v": "Mackintosh House (a pagamento)"
+        }
+      ]
+    },
+    "gl-13": {
+      "summary": "Giardini vittoriani gratuiti con la spettacolare serra in ferro e vetro Kibble Palace, in cima a Byres Road.",
+      "descrizione": "In cima a Byres Road, i Botanic Gardens sono un'oasi verde molto amata dagli abitanti del West End. Il gioiello è la Kibble Palace, un'imponente serra circolare in ferro e vetro di epoca vittoriana, classificata di categoria A, che ospita felci arboree e statue di marmo. Le altre serre custodiscono orchidee, piante carnivore e specie tropicali. Giardini e serre sono gratuiti.",
+      "curiosita": "La Kibble Palace fu originariamente costruita come conservatorio privato sul Loch Long e poi trasferita qui nel 1873.",
+      "info": [
+        {
+          "k": "Ingresso",
+          "v": "gratuito"
+        },
+        {
+          "k": "Serre",
+          "v": "10-18 (apr-set)"
+        },
+        {
+          "k": "Metro",
+          "v": "Hillhead, 7 min a piedi"
+        }
+      ]
+    },
+    "gl-14": {
+      "summary": "Casa progettata da Mackintosh nel 1901 e realizzata solo negli anni '90, immersa nel verde di Bellahouston Park.",
+      "descrizione": "Nel verde di Bellahouston Park sorge questa casa nata da un concorso di design vinto da Charles Rennie Mackintosh e Margaret Macdonald nel 1901, ma costruita solo negli anni '90 seguendo i loro disegni originali. Gli interni sublimano lo stile del movimento moderno scozzese, tra la Music Room e la Oval Room. C'è un caffè molto amato e i giardini sono gratuiti. La visita alla casa è a pagamento con audioguida.",
+      "curiosita": "Mackintosh non vide mai costruita questa casa: fu realizzata quasi un secolo dopo il suo progetto.",
+      "info": [
+        {
+          "k": "Casa",
+          "v": "~£4,50 con audioguida"
+        },
+        {
+          "k": "Giardini",
+          "v": "gratuiti"
+        },
+        {
+          "k": "Caffè",
+          "v": "10-17 tutti i giorni"
+        }
+      ]
+    },
+    "gl-15": {
+      "summary": "Ex magazzini industriali sul Clyde diventati hub di musica live, club, arte urbana e street food.",
+      "descrizione": "SWG3 è uno spazio multifunzione ricavato da magazzini industriali vicino a Finnieston, oggi tra i poli creativi più vivaci della città. Ospita concerti, serate club, mostre, mercatini e installazioni di arte urbana negli Yard. Ogni primavera accoglie lo Yardworks, il maggior festival di street art e murales della Scozia. Il calendario varia molto: conviene controllare gli eventi in programma.",
+      "curiosita": "Lo Yardworks Festival nel 2026 festeggia il suo decimo anniversario, trasformando l'intero complesso in una tela vivente.",
+      "info": [
+        {
+          "k": "Orari",
+          "v": "variano per evento"
+        },
+        {
+          "k": "Eventi",
+          "v": "concerti, club, festival"
+        },
+        {
+          "k": "Zona",
+          "v": "vicino a Finnieston"
+        }
+      ]
+    },
+    "gl-16": {
+      "summary": "Leggendario club underground in un seminterrato di Jamaica Street: il dancefloor più mitico della Scozia.",
+      "descrizione": "Aperto nel 1987 al numero 22 di Jamaica Street, il Sub Club è il più longevo club di musica dance underground al mondo. Il suo seminterrato intimo, da circa 410 persone, ha cresciuto generazioni di clubber e DJ. La serata Subculture di Harri & Domenic va in scena ogni sabato dal 1994. La pista è dotata di uno dei più grandi impianti bodysonic del Regno Unito.",
+      "curiosita": "Subculture è considerata la serata house e techno settimanale più longeva del pianeta.",
+      "info": [
+        {
+          "k": "Apertura",
+          "v": "serale, controlla eventi"
+        },
+        {
+          "k": "Storico",
+          "v": "dal 1987"
+        },
+        {
+          "k": "Capienza",
+          "v": "~410 persone"
+        }
+      ]
+    },
+    "gl-17": {
+      "summary": "Chiesa sconsacrata in cima a Byres Road trasformata in bar, sala concerti e teatro con soffitto dipinto.",
+      "descrizione": "In cima a Byres Road, Òran Mór occupa una ex chiesa vittoriana convertita in un vivace centro di arti ed eventi. Comprende un bar, ristoranti e un auditorium con un magnifico soffitto a murale dipinto dall'artista e scrittore Alasdair Gray. È celebre per 'A Play, A Pie and A Pint', l'iniziativa teatrale diurna più longeva della Scozia: uno spettacolo di un'ora con tortino caldo e una pinta. Ospita anche concerti e serate.",
+      "curiosita": "Il soffitto a stelle dell'auditorium è opera di Alasdair Gray, autore del romanzo cult 'Lanark'.",
+      "info": [
+        {
+          "k": "Teatro",
+          "v": "'A Play, A Pie and A Pint' a pranzo"
+        },
+        {
+          "k": "Eventi",
+          "v": "concerti e club serali"
+        },
+        {
+          "k": "Posizione",
+          "v": "cima di Byres Road"
+        }
+      ]
+    },
+    "gl-18": {
+      "summary": "Pub vittoriano di categoria A con uno dei bancone continui più lunghi del Regno Unito, in un vicolo del centro.",
+      "descrizione": "Nascosto nel vicolo di Drury Street, lo Horse Shoe è uno dei pub più amati e autentici di Glasgow, attivo dal XIX secolo. L'edificio, classificato di categoria A, conserva interni vittoriani originali e un imponente bancone a ferro di cavallo lungo oltre 30 metri, tra i più lunghi del Regno Unito. Pinte economiche, atmosfera schietta e celebri serate di karaoke al piano superiore. Un'istituzione cittadina.",
+      "curiosita": "Fu qui che nacque l'idea della band Travis: il batterista lavorava dietro al bancone.",
+      "info": [
+        {
+          "k": "Bancone",
+          "v": "oltre 30 m, a ferro di cavallo"
+        },
+        {
+          "k": "Edificio",
+          "v": "categoria A dal 1988"
+        },
+        {
+          "k": "Sopra",
+          "v": "karaoke al piano superiore"
+        }
+      ]
+    },
+    "gl-19": {
+      "summary": "Caffè-bar vegano e venue live nascosto in King's Court, che condivide il tetto con un mitico negozio di vinili.",
+      "descrizione": "Vicino al Merchant City, Mono è un premiato caffè-bar vegano e spazio per concerti aperto dal 2002. Propone cibo casalingo senza prodotti animali, birre locali e bibite di produzione propria in un ambiente rilassato. Sotto lo stesso tetto c'è Monorail Music, fieramente indipendente negozio di dischi devoto al vinile. Spesso ospita serate live, letture e mercatini di dischi.",
+      "curiosita": "È diventato un punto di ritrovo della scena musicale indipendente di Glasgow grazie all'accoppiata caffè + negozio di vinili.",
+      "info": [
+        {
+          "k": "Cucina",
+          "v": "100% vegana"
+        },
+        {
+          "k": "Dischi",
+          "v": "Monorail Music nello stesso spazio"
+        },
+        {
+          "k": "Ven-Sab",
+          "v": "aperto fino all'1"
         }
       ]
     }
