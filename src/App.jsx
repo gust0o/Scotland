@@ -20,7 +20,7 @@ const MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ot
 // Primary destinations for the fixed bottom tab bar (ids + scroll-spy order).
 const NAV_TABS = ["sNow", "s01", "s02", "sPlan", "sFav"];
 // Every section the scroll-spy tracks, in document order (primary + overflow).
-const ALL_SECTIONS = ["sNow", "s01", "s02", "sPlan", "sFav", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "sSet"];
+const ALL_SECTIONS = ["sNow", "s01", "s02", "sPlan", "s08", "s03", "s04", "s07", "s06", "s05", "sFav", "s09", "sSet"];
 const MESI_LONG = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
 // Drop shadow whose offset reacts to device tilt via --sx/--sy (0 when flat),
 // plus a faint rim of light on the lit edge + a hairline inner edge.
@@ -1708,9 +1708,9 @@ export default class App extends React.Component {
 
     const nav = [
       { label: "Oggi", href: "#sNow" }, { label: "01 Voli", href: "#s01" }, { label: "02 Alloggi", href: "#s02" },
-      { label: "Programma", href: "#sPlan" }, { label: "★ Preferiti", href: "#sFav" }, { label: "03 Edimburgo", href: "#s03" },
-      { label: "04 Mangiare", href: "#s04" }, { label: "05 Glasgow", href: "#s05" }, { label: "06 Dintorni", href: "#s06" },
-      { label: "07 Esperienze", href: "#s07" }, { label: "08 Londra", href: "#s08" }, { label: "09 Pratica", href: "#s09" },
+      { label: "Programma", href: "#sPlan" }, { label: "03 Londra", href: "#s08" }, { label: "04 Edimburgo", href: "#s03" },
+      { label: "05 Mangiare", href: "#s04" }, { label: "06 Esperienze", href: "#s07" }, { label: "07 Dintorni", href: "#s06" },
+      { label: "08 Glasgow", href: "#s05" }, { label: "★ Preferiti", href: "#sFav" }, { label: "09 Pratica", href: "#s09" },
       { label: "Impostazioni", href: "#sSet" },
     ];
 
@@ -1734,7 +1734,7 @@ export default class App extends React.Component {
           fontFamily: "'Archivo','Helvetica Neue',system-ui,-apple-system,sans-serif", lineHeight: 1.5,
         }}
       >
-        <div style={{ maxWidth: 480, margin: "0 auto", background: "#ECE3D0", minHeight: "100vh", overflow: "hidden", position: "relative", paddingBottom: "calc(94px + env(safe-area-inset-bottom))" }}>
+        <div style={{ maxWidth: 480, margin: "0 auto", background: "#ECE3D0", minHeight: "100vh", overflow: "hidden", position: "relative", paddingBottom: "calc(94px + env(safe-area-inset-bottom))", display: "flex", flexDirection: "column" }}>
           {/* ===== NAV ===== */}
           <div style={{ position: "sticky", top: 0, zIndex: 60, background: "#0E1542", paddingTop: "env(safe-area-inset-top)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 15px 8px" }}>
@@ -2071,7 +2071,7 @@ export default class App extends React.Component {
           {/* ===== 03 EDIMBURGO ===== */}
           <section id="s03" style={{ ...sec, padding: "26px 16px 22px", background: "#ECE3D0" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 5 }}>
-              <span style={numBadge("#FF2E7E", "#fff")}>03</span>
+              <span style={numBadge("#FF2E7E", "#fff")}>04</span>
               <h2 style={h2("#0E1542")}>Edimburgo</h2>
             </div>
             <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Per zona · stella = preferito, poi pianificalo dal Programma</p>
@@ -2095,7 +2095,7 @@ export default class App extends React.Component {
           {/* ===== 04 MANGIARE ===== */}
           <section id="s04" style={{ ...sec, padding: "26px 16px 28px", background: "#46150E" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 5 }}>
-              <span style={numBadge("#E6482A", "#fff")}>04</span>
+              <span style={numBadge("#E6482A", "#fff")}>05</span>
               <h2 style={h2("#fff")}>Mangiare &amp; locali</h2>
               <CutleryIcon fill="#FFD23F" style={{ marginLeft: "auto" }} />
             </div>
@@ -2108,7 +2108,7 @@ export default class App extends React.Component {
           {/* ===== 05 GLASGOW ===== */}
           <section id="s05" style={{ ...sec, padding: "26px 16px 22px", background: "#ECE3D0" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 5 }}>
-              <span style={numBadge("#0E1542", "#fff")}>05</span>
+              <span style={numBadge("#0E1542", "#fff")}>08</span>
               <h2 style={h2("#0E1542")}>Glasgow</h2>
             </div>
             <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Treno da Edimburgo ~50' · gita in giornata</p>
@@ -2120,7 +2120,7 @@ export default class App extends React.Component {
           {/* ===== 06 DINTORNI ===== */}
           <section id="s06" style={{ ...sec, padding: "26px 16px 22px", background: "#ECE3D0", borderTop: "1px solid #ddd2bb" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 5 }}>
-              <span style={numBadge("#14C08C", "#fff")}>06</span>
+              <span style={numBadge("#14C08C", "#fff")}>07</span>
               <h2 style={h2("#0E1542")}>Dintorni &amp; gite</h2>
             </div>
             <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Per zona · tocca per la scheda della gita · forse <strong style={{ color: "#0E1542" }}>una</strong> gita vera</p>
@@ -2140,7 +2140,7 @@ export default class App extends React.Component {
           {/* ===== 07 ESPERIENZE ===== */}
           <section id="s07" style={{ ...sec, padding: "26px 16px 22px", background: "#ECE3D0" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 5 }}>
-              <span style={numBadge("#FF2E7E", "#fff")}>07</span>
+              <span style={numBadge("#FF2E7E", "#fff")}>06</span>
               <h2 style={h2("#0E1542")}>Esperienze</h2>
             </div>
             <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Per tema · tocca per la scheda</p>
@@ -2152,7 +2152,7 @@ export default class App extends React.Component {
           {/* ===== 08 LONDRA ===== */}
           <section id="s08" style={{ ...sec, padding: "26px 16px 28px", background: "#0E1542" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 5 }}>
-              <span style={numBadge("#FFD23F", "#0E1542")}>08</span>
+              <span style={numBadge("#FFD23F", "#0E1542")}>03</span>
               <h2 style={h2("#fff")}>Londra · prima sera</h2>
             </div>
             <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#9aa2d4" }}>Sera d'arrivo + colazione · a piedi dall'hotel a Shoreditch</p>

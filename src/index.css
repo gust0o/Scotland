@@ -18,6 +18,22 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Section order (the page container is a flex column; header + cover stay first at
+   default order 0). Coherent flow: logistics -> itinerary by chronology -> reference. */
+#sNow { order: 1; }
+#s01 { order: 2; }   /* Voli */
+#s02 { order: 3; }   /* Prenotazioni */
+#sPlan { order: 4; } /* Programma */
+#s08 { order: 5; }   /* Londra (first stop) */
+#s03 { order: 6; }   /* Edimburgo */
+#s04 { order: 7; }   /* Mangiare */
+#s07 { order: 8; }   /* Esperienze */
+#s06 { order: 9; }   /* Dintorni & gite */
+#s05 { order: 10; }  /* Glasgow */
+#sFav { order: 11; } /* Preferiti */
+#s09 { order: 12; }  /* Info pratiche */
+#sSet { order: 13; } /* Impostazioni */
+
 body {
   margin: 0;
   background: #0e1542;

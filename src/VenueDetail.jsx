@@ -93,6 +93,8 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
   // Drag-down-to-dismiss: the grabber/hero can be dragged; past a threshold it closes.
   const [dragY, setDragY] = useState(0);
   const drag = useRef(null);
+  // Day-trip: which Edinburgh station to show live times from (both serve these routes).
+  const [station, setStation] = useState("Edinburgh Waverley");
   const onGrabDown = (e) => {
     drag.current = { y0: e.clientY };
     try { e.currentTarget.setPointerCapture(e.pointerId); } catch (er) {}
@@ -195,6 +197,26 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
               )}
               <span style={chip("#DBF3E9", "#06382a")}>🚆 Ritorno {durLabel(d.train)}</span>
               <span style={chip("#0E1542", "#fff")}>Totale {durLabel(visitMin + 2 * d.train)}</span>
+            </div>
+          )}
+
+          {/* Day-trip: choose your Edinburgh departure station → live times to the destination */}
+          {d.kind === "trip" && d.destQ && (
+            <div style={{ marginTop: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: ".1em", textTransform: "uppercase", color: "#7a7560", marginBottom: 8 }}>Stazione di partenza · Edimburgo</div>
+              <div style={{ display: "flex", gap: 7, marginBottom: 10 }}>
+                {["Edinburgh Waverley", "Edinburgh Haymarket"].map((st) => {
+                  const on = station === st;
+                  return (
+                    <button key={st} onClick={() => setStation(st)} style={{ flex: 1, cursor: "pointer", border: `1.5px solid ${on ? c : "#dcd2b8"}`, background: on ? c : "transparent", color: on ? "#fff" : "#5b5644", borderRadius: 10, padding: "8px 10px", fontSize: 12.5, fontWeight: 900 }}>{st.replace("Edinburgh ", "")}</button>
+                  );
+                })}
+              </div>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <a href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(station + " Station, Edinburgh")}&destination=${encodeURIComponent(d.destQ)}&travelmode=transit`} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()} style={{ flex: 1, textAlign: "center", fontSize: 12.5, fontWeight: 900, color: "#fff", textDecoration: "none", background: "#FF2E7E", padding: "9px 12px", borderRadius: 10 }}>Orari live da {station.replace("Edinburgh ", "")} ↗</a>
+                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(station + " railway station")}`} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()} style={{ flex: "none", fontSize: 12.5, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "9px 12px", borderRadius: 10 }}>Mappa ↗</a>
+              </div>
+              <div style={{ marginTop: 8, fontSize: 11.5, color: "#6B6450", fontWeight: 600, lineHeight: 1.45 }}>Quasi tutti i treni per questa gita fermano a <strong>entrambe</strong> le stazioni: scegli la più comoda — Haymarket è utile se alloggi nel West End.</div>
             </div>
           )}
 
