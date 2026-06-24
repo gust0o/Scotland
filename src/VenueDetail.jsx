@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 
 // Palette + label per kind, consistent with the rest of the app.
 const KIND = {
@@ -84,9 +84,31 @@ export function SummaryRow({ d, onOpen, isFav, onToggleFav, last }) {
 }
 
 const chip = (bg, fg) => ({ fontSize: 11.5, fontWeight: 800, color: fg, background: bg, borderRadius: 999, padding: "4px 10px", whiteSpace: "nowrap" });
+// Compact rectangular category tag (legible at small sizes — replaces the old round pills).
+const tag = (bg, fg) => ({ flex: "none", display: "inline-flex", alignItems: "center", fontSize: 10, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: fg, background: bg, borderRadius: 7, padding: "4px 9px", lineHeight: 1, whiteSpace: "nowrap" });
 
 // Full detail sheet, reused everywhere (sections, timeline taps, favourites, now-cards).
-export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit, onTripLess, onTripMore }) {
+// onOpen(idOrObj) lets nested items (trip venues, experience places) open their own card.
+export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit, onTripLess, onTripMore, onOpen }) {
+  // Drag-down-to-dismiss: the grabber/hero can be dragged; past a threshold it closes.
+  const [dragY, setDragY] = useState(0);
+  const drag = useRef(null);
+  const onGrabDown = (e) => {
+    drag.current = { y0: e.clientY };
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch (er) {}
+  };
+  const onGrabMove = (e) => {
+    if (!drag.current) return;
+    const dy = e.clientY - drag.current.y0;
+    setDragY(dy > 0 ? dy : dy * 0.25); // resist upward drag
+  };
+  const onGrabUp = () => {
+    if (!drag.current) return;
+    const dy = dragY;
+    drag.current = null;
+    if (dy > 110) onClose();
+    else setDragY(0);
+  };
   if (!d) return null;
   const adjustable = d.kind === "trip" && typeof tripVisit === "number" && onTripMore;
   const visitMin = adjustable ? tripVisit : d.visit;
@@ -107,16 +129,21 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{ width: "100%", maxWidth: 480, maxHeight: "92vh", overflowY: "auto", background: "#F6F0E2", borderRadius: "20px 20px 0 0", boxShadow: "0 -10px 50px rgba(0,0,0,.45)", WebkitOverflowScrolling: "touch", paddingBottom: "calc(20px + env(safe-area-inset-bottom))" }}
+        style={{ width: "100%", maxWidth: 480, maxHeight: "92vh", overflowY: "auto", background: "#F6F0E2", borderRadius: "20px 20px 0 0", boxShadow: "0 -10px 50px rgba(0,0,0,.45)", WebkitOverflowScrolling: "touch", paddingBottom: "calc(20px + env(safe-area-inset-bottom))", transform: dragY ? `translateY(${dragY}px)` : "none", transition: drag.current ? "none" : "transform .25s cubic-bezier(.22,1,.36,1)" }}
       >
-        {/* Hero: photo when available, else a coloured placeholder band */}
-        <div style={{ position: "relative", height: 168, background: d.photo ? "#000" : `linear-gradient(135deg, ${c} 0%, #0E1542 100%)`, borderRadius: "20px 20px 0 0", overflow: "hidden" }}>
+        {/* Hero: photo when available, else a coloured placeholder band. Doubles as the drag handle. */}
+        <div
+          onPointerDown={onGrabDown} onPointerMove={onGrabMove} onPointerUp={onGrabUp} onPointerCancel={onGrabUp}
+          style={{ position: "relative", height: 168, background: d.photo ? "#000" : `linear-gradient(135deg, ${c} 0%, #0E1542 100%)`, borderRadius: "20px 20px 0 0", overflow: "hidden", touchAction: "none", cursor: "grab" }}
+        >
+          {/* grabber */}
+          <span style={{ position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)", width: 40, height: 4, borderRadius: 999, background: "rgba(255,255,255,.55)", zIndex: 2 }} />
           {d.photo && <img src={d.photo} alt={d.name} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />}
           {d.photo && d.credit && <span style={{ position: "absolute", bottom: 4, left: 8, fontSize: 8.5, fontWeight: 600, color: "rgba(255,255,255,.7)", textShadow: "0 1px 2px rgba(0,0,0,.6)" }}>{d.credit}</span>}
           {!d.photo && (
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", padding: 16 }}>
               <span style={{ position: "absolute", top: -20, right: 6, fontSize: 150, fontWeight: 900, color: "rgba(255,255,255,.08)", lineHeight: 1 }}>{(d.name || "?").slice(0, 1)}</span>
-              <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(255,255,255,.6)" }}>{k.l} · foto in arrivo</span>
+              <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(255,255,255,.6)" }}>{k.l}</span>
             </div>
           )}
           <button onClick={onClose} aria-label="Chiudi" style={{ position: "absolute", top: 12, right: 12, cursor: "pointer", width: 34, height: 34, borderRadius: 999, border: "none", background: "rgba(0,0,0,.4)", color: "#fff", fontSize: 17, fontWeight: 900, backdropFilter: "blur(4px)" }}>✕</button>
@@ -201,14 +228,16 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
               <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: ".1em", textTransform: "uppercase", color: "#7a7560", marginBottom: 8 }}>Cosa vedere & dove mangiare</div>
               {d.venues.map((v, i) => {
                 const eat = v.tipo === "mangiare";
+                const clickable = !!(onOpen && v.id);
                 return (
-                  <div key={i} style={{ display: "flex", gap: 9, padding: "9px 0", borderTop: i ? "1px solid rgba(122,112,84,.16)" : "none" }}>
-                    <span style={{ flex: "none", marginTop: 2, ...chip(eat ? "#FBEDE9" : "#EEF0F8", eat ? "#E6482A" : "#0E1542") }}>{eat ? "Mangiare" : "Vedere"}</span>
+                  <div key={i} onClick={clickable ? () => onOpen(v.id) : undefined} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderTop: i ? "1px solid rgba(122,112,84,.16)" : "none", cursor: clickable ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
+                    <span style={tag(eat ? "#FBEDE9" : "#EEF0F8", eat ? "#E6482A" : "#0E1542")}>{eat ? "Mangiare" : "Vedere"}</span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13.5, fontWeight: 800, color: "#17142C" }}>{v.name}</div>
                       {v.note && <div style={{ fontSize: 12, color: "#6B6450", fontWeight: 600, lineHeight: 1.45, marginTop: 1 }}>{v.note}</div>}
                     </div>
-                    {v.maps && <a href={v.maps} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()} style={{ flex: "none", alignSelf: "center", fontSize: 11, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "5px 10px", borderRadius: 8 }}>Maps</a>}
+                    {v.maps && <a href={v.maps} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()} style={{ flex: "none", fontSize: 11, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "5px 10px", borderRadius: 8 }}>Maps</a>}
+                    {clickable && <span style={{ flex: "none", color: "#b3a784", fontSize: 17, fontWeight: 900 }}>›</span>}
                   </div>
                 );
               })}
@@ -222,15 +251,20 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
             </div>
           )}
 
-          {/* Experience: places */}
+          {/* Experience: places (each opens its own detail card) */}
           {d.places && d.places.length > 0 && (
-            <div style={{ marginTop: 14 }}>
-              {d.places.map((p, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 9, padding: "9px 0", borderTop: i ? "1px solid rgba(122,112,84,.16)" : "none" }}>
-                  <span style={{ fontSize: 13.5, fontWeight: 800, color: "#17142C" }}>{p.name}</span>
-                  {p.maps && <a href={p.maps} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()} style={{ flex: "none", fontSize: 11, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "5px 10px", borderRadius: 8 }}>Maps ↗</a>}
-                </div>
-              ))}
+            <div style={{ marginTop: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: ".1em", textTransform: "uppercase", color: "#7a7560", marginBottom: 8 }}>Cosa comprende</div>
+              {d.places.map((p, i) => {
+                const clickable = !!(onOpen && p.ref);
+                return (
+                  <div key={i} onClick={clickable ? () => onOpen(p.ref) : undefined} style={{ display: "flex", alignItems: "center", gap: 9, padding: "10px 0", borderTop: i ? "1px solid rgba(122,112,84,.16)" : "none", cursor: clickable ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
+                    <span style={{ flex: 1, minWidth: 0, fontSize: 13.5, fontWeight: 800, color: "#17142C" }}>{p.name}</span>
+                    {p.maps && <a href={p.maps} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()} style={{ flex: "none", fontSize: 11, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", padding: "5px 10px", borderRadius: 8 }}>Maps ↗</a>}
+                    {clickable && <span style={{ flex: "none", color: "#b3a784", fontSize: 17, fontWeight: 900 }}>›</span>}
+                  </div>
+                );
+              })}
             </div>
           )}
 

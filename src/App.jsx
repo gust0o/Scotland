@@ -9,6 +9,7 @@ import {
   venueDetail,
   seedPlan,
   emptyScaffold,
+  DEFAULT_CHECKLIST,
 } from "./data.js";
 import { LogoMark, PlaneIcon, BedIcon, CutleryIcon, TimelineIcon } from "./icons.jsx";
 import { BarIcon } from "./barIcons.jsx";
@@ -115,8 +116,9 @@ function Perforation({ notch = 0, notchColor = "#0E1542", weight = 2 }) {
   );
 }
 
-// Fixed bottom tab bar (5 primary destinations + a "More" popup for the rest).
-function BottomNav({ active, moreOpen, onToggleMore, onClose, extra }) {
+// Floating "liquid glass" bottom tab bar (detached from the screen edges).
+// 5 primary destinations + a "More" popup; it compacts (icon-only) while scrolling.
+function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact }) {
   const tabs = [
     { id: "sNow", label: "Oggi", icon: "oggi" },
     { id: "s01", label: "Voli", icon: "voli" },
@@ -125,16 +127,16 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra }) {
     { id: "sFav", label: "Preferiti", icon: "preferit" },
   ];
   const moreActive = moreOpen || extra.some((e) => e.href === "#" + active);
-  const cell = (on) => ({ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, padding: "9px 0 8px", textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", color: on ? "#FFD23F" : "rgba(255,255,255,0.6)", WebkitTapHighlightColor: "transparent", transition: "color .15s" });
-  const lbl = (on) => ({ fontSize: 10.5, fontWeight: on ? 900 : 700, letterSpacing: "-.01em" });
+  const cell = (on) => ({ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: compact ? 0 : 4, padding: compact ? "8px 0" : "8px 0 7px", textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", color: on ? "#FFD23F" : "rgba(255,255,255,0.62)", WebkitTapHighlightColor: "transparent", transition: "color .15s, gap .25s, padding .25s", borderRadius: 16 });
+  const lbl = (on) => ({ fontSize: 10, fontWeight: on ? 900 : 700, letterSpacing: "-.01em", maxHeight: compact ? 0 : 14, opacity: compact ? 0 : 1, overflow: "hidden", transition: "max-height .25s, opacity .2s" });
   return (
     <>
       {/* Popup menu with everything that doesn't fit in the bar */}
       {moreOpen && (
         <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 85, background: "rgba(8,11,32,0.5)" }}>
-          <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, display: "flex", justifyContent: "center", paddingBottom: "calc(58px + env(safe-area-inset-bottom))" }}>
+          <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, display: "flex", justifyContent: "center", paddingBottom: "calc(86px + env(safe-area-inset-bottom))" }}>
             <div onClick={(e) => e.stopPropagation()} style={{ width: "100%", maxWidth: 480 }}>
-              <div style={{ margin: "0 12px", background: "#171436", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 18, padding: 8, boxShadow: "0 18px 44px rgba(0,0,0,0.5)" }}>
+              <div style={{ margin: "0 14px", background: "rgba(23,20,54,0.82)", backdropFilter: "blur(22px) saturate(180%)", WebkitBackdropFilter: "blur(22px) saturate(180%)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 22, padding: 8, boxShadow: "0 18px 44px rgba(0,0,0,0.5)" }}>
                 <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: ".1em", textTransform: "uppercase", color: "#9aa2d4", padding: "8px 12px 6px" }}>Altre sezioni</div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
                   {extra.map((e) => {
@@ -151,24 +153,87 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra }) {
           </div>
         </div>
       )}
-      <nav style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 90, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
-        <div style={{ pointerEvents: "auto", width: "100%", maxWidth: 480, display: "flex", background: "rgba(14,21,66,0.94)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", borderTop: "1px solid rgba(255,255,255,0.10)", paddingBottom: "env(safe-area-inset-bottom)" }}>
+      <nav style={{ position: "fixed", left: 0, right: 0, bottom: "calc(env(safe-area-inset-bottom) + 12px)", zIndex: 90, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
+        <div style={{ pointerEvents: "auto", width: "100%", maxWidth: 430, margin: "0 14px", display: "flex", alignItems: "stretch", gap: 2, padding: "5px 7px", background: "rgba(20,18,46,0.6)", backdropFilter: "blur(22px) saturate(180%)", WebkitBackdropFilter: "blur(22px) saturate(180%)", border: "1px solid rgba(255,255,255,0.16)", borderRadius: 26, boxShadow: "0 10px 34px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.22)", transition: "padding .25s" }}>
           {tabs.map((t) => {
             const on = !moreOpen && t.id === active;
             return (
-              <a key={t.id} href={"#" + t.id} onClick={onClose} style={cell(on)}>
-                <BarIcon name={t.icon} size={23} />
+              <a key={t.id} href={"#" + t.id} onClick={onClose} style={{ ...cell(on), background: on ? "rgba(255,210,63,0.14)" : "transparent" }}>
+                <BarIcon name={t.icon} size={22} />
                 <span style={lbl(on)}>{t.label}</span>
               </a>
             );
           })}
-          <button onClick={onToggleMore} style={cell(moreActive)}>
-            <BarIcon name="ellipsis" size={23} />
+          <button onClick={onToggleMore} style={{ ...cell(moreActive), background: moreActive ? "rgba(255,210,63,0.14)" : "transparent" }}>
+            <BarIcon name="ellipsis" size={22} />
             <span style={lbl(moreActive)}>Altro</span>
           </button>
         </div>
       </nav>
     </>
+  );
+}
+
+// Collapsible settings panel — header (tap to expand) + body shown only when open,
+// so Impostazioni never shows every control at once.
+function Collapsible({ open, onToggle, title, sub, children }) {
+  return (
+    <div style={{ background: "#211d3e", borderRadius: 16, marginBottom: 12, overflow: "hidden" }}>
+      <button onClick={onToggle} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "14px 15px", background: "transparent", border: "none", cursor: "pointer", textAlign: "left" }}>
+        <span style={{ minWidth: 0 }}>
+          <span style={{ display: "block", fontSize: 14, fontWeight: 900, color: "#fff" }}>{title}</span>
+          {sub && <span style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#9d98c4", marginTop: 2 }}>{sub}</span>}
+        </span>
+        <span style={{ flex: "none", color: "#FFD23F", fontSize: 15, transform: open ? "rotate(180deg)" : "none", transition: "transform .2s" }}>⌄</span>
+      </button>
+      {open && <div style={{ padding: "0 15px 15px" }}>{children}</div>}
+    </div>
+  );
+}
+
+// Interactive trip checklist — checkable, collapsible and editable. Items live in
+// the plan (and travel inside the same programme JSON), so they sync via backup/import.
+function Checklist({ items, onToggle, onAdd, onEdit, onRemove }) {
+  const [open, setOpen] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [text, setText] = useState("");
+  const done = items.filter((i) => i.done).length;
+  const add = () => { onAdd(text); setText(""); };
+  return (
+    <div style={{ background: "#0E1542", borderRadius: 16, marginTop: 4, overflow: "hidden" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 14px" }}>
+        <button onClick={() => setOpen(!open)} style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 9, background: "transparent", border: "none", cursor: "pointer", textAlign: "left", padding: 0 }}>
+          <span style={{ fontSize: 12, fontWeight: 900, letterSpacing: ".1em", textTransform: "uppercase", color: "#FFD23F" }}>Checklist</span>
+          <span style={{ fontSize: 11.5, fontWeight: 800, color: "#9aa2d4", background: "rgba(255,255,255,.08)", borderRadius: 999, padding: "2px 9px" }}>{done}/{items.length}</span>
+          <span style={{ marginLeft: "auto", color: "#9aa2d4", fontSize: 14, transform: open ? "rotate(180deg)" : "none", transition: "transform .2s" }}>⌄</span>
+        </button>
+        <button onClick={() => setEditing(!editing)} style={{ flex: "none", fontSize: 11, fontWeight: 900, color: editing ? "#0E1542" : "#FFD23F", background: editing ? "#FFD23F" : "rgba(255,210,63,.14)", border: "none", borderRadius: 999, padding: "5px 11px", cursor: "pointer" }}>{editing ? "Fine ✓" : "Modifica"}</button>
+      </div>
+      {open && (
+        <div style={{ padding: "0 12px 12px" }}>
+          {items.map((it, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 2px", borderTop: i ? "1px solid rgba(255,255,255,.07)" : "none" }}>
+              {!editing && (
+                <button onClick={() => onToggle(i)} style={{ flex: "none", width: 22, height: 22, borderRadius: 7, border: `1.5px solid ${it.done ? "#14C08C" : "#3a4170"}`, background: it.done ? "#14C08C" : "transparent", color: "#fff", fontWeight: 900, fontSize: 13, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>{it.done ? "✓" : ""}</button>
+              )}
+              {editing ? (
+                <input value={it.t} onChange={(e) => onEdit(i, e.target.value)} style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 600, color: "#fff", background: "#15122b", border: "1px solid #3a3560", borderRadius: 8, padding: "7px 9px" }} />
+              ) : (
+                <span onClick={() => onToggle(i)} style={{ flex: 1, fontSize: 13.5, fontWeight: 600, color: it.done ? "#7a83b8" : "#fff", textDecoration: it.done ? "line-through" : "none", cursor: "pointer", lineHeight: 1.4 }}>{it.t}</span>
+              )}
+              {editing && <button onClick={() => onRemove(i)} aria-label="Rimuovi" style={{ flex: "none", color: "#ff8f7d", background: "transparent", border: "none", fontSize: 18, fontWeight: 900, cursor: "pointer", lineHeight: 1 }}>×</button>}
+            </div>
+          ))}
+          {editing && (
+            <div style={{ display: "flex", gap: 7, marginTop: 9 }}>
+              <input value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") add(); }} placeholder="Aggiungi una voce…" style={{ flex: 1, minWidth: 0, fontSize: 13, color: "#fff", background: "#15122b", border: "1px solid #3a3560", borderRadius: 8, padding: "8px 10px" }} />
+              <button onClick={add} style={{ flex: "none", fontSize: 16, fontWeight: 900, color: "#0E1542", background: "#FFD23F", border: "none", borderRadius: 8, padding: "0 15px", cursor: "pointer" }}>+</button>
+            </div>
+          )}
+          {items.length === 0 && !editing && <div style={{ fontSize: 12.5, color: "#9aa2d4", fontWeight: 600, padding: "4px 2px" }}>Nessuna voce. Tocca « Modifica » per aggiungerne.</div>}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -206,6 +271,8 @@ export default class App extends React.Component {
     moreOpen: false,
     detail: null,
     editDays: {},
+    navCompact: false,
+    setOpen: {},
   };
 
   componentDidMount() {
@@ -231,6 +298,8 @@ export default class App extends React.Component {
       plan = seedPlan();
       if (loaded && Array.isArray(loaded.favs)) plan.favs = loaded.favs;
     }
+    // Older saved plans predate the checklist — seed it so it's always editable.
+    if (plan && !Array.isArray(plan.checklist)) plan.checklist = seedPlan().checklist;
     this.setState({
       reserved: ld("scozia_riservato_v2"),
       plan,
@@ -308,6 +377,15 @@ export default class App extends React.Component {
       if (el && el.getBoundingClientRect().top <= 140) active = id;
     }
     if (active !== this.state.navActive) this.setState({ navActive: active });
+    // Floating bar shrinks while scrolling down, expands near the top / scrolling up.
+    const sy = window.scrollY || document.documentElement.scrollTop || 0;
+    const last = this._lastScrollY == null ? sy : this._lastScrollY;
+    let compact = this.state.navCompact;
+    if (sy < 80) compact = false;
+    else if (sy > last + 8) compact = true;
+    else if (sy < last - 8) compact = false;
+    this._lastScrollY = sy;
+    if (compact !== this.state.navCompact) this.setState({ navCompact: compact });
   };
   enableLight = () => {
     const DOE = window.DeviceOrientationEvent;
@@ -545,10 +623,17 @@ export default class App extends React.Component {
       else p.favs.splice(i, 1);
     });
   }
+  // ---------- checklist (lives in the plan; same JSON as the programme) ----------
+  ensureChecklist(p) { if (!Array.isArray(p.checklist)) p.checklist = DEFAULT_CHECKLIST.map((t) => ({ t, done: false })); }
+  toggleCheck = (i) => this.planMut((p) => { this.ensureChecklist(p); if (p.checklist[i]) p.checklist[i].done = !p.checklist[i].done; });
+  addCheck = (t) => { const tx = (t || "").trim(); if (!tx) return; this.planMut((p) => { this.ensureChecklist(p); p.checklist.push({ t: tx, done: false }); }); };
+  editCheck = (i, t) => this.planMut((p) => { this.ensureChecklist(p); if (p.checklist[i]) p.checklist[i].t = t; });
+  removeCheck = (i) => this.planMut((p) => { this.ensureChecklist(p); p.checklist.splice(i, 1); });
   // ---------- unified venue detail ----------
   openDetail = (idOrObj) => this.setState({ detail: venueDetail(idOrObj), moreOpen: false });
   closeDetail = () => this.setState({ detail: null });
   toggleEditDay = (key) => this.setState((s) => ({ editDays: { ...s.editDays, [key]: !s.editDays[key] } }));
+  toggleSet = (k) => this.setState((s) => ({ setOpen: { ...s.setOpen, [k]: !s.setOpen[k] } }));
 
   // ---------- weather ----------
   wmo(c) {
@@ -740,7 +825,7 @@ export default class App extends React.Component {
   // ---------- programma (timeline) export / import ----------
   exportPlan = () => {
     const p = this.state.plan || seedPlan();
-    const out = { programma: { days: p.days || {}, tripVisit: p.tripVisit || {} } };
+    const out = { programma: { days: p.days || {}, tripVisit: p.tripVisit || {}, checklist: p.checklist || [] } };
     const n = Object.values(out.programma.days).reduce((s, a) => s + (Array.isArray(a) ? a.length : 0), 0);
     this.copyText(JSON.stringify(out, null, 2), () => this.setState({ planCopyMsg: "Programma copiato ✓ (" + n + " attività)" }));
   };
@@ -752,7 +837,7 @@ export default class App extends React.Component {
       const d = JSON.parse(t);
       const prog = d.programma || d;
       if (!prog || typeof prog !== "object" || !prog.days || typeof prog.days !== "object") throw new Error();
-      this.planMut((p) => { p.days = prog.days; if (prog.tripVisit) p.tripVisit = prog.tripVisit; });
+      this.planMut((p) => { p.days = prog.days; if (prog.tripVisit) p.tripVisit = prog.tripVisit; if (Array.isArray(prog.checklist)) p.checklist = prog.checklist; });
       const n = Object.values(prog.days).reduce((s, a) => s + (Array.isArray(a) ? a.length : 0), 0);
       this.setState({ planImpMsg: "✓ Programma importato (" + n + " attività)." });
     } catch (e) {
@@ -840,7 +925,7 @@ export default class App extends React.Component {
       _app: "Taccuino Scozia 2026", _v: 2, _esportato: new Date().toISOString(),
       riservato: this.effReserved() || null,
       preferiti: (p && p.favs) || [],
-      programma: p ? { days: p.days || {}, tripVisit: p.tripVisit || {} } : { days: {} },
+      programma: p ? { days: p.days || {}, tripVisit: p.tripVisit || {}, checklist: p.checklist || [] } : { days: {} },
     };
   }
   downloadBackup = () => {
@@ -869,7 +954,7 @@ export default class App extends React.Component {
         this.planMut((p) => {
           if (Array.isArray(d.preferiti)) { p.favs = d.preferiti.filter((x) => typeof x === "string"); bits.push(d.preferiti.length + " preferiti"); }
           const prog = d.programma;
-          if (prog && prog.days) { p.days = prog.days; if (prog.tripVisit) p.tripVisit = prog.tripVisit; bits.push("programma"); }
+          if (prog && prog.days) { p.days = prog.days; if (prog.tripVisit) p.tripVisit = prog.tripVisit; if (Array.isArray(prog.checklist)) p.checklist = prog.checklist; bits.push("programma"); }
         });
         this.setState({ backupMsg: bits.length ? "✓ Importato: " + bits.join(", ") + "." : "File senza dati riconosciuti." });
       } catch (err) {
@@ -1040,6 +1125,43 @@ export default class App extends React.Component {
       ctaHref: "#sPlan", ctaBg: "#FFD23F", ctaFg: "#0E1542", ctaLabel: "Modifica il Programma →",
     });
   }
+  // Proactive "right now" card for an in-trip day: what you're doing now and what's next,
+  // read minute-by-minute from today's programme. Returns null when there's nothing planned.
+  nowNextCard() {
+    const dates = this.tripDates();
+    if (!dates) return null;
+    const now = this.nowDate();
+    const idx = dates.indexOf(this.iso(now));
+    if (idx < 0) return null;
+    const key = DAYS[idx] && DAYS[idx].key;
+    const day = this.dayEntries(key);
+    if (!day.length) return null;
+    const D = getData();
+    const nowMin = now.getHours() * 60 + now.getMinutes();
+    const items = day
+      .map((en) => {
+        const a = D.catalog[en.id];
+        if (!a) return null;
+        const s = this.parseMin(en.start);
+        if (s == null) return null;
+        const dur = en.dur != null ? en.dur : a.kind === "trip" ? this.tripVisitOf(en.id, a.baseVisit || a.dur) : a.dur || 60;
+        return { name: a.name, start: s, end: s + dur };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.start - b.start);
+    if (!items.length) return null;
+    const current = items.find((x) => nowMin >= x.start && nowMin < x.end);
+    const next = items.find((x) => x.start > nowMin);
+    const rows = [];
+    if (current) rows.push({ k: "Ora", v: current.name + " · fino " + this.hhmm(current.end), ff: MONO });
+    if (next) rows.push({ k: "Poi", v: this.hhmm(next.start) + " · " + next.name, ff: MONO });
+    if (!rows.length) rows.push({ k: "Fatto", v: "Tappe di oggi completate", ff: "inherit" });
+    return this.card({
+      bg: "#FF2E7E", fg: "#fff", paper: false, kicker: "Adesso",
+      title: current ? current.name : next ? "Tra poco: " + next.name : "Giornata libera",
+      rows, ctaHref: "#sPlan", ctaBg: "#FFD23F", ctaFg: "#0E1542", ctaLabel: "Apri il Programma →",
+    });
+  }
   nowContext() {
     const now = this.nowDate();
     const today = this.iso(now);
@@ -1055,7 +1177,7 @@ export default class App extends React.Component {
         steps: this.steps([
           "Carta d'identità/passaporto + carte (contactless)",
           "Adattatore UK tipo G + power bank",
-          "Solo bagaglio a mano: liquidi ≤100ml",
+          "Liquidi ≤100 ml in contenitori a norma",
           "Salva offline mappe di Edimburgo e Londra",
           "Carica voli e alloggi in Impostazioni",
         ]),
@@ -1073,10 +1195,8 @@ export default class App extends React.Component {
             bg: "#FF2E7E", fg: "#fff", paper: false, kicker: "Per iniziare",
             title: "Imposta la data di partenza",
             sub: "Incolla il tuo JSON (campo « partenza ») in Impostazioni.",
-            note: "Doppio tap sul badge in alto per simulare qualsiasi momento del viaggio.",
             ctaHref: "#sSet", ctaBg: "#FFD23F", ctaFg: "#0E1542", ctaLabel: "Apri Impostazioni →",
           }),
-          checklist(),
         ],
       };
     }
@@ -1096,10 +1216,8 @@ export default class App extends React.Component {
           bg: "#FF2E7E", fg: "#fff", paper: false, kicker: "Conto alla rovescia",
           title: days === 0 ? "Si parte oggi!" : "Mancano " + days + " giorni",
           sub: "Andata: due voli con cambio a Londra",
-          note: "Doppio tap sul badge data (in alto) per simulare qualsiasi momento del viaggio.",
         })
       );
-      cards.push(checklist());
       if (pk && (pk.nome || pk.prenotazione)) cards.push(this.parkCard(pk));
       return {
         label: "Prossima partenza",
@@ -1141,9 +1259,9 @@ export default class App extends React.Component {
                     "Parti per l'aeroporto entro le " + this.hhmm(fp0.leaveBy),
                     "Al terminal ~" + this.hhmm(fp0.secStart) + " · check-in + sicurezza ~" + this.durLabel(fp0.secMin),
                     "Gate " + this.hhmm(fp0.gateOpen) + "–" + this.hhmm(fp0.gateClose) + " · decollo " + this.hhmm(fp0.dep),
-                    "Solo bagaglio a mano: vai dritto ai controlli",
+                    "Vai dritto ai controlli di sicurezza",
                   ]
-                : ["Arriva ~2h prima", "Solo bagaglio a mano: vai dritto ai gate", "Imbarco chiude ~30' prima del decollo"]
+                : ["Arriva ~2h prima", "Vai dritto ai controlli di sicurezza", "Imbarco chiude ~30' prima del decollo"]
             ),
           })
         );
@@ -1204,6 +1322,8 @@ export default class App extends React.Component {
         );
         const pc = this.planCardFor("g1");
         if (pc) cards.push(pc);
+        const nn = this.nowNextCard();
+        if (nn) cards.unshift(nn);
       }
       return { label: pretty, title: hour < 12 ? "Si vola a Edimburgo" : "Benvenuto a Edimburgo", sub: "", cards };
     }
@@ -1229,6 +1349,8 @@ export default class App extends React.Component {
     // days 2–4 — full Edinburgh days
     const cards = [];
     cards.push(this.weatherCard(idx));
+    const nn = this.nowNextCard();
+    if (nn) cards.unshift(nn);
     const pc = this.planCardFor(DAYS[idx] ? DAYS[idx].key : "");
     if (pc) cards.push(pc);
     else
@@ -1495,7 +1617,7 @@ export default class App extends React.Component {
         key, dayIdx, date, dateLabel, cityLabel: dd.cityLabel, frozen, isToday, canEdit: !frozen, editMode, open,
         dim: frozen ? "0.62" : "1",
         headBg: isToday ? "#FF2E7E" : frozen ? "#8d8674" : "#0E1542", headFg: "#fff",
-        badge: isToday ? "Oggi" : frozen ? "Congelato" : date && date > today ? "In programma" : "",
+        badge: isToday ? "Oggi" : frozen ? "Giorno passato" : date && date > today ? "In programma" : "",
         badgeBg: isToday ? "#0E1542" : "rgba(255,255,255,.2)",
         events, flightBlocks, flightChips,
         multiTripWarn: tripCount >= 2,
@@ -1612,16 +1734,14 @@ export default class App extends React.Component {
           fontFamily: "'Archivo','Helvetica Neue',system-ui,-apple-system,sans-serif", lineHeight: 1.5,
         }}
       >
-        <div style={{ maxWidth: 480, margin: "0 auto", background: "#ECE3D0", minHeight: "100vh", overflow: "hidden", position: "relative", paddingBottom: "calc(66px + env(safe-area-inset-bottom))" }}>
+        <div style={{ maxWidth: 480, margin: "0 auto", background: "#ECE3D0", minHeight: "100vh", overflow: "hidden", position: "relative", paddingBottom: "calc(94px + env(safe-area-inset-bottom))" }}>
           {/* ===== NAV ===== */}
           <div style={{ position: "sticky", top: 0, zIndex: 60, background: "#0E1542", paddingTop: "env(safe-area-inset-top)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 15px 8px" }}>
               <span style={{ fontWeight: 900, fontSize: 17, color: "#fff", letterSpacing: "-0.02em", display: "flex", alignItems: "center", gap: 7 }}>
                 SCOZIA
                 <span
-                  onClick={this.tapBadge}
-                  title="Doppio tap per simulare data/ora"
-                  style={{ color: "#0E1542", background: badgeBg, borderRadius: 6, padding: "2px 7px", fontSize: 12, fontWeight: 900, cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}
+                  style={{ color: "#0E1542", background: badgeBg, borderRadius: 6, padding: "2px 7px", fontSize: 12, fontWeight: 900, userSelect: "none" }}
                 >
                   {headerBadge}
                 </span>
@@ -1629,13 +1749,6 @@ export default class App extends React.Component {
               <a href="#sSet" style={{ fontSize: 12, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 999, padding: "4px 12px" }}>
                 £ GBP
               </a>
-            </div>
-            <div style={{ display: "flex", gap: 7, overflowX: "auto", padding: "4px 15px 11px" }}>
-              {nav.map((c, i) => (
-                <a key={i} href={c.href} style={{ flex: "none", fontSize: 12.5, fontWeight: 800, color: "#fff", background: "rgba(255,255,255,.08)", border: "1.5px solid rgba(255,255,255,.18)", padding: "6px 12px", borderRadius: 999, textDecoration: "none", whiteSpace: "nowrap" }}>
-                  {c.label}
-                </a>
-              ))}
             </div>
           </div>
 
@@ -1653,9 +1766,9 @@ export default class App extends React.Component {
                 <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", gap: 7, alignItems: "center", fontSize: 13.5, fontWeight: 800, color: "#0E1542" }}>
                   <span style={{ background: "#14C08C", borderRadius: 999, padding: "5px 12px" }}>{flights[0].fromCity}</span>
                   <span style={{ color: "#FF2E7E", fontSize: 18 }}>→</span>
-                  <span style={{ background: "#fff", borderRadius: 999, padding: "5px 12px" }}>Londra <span style={{ color: "#8089b8", fontWeight: 700 }}>1n</span></span>
+                  <span style={{ background: "#fff", borderRadius: 999, padding: "5px 12px" }}>Londra <span style={{ color: "#8089b8", fontWeight: 700 }}>1 notte</span></span>
                   <span style={{ color: "#FF2E7E", fontSize: 18 }}>→</span>
-                  <span style={{ background: "#FFD23F", borderRadius: 999, padding: "5px 12px" }}>Edimburgo <span style={{ color: "#9a7a14", fontWeight: 700 }}>4n</span></span>
+                  <span style={{ background: "#FFD23F", borderRadius: 999, padding: "5px 12px" }}>Edimburgo <span style={{ color: "#9a7a14", fontWeight: 700 }}>4 notti</span></span>
                 </div>
               </div>
             </section>
@@ -1700,14 +1813,6 @@ export default class App extends React.Component {
             </section>
           )}
 
-          <div style={{ background: "#0E1542", padding: "0 16px 16px", display: "flex", alignItems: "center", gap: 9 }}>
-            <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".1em", textTransform: "uppercase", color: "#7a83b8" }}>Copertina</span>
-            <div style={{ display: "flex", gap: 6, background: "rgba(255,255,255,.07)", borderRadius: 999, padding: 3 }}>
-              <button onClick={() => this.setState({ coverVar: "Manifesto" })} style={{ border: "none", cursor: "pointer", fontSize: 12, fontWeight: 800, padding: "5px 13px", borderRadius: 999, ...onSel("Manifesto") }}>Manifesto</button>
-              <button onClick={() => this.setState({ coverVar: "Biglietto" })} style={{ border: "none", cursor: "pointer", fontSize: 12, fontWeight: 800, padding: "5px 13px", borderRadius: 999, ...onSel("Biglietto") }}>Biglietto</button>
-            </div>
-          </div>
-
           {/* ===== OGGI / DINAMICO ===== */}
           <section id="sNow" style={{ ...sec, padding: "22px 16px", background: "#ECE3D0" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 4 }}>
@@ -1717,6 +1822,13 @@ export default class App extends React.Component {
             <h2 style={{ fontWeight: 900, fontSize: 30, lineHeight: 1.02, margin: "0 0 3px", color: "#0E1542", letterSpacing: "-0.02em" }}>{ctx.title}</h2>
             <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>{ctx.sub}</p>
             {nowCards.map((c, i) => this.renderCard(c, i))}
+            <Checklist
+              items={(this.state.plan && this.state.plan.checklist) || []}
+              onToggle={this.toggleCheck}
+              onAdd={this.addCheck}
+              onEdit={this.editCheck}
+              onRemove={this.removeCheck}
+            />
           </section>
 
           {/* ===== 01 VOLI ===== */}
@@ -1726,7 +1838,7 @@ export default class App extends React.Component {
               <h2 style={h2("#fff")}>Voli</h2>
               <PlaneIcon size={26} fill="#FFD23F" style={{ marginLeft: "auto" }} />
             </div>
-            <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#9aa2d4" }}>Tariffa Basic = solo bagaglio a mano</p>
+            <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#9aa2d4" }}>Una scheda per tratta · dati riservati su questo dispositivo</p>
             {flights.map((f, i) => (
               <div key={i} className="paper" style={{ position: "relative", overflow: "hidden", borderRadius: 18, marginBottom: 12, background: "#F6F0E2", boxShadow: tiltShadow(16, 30, -20, 0.6) }}>
                 <Overlays grain={0.05} light={0.72} size="240px 260px" />
@@ -1766,7 +1878,7 @@ export default class App extends React.Component {
             ))}
             <div style={{ background: "#14C08C", borderRadius: 16, padding: "14px 15px", fontSize: 13, lineHeight: 1.65, color: "#06382a", fontWeight: 600 }}>
               <div style={{ fontWeight: 900, fontSize: 14, marginBottom: 5, color: "#06382a" }}>Da ricordare</div>
-              Scalo di <strong>3h 20'</strong> al rientro · giorno del rientro lascia l'alloggio <strong>~08:00</strong> · Basic: solo bagaglio a mano.
+              Scalo di <strong>3h 20'</strong> al rientro · giorno del rientro lascia l'alloggio <strong>~08:00</strong>.
             </div>
           </section>
 
@@ -1898,7 +2010,7 @@ export default class App extends React.Component {
                       onRemove={d.onRemove}
                       onSelect={d.onSelect}
                     />
-                    {d.canAdd && (
+                    {d.canAdd && d.editMode && (
                       <div style={{ marginTop: 10 }}>
                         <button onClick={d.onToggleAdd} style={{ cursor: "pointer", width: "100%", border: "1.5px dashed #bcae8f", background: "transparent", borderRadius: 10, padding: 9, fontSize: 12.5, fontWeight: 800, color: "#0E1542" }}>{d.addLabel}</button>
                         {d.pickerOpen && (
@@ -2107,13 +2219,15 @@ export default class App extends React.Component {
             </div>
             <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#9d98c4" }}>Dati riservati solo su questo dispositivo</p>
 
-            <div style={{ background: "#211d3e", borderRadius: 16, padding: 14, marginBottom: 12, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-              <div><div style={{ fontSize: 14, fontWeight: 900, color: "#fff" }}>Effetto luce carta</div><div style={{ fontSize: 12, fontWeight: 600, color: "#9d98c4", marginTop: 2 }}>Su telefono la luce segue l'inclinazione</div></div>
-              <button onClick={this.enableLight} style={{ cursor: "pointer", fontSize: 12.5, fontWeight: 900, color: "#17142C", background: this.state.lightOn ? "#14C08C" : "#FFD23F", border: "none", padding: "9px 14px", borderRadius: 999, whiteSpace: "nowrap" }}>{this.state.lightOn ? "Attivo ✓" : "Attiva"}</button>
-            </div>
+            <Collapsible open={!!this.state.setOpen.sim} onToggle={() => this.toggleSet("sim")} title="Simula data e ora" sub="Anteprima del viaggio in qualsiasi momento">
+              <button onClick={() => this.setState({ simOpen: true })} style={{ cursor: "pointer", fontSize: 12.5, fontWeight: 900, color: "#17142C", background: this.state.sim ? "#14C08C" : "#FFD23F", border: "none", padding: "10px 15px", borderRadius: 999 }}>{this.state.sim ? "Simulazione attiva — modifica" : "Apri simulatore"}</button>
+            </Collapsible>
 
-            <div style={{ background: "#211d3e", borderRadius: 16, padding: 15, marginBottom: 12 }}>
-              <div style={{ fontSize: 14, fontWeight: 900, color: "#fff", marginBottom: 4 }}>Dati riservati (JSON)</div>
+            <Collapsible open={!!this.state.setOpen.luce} onToggle={() => this.toggleSet("luce")} title="Effetto luce carta" sub="Su telefono la luce segue l'inclinazione">
+              <button onClick={this.enableLight} style={{ cursor: "pointer", fontSize: 12.5, fontWeight: 900, color: "#17142C", background: this.state.lightOn ? "#14C08C" : "#FFD23F", border: "none", padding: "9px 14px", borderRadius: 999, whiteSpace: "nowrap" }}>{this.state.lightOn ? "Attivo ✓" : "Attiva"}</button>
+            </Collapsible>
+
+            <Collapsible open={!!this.state.setOpen.dati} onToggle={() => this.toggleSet("dati")} title="Dati riservati (JSON)" sub="Voli, alloggi, parcheggio · solo su questo dispositivo">
               <div style={{ fontSize: 12.5, color: "#9d98c4", lineHeight: 1.55, marginBottom: 10, fontWeight: 600 }}>Copia il modello: i valori sono segnaposto d'esempio (formato AAAA-MM-GG, HH:MM…) che mostrano come compilare ogni campo — utile anche per farti aiutare da un'AI. Sostituiscili coi tuoi dati e reincolla. Solo voli, alloggi, parcheggio e Stansted.</div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
                 <button onClick={this.copyEmpty} style={{ cursor: "pointer", fontSize: 12, fontWeight: 900, color: "#17142C", background: "#FFD23F", border: "none", padding: "8px 13px", borderRadius: 999 }}>Copia modello</button>
@@ -2128,21 +2242,19 @@ export default class App extends React.Component {
                 <button onClick={this.saveReserved} style={{ flex: 1, background: "#FFD23F", color: "#17142C", fontWeight: 900, fontSize: 14, padding: 12, border: "none", borderRadius: 999, cursor: "pointer" }}>Salva dati</button>
                 <button onClick={this.clearReserved} style={{ flex: "none", background: "transparent", color: "#ff8f7d", border: "1.5px solid #5a3340", fontWeight: 900, fontSize: 14, padding: "12px 18px", borderRadius: 999, cursor: "pointer" }}>Cancella</button>
               </div>
-            </div>
+            </Collapsible>
 
-            <div style={{ background: "#211d3e", borderRadius: 16, padding: 15, marginBottom: 12 }}>
-              <div style={{ fontSize: 14, fontWeight: 900, color: "#fff", marginBottom: 4 }}>Preferiti · esporta / importa</div>
+            <Collapsible open={!!this.state.setOpen.fav} onToggle={() => this.toggleSet("fav")} title="Preferiti · esporta / importa" sub="Copia o ripristina la lista dei preferiti">
               <div style={{ fontSize: 12.5, color: "#9d98c4", lineHeight: 1.55, marginBottom: 10, fontWeight: 600 }}>Stesso metodo: copia la lista, salvala dove vuoi, reincollala su un altro dispositivo.</div>
               <button onClick={this.exportFavs} style={{ cursor: "pointer", fontSize: 12, fontWeight: 900, color: "#17142C", background: "#FFD23F", border: "none", padding: "8px 13px", borderRadius: 999, marginBottom: 10 }}>Copia preferiti</button>
               {this.state.favCopyMsg && <div style={{ marginBottom: 10, fontSize: 12, fontWeight: 800, color: "#FFD23F" }}>{this.state.favCopyMsg}</div>}
               <textarea value={this.state.favText} onChange={this.onFavInput} placeholder="Incolla qui la lista preferiti…" style={{ width: "100%", minHeight: 70, fontFamily: MONO, fontSize: 12, color: "#fff", background: "#15122b", border: "1.5px solid #3a3560", borderRadius: 12, padding: 11, resize: "vertical", lineHeight: 1.5 }} />
               <button onClick={this.importFavs} style={{ marginTop: 10, width: "100%", background: "#14C08C", color: "#fff", fontWeight: 900, fontSize: 13.5, padding: 11, border: "none", borderRadius: 999, cursor: "pointer" }}>Importa preferiti</button>
               {this.state.favImpMsg && <div style={{ marginTop: 10, fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#14C08C", padding: "10px 12px", borderRadius: 12 }}>{this.state.favImpMsg}</div>}
-            </div>
+            </Collapsible>
 
-            <div style={{ background: "#211d3e", borderRadius: 16, padding: 15, marginBottom: 12 }}>
-              <div style={{ fontSize: 14, fontWeight: 900, color: "#fff", marginBottom: 4 }}>Programma · esporta / importa</div>
-              <div style={{ fontSize: 12.5, color: "#9d98c4", lineHeight: 1.55, marginBottom: 10, fontWeight: 600 }}>Copia l'intera timeline (giorni, attività, orari e durate), salvala o passala a un altro dispositivo, poi reincollala qui per ripristinarla.</div>
+            <Collapsible open={!!this.state.setOpen.prog} onToggle={() => this.toggleSet("prog")} title="Programma · esporta / importa" sub="Timeline e checklist · backup o trasferimento">
+              <div style={{ fontSize: 12.5, color: "#9d98c4", lineHeight: 1.55, marginBottom: 10, fontWeight: 600 }}>Copia l'intera timeline (giorni, attività, orari, durate e checklist), salvala o passala a un altro dispositivo, poi reincollala qui per ripristinarla.</div>
               <button onClick={this.exportPlan} style={{ cursor: "pointer", fontSize: 12, fontWeight: 900, color: "#17142C", background: "#FFD23F", border: "none", padding: "8px 13px", borderRadius: 999, marginBottom: 10 }}>Copia programma</button>
               {this.state.planCopyMsg && <div style={{ marginBottom: 10, fontSize: 12, fontWeight: 800, color: "#FFD23F" }}>{this.state.planCopyMsg}</div>}
               <textarea value={this.state.planText} onChange={this.onPlanInput} placeholder="Incolla qui il programma…" style={{ width: "100%", minHeight: 90, fontFamily: MONO, fontSize: 12, color: "#fff", background: "#15122b", border: "1.5px solid #3a3560", borderRadius: 12, padding: 11, resize: "vertical", lineHeight: 1.5 }} />
@@ -2159,11 +2271,10 @@ export default class App extends React.Component {
                 </div>
                 {this.state.planTplMsg && <div style={{ marginTop: 10, fontSize: 12, fontWeight: 800, color: "#FFD23F" }}>{this.state.planTplMsg}</div>}
               </div>
-            </div>
+            </Collapsible>
 
             {/* ===== BACKUP & SYNC (file) ===== */}
-            <div style={{ background: "#211d3e", borderRadius: 16, padding: 15, marginBottom: 12 }}>
-              <div style={{ fontSize: 14, fontWeight: 900, color: "#fff", marginBottom: 4 }}>Backup & sincronizzazione (file)</div>
+            <Collapsible open={!!this.state.setOpen.backup} onToggle={() => this.toggleSet("backup")} title="Backup & sincronizzazione (file)" sub="Un unico file con tutto · nessun server">
               <div style={{ fontSize: 12.5, color: "#9d98c4", lineHeight: 1.55, marginBottom: 11, fontWeight: 600 }}>Scarica <strong style={{ color: "#cfc8ee" }}>un unico file</strong> con dati riservati, preferiti e programma. Salvalo nella tua cartella <strong style={{ color: "#cfc8ee" }}>File / iCloud Drive / Google Drive</strong>: per sincronizzare un altro dispositivo, riaprilo da lì con « Importa file ». (I dati restano tuoi: nessun server.)</div>
               <div style={{ display: "flex", gap: 9, flexWrap: "wrap", alignItems: "center" }}>
                 <button onClick={this.downloadBackup} style={{ cursor: "pointer", fontSize: 12.5, fontWeight: 900, color: "#17142C", background: "#FFD23F", border: "none", padding: "10px 15px", borderRadius: 999 }}>Scarica backup ↓</button>
@@ -2173,7 +2284,7 @@ export default class App extends React.Component {
                 </label>
               </div>
               {this.state.backupMsg && <div style={{ marginTop: 10, fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#14C08C", padding: "10px 12px", borderRadius: 12 }}>{this.state.backupMsg}</div>}
-            </div>
+            </Collapsible>
 
             <div style={{ textAlign: "center", marginTop: 24, fontWeight: 900, fontSize: 15, color: "#fff" }}>Slàinte mhath · <span style={{ background: "#FF2E7E", borderRadius: 999, padding: "3px 12px" }}>buon viaggio</span></div>
           </section>
@@ -2183,6 +2294,7 @@ export default class App extends React.Component {
             onToggleMore={() => this.setState((s) => ({ moreOpen: !s.moreOpen }))}
             onClose={() => this.setState({ moreOpen: false })}
             extra={nav.filter((n) => !NAV_TABS.includes(n.href.slice(1)))}
+            compact={this.state.navCompact}
           />
         </div>
 
@@ -2191,6 +2303,7 @@ export default class App extends React.Component {
           <VenueDetail
             d={this.state.detail}
             onClose={this.closeDetail}
+            onOpen={this.openDetail}
             isFav={favs.indexOf(this.state.detail.id) >= 0}
             onToggleFav={D.master[this.state.detail.id] ? (id) => this.toggleFav(id) : undefined}
             tripVisit={this.state.detail.kind === "trip" ? this.tripVisitOf(this.state.detail.id, this.state.detail.visit) : null}

@@ -2037,13 +2037,13 @@
         ]
       },
       {
-        "name": "The Honest Toun (fish & chips)",
+        "name": "East Coast (fish & chips)",
         "tipo": "mangiare",
-        "note": "Friggitoria classica per il fish and chips da gustare sul lungomare. Tip: prendilo da asporto e mangialo a Fisherrow.",
-        "q": "fish and chips Musselburgh",
-        "summary": "Fish & chips nel cuore della 'Honest Toun', perfetto per un pranzo veloce in riva al mare.",
-        "descrizione": "Il nome richiama il soprannome di Musselburgh, la 'Honest Toun', citta da sempre orgogliosa della sua tradizione di pesce fresco. Qui si gusta il classico fish & chips scozzese, da portare via e mangiare passeggiando lungo la costa. Una sosta semplice e schietta tra una visita e l'altra.",
-        "curiosita": "Musselburgh sfoggia il soprannome 'Honest Toun' da secoli, tanto da celebrarlo ogni anno con una festa cittadina dedicata.",
+        "note": "La friggitoria più premiata di Musselburgh, sulla North High Street a due passi da Fisherrow. Tip: prendilo da asporto e mangialo in riva al mare.",
+        "q": "East Coast Fish and Chips Musselburgh",
+        "summary": "Lo storico fish & chips dei Crolla (dal 1974), più volte tra i migliori del Regno Unito e votato numero uno in Scozia.",
+        "descrizione": "East Coast è l'istituzione del fish & chips di Musselburgh: gestito dalla famiglia Crolla dal 1974 sulla North High Street, a pochi passi dal porto di Fisherrow, riunisce un take-away e un ristorante di pesce. Merluzzo e haddock freschi, patatine fritte due volte e specialità scozzesi come gli haggis bites gli sono valsi un posto stabile tra i migliori del paese.",
+        "curiosita": "È stato inserito per più anni di fila nella top 50 del Regno Unito e nel 2024 votato miglior fish & chips di Scozia — l'unico delle Lothian a entrare nella top 10 nazionale.",
         "info": [
           {
             "k": "Prezzo",
@@ -2060,9 +2060,9 @@
         "tipo": "mangiare",
         "note": "Pub tradizionale e schietto, una vera istituzione cittadina. Tip: pinta di ale scozzese in un locale d'altri tempi.",
         "q": "Staggs Bar Volunteer Arms Musselburgh",
-        "summary": "Pub tradizionale a conduzione familiare dal 1858, tempio delle real ale premiato dal CAMRA.",
-        "descrizione": "Conosciuto da tutti come Staggs, il Volunteer Arms e gestito dalla stessa famiglia dal 1858. Il bancone e il piccolo snug conservano pavimenti in legno, boiserie e specchi delle antiche birrerie locali. Famoso per le numerose real ale a rotazione e una vasta scelta di rum, e stato eletto piu volte miglior pub.",
-        "curiosita": "E stato nominato Pub of the Year nazionale del CAMRA nel 1998 e ha continuato a collezionare premi negli anni.",
+        "summary": "Pub tradizionale a conduzione familiare dal 1858, tempio della birra artigianale spillata dalla botte (real ale).",
+        "descrizione": "Conosciuto da tutti come Staggs, il Volunteer Arms è gestito dalla stessa famiglia dal 1858. Il bancone e il piccolo snug — la saletta riservata e raccolta tipica dei pub d'epoca — conservano pavimenti in legno, boiserie e specchi delle antiche birrerie locali. È famoso per le numerose real ale a rotazione (birre non filtrate né pastorizzate, spillate a mano dalla botte) e per una vasta scelta di rum, ed è stato eletto più volte miglior pub.",
+        "curiosita": "È stato nominato Pub of the Year nazionale del CAMRA (la Campaign for Real Ale, l'associazione britannica che difende la birra tradizionale) nel 1998 e ha continuato a collezionare premi negli anni.",
         "info": [
           {
             "k": "Tipo",
@@ -3018,6 +3018,21 @@
         {
           "k": "Zona",
           "v": "Ashton Lane, West End di Glasgow"
+        }
+      ]
+    },
+    "gl-8": {
+      "summary": "Il locale di musica dal vivo più leggendario di Glasgow: qui nel 1993 furono scoperti gli Oasis.",
+      "descrizione": "Aperto nel 1990 al 272a di St Vincent Street, King Tut's Wah Wah Hut è uno dei templi della musica dal vivo britannica: un club intimo da poche centinaia di posti con concerti quasi ogni sera. Sul suo palco sono passati, agli esordi, Oasis, Manic Street Preachers, Snow Patrol, Radiohead e Florence + the Machine. Sotto c'è un bar accogliente, sopra la sala concerti raggiunta da una ripida scala.",
+      "curiosita": "Il 31 maggio 1993 Alan McGee della Creation Records entrò per caso a vedere un'altra band e finì per mettere sotto contratto gli Oasis: una serata entrata nella storia del rock.",
+      "info": [
+        {
+          "k": "Dove",
+          "v": "272a St Vincent Street, Glasgow G2 5RL"
+        },
+        {
+          "k": "Cosa",
+          "v": "Sala concerti + bar · cartellone quasi ogni sera"
         }
       ]
     }

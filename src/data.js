@@ -125,6 +125,7 @@ const glasgow = [
   { name: "George Square & Merchant City", note: "La piazza monumentale e il quartiere mercantile di bar e ristoranti. Tip: base per girare il centro a piedi.", q: "George Square Glasgow" },
   { name: "The Pot Still", note: "Storico whisky bar con centinaia di etichette e pie fatte in casa. Tip: fatti consigliare un dram al bancone.", q: "The Pot Still Glasgow" },
   { name: "Ubiquitous Chip", note: "Istituzione del West End per la cucina scozzese moderna, in un cortile-giardino. Tip: brunch o pranzo più abbordabili della cena.", q: "Ubiquitous Chip Glasgow" },
+  { name: "King Tut's Wah Wah Hut", note: "Leggendario locale di musica dal vivo su St Vincent Street: qui nel 1993 furono scoperti gli Oasis. Tip: controlla il cartellone, concerti quasi ogni sera.", q: "King Tut's Wah Wah Hut Glasgow" },
 ].map((g, i) => ({ ...g, id: "gl-" + i, maps: mapsUrl(g.q) }));
 
 // Enriched content for the lists that live in code (keyed by id in content.json).
@@ -159,6 +160,10 @@ function build() {
   eats.forEach((e) => (master[e.id] = { name: e.name, where: "Mangiare", note: e.note, maps: mapsUrl(e.q) }));
   trips.forEach((t) => (master[t.id] = { name: t.title, where: "Dintorni", note: t.body, maps: mapsUrl(t.q) }));
   london.forEach((l) => (master[l.id] = { name: l.name, where: "Londra", note: l.note, maps: mapsUrl(l.q) }));
+  // Every venue/activity is favoritable — no exceptions (Glasgow, neighbourhoods, themed experiences).
+  glasgow.forEach((g) => (master[g.id] = { name: g.name, where: "Glasgow", note: g.note, maps: g.maps }));
+  neighborhoods.forEach((n) => (master[n.id] = { name: n.name, where: "Quartiere · Edimburgo", note: n.blurb || "", maps: n.maps }));
+  experiences.forEach((x) => (master[x.id] = { name: x.title, where: "Esperienza a tema", note: x.body || "", maps: mapsUrl((x.places && x.places[0] && x.places[0].q) || x.title) }));
 
   // Unified detail index (one normalized record per place), used by the shared
   // VenueDetail modal and the 2-line summary rows across the app. photo/curiosita/
@@ -173,8 +178,16 @@ function build() {
   trips.forEach((t) => (t.venues || []).forEach((v, i) => add({ id: "tv-" + t.id + "-" + i, name: v.name, kind: "tvenue", where: "In gita · " + t.title, tipo: v.tipo, dur: v.tipo === "mangiare" ? 60 : 90, note: v.note, maps: mapsUrl(v.q), trip: t.id, tripName: t.title, transferMin: v.transferMin || 0, transferNote: v.transferNote || "", ...enr(v) })));
   london.forEach((l) => add({ id: l.id, name: l.name, kind: "london", where: "Londra", zone: l.zone || "", cat: l.cat || "", tipo: l.cat || "", dur: l.dur, open: l.open || null, note: l.note, maps: mapsUrl(l.q), ...enr(l) }));
   neighborhoods.forEach((n) => add({ id: n.id, name: n.name, kind: "neighborhood", where: "Quartiere · Edimburgo", note: n.blurb, see: n.see || [], maps: n.maps, ...enr(n) }));
-  experiences.forEach((x) => add({ id: x.id, name: x.title, kind: "experience", where: "Esperienza a tema", hi: x.hi || "", note: x.body, places: (x.places || []).map((p) => ({ name: p.name, maps: mapsUrl(p.q) })), maps: "", ...enr(x) }));
   glasgow.forEach((g) => add({ id: g.id, name: g.name, kind: "glasgow", where: "Glasgow", note: g.note, maps: g.maps, ...enr(g) }));
+  // Resolve each experience place to an existing rich detail (matched by Maps URL);
+  // places without a match open a minimal card (name + Maps), so every place is tappable.
+  const byMaps = {};
+  Object.values(details).forEach((d) => { if (d.maps && !byMaps[d.maps]) byMaps[d.maps] = d.id; });
+  experiences.forEach((x) => add({ id: x.id, name: x.title, kind: "experience", where: "Esperienza a tema", hi: x.hi || "", note: x.body, places: (x.places || []).map((p, i) => {
+    const m = mapsUrl(p.q);
+    const ref = byMaps[m] || { id: x.id + "-p" + i, name: p.name, kind: "experience", where: x.title, note: "", maps: m, photo: "", credit: "" };
+    return { name: p.name, maps: m, ref };
+  }), maps: "", ...enr(x) }));
 
   // Apply bundled photos (Round 3): set photo + credit + source on each detail.
   Object.keys(PHOTOS).forEach((id) => {
@@ -206,10 +219,19 @@ export function getData() {
 // the catalog duration. Keyed by day index, so no real dates live here.
 // Ships EMPTY by default — no itinerary/schedule is baked into the public code;
 // the user builds their own plan (or generates it via the AI template).
+export const DEFAULT_CHECKLIST = [
+  "Carta d'identità/passaporto + carte (contactless)",
+  "Adattatore UK tipo G + power bank",
+  "Liquidi ≤100 ml in contenitori a norma",
+  "Salva offline le mappe di Edimburgo e Londra",
+  "Carica voli e alloggi in Impostazioni",
+];
+
 export function seedPlan() {
   return {
     favs: [],
     days: { g0: [], g1: [], g2: [], g3: [], g4: [], g5: [] },
+    checklist: DEFAULT_CHECKLIST.map((t) => ({ t, done: false })),
   };
 }
 
