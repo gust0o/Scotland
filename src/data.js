@@ -253,7 +253,10 @@ function build() {
       const id = (p.ref && details[p.ref]) ? p.ref : p.id;
       if (!details[id]) {
         const maps = mapsUrl(p.q);
-        details[id] = { id, name: p.name, kind: "sight", where: "Esperienza · " + x.title, note: p.note || "", descrizione: p.note || "", maps, photo: "", credit: "", info: [] };
+        // Synthetic place: enrich it to the same depth as every other venue (descrizione +
+        // curiosità + info) from content.expPlaces, falling back to the inline note.
+        const ec = (CONTENT.expPlaces && CONTENT.expPlaces[id]) || {};
+        details[id] = { id, name: p.name, kind: "sight", where: "Esperienza · " + x.title, note: p.note || "", descrizione: ec.descrizione || p.note || "", curiosita: ec.curiosita || "", info: Array.isArray(ec.info) ? ec.info : [], maps, photo: "", credit: "" };
         master[id] = { name: p.name, where: "Esperienza · " + x.title, note: p.note || "", maps };
       }
       return { name: p.name, maps: details[id].maps, ref: id };

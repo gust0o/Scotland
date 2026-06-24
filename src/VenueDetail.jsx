@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 // Palette + label per kind, consistent with the rest of the app.
 const KIND = {
@@ -89,19 +89,25 @@ const tag = (bg, fg) => ({ flex: "none", display: "inline-flex", alignItems: "ce
 
 // Full detail sheet, reused everywhere (sections, timeline taps, favourites, now-cards).
 // onOpen(idOrObj) lets nested items (trip venues, experience places) open their own card.
-export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit, onTripLess, onTripMore, onOpen }) {
+export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit, onTripLess, onTripMore, onOpen, onPrev, onNext, navPos }) {
   // Drag-down-to-dismiss: the grabber/hero can be dragged; past a threshold it closes.
   const [dragY, setDragY] = useState(0);
   const drag = useRef(null);
+  const swipe = useRef(null);   // horizontal swipe → prev/next venue
+  const scroller = useRef(null);
   // Day-trip: which Edinburgh station to show live times from (both serve these routes).
   const [station, setStation] = useState("Edinburgh Waverley");
+  // When the shown venue changes (after a swipe) reset scroll + any drag offset.
+  useEffect(() => { setDragY(0); if (scroller.current) scroller.current.scrollTop = 0; }, [d && d.id]);
   const onGrabDown = (e) => {
-    drag.current = { y0: e.clientY };
+    drag.current = { y0: e.clientY, x0: e.clientX, axis: null };
     try { e.currentTarget.setPointerCapture(e.pointerId); } catch (er) {}
   };
   const onGrabMove = (e) => {
     if (!drag.current) return;
-    const dy = e.clientY - drag.current.y0;
+    const dy = e.clientY - drag.current.y0, dx = e.clientX - drag.current.x0;
+    if (drag.current.axis == null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) drag.current.axis = Math.abs(dx) > Math.abs(dy) ? "h" : "v";
+    if (drag.current.axis === "h") return; // horizontal is handled by the sheet swipe
     setDragY(dy > 0 ? dy : dy * 0.25); // resist upward drag
   };
   const onGrabUp = () => {
@@ -111,6 +117,19 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
     if (dy > 110) onClose();
     else setDragY(0);
   };
+  // Horizontal swipe anywhere on the sheet → previous / next venue (touch only;
+  // desktop uses the chevrons). Vertical gestures fall through to native scroll.
+  const onSwipeStart = (e) => { const t = e.touches && e.touches[0]; if (t) swipe.current = { x: t.clientX, y: t.clientY, t: Date.now() }; };
+  const onSwipeEnd = (e) => {
+    const s = swipe.current; swipe.current = null;
+    const t = e.changedTouches && e.changedTouches[0];
+    if (!s || !t) return;
+    const dx = t.clientX - s.x, dy = t.clientY - s.y;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4 && Date.now() - s.t < 700) {
+      if (dx < 0) { if (onNext) onNext(); } else { if (onPrev) onPrev(); }
+    }
+  };
+  const navBtn = (side) => ({ position: "absolute", [side]: 8, top: "50%", transform: "translateY(-50%)", zIndex: 3, cursor: "pointer", width: 36, height: 36, borderRadius: 999, border: "none", background: "rgba(0,0,0,.42)", color: "#fff", fontSize: 22, fontWeight: 900, lineHeight: 1, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(4px)", paddingBottom: 3 });
   if (!d) return null;
   const adjustable = d.kind === "trip" && typeof tripVisit === "number" && onTripMore;
   const visitMin = adjustable ? tripVisit : d.visit;
@@ -130,7 +149,10 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
       style={{ position: "fixed", inset: 0, zIndex: 110, background: "rgba(8,11,32,.55)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}
     >
       <div
+        ref={scroller}
         onClick={(e) => e.stopPropagation()}
+        onTouchStart={onSwipeStart}
+        onTouchEnd={onSwipeEnd}
         style={{ width: "100%", maxWidth: 480, maxHeight: "92vh", overflowY: "auto", background: "#F6F0E2", borderRadius: "20px 20px 0 0", boxShadow: "0 -10px 50px rgba(0,0,0,.45)", WebkitOverflowScrolling: "touch", paddingBottom: "calc(20px + env(safe-area-inset-bottom))", transform: dragY ? `translateY(${dragY}px)` : "none", transition: drag.current ? "none" : "transform .25s cubic-bezier(.22,1,.36,1)" }}
       >
         {/* Hero: photo when available, else a coloured placeholder band. Doubles as the drag handle. */}
@@ -148,7 +170,11 @@ export default function VenueDetail({ d, onClose, isFav, onToggleFav, tripVisit,
               <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(255,255,255,.6)" }}>{k.l}</span>
             </div>
           )}
-          <button onClick={onClose} aria-label="Chiudi" style={{ position: "absolute", top: 12, right: 12, cursor: "pointer", width: 34, height: 34, borderRadius: 999, border: "none", background: "rgba(0,0,0,.4)", color: "#fff", fontSize: 17, fontWeight: 900, backdropFilter: "blur(4px)" }}>✕</button>
+          <button onClick={onClose} aria-label="Chiudi" style={{ position: "absolute", top: 12, right: 12, zIndex: 4, cursor: "pointer", width: 34, height: 34, borderRadius: 999, border: "none", background: "rgba(0,0,0,.4)", color: "#fff", fontSize: 17, fontWeight: 900, backdropFilter: "blur(4px)" }}>✕</button>
+          {/* Prev / next venue within the current section — swipe on touch, tap on desktop. */}
+          {onPrev && <button onClick={(e) => { e.stopPropagation(); onPrev(); }} onPointerDown={(e) => e.stopPropagation()} aria-label="Precedente" style={navBtn("left")}>‹</button>}
+          {onNext && <button onClick={(e) => { e.stopPropagation(); onNext(); }} onPointerDown={(e) => e.stopPropagation()} aria-label="Successivo" style={navBtn("right")}>›</button>}
+          {navPos && <span style={{ position: "absolute", bottom: 6, left: "50%", transform: "translateX(-50%)", zIndex: 3, fontSize: 10.5, fontWeight: 800, color: "rgba(255,255,255,.92)", background: "rgba(0,0,0,.38)", borderRadius: 999, padding: "2px 9px", backdropFilter: "blur(4px)" }}>{navPos.i} / {navPos.n}</span>}
         </div>
 
         <div style={{ padding: "16px 18px 0" }}>

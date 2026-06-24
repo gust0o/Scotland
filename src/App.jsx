@@ -403,6 +403,7 @@ export default class App extends React.Component {
     navActive: "sNow",
     moreOpen: false,
     detail: null,
+    detailList: [], // sibling ids for swipe-to-next/prev inside the open detail
     editDays: {},
     navCompact: false,
     setOpen: {},
@@ -763,8 +764,24 @@ export default class App extends React.Component {
   editCheck = (i, t) => this.planMut((p) => { this.ensureChecklist(p); if (p.checklist[i]) p.checklist[i].t = t; });
   removeCheck = (i) => this.planMut((p) => { this.ensureChecklist(p); p.checklist.splice(i, 1); });
   // ---------- unified venue detail ----------
-  openDetail = (idOrObj) => this.setState({ detail: venueDetail(idOrObj), moreOpen: false });
+  // Open a venue card. `list` is the ordered sibling ids (its section/group) so the
+  // card can be swiped left/right to the next/previous venue without going back.
+  openDetail = (idOrObj, list) => {
+    const d = venueDetail(idOrObj);
+    const detailList = Array.isArray(list) && list.length ? list : (d && d.id ? [d.id] : []);
+    this.setState({ detail: d, detailList, moreOpen: false });
+  };
   closeDetail = () => this.setState({ detail: null });
+  // Move to the adjacent venue within the current swipe list (dir = -1 prev, +1 next).
+  swipeDetail = (dir) => {
+    const { detail, detailList } = this.state;
+    if (!detail || !Array.isArray(detailList)) return;
+    const i = detailList.indexOf(detail.id);
+    const j = i + dir;
+    if (i < 0 || j < 0 || j >= detailList.length) return;
+    const nd = venueDetail(detailList[j]);
+    if (nd) this.setState({ detail: nd });
+  };
   toggleEditDay = (key) => this.setState((s) => ({ editDays: { ...s.editDays, [key]: !s.editDays[key] } }));
   toggleSet = (k) => this.setState((s) => ({ setOpen: { ...s.setOpen, [k]: !s.setOpen[k] } }));
 
@@ -1787,7 +1804,7 @@ export default class App extends React.Component {
         nowMin: isToday ? now.getHours() * 60 + now.getMinutes() : null,
         onToggle: () => this.toggleDay(key),
         onToggleEdit: () => this.toggleEditDay(key),
-        onSelect: (idx) => { const ev = events[idx]; if (ev) this.openDetail(ev.id); },
+        onSelect: (idx) => { const ev = events[idx]; if (ev) this.openDetail(ev.id, events.map((e) => e.id).filter((id) => D.details[id])); },
         onChangeStart: (idx, min) => this.setStart(key, idx, min),
         onResize: (idx, min) => this.setDur(key, idx, min),
         onRemove: (idx) => this.removeEntry(key, idx),
@@ -1813,8 +1830,13 @@ export default class App extends React.Component {
     const tripsByArea = groupByKey(D.trips, AREAS_ORDER, (t) => t.area || "");
     const LONDON_ZONES = ["Colazione", "Shoreditch", "Brick Lane", "Spitalfields", "City & South Bank"];
     const londonByZone = groupByKey(D.london, LONDON_ZONES, (l) => l.zone || "");
+    // Flat per-section id lists (display order) = the swipe context for each card.
+    const sightsFlat = sightsByZone.flatMap((g) => g.ids);
+    const londonFlat = londonByZone.flatMap((g) => g.ids);
+    const tripsFlat = tripsByArea.flatMap((g) => g.ids);
     // Props for a SummaryRow given a place id (fav only where a master entry exists).
-    const rowProps = (id) => ({ d: D.details[id], onOpen: this.openDetail, isFav: favs.indexOf(id) >= 0, onToggleFav: D.master[id] ? (x) => this.toggleFav(x) : undefined });
+    // `list` = sibling ids so opening the card enables swipe-to-next/prev within it.
+    const rowProps = (id, list) => ({ d: D.details[id], onOpen: () => this.openDetail(id, list), isFav: favs.indexOf(id) >= 0, onToggleFav: D.master[id] ? (x) => this.toggleFav(x) : undefined });
     const favorites = favs
       .map((id) => {
         const m = D.master[id];
@@ -2217,7 +2239,7 @@ export default class App extends React.Component {
             )}
             <div style={{ display: "grid", gap: 10 }}>
               {favorites.map((fv, i) => (
-                <div key={i} className="paper" onClick={() => this.openDetail(fv.id)} style={{ position: "relative", overflow: "hidden", background: "#F6F0E2", borderRadius: 16, boxShadow: tiltShadow(12, 26, -20, 0.4), cursor: "pointer" }}>
+                <div key={i} className="paper" onClick={() => this.openDetail(fv.id, favorites.map((f) => f.id))} style={{ position: "relative", overflow: "hidden", background: "#F6F0E2", borderRadius: 16, boxShadow: tiltShadow(12, 26, -20, 0.4), cursor: "pointer" }}>
                   <div style={{ position: "relative", padding: "13px 14px" }}>
                     <div style={{ fontWeight: 900, fontSize: 16, color: "#17142C", lineHeight: 1.12 }}>{fv.name}</div>
                     <div style={{ fontSize: 11, fontWeight: 800, color: "#0a7d5d", textTransform: "uppercase", letterSpacing: ".05em", marginTop: 3 }}>{fv.where}</div>
@@ -2246,13 +2268,13 @@ export default class App extends React.Component {
                   <span style={{ flex: 1, height: 2, borderRadius: 2, background: "#D9CFB7" }} />
                 </div>
                 <div style={{ background: "#fff", borderRadius: 16, padding: "2px 14px" }}>
-                  {g.ids.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === g.ids.length - 1} />)}
+                  {g.ids.map((id, i) => <SummaryRow key={id} {...rowProps(id, sightsFlat)} last={i === g.ids.length - 1} />)}
                 </div>
               </div>
             ))}
             <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: ".08em", textTransform: "uppercase", color: "#0E1542", margin: "4px 0 9px" }}>Quartieri da girare</div>
             <div style={{ background: "#fff", borderRadius: 16, padding: "2px 14px" }}>
-              {neighborhoodIds.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === neighborhoodIds.length - 1} />)}
+              {neighborhoodIds.map((id, i) => <SummaryRow key={id} {...rowProps(id, neighborhoodIds)} last={i === neighborhoodIds.length - 1} />)}
             </div>
           </section>
 
@@ -2265,7 +2287,7 @@ export default class App extends React.Component {
             </div>
             <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#e3a596" }}>Solo scozzese / locale · tocca per la scheda</p>
             <div style={{ background: "#F6F0E2", borderRadius: 16, padding: "2px 14px" }}>
-              {eatsIds.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === eatsIds.length - 1} />)}
+              {eatsIds.map((id, i) => <SummaryRow key={id} {...rowProps(id, eatsIds)} last={i === eatsIds.length - 1} />)}
             </div>
           </section>
 
@@ -2277,7 +2299,7 @@ export default class App extends React.Component {
             </div>
             <p style={{ margin: "0 0 15px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Treno da Edimburgo ~50' · gita in giornata</p>
             <div style={{ background: "#fff", borderRadius: 16, padding: "2px 14px" }}>
-              {glasgowIds.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === glasgowIds.length - 1} />)}
+              {glasgowIds.map((id, i) => <SummaryRow key={id} {...rowProps(id, glasgowIds)} last={i === glasgowIds.length - 1} />)}
             </div>
           </section>
 
@@ -2295,7 +2317,7 @@ export default class App extends React.Component {
                   <span style={{ flex: 1, height: 2, borderRadius: 2, background: "#D9CFB7" }} />
                 </div>
                 <div style={{ background: "#fff", borderRadius: 14, padding: "2px 14px" }}>
-                  {grp.ids.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === grp.ids.length - 1} />)}
+                  {grp.ids.map((id, i) => <SummaryRow key={id} {...rowProps(id, tripsFlat)} last={i === grp.ids.length - 1} />)}
                 </div>
               </div>
             ))}
@@ -2319,7 +2341,7 @@ export default class App extends React.Component {
                 </div>
                 {x.body && <p style={{ margin: "0 2px 9px", fontSize: 12.5, fontWeight: 600, lineHeight: 1.4, color: "#6B6450" }}>{x.body}</p>}
                 <div style={{ background: "#fff", borderRadius: 16, padding: "2px 14px" }}>
-                  {x.places.map((p, i) => { const pid = p.ref || p.id; return <SummaryRow key={pid} {...rowProps(pid)} last={i === x.places.length - 1} />; })}
+                  {(() => { const exIds = x.places.map((p) => p.ref || p.id); return x.places.map((p, i) => { const pid = p.ref || p.id; return <SummaryRow key={pid} {...rowProps(pid, exIds)} last={i === x.places.length - 1} />; }); })()}
                 </div>
               </div>
             ))}
@@ -2336,7 +2358,7 @@ export default class App extends React.Component {
               <div key={gi} style={{ marginBottom: 12 }}>
                 <div style={{ fontSize: 11.5, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#FFD23F", margin: "0 2px 8px" }}>{grp.label === "City & South Bank" ? "City & South Bank · opzionali" : grp.label}</div>
                 <div style={{ background: "#F6F0E2", borderRadius: 16, padding: "2px 14px" }}>
-                  {grp.ids.map((id, i) => <SummaryRow key={id} {...rowProps(id)} last={i === grp.ids.length - 1} />)}
+                  {grp.ids.map((id, i) => <SummaryRow key={id} {...rowProps(id, londonFlat)} last={i === grp.ids.length - 1} />)}
                 </div>
               </div>
             ))}
@@ -2476,18 +2498,25 @@ export default class App extends React.Component {
         </div>
 
         {/* ===== VENUE DETAIL (shared) ===== */}
-        {this.state.detail && (
-          <VenueDetail
-            d={this.state.detail}
-            onClose={this.closeDetail}
-            onOpen={this.openDetail}
-            isFav={favs.indexOf(this.state.detail.id) >= 0}
-            onToggleFav={D.master[this.state.detail.id] ? (id) => this.toggleFav(id) : undefined}
-            tripVisit={this.state.detail.kind === "trip" ? this.tripVisitOf(this.state.detail.id, this.state.detail.visit) : null}
-            onTripLess={() => this.setTripVisit(this.state.detail.id, this.state.detail.visit, -30)}
-            onTripMore={() => this.setTripVisit(this.state.detail.id, this.state.detail.visit, 30)}
-          />
-        )}
+        {this.state.detail && (() => {
+          const dl = this.state.detailList || [];
+          const di = dl.indexOf(this.state.detail.id);
+          return (
+            <VenueDetail
+              d={this.state.detail}
+              onClose={this.closeDetail}
+              onOpen={this.openDetail}
+              onPrev={di > 0 ? () => this.swipeDetail(-1) : undefined}
+              onNext={di >= 0 && di < dl.length - 1 ? () => this.swipeDetail(1) : undefined}
+              navPos={di >= 0 && dl.length > 1 ? { i: di + 1, n: dl.length } : null}
+              isFav={favs.indexOf(this.state.detail.id) >= 0}
+              onToggleFav={D.master[this.state.detail.id] ? (id) => this.toggleFav(id) : undefined}
+              tripVisit={this.state.detail.kind === "trip" ? this.tripVisitOf(this.state.detail.id, this.state.detail.visit) : null}
+              onTripLess={() => this.setTripVisit(this.state.detail.id, this.state.detail.visit, -30)}
+              onTripMore={() => this.setTripVisit(this.state.detail.id, this.state.detail.visit, 30)}
+            />
+          );
+        })()}
 
         {/* ===== SIM SHEET ===== */}
         {this.state.simOpen && (
