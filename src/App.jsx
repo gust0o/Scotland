@@ -118,7 +118,7 @@ function Perforation({ notch = 0, notchColor = "#0E1542", weight = 2 }) {
 
 // Floating "liquid glass" bottom tab bar (detached from the screen edges).
 // 5 primary destinations + a "More" popup; it compacts (icon-only) while scrolling.
-function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact }) {
+function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, onExpand }) {
   const tabs = [
     { id: "sNow", label: "Oggi", icon: "oggi" },
     { id: "s01", label: "Voli", icon: "voli" },
@@ -127,8 +127,20 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact }) 
     { id: "sFav", label: "Preferiti", icon: "preferit" },
   ];
   const moreActive = moreOpen || extra.some((e) => e.href === "#" + active);
-  const cell = (on) => ({ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: compact ? 0 : 4, padding: compact ? "8px 0" : "8px 0 7px", textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", color: on ? "#FFD23F" : "rgba(255,255,255,0.62)", WebkitTapHighlightColor: "transparent", transition: "color .15s, gap .25s, padding .25s", borderRadius: 16 });
+  const cell = (on) => ({ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 4, padding: compact ? "9px 14px" : "8px 0 7px", textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", color: on ? "#FFD23F" : "rgba(255,255,255,0.62)", WebkitTapHighlightColor: "transparent", borderRadius: 16 });
   const lbl = (on) => ({ fontSize: 10, fontWeight: on ? 900 : 700, letterSpacing: "-.01em", maxHeight: compact ? 0 : 14, opacity: compact ? 0 : 1, overflow: "hidden", transition: "max-height .25s, opacity .2s" });
+  // Liquid-glass collapse: when compact, every non-active cell shrinks to zero width so
+  // the bar contracts to a small pill around the active icon (tap or scroll up to expand).
+  const slot = (visible, on) => ({
+    flex: visible ? 1 : "0 0 0px",
+    maxWidth: visible ? 140 : 0,
+    opacity: visible ? 1 : 0,
+    overflow: "hidden",
+    pointerEvents: visible ? "auto" : "none",
+    background: on ? "rgba(255,210,63,0.16)" : "transparent",
+    borderRadius: 16,
+    transition: "flex .3s cubic-bezier(.22,1,.36,1), max-width .3s cubic-bezier(.22,1,.36,1), opacity .22s, background .15s",
+  });
   return (
     <>
       {/* Popup menu with everything that doesn't fit in the bar */}
@@ -154,20 +166,26 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact }) 
         </div>
       )}
       <nav style={{ position: "fixed", left: 0, right: 0, bottom: "calc(env(safe-area-inset-bottom) + 12px)", zIndex: 90, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
-        <div style={{ pointerEvents: "auto", width: "100%", maxWidth: 430, margin: "0 14px", display: "flex", alignItems: "stretch", gap: 2, padding: "5px 7px", background: "rgba(20,18,46,0.6)", backdropFilter: "blur(22px) saturate(180%)", WebkitBackdropFilter: "blur(22px) saturate(180%)", border: "1px solid rgba(255,255,255,0.16)", borderRadius: 26, boxShadow: "0 10px 34px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.22)", transition: "padding .25s" }}>
+        <div style={{ pointerEvents: "auto", width: compact ? "auto" : "100%", maxWidth: 430, margin: "0 14px", display: "flex", alignItems: "stretch", gap: compact ? 0 : 2, padding: "5px 7px", background: "rgba(20,18,46,0.6)", backdropFilter: "blur(22px) saturate(180%)", WebkitBackdropFilter: "blur(22px) saturate(180%)", border: "1px solid rgba(255,255,255,0.16)", borderRadius: 26, boxShadow: "0 10px 34px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.22)", transition: "width .3s cubic-bezier(.22,1,.36,1), gap .3s, padding .3s" }}>
           {tabs.map((t) => {
             const on = !moreOpen && t.id === active;
+            const visible = !compact || on;
             return (
-              <a key={t.id} href={"#" + t.id} onClick={onClose} style={{ ...cell(on), background: on ? "rgba(255,210,63,0.14)" : "transparent" }}>
+              <a key={t.id} href={"#" + t.id} onClick={(e) => { if (compact) { e.preventDefault(); onExpand(); } else { onClose(); } }} style={{ ...cell(on), ...slot(visible, on) }}>
                 <BarIcon name={t.icon} size={22} />
                 <span style={lbl(on)}>{t.label}</span>
               </a>
             );
           })}
-          <button onClick={onToggleMore} style={{ ...cell(moreActive), background: moreActive ? "rgba(255,210,63,0.14)" : "transparent" }}>
-            <BarIcon name="ellipsis" size={22} />
-            <span style={lbl(moreActive)}>Altro</span>
-          </button>
+          {(() => {
+            const visible = !compact || moreActive;
+            return (
+              <button onClick={() => { if (compact) onExpand(); else onToggleMore(); }} style={{ ...cell(moreActive), ...slot(visible, moreActive) }}>
+                <BarIcon name="ellipsis" size={22} />
+                <span style={lbl(moreActive)}>Altro</span>
+              </button>
+            );
+          })()}
         </div>
       </nav>
     </>
@@ -2295,6 +2313,7 @@ export default class App extends React.Component {
             onClose={() => this.setState({ moreOpen: false })}
             extra={nav.filter((n) => !NAV_TABS.includes(n.href.slice(1)))}
             compact={this.state.navCompact}
+            onExpand={() => this.setState({ navCompact: false })}
           />
         </div>
 
