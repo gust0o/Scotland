@@ -129,7 +129,6 @@ export default function VenueDetail({ d, onClose, onBack, canBack, isFav, onTogg
       if (dx < 0) { if (onNext) onNext(); } else { if (onPrev) onPrev(); }
     }
   };
-  const navBtn = (side) => ({ position: "absolute", [side]: 8, top: "50%", transform: "translateY(-50%)", zIndex: 3, cursor: "pointer", width: 36, height: 36, borderRadius: 999, border: "none", background: "rgba(0,0,0,.42)", color: "#fff", fontSize: 22, fontWeight: 900, lineHeight: 1, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(4px)", paddingBottom: 3 });
   if (!d) return null;
   const adjustable = d.kind === "trip" && typeof tripVisit === "number" && onTripMore;
   const visitMin = adjustable ? tripVisit : d.visit;
@@ -155,13 +154,27 @@ export default function VenueDetail({ d, onClose, onBack, canBack, isFav, onTogg
         onTouchEnd={onSwipeEnd}
         style={{ width: "100%", maxWidth: 480, maxHeight: "92vh", overflowY: "auto", background: "#F6F0E2", borderRadius: "20px 20px 0 0", boxShadow: "0 -10px 50px rgba(0,0,0,.45)", WebkitOverflowScrolling: "touch", paddingBottom: "calc(20px + env(safe-area-inset-bottom))", transform: dragY ? `translateY(${dragY}px)` : "none", transition: drag.current ? "none" : "transform .25s cubic-bezier(.22,1,.36,1)" }}
       >
-        {/* Hero: photo when available, else a coloured placeholder band. Doubles as the drag handle. */}
+        {/* Nav bar (Apple HIG): grabber + Back + Close as labelled buttons. No nav
+            controls live on the photo, so nothing reads as a photo carousel. Sticky so
+            Back/Close stay reachable while the content scrolls. Drag it down to go back. */}
         <div
           onPointerDown={onGrabDown} onPointerMove={onGrabMove} onPointerUp={onGrabUp} onPointerCancel={onGrabUp}
-          style={{ position: "relative", height: 168, background: d.photo ? "#000" : `linear-gradient(135deg, ${c} 0%, #0E1542 100%)`, borderRadius: "20px 20px 0 0", overflow: "hidden", touchAction: "none", cursor: "grab" }}
+          style={{ position: "sticky", top: 0, zIndex: 5, background: "#F6F0E2", borderRadius: "20px 20px 0 0", touchAction: "none", cursor: "grab" }}
         >
-          {/* grabber */}
-          <span style={{ position: "absolute", top: 8, left: "50%", transform: "translateX(-50%)", width: 40, height: 4, borderRadius: 999, background: "rgba(255,255,255,.55)", zIndex: 2 }} />
+          <span style={{ display: "block", width: 40, height: 4, borderRadius: 999, background: "#cabf9f", margin: "8px auto 0" }} />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 40, padding: "0 10px" }}>
+            {canBack
+              ? <button onClick={(e) => { e.stopPropagation(); onBack && onBack(); }} onPointerDown={(e) => e.stopPropagation()} style={{ background: "transparent", border: "none", cursor: "pointer", fontSize: 15, fontWeight: 700, color: c, padding: "6px 6px", WebkitTapHighlightColor: "transparent" }}>‹ Indietro</button>
+              : <span style={{ width: 56 }} />}
+            <button onClick={(e) => { e.stopPropagation(); onClose(); }} onPointerDown={(e) => e.stopPropagation()} style={{ background: "transparent", border: "none", cursor: "pointer", fontSize: 15, fontWeight: 700, color: "#7a7560", padding: "6px 6px", WebkitTapHighlightColor: "transparent" }}>Chiudi</button>
+          </div>
+        </div>
+
+        {/* Hero: clean photo (or coloured placeholder). Also a drag handle. */}
+        <div
+          onPointerDown={onGrabDown} onPointerMove={onGrabMove} onPointerUp={onGrabUp} onPointerCancel={onGrabUp}
+          style={{ position: "relative", height: 184, background: d.photo ? "#000" : `linear-gradient(135deg, ${c} 0%, #0E1542 100%)`, overflow: "hidden", touchAction: "none", cursor: "grab" }}
+        >
           {d.photo && <img src={d.photo} alt={d.name} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />}
           {d.photo && d.credit && <span style={{ position: "absolute", bottom: 4, left: 8, fontSize: 8.5, fontWeight: 600, color: "rgba(255,255,255,.7)", textShadow: "0 1px 2px rgba(0,0,0,.6)" }}>{d.credit}</span>}
           {!d.photo && (
@@ -170,14 +183,25 @@ export default function VenueDetail({ d, onClose, onBack, canBack, isFav, onTogg
               <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(255,255,255,.6)" }}>{k.l}</span>
             </div>
           )}
-          <button onClick={onClose} aria-label="Chiudi" style={{ position: "absolute", top: 12, right: 12, zIndex: 4, cursor: "pointer", width: 34, height: 34, borderRadius: 999, border: "none", background: "rgba(0,0,0,.4)", color: "#fff", fontSize: 17, fontWeight: 900, backdropFilter: "blur(4px)" }}>✕</button>
-          {/* Back to the parent card (e.g. the day-trip you opened this venue from). */}
-          {canBack && <button onClick={(e) => { e.stopPropagation(); onBack && onBack(); }} onPointerDown={(e) => e.stopPropagation()} aria-label="Indietro" style={{ position: "absolute", top: 12, left: 12, zIndex: 4, cursor: "pointer", height: 34, display: "flex", alignItems: "center", gap: 5, padding: "0 13px 0 10px", borderRadius: 999, border: "none", background: "rgba(0,0,0,.42)", color: "#fff", fontSize: 13, fontWeight: 800, backdropFilter: "blur(4px)" }}>← Indietro</button>}
-          {/* Prev / next venue within the current section — swipe on touch, tap on desktop. */}
-          {onPrev && <button onClick={(e) => { e.stopPropagation(); onPrev(); }} onPointerDown={(e) => e.stopPropagation()} aria-label="Precedente" style={navBtn("left")}>‹</button>}
-          {onNext && <button onClick={(e) => { e.stopPropagation(); onNext(); }} onPointerDown={(e) => e.stopPropagation()} aria-label="Successivo" style={navBtn("right")}>›</button>}
-          {navPos && <span style={{ position: "absolute", bottom: 6, left: "50%", transform: "translateX(-50%)", zIndex: 3, fontSize: 10.5, fontWeight: 800, color: "rgba(255,255,255,.92)", background: "rgba(0,0,0,.38)", borderRadius: 999, padding: "2px 9px", backdropFilter: "blur(4px)" }}>{navPos.i} / {navPos.n}</span>}
         </div>
+
+        {/* Sibling navigation = page indicator + horizontal swipe (Apple UIPageControl).
+            Dots when few, a "i di N" counter when many. Lives BELOW the photo, never on it. */}
+        {navPos && navPos.n > 1 && (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5, padding: "11px 0 0" }}>
+            {navPos.n <= 8 ? (
+              <div style={{ display: "flex", gap: 7, alignItems: "center" }}>
+                {Array.from({ length: navPos.n }).map((_, i) => {
+                  const on = i === navPos.i - 1;
+                  return <span key={i} style={{ width: on ? 7 : 6, height: on ? 7 : 6, borderRadius: 999, background: on ? c : "#cdc2a3", transition: "background .2s" }} />;
+                })}
+              </div>
+            ) : (
+              <span style={{ fontSize: 11.5, fontWeight: 800, color: "#7a7560", background: "#ece3d0", borderRadius: 999, padding: "3px 11px" }}>{navPos.i} di {navPos.n}</span>
+            )}
+            <span style={{ fontSize: 10.5, fontWeight: 600, color: "#a99f82" }}>Scorri per cambiare scheda</span>
+          </div>
+        )}
 
         <div style={{ padding: "16px 18px 0" }}>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
