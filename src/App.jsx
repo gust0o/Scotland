@@ -268,8 +268,8 @@ function Onboarding({ onDownload, onCopy, msg }) {
     </div>
   );
   const feat = (t) => (
-    <div style={{ display: "flex", gap: 9, marginTop: 9, fontSize: 13, lineHeight: 1.5, fontWeight: 600, color: "#5b5644" }}>
-      <span style={{ flex: "none", color: "#14C08C", fontWeight: 900 }}>✓</span><span>{t}</span>
+    <div style={{ display: "flex", gap: 10, marginTop: 11, fontSize: 13.5, lineHeight: 1.55, fontWeight: 600, color: "#EAEDF9" }}>
+      <span style={{ flex: "none", color: "#2BE3A8", fontWeight: 900 }}>✓</span><span>{t}</span>
     </div>
   );
   return (
@@ -307,7 +307,7 @@ function Onboarding({ onDownload, onCopy, msg }) {
           {feat("Tutto è consultabile offline: in aereo, in metro o senza rete.")}
           {feat("Nessun account e nessun server: i dati riservati restano sul tuo dispositivo.")}
         </div>
-        <div style={{ marginTop: 12, fontSize: 11.5, color: "#9aa2d4", fontWeight: 600, lineHeight: 1.5 }}>Suggerimento: aggiungi l'app alla schermata Home del telefono per usarla come un'app vera, anche offline.</div>
+        <div style={{ marginTop: 13, paddingTop: 11, borderTop: "1px solid rgba(255,255,255,.12)", fontSize: 12, color: "#C2C9EC", fontWeight: 600, lineHeight: 1.55 }}>💡 Suggerimento: aggiungi l'app alla schermata Home del telefono per usarla come un'app vera, anche offline.</div>
       </div>
     </div>
   );
