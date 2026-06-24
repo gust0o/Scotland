@@ -127,7 +127,7 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
     { id: "sFav", label: "Preferiti", icon: "preferit" },
   ];
   const moreActive = moreOpen || extra.some((e) => e.href === "#" + active);
-  const cell = (on) => ({ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 4, padding: compact ? "9px 14px" : "8px 0 7px", textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", color: on ? "#FFD23F" : "rgba(255,255,255,0.62)", WebkitTapHighlightColor: "transparent", borderRadius: 16 });
+  const cell = (on) => ({ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 4, padding: compact ? "0" : "8px 0 7px", height: compact ? "100%" : "auto", textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", color: on ? "#FFD23F" : "rgba(255,255,255,0.62)", WebkitTapHighlightColor: "transparent", borderRadius: 16 });
   const lbl = (on) => ({ fontSize: 10, fontWeight: on ? 900 : 700, letterSpacing: "-.01em", maxHeight: compact ? 0 : 14, opacity: compact ? 0 : 1, overflow: "hidden", transition: "max-height .25s, opacity .2s" });
   // Liquid-glass collapse: when compact, every non-active cell shrinks to zero width so
   // the bar contracts to a small pill around the active icon (tap or scroll up to expand).
@@ -165,8 +165,8 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
           </div>
         </div>
       )}
-      <nav style={{ position: "fixed", left: 0, right: 0, bottom: "calc(env(safe-area-inset-bottom) + 12px)", zIndex: 90, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
-        <div style={{ pointerEvents: "auto", width: compact ? "auto" : "100%", maxWidth: 430, margin: "0 14px", display: "flex", alignItems: "stretch", gap: compact ? 0 : 2, padding: "5px 7px", background: "rgba(20,18,46,0.6)", backdropFilter: "blur(22px) saturate(180%)", WebkitBackdropFilter: "blur(22px) saturate(180%)", border: "1px solid rgba(255,255,255,0.16)", borderRadius: 26, boxShadow: "0 10px 34px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.22)", transition: "width .3s cubic-bezier(.22,1,.36,1), gap .3s, padding .3s" }}>
+      <nav style={{ position: "fixed", left: 0, right: 0, bottom: "calc(env(safe-area-inset-bottom) + 12px)", zIndex: 90, display: "flex", justifyContent: compact ? "flex-end" : "center", pointerEvents: "none" }}>
+        <div style={{ pointerEvents: "auto", display: "flex", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 2, background: "rgba(20,18,46,0.6)", backdropFilter: "blur(22px) saturate(180%)", WebkitBackdropFilter: "blur(22px) saturate(180%)", border: "1px solid rgba(255,255,255,0.16)", boxShadow: "0 10px 34px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.22)", width: compact ? 56 : "100%", height: compact ? 56 : "auto", maxWidth: compact ? 56 : 430, margin: compact ? "0 16px 0 0" : "0 14px", padding: compact ? 0 : "5px 7px", borderRadius: compact ? 999 : 26, overflow: "hidden", transition: "width .32s cubic-bezier(.22,1,.36,1), height .32s cubic-bezier(.22,1,.36,1), border-radius .3s, padding .3s, margin .3s, gap .3s" }}>
           {tabs.map((t) => {
             const on = !moreOpen && t.id === active;
             const visible = !compact || on;
@@ -789,19 +789,31 @@ export default class App extends React.Component {
       this.setState({ feedback: { ok: false, msg: "JSON non valido — controlla virgole e parentesi." } });
       return;
     }
+    // Accept either the reserved-data JSON or a FULL backup file pasted here (has
+    // riservato/preferiti/programma) — a reliable import path that needs no file picker.
+    const isBackup = !!(data && (data.riservato || data.programma || Array.isArray(data.preferiti)));
+    const src = isBackup && data.riservato ? data.riservato : data;
     const clean = {
-      partenza: typeof data.partenza === "string" ? data.partenza.trim() : "",
-      passeggero: data.passeggero || "",
-      voli: Array.isArray(data.voli) ? data.voli : [],
-      alloggi: Array.isArray(data.alloggi) ? data.alloggi : [],
-      parcheggio: data.parcheggio || {},
-      stansted: data.stansted || {},
+      partenza: typeof src.partenza === "string" ? src.partenza.trim() : "",
+      passeggero: src.passeggero || "",
+      voli: Array.isArray(src.voli) ? src.voli : [],
+      alloggi: Array.isArray(src.alloggi) ? src.alloggi : [],
+      parcheggio: src.parcheggio || {},
+      stansted: src.stansted || {},
     };
     try {
       localStorage.setItem("scozia_riservato_v2", JSON.stringify(clean));
     } catch (e) {}
+    let extra = "";
+    if (isBackup) {
+      this.planMut((p) => {
+        if (Array.isArray(data.preferiti)) { p.favs = data.preferiti.filter((x) => typeof x === "string"); extra += ", " + p.favs.length + " preferiti"; }
+        const prog = data.programma;
+        if (prog && prog.days) { p.days = prog.days; if (prog.tripVisit) p.tripVisit = prog.tripVisit; if (Array.isArray(prog.checklist)) p.checklist = prog.checklist; extra += ", programma"; }
+      });
+    }
     const dateOk = /^\d{4}-\d{2}-\d{2}$/.test(clean.partenza);
-    const msg = "✓ Caricati: " + clean.voli.length + " voli, " + clean.alloggi.length + " alloggi" +
+    const msg = (isBackup ? "✓ Backup importato: " : "✓ Caricati: ") + clean.voli.length + " voli, " + clean.alloggi.length + " alloggi" + extra +
       (dateOk ? " · partenza " + clean.partenza : " · ⚠ aggiungi « partenza » (AAAA-MM-GG) per attivare le date");
     this.setState({ reserved: clean, feedback: { ok: true, msg } });
   };
@@ -956,7 +968,7 @@ export default class App extends React.Component {
     const reader = new FileReader();
     reader.onload = () => {
       try {
-        const d = JSON.parse(String(reader.result));
+        const d = JSON.parse(String(reader.result).replace(/^﻿/, "").trim());
         let bits = [];
         if (d.riservato && typeof d.riservato === "object") {
           const r = d.riservato;
@@ -1460,6 +1472,11 @@ export default class App extends React.Component {
 
     // Flights with public transfer estimates and airport check-in+security buffers.
     const legs = LEGS;
+    // Older backups store one "City (CODE)" per leg in `aeroporto` (no da/a). Derive the
+    // from/to codes by chaining: each leg departs from its own airport and lands at the
+    // next leg's; the final return leg lands back at the first airport (round trip).
+    const allVoli = (R && R.voli) || [];
+    const parseAp = (s) => { const m = String(s || "").match(/^\s*(.*?)\s*\(([A-Za-z]{3})\)\s*$/); return m ? { city: m[1].trim(), code: m[2].toUpperCase() } : null; };
     const flights = legs.map((l, i) => {
       const r = R && R.voli ? R.voli[i] : null;
       const hasData = !!(r && (r.volo || r.orario || r.data));
@@ -1476,8 +1493,10 @@ export default class App extends React.Component {
         ...l, tagLabel: "Tratta " + (i + 1),
         // Airport codes/cities: prefer the user's reserved JSON (da/a, +città);
         // fall back to the leg's value (neutral placeholder for home/layover).
-        fromCode: g("da") || l.fromCode, fromCity: g("da_citta") || l.fromCity,
-        toCode: g("a") || l.toCode, toCity: g("a_citta") || l.toCity,
+        fromCode: g("da") || (parseAp(g("aeroporto")) || {}).code || l.fromCode,
+        fromCity: g("da_citta") || (parseAp(g("aeroporto")) || {}).city || l.fromCity,
+        toCode: g("a") || ((parseAp(allVoli[i + 1] && allVoli[i + 1].aeroporto) || (i === legs.length - 1 ? parseAp(allVoli[0] && allVoli[0].aeroporto) : null)) || {}).code || l.toCode,
+        toCity: g("a_citta") || ((parseAp(allVoli[i + 1] && allVoli[i + 1].aeroporto) || (i === legs.length - 1 ? parseAp(allVoli[0] && allVoli[0].aeroporto) : null)) || {}).city || l.toCity,
         orario: g("orario") || "—", atterraggio: g("atterraggio") || "",
         loc: g("aeroporto") || g("da_citta") || l.fromCity, voloCode: g("volo"),
         startMin: this.parseMin(g("orario")), endMin: this.parseMin(g("atterraggio")),
@@ -2298,7 +2317,7 @@ export default class App extends React.Component {
                 <button onClick={this.downloadBackup} style={{ cursor: "pointer", fontSize: 12.5, fontWeight: 900, color: "#17142C", background: "#FFD23F", border: "none", padding: "10px 15px", borderRadius: 999 }}>Scarica backup ↓</button>
                 <label style={{ cursor: "pointer", fontSize: 12.5, fontWeight: 900, color: "#fff", background: "#14C08C", padding: "10px 15px", borderRadius: 999 }}>
                   Importa file ↑
-                  <input type="file" accept="application/json,.json" onChange={this.importBackupFile} style={{ display: "none" }} />
+                  <input type="file" accept=".json,application/json,text/json,text/plain,application/octet-stream" onChange={this.importBackupFile} style={{ display: "none" }} />
                 </label>
               </div>
               {this.state.backupMsg && <div style={{ marginTop: 10, fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#14C08C", padding: "10px 12px", borderRadius: 12 }}>{this.state.backupMsg}</div>}
