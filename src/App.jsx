@@ -258,15 +258,20 @@ function Checklist({ items, onToggle, onAdd, onEdit, onRemove }) {
 // First-run guide (shown in "Oggi" until a partenza date is loaded): explains how the
 // app works and lets the user download the config JSON to fill in and re-import.
 function Onboarding({ onDownload, onCopy, msg }) {
-  const step = (n, title, body) => (
-    <div style={{ display: "flex", gap: 11, marginTop: 13 }}>
-      <span style={{ flex: "none", width: 26, height: 26, borderRadius: 999, background: "#0E1542", color: "#FFD23F", fontWeight: 900, fontSize: 13, display: "flex", alignItems: "center", justifyContent: "center" }}>{n}</span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontWeight: 900, fontSize: 14.5, color: "#17142C" }}>{title}</div>
-        <div style={{ fontSize: 12.5, color: "#5b5644", fontWeight: 600, lineHeight: 1.5, marginTop: 2 }}>{body}</div>
+  const step = (n, title, body, action, last) => (
+    <div style={{ display: "flex", gap: 12 }}>
+      <div style={{ flex: "none", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <span style={{ width: 28, height: 28, borderRadius: 999, background: "#0E1542", color: "#FFD23F", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>{n}</span>
+        {!last && <span style={{ flex: 1, width: 2, background: "#E1D7BF", marginTop: 4 }} />}
+      </div>
+      <div style={{ flex: 1, minWidth: 0, paddingBottom: last ? 0 : 16 }}>
+        <div style={{ fontWeight: 900, fontSize: 15, color: "#17142C" }}>{title}</div>
+        <div style={{ fontSize: 12.5, color: "#5b5644", fontWeight: 600, lineHeight: 1.5, marginTop: 3 }}>{body}</div>
+        {action && <div style={{ marginTop: 10 }}>{action}</div>}
       </div>
     </div>
   );
+  const btn = (bg, fg) => ({ cursor: "pointer", display: "inline-block", fontSize: 13, fontWeight: 900, color: fg, background: bg, border: "none", padding: "10px 15px", borderRadius: 999, textDecoration: "none" });
   const feat = (t) => (
     <div style={{ display: "flex", gap: 10, marginTop: 11, fontSize: 13.5, lineHeight: 1.55, fontWeight: 600, color: "#EAEDF9" }}>
       <span style={{ flex: "none", color: "#2BE3A8", fontWeight: 900 }}>✓</span><span>{t}</span>
@@ -281,20 +286,21 @@ function Onboarding({ onDownload, onCopy, msg }) {
       <h2 style={{ fontWeight: 900, fontSize: 30, lineHeight: 1.02, margin: "0 0 3px", color: "#0E1542", letterSpacing: "-0.02em" }}>Benvenuto nel Taccuino</h2>
       <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#6B6450", lineHeight: 1.5 }}>La tua guida da campo <strong style={{ color: "#17142C" }}>offline</strong> per il viaggio Londra → Edimburgo. Funziona senza rete e i tuoi dati restano <strong style={{ color: "#17142C" }}>solo su questo dispositivo</strong>.</p>
 
-      {/* Config card */}
+      {/* Config card — one clear action per step */}
       <div style={{ background: "#F6F0E2", borderRadius: 18, padding: "16px 16px 18px", marginBottom: 12, border: "1.5px solid #E1D7BF" }}>
         <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase", color: "#9a7a14" }}>Configura il viaggio</div>
-        <div style={{ fontWeight: 900, fontSize: 19, color: "#17142C", marginTop: 4 }}>Carica i tuoi dati</div>
-        <p style={{ margin: "6px 0 2px", fontSize: 13, color: "#5b5644", fontWeight: 600, lineHeight: 1.55 }}>Scarica il file di configurazione e compila <strong style={{ color: "#17142C" }}>data di partenza, voli e alloggi</strong>. I valori dentro sono segnaposto d'esempio che mostrano il formato (puoi anche farlo compilare a un'AI).</p>
-        {step(1, "Scarica e compila", "Apri il file in Note/File e sostituisci i segnaposto con i tuoi dati reali.")}
-        {step(2, "Reimporta", "In Impostazioni usa « Importa file » — oppure incolla il JSON e premi « Salva dati ».")}
-        {step(3, "Pronto a partire", "Si attivano conto alla rovescia, vista « Oggi » giorno per giorno, meteo e programma.")}
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 15 }}>
-          <button onClick={onDownload} style={{ cursor: "pointer", fontSize: 13, fontWeight: 900, color: "#0E1542", background: "#FFD23F", border: "none", padding: "11px 16px", borderRadius: 999 }}>Scarica configurazione ↓</button>
-          <button onClick={onCopy} style={{ cursor: "pointer", fontSize: 13, fontWeight: 900, color: "#fff", background: "#14C08C", border: "none", padding: "11px 16px", borderRadius: 999 }}>Copia modello</button>
-          <a href="#sSet" style={{ fontSize: 13, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "rgba(14,21,66,.08)", padding: "11px 16px", borderRadius: 999 }}>Apri Impostazioni →</a>
-        </div>
-        {msg && <div style={{ marginTop: 11, fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#FFE9A8", padding: "9px 12px", borderRadius: 10 }}>{msg}</div>}
+        <div style={{ fontWeight: 900, fontSize: 19, color: "#17142C", margin: "4px 0 14px" }}>Carica i tuoi dati in 3 passi</div>
+        {step(1, "Scarica il modello",
+          "Un file JSON con segnaposto d'esempio che mostrano come compilare ogni campo (partenza, voli, alloggi).",
+          <button onClick={onDownload} style={btn("#FFD23F", "#0E1542")}>Scarica configurazione ↓</button>)}
+        {step(2, "Compilalo — o fallo fare a un'AI ✨",
+          <>Apri il file e sostituisci i segnaposto con i tuoi dati. <strong style={{ color: "#17142C" }}>Non hai voglia?</strong> Copia il modello, incollalo in un'AI (ChatGPT, Claude…) insieme alle tue prenotazioni e chiedile di riempirlo.</>,
+          <button onClick={onCopy} style={btn("#14C08C", "#fff")}>Copia il modello per l'AI</button>)}
+        {step(3, "Reimporta e parti",
+          <>In <strong style={{ color: "#17142C" }}>Impostazioni</strong> usa « Importa file » (o incolla il JSON) e premi « Salva dati ». Si attivano conto alla rovescia, vista « Oggi », meteo e programma.</>,
+          <a href="#sSet" style={btn("rgba(14,21,66,.09)", "#0E1542")}>Apri Impostazioni →</a>,
+          true)}
+        {msg && <div style={{ marginTop: 14, fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#FFE9A8", padding: "10px 12px", borderRadius: 10 }}>{msg}</div>}
       </div>
 
       {/* How it works */}
