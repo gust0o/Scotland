@@ -152,26 +152,26 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
     textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", WebkitTapHighlightColor: "transparent",
     transition: "flex .3s cubic-bezier(.22,1,.36,1), max-width .3s cubic-bezier(.22,1,.36,1), opacity .22s",
   });
-  // The selected tab is a solid accent (yellow) pill with navy icon+label — a clear,
-  // on-brand "selected" highlight that stands out from the dark glass bar.
-  const capsule = (on) => ({
+  // Native-iOS selection: NO background blob. The active tab is carried purely by the
+  // accent tint + heavier label (colour is set on the <a>/<button> below, which also
+  // overrides any :visited link colour). This removes the ambiguous "circle or square?"
+  // yellow shape the user disliked. capsule() is now just layout.
+  const capsule = () => ({
     display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-    gap: compact ? 0 : 3, padding: compact ? 0 : "6px 13px 5px", borderRadius: 999,
-    background: (on && !compact) ? "#FFD23F" : "transparent",
-    boxShadow: (on && !compact) ? "inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 7px rgba(0,0,0,0.28)" : "none",
-    color: on ? (compact ? "#FFD23F" : "#0E1542") : "rgba(255,255,255,0.72)",
-    transition: "background .25s, box-shadow .25s, color .15s",
+    gap: compact ? 0 : 3, padding: compact ? 0 : "5px 10px 4px", borderRadius: 12,
   });
+  const tabColor = (on) => (on ? "#FFD23F" : "rgba(235,235,245,0.62)");
   // Two glass recipes. WebKit/iOS keep today's proven frosted blur; Blink also bends
   // the backdrop through the SVG lens (url(#liquidGlass)) — the real refractive glass.
   // On Blink we drop the frost to a hair so the refraction stays visible, and lighten
   // the tint so there's something to refract.
+  // Thin, dark, genuinely translucent glass — content reads through it (not a milky slab).
   const glassBg = GLASS_REFRACTION
-    ? "linear-gradient(180deg, rgba(46,46,70,0.30) 0%, rgba(14,14,28,0.44) 100%)"
-    : "linear-gradient(180deg, rgba(38,38,56,0.74) 0%, rgba(14,14,26,0.82) 100%)";
+    ? "linear-gradient(180deg, rgba(40,42,66,0.26) 0%, rgba(14,16,30,0.42) 100%)"
+    : "linear-gradient(180deg, rgba(24,26,46,0.58) 0%, rgba(14,16,32,0.62) 100%)";
   const glassFilter = GLASS_REFRACTION
-    ? "url(#liquidGlass) blur(2px) saturate(165%) brightness(1.06)"
-    : "blur(24px) saturate(150%)";
+    ? "url(#liquidGlass) blur(2px) saturate(170%) brightness(1.06)"
+    : "blur(20px) saturate(180%)";
   const glassPerf = GLASS_REFRACTION ? { isolation: "isolate", willChange: "backdrop-filter" } : null;
   return (
     <>
@@ -211,15 +211,15 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
         </svg>
       )}
       <nav style={{ position: "fixed", left: 0, right: 0, bottom: "calc(env(safe-area-inset-bottom) + 12px)", zIndex: 90, display: "flex", justifyContent: compact ? "flex-end" : "center", pointerEvents: "none" }}>
-        <div style={{ pointerEvents: "auto", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 3, background: glassBg, backdropFilter: glassFilter, WebkitBackdropFilter: glassFilter, ...glassPerf, border: "1px solid rgba(255,255,255,0.22)", boxShadow: "0 14px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 1.5px rgba(255,255,255,0.4), inset 0 -8px 18px rgba(0,0,0,0.2)", width: compact ? 56 : "100%", height: compact ? 56 : "auto", maxWidth: compact ? 56 : 430, margin: compact ? "0 16px 0 0" : "0 12px", padding: compact ? 0 : "6px 8px", borderRadius: 999, overflow: "hidden", transition: "width .32s cubic-bezier(.22,1,.36,1), height .32s cubic-bezier(.22,1,.36,1), padding .3s, margin .3s, gap .3s" }}>
-          {/* specular sheen across the top — the liquid-glass highlight */}
-          <span aria-hidden style={{ position: "absolute", inset: 0, borderRadius: "inherit", pointerEvents: "none", background: "linear-gradient(to bottom, rgba(255,255,255,0.20), rgba(255,255,255,0.05) 36%, rgba(255,255,255,0) 60%)" }} />
+        <div style={{ pointerEvents: "auto", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 3, background: glassBg, backdropFilter: glassFilter, WebkitBackdropFilter: glassFilter, ...glassPerf, border: "0.5px solid rgba(255,255,255,0.12)", boxShadow: "0 10px 34px rgba(0,0,0,0.42), inset 0 0.6px 0 rgba(255,255,255,0.28)", width: compact ? 56 : "100%", height: compact ? 56 : "auto", maxWidth: compact ? 56 : 430, margin: compact ? "0 16px 0 0" : "0 12px", padding: compact ? 0 : "6px 8px", borderRadius: 999, overflow: "hidden", transition: "width .32s cubic-bezier(.22,1,.36,1), height .32s cubic-bezier(.22,1,.36,1), padding .3s, margin .3s, gap .3s" }}>
+          {/* specular sheen across the top — the liquid-glass highlight (subtle) */}
+          <span aria-hidden style={{ position: "absolute", inset: 0, borderRadius: "inherit", pointerEvents: "none", background: "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0) 55%)" }} />
           {tabs.map((t) => {
             const on = !moreOpen && t.id === active;
             const visible = !compact || on;
             return (
-              <a key={t.id} href={"#" + t.id} onClick={(e) => { if (compact) { e.preventDefault(); onExpand(); } else { onClose(); } }} style={slot(visible)}>
-                <span style={capsule(on)}>
+              <a key={t.id} href={"#" + t.id} onClick={(e) => { if (compact) { e.preventDefault(); onExpand(); } else { onClose(); } }} style={{ ...slot(visible), color: tabColor(on), WebkitTextFillColor: tabColor(on) }}>
+                <span style={capsule()}>
                   <BarIcon name={t.icon} size={22} />
                   <span style={lbl(on)}>{t.label}</span>
                 </span>
@@ -229,8 +229,8 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
           {(() => {
             const visible = !compact || moreActive;
             return (
-              <button onClick={() => { if (compact) onExpand(); else onToggleMore(); }} style={slot(visible)}>
-                <span style={capsule(moreActive)}>
+              <button onClick={() => { if (compact) onExpand(); else onToggleMore(); }} style={{ ...slot(visible), color: tabColor(moreActive), WebkitTextFillColor: tabColor(moreActive) }}>
+                <span style={capsule()}>
                   <BarIcon name="ellipsis" size={22} />
                   <span style={lbl(moreActive)}>Altro</span>
                 </span>
