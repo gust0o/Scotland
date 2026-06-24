@@ -127,19 +127,24 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
     { id: "sFav", label: "Preferiti", icon: "preferit" },
   ];
   const moreActive = moreOpen || extra.some((e) => e.href === "#" + active);
-  const cell = (on) => ({ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 4, padding: compact ? "0" : "8px 0 7px", height: compact ? "100%" : "auto", textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", color: on ? "#FFD23F" : "rgba(255,255,255,0.62)", WebkitTapHighlightColor: "transparent", borderRadius: 16 });
   const lbl = (on) => ({ fontSize: 10, fontWeight: on ? 900 : 700, letterSpacing: "-.01em", maxHeight: compact ? 0 : 14, opacity: compact ? 0 : 1, overflow: "hidden", transition: "max-height .25s, opacity .2s" });
-  // Liquid-glass collapse: when compact, every non-active cell shrinks to zero width so
-  // the bar contracts to a small pill around the active icon (tap or scroll up to expand).
-  const slot = (visible, on) => ({
-    flex: visible ? 1 : "0 0 0px",
-    maxWidth: visible ? 140 : 0,
-    opacity: visible ? 1 : 0,
-    overflow: "hidden",
-    pointerEvents: visible ? "auto" : "none",
-    background: on ? "rgba(255,210,63,0.16)" : "transparent",
-    borderRadius: 16,
-    transition: "flex .3s cubic-bezier(.22,1,.36,1), max-width .3s cubic-bezier(.22,1,.36,1), opacity .22s, background .15s",
+  // Each tab collapses to zero width when compact so the bar contracts to a ball.
+  const slot = (visible) => ({
+    flex: visible ? 1 : "0 0 0px", maxWidth: visible ? 140 : 0,
+    display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+    opacity: visible ? 1 : 0, overflow: "hidden", pointerEvents: visible ? "auto" : "none",
+    textDecoration: "none", border: "none", background: "transparent", cursor: "pointer", WebkitTapHighlightColor: "transparent",
+    transition: "flex .3s cubic-bezier(.22,1,.36,1), max-width .3s cubic-bezier(.22,1,.36,1), opacity .22s",
+  });
+  // The "liquid glass" selected pill behind the active tab (icon + label): a brighter,
+  // frosted capsule with a top specular highlight and a soft inner shadow below.
+  const capsule = (on) => ({
+    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+    gap: compact ? 0 : 3, padding: compact ? 0 : "6px 12px 5px", borderRadius: 999,
+    background: (on && !compact) ? "rgba(255,255,255,0.22)" : "transparent",
+    boxShadow: (on && !compact) ? "inset 0 1px 0.5px rgba(255,255,255,0.65), inset 0 -1px 1px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.18)" : "none",
+    color: on ? "#FFE27A" : "rgba(255,255,255,0.64)",
+    transition: "background .25s, box-shadow .25s, color .15s",
   });
   return (
     <>
@@ -166,23 +171,29 @@ function BottomNav({ active, moreOpen, onToggleMore, onClose, extra, compact, on
         </div>
       )}
       <nav style={{ position: "fixed", left: 0, right: 0, bottom: "calc(env(safe-area-inset-bottom) + 12px)", zIndex: 90, display: "flex", justifyContent: compact ? "flex-end" : "center", pointerEvents: "none" }}>
-        <div style={{ pointerEvents: "auto", display: "flex", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 2, background: "rgba(20,18,46,0.6)", backdropFilter: "blur(22px) saturate(180%)", WebkitBackdropFilter: "blur(22px) saturate(180%)", border: "1px solid rgba(255,255,255,0.16)", boxShadow: "0 10px 34px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.22)", width: compact ? 56 : "100%", height: compact ? 56 : "auto", maxWidth: compact ? 56 : 430, margin: compact ? "0 16px 0 0" : "0 14px", padding: compact ? 0 : "5px 7px", borderRadius: compact ? 999 : 26, overflow: "hidden", transition: "width .32s cubic-bezier(.22,1,.36,1), height .32s cubic-bezier(.22,1,.36,1), border-radius .3s, padding .3s, margin .3s, gap .3s" }}>
+        <div style={{ pointerEvents: "auto", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", gap: compact ? 0 : 3, background: "rgba(22,22,38,0.46)", backdropFilter: "blur(26px) saturate(195%)", WebkitBackdropFilter: "blur(26px) saturate(195%)", border: "1px solid rgba(255,255,255,0.18)", boxShadow: "0 14px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.45), inset 0 -8px 18px rgba(0,0,0,0.18)", width: compact ? 56 : "100%", height: compact ? 56 : "auto", maxWidth: compact ? 56 : 430, margin: compact ? "0 16px 0 0" : "0 12px", padding: compact ? 0 : "6px 8px", borderRadius: 999, overflow: "hidden", transition: "width .32s cubic-bezier(.22,1,.36,1), height .32s cubic-bezier(.22,1,.36,1), padding .3s, margin .3s, gap .3s" }}>
+          {/* specular sheen across the top — the liquid-glass highlight */}
+          <span aria-hidden style={{ position: "absolute", inset: 0, borderRadius: "inherit", pointerEvents: "none", background: "linear-gradient(to bottom, rgba(255,255,255,0.20), rgba(255,255,255,0.05) 36%, rgba(255,255,255,0) 60%)" }} />
           {tabs.map((t) => {
             const on = !moreOpen && t.id === active;
             const visible = !compact || on;
             return (
-              <a key={t.id} href={"#" + t.id} onClick={(e) => { if (compact) { e.preventDefault(); onExpand(); } else { onClose(); } }} style={{ ...cell(on), ...slot(visible, on) }}>
-                <BarIcon name={t.icon} size={22} />
-                <span style={lbl(on)}>{t.label}</span>
+              <a key={t.id} href={"#" + t.id} onClick={(e) => { if (compact) { e.preventDefault(); onExpand(); } else { onClose(); } }} style={slot(visible)}>
+                <span style={capsule(on)}>
+                  <BarIcon name={t.icon} size={22} />
+                  <span style={lbl(on)}>{t.label}</span>
+                </span>
               </a>
             );
           })}
           {(() => {
             const visible = !compact || moreActive;
             return (
-              <button onClick={() => { if (compact) onExpand(); else onToggleMore(); }} style={{ ...cell(moreActive), ...slot(visible, moreActive) }}>
-                <BarIcon name="ellipsis" size={22} />
-                <span style={lbl(moreActive)}>Altro</span>
+              <button onClick={() => { if (compact) onExpand(); else onToggleMore(); }} style={slot(visible)}>
+                <span style={capsule(moreActive)}>
+                  <BarIcon name="ellipsis" size={22} />
+                  <span style={lbl(moreActive)}>Altro</span>
+                </span>
               </button>
             );
           })()}
