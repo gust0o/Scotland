@@ -255,6 +255,64 @@ function Checklist({ items, onToggle, onAdd, onEdit, onRemove }) {
   );
 }
 
+// First-run guide (shown in "Oggi" until a partenza date is loaded): explains how the
+// app works and lets the user download the config JSON to fill in and re-import.
+function Onboarding({ onDownload, onCopy, msg }) {
+  const step = (n, title, body) => (
+    <div style={{ display: "flex", gap: 11, marginTop: 13 }}>
+      <span style={{ flex: "none", width: 26, height: 26, borderRadius: 999, background: "#0E1542", color: "#FFD23F", fontWeight: 900, fontSize: 13, display: "flex", alignItems: "center", justifyContent: "center" }}>{n}</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontWeight: 900, fontSize: 14.5, color: "#17142C" }}>{title}</div>
+        <div style={{ fontSize: 12.5, color: "#5b5644", fontWeight: 600, lineHeight: 1.5, marginTop: 2 }}>{body}</div>
+      </div>
+    </div>
+  );
+  const feat = (t) => (
+    <div style={{ display: "flex", gap: 9, marginTop: 9, fontSize: 13, lineHeight: 1.5, fontWeight: 600, color: "#5b5644" }}>
+      <span style={{ flex: "none", color: "#14C08C", fontWeight: 900 }}>✓</span><span>{t}</span>
+    </div>
+  );
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 4 }}>
+        <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#FF2E7E", animation: "scoziaPulse 1.8s ease-in-out infinite" }} />
+        <span style={{ fontSize: 12, fontWeight: 900, letterSpacing: ".14em", textTransform: "uppercase", color: "#17142C" }}>Primo avvio</span>
+      </div>
+      <h2 style={{ fontWeight: 900, fontSize: 30, lineHeight: 1.02, margin: "0 0 3px", color: "#0E1542", letterSpacing: "-0.02em" }}>Benvenuto nel Taccuino</h2>
+      <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#6B6450", lineHeight: 1.5 }}>La tua guida da campo <strong style={{ color: "#17142C" }}>offline</strong> per il viaggio Londra → Edimburgo. Funziona senza rete e i tuoi dati restano <strong style={{ color: "#17142C" }}>solo su questo dispositivo</strong>.</p>
+
+      {/* Config card */}
+      <div style={{ background: "#F6F0E2", borderRadius: 18, padding: "16px 16px 18px", marginBottom: 12, border: "1.5px solid #E1D7BF" }}>
+        <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase", color: "#9a7a14" }}>Configura il viaggio</div>
+        <div style={{ fontWeight: 900, fontSize: 19, color: "#17142C", marginTop: 4 }}>Carica i tuoi dati</div>
+        <p style={{ margin: "6px 0 2px", fontSize: 13, color: "#5b5644", fontWeight: 600, lineHeight: 1.55 }}>Scarica il file di configurazione e compila <strong style={{ color: "#17142C" }}>data di partenza, voli e alloggi</strong>. I valori dentro sono segnaposto d'esempio che mostrano il formato (puoi anche farlo compilare a un'AI).</p>
+        {step(1, "Scarica e compila", "Apri il file in Note/File e sostituisci i segnaposto con i tuoi dati reali.")}
+        {step(2, "Reimporta", "In Impostazioni usa « Importa file » — oppure incolla il JSON e premi « Salva dati ».")}
+        {step(3, "Pronto a partire", "Si attivano conto alla rovescia, vista « Oggi » giorno per giorno, meteo e programma.")}
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 15 }}>
+          <button onClick={onDownload} style={{ cursor: "pointer", fontSize: 13, fontWeight: 900, color: "#0E1542", background: "#FFD23F", border: "none", padding: "11px 16px", borderRadius: 999 }}>Scarica configurazione ↓</button>
+          <button onClick={onCopy} style={{ cursor: "pointer", fontSize: 13, fontWeight: 900, color: "#fff", background: "#14C08C", border: "none", padding: "11px 16px", borderRadius: 999 }}>Copia modello</button>
+          <a href="#sSet" style={{ fontSize: 13, fontWeight: 900, color: "#0E1542", textDecoration: "none", background: "rgba(14,21,66,.08)", padding: "11px 16px", borderRadius: 999 }}>Apri Impostazioni →</a>
+        </div>
+        {msg && <div style={{ marginTop: 11, fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#FFE9A8", padding: "9px 12px", borderRadius: 10 }}>{msg}</div>}
+      </div>
+
+      {/* How it works */}
+      <div style={{ background: "#0E1542", borderRadius: 18, padding: "16px 16px 18px", marginBottom: 4 }}>
+        <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase", color: "#FFD23F" }}>Come funziona</div>
+        <div style={{ marginTop: 8 }}>
+          {feat("Esplora le sezioni: Edimburgo, Mangiare & locali, Esperienze, Dintorni & gite, Glasgow, Londra.")}
+          {feat("Salva i preferiti con la ★ su qualsiasi luogo o attività.")}
+          {feat("Costruisci il Programma giorno per giorno — trascinando le tappe, anche con l'aiuto di un'AI.")}
+          {feat("Tutto è consultabile offline: in aereo, in metro o senza rete.")}
+          {feat("Nessun account e nessun server: i dati riservati restano sul tuo dispositivo.")}
+        </div>
+        <div style={{ marginTop: 12, fontSize: 11.5, color: "#9aa2d4", fontWeight: 600, lineHeight: 1.5 }}>Suggerimento: aggiungi l'app alla schermata Home del telefono per usarla come un'app vera, anche offline.</div>
+      </div>
+    </div>
+  );
+}
+
 export default class App extends React.Component {
   static defaultProps = {
     coverVariant: "Manifesto",
@@ -766,6 +824,11 @@ export default class App extends React.Component {
     this.copyText(JSON.stringify(emptyScaffold(), null, 2), () =>
       this.setState({ copyMsg: "Modello con segnaposto copiato ✓" })
     );
+  // Download the config template as a file the user can open, fill in, and re-import.
+  downloadEmpty = () => {
+    this.downloadText("scozia-configurazione.json", JSON.stringify(emptyScaffold(), null, 2));
+    this.setState({ copyMsg: "Configurazione scaricata ✓ — aprila, compilala e reimportala in Impostazioni" });
+  };
   copyCurrent = () => {
     const r = this.effReserved() || emptyScaffold();
     this.copyText(JSON.stringify(r, null, 2), () =>
@@ -1717,6 +1780,8 @@ export default class App extends React.Component {
     // now
     const ctx = this.nowContext();
     const nowCards = (ctx.cards || []).filter(Boolean);
+    // New user: no partenza date loaded yet → show the first-run onboarding guide.
+    const noData = !this.tripDates();
 
     // sim
     const simD = this.state.sim ? new Date(this.state.sim) : now;
@@ -1852,13 +1917,19 @@ export default class App extends React.Component {
 
           {/* ===== OGGI / DINAMICO ===== */}
           <section id="sNow" style={{ ...sec, padding: "22px 16px", background: "#ECE3D0" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 4 }}>
-              <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#FF2E7E", animation: "scoziaPulse 1.8s ease-in-out infinite" }} />
-              <span style={{ fontSize: 12, fontWeight: 900, letterSpacing: ".14em", textTransform: "uppercase", color: "#17142C" }}>{ctx.label}</span>
-            </div>
-            <h2 style={{ fontWeight: 900, fontSize: 30, lineHeight: 1.02, margin: "0 0 3px", color: "#0E1542", letterSpacing: "-0.02em" }}>{ctx.title}</h2>
-            <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>{ctx.sub}</p>
-            {nowCards.map((c, i) => this.renderCard(c, i))}
+            {noData ? (
+              <Onboarding onDownload={this.downloadEmpty} onCopy={this.copyEmpty} msg={this.state.copyMsg} />
+            ) : (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 4 }}>
+                  <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#FF2E7E", animation: "scoziaPulse 1.8s ease-in-out infinite" }} />
+                  <span style={{ fontSize: 12, fontWeight: 900, letterSpacing: ".14em", textTransform: "uppercase", color: "#17142C" }}>{ctx.label}</span>
+                </div>
+                <h2 style={{ fontWeight: 900, fontSize: 30, lineHeight: 1.02, margin: "0 0 3px", color: "#0E1542", letterSpacing: "-0.02em" }}>{ctx.title}</h2>
+                <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>{ctx.sub}</p>
+                {nowCards.map((c, i) => this.renderCard(c, i))}
+              </>
+            )}
             <Checklist
               items={(this.state.plan && this.state.plan.checklist) || []}
               onToggle={this.toggleCheck}
