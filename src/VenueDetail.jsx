@@ -84,8 +84,20 @@ export function SummaryRow({ d, onOpen, isFav, onToggleFav, last }) {
 }
 
 const chip = (bg, fg) => ({ fontSize: 11.5, fontWeight: 800, color: fg, background: bg, borderRadius: 999, padding: "4px 10px", whiteSpace: "nowrap" });
+// Small line icons used instead of "Vedere"/"Mangiare" text tags.
+const EyeIcon = ({ c, s = 17 }) => (
+  <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.7-6.5 10-6.5S22 12 22 12s-3.7 6.5-10 6.5S2 12 2 12z" /><circle cx="12" cy="12" r="2.7" /></svg>
+);
+const ForkKnifeIcon = ({ c, s = 17 }) => (
+  <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M7 2v7M5 2v7M9 2v7M7 9v13M16.5 2C15 2 14 4 14 7s1 4 2.5 4M16.5 2v20" /></svg>
+);
+// A colour-coded round icon badge (replaces the old text category tag).
+const kindBadge = (eat) => (
+  <span style={{ flex: "none", width: 30, height: 30, borderRadius: 9, display: "inline-flex", alignItems: "center", justifyContent: "center", background: eat ? "#FBEDE9" : "#EEF0F8" }}>
+    {eat ? <ForkKnifeIcon c="#E6482A" /> : <EyeIcon c="#0E1542" />}
+  </span>
+);
 // Compact rectangular category tag (legible at small sizes — replaces the old round pills).
-const tag = (bg, fg) => ({ flex: "none", display: "inline-flex", alignItems: "center", fontSize: 10, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: fg, background: bg, borderRadius: 7, padding: "4px 9px", lineHeight: 1, whiteSpace: "nowrap" });
 
 // Full detail sheet, reused everywhere (sections, timeline taps, favourites, now-cards).
 // onOpen(idOrObj) lets nested items (trip venues, experience places) open their own card.
@@ -162,11 +174,22 @@ export default function VenueDetail({ d, onClose, onBack, canBack, isFav, onTogg
           style={{ position: "sticky", top: 0, zIndex: 5, background: "#F6F0E2", borderRadius: "20px 20px 0 0", touchAction: "none", cursor: "grab" }}
         >
           <span style={{ display: "block", width: 40, height: 4, borderRadius: 999, background: "#cabf9f", margin: "8px auto 0" }} />
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 40, padding: "0 10px" }}>
+          <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", height: 40, padding: "0 10px" }}>
             {canBack
               ? <button onClick={(e) => { e.stopPropagation(); onBack && onBack(); }} onPointerDown={(e) => e.stopPropagation()} style={{ background: "transparent", border: "none", cursor: "pointer", fontSize: 15, fontWeight: 700, color: c, padding: "6px 6px", WebkitTapHighlightColor: "transparent" }}>‹ Indietro</button>
               : <span style={{ width: 56 }} />}
             <button onClick={(e) => { e.stopPropagation(); onClose(); }} onPointerDown={(e) => e.stopPropagation()} style={{ background: "transparent", border: "none", cursor: "pointer", fontSize: 15, fontWeight: 700, color: "#7a7560", padding: "6px 6px", WebkitTapHighlightColor: "transparent" }}>Chiudi</button>
+            {/* Sibling pager lives in the nav chrome (like Mail / a ‹ ›-stepper), never on
+                the photo — so it can't read as an image carousel. Centred over the bar. */}
+            {navPos && navPos.n > 1 && (
+              <div style={{ position: "absolute", left: 0, right: 0, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
+                <div style={{ pointerEvents: "auto", display: "flex", alignItems: "center", gap: 6 }}>
+                  <button onClick={(e) => { e.stopPropagation(); onPrev && onPrev(); }} onPointerDown={(e) => e.stopPropagation()} disabled={!onPrev} aria-label="Venue precedente" style={{ background: "transparent", border: "none", cursor: onPrev ? "pointer" : "default", fontSize: 19, fontWeight: 700, lineHeight: 1, color: onPrev ? "#0E1542" : "#cdc2a3", padding: "2px 5px", WebkitTapHighlightColor: "transparent" }}>‹</button>
+                  <span style={{ fontSize: 12, fontWeight: 800, color: "#7a7560", minWidth: 42, textAlign: "center", letterSpacing: ".02em" }}>{navPos.i} di {navPos.n}</span>
+                  <button onClick={(e) => { e.stopPropagation(); onNext && onNext(); }} onPointerDown={(e) => e.stopPropagation()} disabled={!onNext} aria-label="Venue successiva" style={{ background: "transparent", border: "none", cursor: onNext ? "pointer" : "default", fontSize: 19, fontWeight: 700, lineHeight: 1, color: onNext ? "#0E1542" : "#cdc2a3", padding: "2px 5px", WebkitTapHighlightColor: "transparent" }}>›</button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -184,24 +207,6 @@ export default function VenueDetail({ d, onClose, onBack, canBack, isFav, onTogg
             </div>
           )}
         </div>
-
-        {/* Sibling navigation = page indicator + horizontal swipe (Apple UIPageControl).
-            Dots when few, a "i di N" counter when many. Lives BELOW the photo, never on it. */}
-        {navPos && navPos.n > 1 && (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5, padding: "11px 0 0" }}>
-            {navPos.n <= 8 ? (
-              <div style={{ display: "flex", gap: 7, alignItems: "center" }}>
-                {Array.from({ length: navPos.n }).map((_, i) => {
-                  const on = i === navPos.i - 1;
-                  return <span key={i} style={{ width: on ? 7 : 6, height: on ? 7 : 6, borderRadius: 999, background: on ? c : "#cdc2a3", transition: "background .2s" }} />;
-                })}
-              </div>
-            ) : (
-              <span style={{ fontSize: 11.5, fontWeight: 800, color: "#7a7560", background: "#ece3d0", borderRadius: 999, padding: "3px 11px" }}>{navPos.i} di {navPos.n}</span>
-            )}
-            <span style={{ fontSize: 10.5, fontWeight: 600, color: "#a99f82" }}>Scorri per cambiare scheda</span>
-          </div>
-        )}
 
         <div style={{ padding: "16px 18px 0" }}>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
@@ -305,7 +310,7 @@ export default function VenueDetail({ d, onClose, onBack, canBack, isFav, onTogg
                 const clickable = !!(onOpen && v.id);
                 return (
                   <div key={i} onClick={clickable ? () => onOpen(v.id, d.venues.map((x) => x.id).filter(Boolean)) : undefined} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderTop: i ? "1px solid rgba(122,112,84,.16)" : "none", cursor: clickable ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
-                    <span style={tag(eat ? "#FBEDE9" : "#EEF0F8", eat ? "#E6482A" : "#0E1542")}>{eat ? "Mangiare" : "Vedere"}</span>
+                    {kindBadge(eat)}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13.5, fontWeight: 800, color: "#17142C" }}>{v.name}</div>
                       {v.note && <div style={{ fontSize: 12, color: "#6B6450", fontWeight: 600, lineHeight: 1.45, marginTop: 1 }}>{v.note}</div>}
