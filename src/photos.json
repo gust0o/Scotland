@@ -574,5 +574,65 @@
  "tv-dt-lochlomond-6": {
   "credit": "John Firth · CC BY-SA 2.0",
   "source": "https://commons.wikimedia.org/wiki/File:Glengoyne_Distillery_-_geograph.org.uk_-_3474579.jpg"
+ },
+ "exw-holyrood": {
+  "credit": "Richard Webb · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Holyrood_Distillery_(geograph_6418456).jpg"
+ },
+ "exw-glenkinchie": {
+  "credit": "Mike Murry · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Glenkinchie_distillery.jpg"
+ },
+ "exw-edradour": {
+  "credit": "Rappilio · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Edradour_whiskybrennerei_pitlochry_schottland_10.06.2007.JPG"
+ },
+ "exl-katrine": {
+  "credit": "Theodore Hines · Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Theodore_Hines_(c.1860-1889)_-_The_Path_by_Loch_Katrine,_the_Trossachs_-_622761_-_National_Trust.jpg"
+ },
+ "exl-ness": {
+  "credit": "Eusebius · CC BY 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:The_Loch_Ness_and_Urquhart_castle.jpg"
+ },
+ "exl-glencoe": {
+  "credit": "Daniel Kraft · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Glencoe_Lochan_reflections_3_20211022.jpg"
+ },
+ "exl-glenfinnan": {
+  "credit": "J. Drevet · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Glenfinnan_Site.jpg"
+ },
+ "exc-crail": {
+  "credit": "Jerzy Morkis · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Crail_Harbour,_Fife_-_geograph.org.uk_-_5488620.jpg"
+ },
+ "exc-stabbs": {
+  "credit": "Hogweard · Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:St_Abbs_Head_Lighthouse,_Berwickshire.jpg"
+ },
+ "exf-doune": {
+  "credit": "Godot13 · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Scotland-2016-Aerial-Doune_Castle_(and_Castle_keeper%27s_cottage).jpg"
+ },
+ "exf-midhope": {
+  "credit": "Camer01 · CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Midhope_Castle_01.JPG"
+ },
+ "exf-blackness": {
+  "credit": "Dr John Wells · CC BY 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Blackness_Castle,_Blackness,_Scotland.jpg"
+ },
+ "exo-ghilliedhu": {
+  "credit": "Andy Farrington · CC BY-SA 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Ghillie-Dhu_-_geograph.org.uk_-_3160913.jpg"
+ },
+ "exo-tynecastle": {
+  "credit": "Paul Henery · CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Tynecastle_Park,_January_2018.jpg"
+ },
+ "exo-easterroad": {
+  "credit": "Jeff Winter · CC BY 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Easter_Road_2010.JPG"
  }
 }

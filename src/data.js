@@ -117,17 +117,41 @@ const london = (CONTENT.londonSpots && CONTENT.londonSpots.length ? CONTENT.lond
 
 const experiences = [
   { id: "ex-castelli", title: "Castelli & Storia", hi: "", body: "Dalle fortezze in città ai manieri a picco sul mare: mille anni di storia scozzese in pietra.", places: [
-    { name: "Edinburgh Castle", q: "Edinburgh Castle" }, { name: "Stirling Castle", q: "Stirling Castle" }, { name: "Tantallon Castle", q: "Tantallon Castle North Berwick" }, { name: "Craigmillar Castle", q: "Craigmillar Castle Edinburgh" }, { name: "Linlithgow Palace", q: "Linlithgow Palace" } ] },
+    { name: "Edinburgh Castle", q: "Edinburgh Castle", ref: "es-castle" },
+    { name: "Stirling Castle", q: "Stirling Castle", ref: "dt-stirling" },
+    { name: "Tantallon Castle", q: "Tantallon Castle North Berwick", ref: "tv-dt-nberwick-1" },
+    { name: "Craigmillar Castle", q: "Craigmillar Castle Edinburgh", ref: "nb-craigmillar" },
+    { name: "Linlithgow Palace", q: "Linlithgow Palace", ref: "dt-linlithgow" } ] },
   { id: "ex-whisky", title: "Whisky", hi: "", body: "Distillerie ed esperienze in città e a breve distanza, dal blended ai single malt Lowland.", places: [
-    { name: "Johnnie Walker Princes St", q: "Johnnie Walker Princes Street Edinburgh" }, { name: "Holyrood Distillery", q: "Holyrood Distillery Edinburgh" }, { name: "Scotch Whisky Experience", q: "Scotch Whisky Experience Edinburgh" }, { name: "Glenkinchie", q: "Glenkinchie Distillery" }, { name: "Edradour (Pitlochry)", q: "Edradour Distillery Pitlochry" } ] },
+    { name: "Johnnie Walker Princes St", q: "Johnnie Walker Princes Street Edinburgh", ref: "es-johnnie" },
+    { name: "Scotch Whisky Experience", q: "Scotch Whisky Experience Edinburgh", ref: "es-scotchwhisky" },
+    { id: "exw-holyrood", name: "Holyrood Distillery", q: "Holyrood Distillery Edinburgh", note: "Distilleria di whisky e gin nel cuore di Edimburgo, vicino ad Arthur's Seat, con tour e degustazioni." },
+    { id: "exw-glenkinchie", name: "Glenkinchie", q: "Glenkinchie Distillery", note: "La distilleria delle Lowlands più vicina a Edimburgo (~30 km): single malt leggero e floreale, tour e tasting." },
+    { id: "exw-edradour", name: "Edradour (Pitlochry)", q: "Edradour Distillery Pitlochry", note: "Una delle distillerie più piccole e pittoresche di Scozia, a Pitlochry; una gita più lunga nelle Highlands." } ] },
   { id: "ex-loch", title: "Loch & Highlands", hi: "Loch Lomond — il migliore tra i laghi", body: "Laghi e montagne: il più comodo è Loch Lomond; i grandi nomi delle Highlands sono più lontani.", places: [
-    { name: "Loch Lomond (Balloch)", q: "Loch Lomond Balloch" }, { name: "Loch Katrine · Trossachs", q: "Loch Katrine Trossachs" }, { name: "Loch Ness", q: "Loch Ness" }, { name: "Glencoe", q: "Glencoe Scotland" }, { name: "Glenfinnan Viaduct", q: "Glenfinnan Viaduct" } ] },
+    { name: "Loch Lomond (Balloch)", q: "Loch Lomond Balloch", ref: "dt-lochlomond" },
+    { id: "exl-katrine", name: "Loch Katrine · Trossachs", q: "Loch Katrine Trossachs", note: "Lago romantico nel cuore dei Trossachs, con un battello a vapore d'epoca; ispirò Sir Walter Scott." },
+    { id: "exl-ness", name: "Loch Ness", q: "Loch Ness", note: "Il lago più famoso di Scozia, profondo e misterioso; molto lontano (Highlands), meglio con un tour di più giorni." },
+    { id: "exl-glencoe", name: "Glencoe", q: "Glencoe Scotland", note: "La valle più spettacolare delle Highlands, tra montagne e cascate; lontana da Edimburgo, ideale in tour." },
+    { id: "exl-glenfinnan", name: "Glenfinnan Viaduct", q: "Glenfinnan Viaduct", note: "Il viadotto del treno di Harry Potter (Jacobite Express); molto lontano, nelle Highlands occidentali." } ] },
   { id: "ex-costa", title: "Costa & Natura", hi: "", body: "Spiagge, scogliere e villaggi di pescatori lungo le due coste vicino a Edimburgo.", places: [
-    { name: "North Berwick", q: "North Berwick" }, { name: "Bass Rock · Seabird Centre", q: "Scottish Seabird Centre North Berwick" }, { name: "East Neuk · Anstruther", q: "Anstruther Fife" }, { name: "Crail", q: "Crail Fife" }, { name: "St Abb's Head", q: "St Abb's Head" } ] },
+    { name: "North Berwick", q: "North Berwick", ref: "dt-nberwick" },
+    { name: "Bass Rock · Seabird Centre", q: "Scottish Seabird Centre North Berwick", ref: "tv-dt-nberwick-0" },
+    { name: "East Neuk · Anstruther", q: "Anstruther Fife", ref: "dt-anstruthereast" },
+    { id: "exc-crail", name: "Crail", q: "Crail Fife", note: "Il più fotogenico villaggio di pescatori dell'East Neuk, con un porticciolo da cartolina." },
+    { id: "exc-stabbs", name: "St Abb's Head", q: "St Abb's Head", note: "Riserva naturale a picco sul mare nei Borders: scogliere drammatiche e colonie di uccelli marini." } ] },
   { id: "ex-cinema", title: "Misteri & Cinema", hi: "", body: "Cappelle esoteriche e i set di Outlander e non solo, tutti raggiungibili in giornata.", places: [
-    { name: "Rosslyn Chapel", q: "Rosslyn Chapel" }, { name: "Doune Castle", q: "Doune Castle" }, { name: "Midhope (Lallybroch)", q: "Midhope Castle" }, { name: "Blackness Castle", q: "Blackness Castle" }, { name: "Linlithgow Palace", q: "Linlithgow Palace" } ] },
+    { name: "Rosslyn Chapel", q: "Rosslyn Chapel", ref: "dt-rosslynchapel" },
+    { name: "Linlithgow Palace", q: "Linlithgow Palace", ref: "dt-linlithgow" },
+    { id: "exf-doune", name: "Doune Castle", q: "Doune Castle", note: "Castello-set di Outlander, Game of Thrones e Monty Python, vicino a Stirling." },
+    { id: "exf-midhope", name: "Midhope (Lallybroch)", q: "Midhope Castle", note: "La 'Lallybroch' di Outlander: torre fortificata nella tenuta di Hopetoun, vicino a South Queensferry." },
+    { id: "exf-blackness", name: "Blackness Castle", q: "Blackness Castle", note: "Fortezza a forma di nave sul Forth, set di Outlander e Hamlet; vicino a Linlithgow." } ] },
   { id: "ex-locali", title: "Locali & vita", hi: "", body: "La Scozia che si vive: musica, calcio e pesce freschissimo sul porto di Leith.", places: [
-    { name: "Ceilidh · Ghillie Dhu", q: "Ghillie Dhu Edinburgh" }, { name: "Hearts · Tynecastle", q: "Tynecastle Park Edinburgh" }, { name: "Hibs · Easter Road", q: "Easter Road Stadium Edinburgh" }, { name: "Sandy Bell's (folk)", q: "Sandy Bell's Edinburgh" }, { name: "Seafood a Leith", q: "The Shore Leith Edinburgh" } ] },
+    { name: "Sandy Bell's (folk)", q: "Sandy Bell's Edinburgh", ref: "ea-sandybells" },
+    { name: "Seafood a Leith · The Shore", q: "The Shore Leith Edinburgh", ref: "nb-leith" },
+    { id: "exo-ghilliedhu", name: "Ceilidh · Ghillie Dhu", q: "Ghillie Dhu Edinburgh", note: "Locale in una ex chiesa per serate di ceilidh, la danza tradizionale scozzese suonata dal vivo." },
+    { id: "exo-tynecastle", name: "Hearts · Tynecastle", q: "Tynecastle Park Edinburgh", note: "Lo stadio dell'Heart of Midlothian, una delle due storiche squadre di calcio di Edimburgo." },
+    { id: "exo-easterroad", name: "Hibs · Easter Road", q: "Easter Road Stadium Edinburgh", note: "Lo stadio dell'Hibernian, l'altra grande squadra di calcio della città." } ] },
 ];
 
 // Enriched neighbourhoods (blurb + things to see) from CONTENT.
@@ -221,15 +245,21 @@ function build() {
   london.forEach((l) => add({ id: l.id, name: l.name, kind: "london", where: "Londra", zone: l.zone || "", cat: l.cat || "", tipo: l.cat || "", dur: l.dur, open: l.open || null, note: l.note, maps: mapsUrl(l.q), ...enr(l) }));
   neighborhoods.forEach((n) => add({ id: n.id, name: n.name, kind: "neighborhood", where: "Quartiere · Edimburgo", note: n.blurb, see: n.see || [], maps: n.maps, ...enr(n) }));
   glasgow.forEach((g) => add({ id: g.id, name: g.name, kind: "glasgow", where: "Glasgow", note: g.note, maps: g.maps, ...enr(g) }));
-  // Resolve each experience place to an existing rich detail (matched by Maps URL);
-  // places without a match open a minimal card (name + Maps), so every place is tappable.
-  const byMaps = {};
-  Object.values(details).forEach((d) => { if (d.maps && !byMaps[d.maps]) byMaps[d.maps] = d.id; });
-  experiences.forEach((x) => add({ id: x.id, name: x.title, kind: "experience", where: "Esperienza a tema", hi: x.hi || "", note: x.body, places: (x.places || []).map((p, i) => {
-    const m = mapsUrl(p.q);
-    const ref = byMaps[m] || { id: x.id + "-p" + i, name: p.name, kind: "experience", where: x.title, note: "", maps: m, photo: "", credit: "" };
-    return { name: p.name, maps: m, ref };
-  }), maps: "", ...enr(x) }));
+  // Each experience place is a real, favouritable venue. If it has `ref`, it points to an
+  // existing venue (rich card); otherwise it's registered here as its own detail + master
+  // entry (with a note + Maps + photo slot) so it looks and behaves like any other venue.
+  experiences.forEach((x) => {
+    const places = (x.places || []).map((p) => {
+      const id = (p.ref && details[p.ref]) ? p.ref : p.id;
+      if (!details[id]) {
+        const maps = mapsUrl(p.q);
+        details[id] = { id, name: p.name, kind: "sight", where: "Esperienza · " + x.title, note: p.note || "", descrizione: p.note || "", maps, photo: "", credit: "", info: [] };
+        master[id] = { name: p.name, where: "Esperienza · " + x.title, note: p.note || "", maps };
+      }
+      return { name: p.name, maps: details[id].maps, ref: id };
+    });
+    add({ id: x.id, name: x.title, kind: "experience", where: "Esperienza a tema", hi: x.hi || "", note: x.body, places, maps: "", ...enr(x) });
+  });
 
   // Apply bundled photos (Round 3): set photo + credit + source on each detail.
   Object.keys(PHOTOS).forEach((id) => {
