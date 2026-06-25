@@ -635,7 +635,8 @@
           "k": "Zona",
           "v": "Nord di Edimburgo, sul Firth of Forth"
         }
-      ]
+      ],
+      "meta": "Quartiere · gourmet"
     },
     {
       "id": "nb-stockbridge",
@@ -663,7 +664,8 @@
           "k": "Zona",
           "v": "Nord di Edimburgo, sul Water of Leith"
         }
-      ]
+      ],
+      "meta": "Quartiere · chic"
     },
     {
       "id": "nb-botanic",
@@ -690,7 +692,8 @@
           "k": "Zona",
           "v": "Nord di Edimburgo, vicino a Stockbridge e Inverleith Park"
         }
-      ]
+      ],
+      "meta": "Giardini · gratis"
     },
     {
       "id": "nb-portobello",
@@ -717,7 +720,8 @@
           "k": "Zona",
           "v": "Est di Edimburgo, sul Firth of Forth"
         }
-      ]
+      ],
+      "meta": "Quartiere · mare"
     },
     {
       "id": "nb-southside",
@@ -745,7 +749,8 @@
           "k": "Zona",
           "v": "Sud di Edimburgo, porta d'accesso alle Pentland Hills"
         }
-      ]
+      ],
+      "meta": "Quartiere · arte"
     },
     {
       "id": "nb-craigmillar",
@@ -771,7 +776,8 @@
           "k": "Zona",
           "v": "Sud-est di Edimburgo, verso le Pentland Hills"
         }
-      ]
+      ],
+      "meta": "Castello · panorama"
     },
     {
       "id": "nb-fountainbridge",
@@ -799,7 +805,8 @@
           "k": "Zona",
           "v": "Ovest del centro di Edimburgo"
         }
-      ]
+      ],
+      "meta": "Canale · passeggiata"
     }
   ],
   "eats": {
@@ -3948,7 +3955,8 @@
           "k": "Zona",
           "v": "West End, vicino a Kelvingrove Park e all'Università di Glasgow"
         }
-      ]
+      ],
+      "meta": "Museo · gratis"
     },
     "gl-1": {
       "summary": "La spina dorsale bohémien del West End: negozi indipendenti, vicoli nascosti e la fotogenica Ashton Lane.",
@@ -3967,7 +3975,8 @@
           "k": "Zona",
           "v": "West End, vicino all'Università e ai Botanic Gardens"
         }
-      ]
+      ],
+      "meta": "West End · pub & vie"
     },
     "gl-2": {
       "summary": "Cattedrale gotica medievale sopravvissuta alla Riforma, con la tomba di san Mungo nella chiesa inferiore.",
@@ -3986,7 +3995,8 @@
           "k": "Zona",
           "v": "East End di Glasgow"
         }
-      ]
+      ],
+      "meta": "Gotico · gratis"
     },
     "gl-3": {
       "summary": "Museo dei trasporti firmato Zaha Hadid sul Clyde, con il veliero Glenlee ormeggiato accanto.",
@@ -4005,7 +4015,8 @@
           "k": "Zona",
           "v": "Glasgow Harbour, sul fiume Clyde"
         }
-      ]
+      ],
+      "meta": "Museo · gratis"
     },
     "gl-4": {
       "summary": "Collezione d'arte di rilevanza mondiale immersa nel verde del Pollok Country Park.",
@@ -4024,7 +4035,8 @@
           "k": "Zona",
           "v": "Southside, nel Pollok Country Park"
         }
-      ]
+      ],
+      "meta": "Museo · gratis"
     },
     "gl-5": {
       "summary": "Il salotto civico di Glasgow e il quartiere dei mercanti, tra palazzi vittoriani, bar e ristoranti.",
@@ -4043,7 +4055,8 @@
           "k": "Zona",
           "v": "Centro di Glasgow"
         }
-      ]
+      ],
+      "meta": "Centro · piazza"
     },
     "gl-6": {
       "summary": "Whisky bar d'altri tempi con pavimenti cigolanti e tavoli in ferro battuto, tappa fissa dei pub crawl.",
@@ -4058,7 +4071,8 @@
           "k": "Zona",
           "v": "Centro di Glasgow, zona Sauchiehall St"
         }
-      ]
+      ],
+      "meta": "Whisky bar"
     },
     "gl-7": {
       "summary": "Ristorante storico di Ashton Lane, dal 1971 paladino dei prodotti agricoli scozzesi.",
@@ -4073,7 +4087,8 @@
           "k": "Zona",
           "v": "Ashton Lane, West End di Glasgow"
         }
-      ]
+      ],
+      "meta": "Ristorante · West End"
     },
     "gl-8": {
       "summary": "Il locale di musica dal vivo più leggendario di Glasgow: qui nel 1993 furono scoperti gli Oasis.",
@@ -4088,7 +4103,8 @@
           "k": "Cosa",
           "v": "Sala concerti + bar · cartellone quasi ogni sera"
         }
-      ]
+      ],
+      "meta": "Live music"
     },
     "gl-9": {
       "summary": "Leggendaria sala da ballo anni '30 con insegna al neon, oggi tempio del live rock, sopra lo storico mercato delle pulci.",
@@ -4107,7 +4123,8 @@
           "k": "Quartiere",
           "v": "Calton, Gallowgate"
         }
-      ]
+      ],
+      "meta": "Live & mercato"
     },
     "gl-10": {
       "summary": "Museo interattivo sulla riva del Clyde con planetario, cinema IMAX e centinaia di exhibit per tutte le età.",
@@ -4126,7 +4143,8 @@
           "k": "Bambini",
           "v": "<3 anni gratis"
         }
-      ]
+      ],
+      "meta": "Famiglie · a pagamento"
     },
     "gl-11": {
       "summary": "Arte contemporanea gratuita in un palazzo neoclassico, riconoscibile dalla statua del Duca col cono in testa.",
@@ -4145,7 +4163,8 @@
           "k": "Dom/Ven",
           "v": "11-17"
         }
-      ]
+      ],
+      "meta": "Arte moderna · gratis"
     },
     "gl-12": {
       "summary": "Il museo pubblico più antico della Scozia, dentro lo spettacolare campus neogotico dell'Università di Glasgow.",
@@ -4164,7 +4183,8 @@
           "k": "Vicino",
           "v": "Mackintosh House (a pagamento)"
         }
-      ]
+      ],
+      "meta": "Museo · gratis"
     },
     "gl-13": {
       "summary": "Giardini vittoriani gratuiti con la spettacolare serra in ferro e vetro Kibble Palace, in cima a Byres Road.",
@@ -4183,7 +4203,8 @@
           "k": "Metro",
           "v": "Hillhead, 7 min a piedi"
         }
-      ]
+      ],
+      "meta": "Giardini · gratis"
     },
     "gl-14": {
       "summary": "Casa progettata da Mackintosh nel 1901 e realizzata solo negli anni '90, immersa nel verde di Bellahouston Park.",
@@ -4202,7 +4223,8 @@
           "k": "Caffè",
           "v": "10-17 tutti i giorni"
         }
-      ]
+      ],
+      "meta": "Mackintosh · parco"
     },
     "gl-15": {
       "summary": "Ex magazzini industriali sul Clyde diventati hub di musica live, club, arte urbana e street food.",
@@ -4221,7 +4243,8 @@
           "k": "Zona",
           "v": "vicino a Finnieston"
         }
-      ]
+      ],
+      "meta": "Eventi & arte"
     },
     "gl-16": {
       "summary": "Leggendario club underground in un seminterrato di Jamaica Street: il dancefloor più mitico della Scozia.",
@@ -4240,7 +4263,8 @@
           "k": "Capienza",
           "v": "~410 persone"
         }
-      ]
+      ],
+      "meta": "Club · notte"
     },
     "gl-17": {
       "summary": "Chiesa sconsacrata in cima a Byres Road trasformata in bar, sala concerti e teatro con soffitto dipinto.",
@@ -4259,7 +4283,8 @@
           "k": "Posizione",
           "v": "cima di Byres Road"
         }
-      ]
+      ],
+      "meta": "Arti & eventi"
     },
     "gl-18": {
       "summary": "Pub vittoriano di categoria A con uno dei bancone continui più lunghi del Regno Unito, in un vicolo del centro.",
@@ -4278,7 +4303,8 @@
           "k": "Sopra",
           "v": "karaoke al piano superiore"
         }
-      ]
+      ],
+      "meta": "Pub storico"
     },
     "gl-19": {
       "summary": "Caffè-bar vegano e venue live nascosto in King's Court, che condivide il tetto con un mitico negozio di vinili.",
@@ -4297,7 +4323,8 @@
           "k": "Ven-Sab",
           "v": "aperto fino all'1"
         }
-      ]
+      ],
+      "meta": "Vegano & dischi"
     }
   },
   "experiences": {
@@ -4393,7 +4420,8 @@
           "k": "Prezzo",
           "v": "Tour a pagamento"
         }
-      ]
+      ],
+      "meta": "Whisky · in città"
     },
     "exw-glenkinchie": {
       "descrizione": "La distilleria di Lowland più vicina a Edimburgo, immersa nella campagna dell'East Lothian a circa mezz'ora dalla città. Conosciuta come 'The Edinburgh Malt', produce un single malt leggero, erbaceo e floreale, tipico dello stile Lowland. Il tour mostra alcuni degli alambicchi più grandi della Scozia e un museo storico della distillazione. Si raggiunge comodamente in auto o con i tour da Edimburgo.",
@@ -4419,7 +4447,8 @@
           "k": "Prezzo",
           "v": "Tour a pagamento"
         }
-      ]
+      ],
+      "meta": "Whisky · ~30 min"
     },
     "exw-edradour": {
       "descrizione": "Una delle distillerie più piccole e pittoresche di Scozia, nascosta tra le colline della Perthshire vicino a Pitlochry. Per decenni è stata la più piccola del Paese, con una produzione quasi artigianale gestita da pochissime persone. I suoi single malt sono ricchi e corposi, alcuni maturati in botti da Sherry. È la gita più lunga di questo gruppo: si è già nelle Highlands meridionali, a circa due ore da Edimburgo.",
@@ -4445,7 +4474,8 @@
           "k": "Prezzo",
           "v": "Tour a pagamento"
         }
-      ]
+      ],
+      "meta": "Whisky · ~2h"
     },
     "exl-katrine": {
       "descrizione": "Un lago romantico nel cuore dei Trossachs, dentro il parco nazionale del Loch Lomond. Le sue acque limpide si attraversano a bordo del 'Sir Walter Scott', un battello a vapore d'epoca ancora in servizio. Il paesaggio di boschi e colline ispirò il poema 'La donna del lago' di Walter Scott. È raggiungibile in circa un'ora e mezza/due ore da Edimburgo, ideale per chi cerca natura senza spingersi nelle Highlands profonde.",
@@ -4471,7 +4501,8 @@
           "k": "Quando",
           "v": "Primavera–autunno"
         }
-      ]
+      ],
+      "meta": "Loch · ~1h30"
     },
     "exl-ness": {
       "descrizione": "Il lago più famoso di Scozia, lungo e profondissimo, incastonato nella Great Glen vicino a Inverness. Le sue acque scure alimentano da secoli la leggenda di Nessie, il mostro del lago. Sulle rive sorgono le rovine suggestive del castello di Urquhart. È molto lontano da Edimburgo (oltre tre ore): conviene visitarlo con un tour in giornata lungo o un viaggio di più giorni nelle Highlands.",
@@ -4497,7 +4528,8 @@
           "k": "Quando",
           "v": "Tutto l'anno"
         }
-      ]
+      ],
+      "meta": "Loch · ~3h+"
     },
     "exl-glencoe": {
       "descrizione": "La valle più spettacolare delle Highlands: una gola glaciale tra montagne imponenti, cascate e brughiere. Il profilo drammatico delle 'Three Sisters' è una delle viste più iconiche della Scozia. Glencoe è anche un luogo carico di storia, teatro del tragico massacro del 1692. È lontana da Edimburgo (circa 2h30–3h): perfetta come tappa di un tour delle Highlands, magari verso Fort William.",
@@ -4523,7 +4555,8 @@
           "k": "Quando",
           "v": "Tutto l'anno (meglio sereno)"
         }
-      ]
+      ],
+      "meta": "Highlands · ~2h30"
     },
     "exl-glenfinnan": {
       "descrizione": "Il viadotto ferroviario curvo reso celebre dal treno di Harry Potter, l'Hogwarts Express. Si trova in una posizione spettacolare sopra il Loch Shiel, vicino a Fort William, nelle Highlands occidentali. In estate vi transita il treno a vapore Jacobite, uno spettacolo molto fotografato. È molto lontano da Edimburgo (circa 4 ore): è una meta da viaggio dedicato o tour di più giorni.",
@@ -4549,7 +4582,8 @@
           "k": "Quando",
           "v": "Estate (per il treno)"
         }
-      ]
+      ],
+      "meta": "Harry Potter · ~4h"
     },
     "exc-crail": {
       "descrizione": "Il più fotogenico villaggio di pescatori dell'East Neuk di Fife, con un porticciolo da cartolina racchiuso tra case di pietra. Le viuzze e il molo hanno ispirato generazioni di pittori e fotografi. Sul porto si gustano aragoste e granchi appena pescati. Si raggiunge in circa un'ora e mezza da Edimburgo, lungo la bella costa della Fife.",
@@ -4575,7 +4609,8 @@
           "k": "Quando",
           "v": "Primavera–autunno"
         }
-      ]
+      ],
+      "meta": "Costa Fife · ~1h30"
     },
     "exc-stabbs": {
       "descrizione": "Una riserva naturale a picco sul Mare del Nord nei Borders, fatta di scogliere drammatiche e sentieri sul ciglio del mare. In primavera ed estate le falesie ospitano grandi colonie di uccelli marini, tra urie, gazze marine e gabbiani. Il piccolo villaggio di St Abbs accanto è un porticciolo pittoresco. È a circa un'ora/un'ora e mezza da Edimburgo lungo la costa sud-orientale.",
@@ -4601,7 +4636,8 @@
           "k": "Quando",
           "v": "Primavera–estate (uccelli)"
         }
-      ]
+      ],
+      "meta": "Costa · ~1h"
     },
     "exf-doune": {
       "descrizione": "Un castello medievale straordinariamente conservato vicino a Stirling, famoso più per cinema e TV che per la sua storia. È stato set di Monty Python e il Sacro Graal, di Outlander (come Castello Leoch) e del pilot di Game of Thrones (Grande Inverno). Costruito a fine Trecento per Robert Stewart, duca di Albany, conserva una grande sala e cucine imponenti. Si raggiunge in circa un'ora da Edimburgo.",
@@ -4627,7 +4663,8 @@
           "k": "Come arrivare",
           "v": "Auto / bus + treno"
         }
-      ]
+      ],
+      "meta": "Outlander · ~1h"
     },
     "exf-midhope": {
       "descrizione": "Una torre fortificata del Cinquecento nella tenuta di Hopetoun, vicino a South Queensferry. Per i fan di Outlander è 'Lallybroch', la casa di famiglia dei Fraser (Broch Tuarach). Si visita solo dall'esterno, ma il fascino della torre solitaria nella campagna ripaga il breve percorso. È a circa mezz'ora/quaranta minuti da Edimburgo, facilmente abbinabile a una gita verso Linlithgow o il Forth.",
@@ -4653,7 +4690,8 @@
           "k": "Come arrivare",
           "v": "Auto"
         }
-      ]
+      ],
+      "meta": "Outlander · ~35 min"
     },
     "exf-blackness": {
       "descrizione": "Una fortezza di pietra protesa sul Firth of Forth, soprannominata 'la nave che non salpò mai' per la sua sagoma allungata. Il profilo massiccio sull'acqua ne fa uno dei castelli più scenografici di Scozia. È stato set di Outlander (come Fort William), dell'Hamlet di Zeffirelli e di Outlaw King. Si trova vicino a Linlithgow, a circa quaranta minuti da Edimburgo.",
@@ -4679,7 +4717,8 @@
           "k": "Come arrivare",
           "v": "Auto / treno + taxi"
         }
-      ]
+      ],
+      "meta": "Outlander · ~40 min"
     },
     "exo-ghilliedhu": {
       "descrizione": "Un grande locale nel West End di Edimburgo, ricavato in un'ex chiesa dalle volte di legno. È uno dei posti migliori in città per vivere un ceilidh, la danza tradizionale scozzese suonata dal vivo. La band guida i passi anche dei principianti, tra giri, balli di gruppo e tanta birra. È a due passi da Princes Street, perfetto per una serata folk autentica.",
@@ -4705,7 +4744,8 @@
           "k": "Prezzo",
           "v": "Ingresso/serata variabile"
         }
-      ]
+      ],
+      "meta": "Ceilidh · West End"
     },
     "exo-tynecastle": {
       "descrizione": "Lo stadio dell'Heart of Midlothian, una delle due storiche squadre di calcio di Edimburgo, nel quartiere di Gorgie. La curva maroon dei tifosi crea un'atmosfera intensa nei giorni di partita. Si può assistere a un match della Scottish Premiership o visitare lo stadio con un tour. È a ovest del centro, raggiungibile in pochi minuti di bus o tram più una breve passeggiata.",
@@ -4731,7 +4771,8 @@
           "k": "Colori",
           "v": "Maroon"
         }
-      ]
+      ],
+      "meta": "Calcio · Hearts"
     },
     "exo-easterroad": {
       "descrizione": "Lo stadio dell'Hibernian, l'altra grande squadra di calcio di Edimburgo, nel quartiere di Leith. I tifosi 'Hibees' riempiono le tribune verdi e bianche di cori e passione. Si può vivere una partita della Scottish Premiership o scoprire la storia del club. È a nord-est del centro, comodo da abbinare a una passeggiata a Leith.",
@@ -4757,7 +4798,8 @@
           "k": "Colori",
           "v": "Verde e bianco"
         }
-      ]
+      ],
+      "meta": "Calcio · Hibs"
     }
   }
 }
