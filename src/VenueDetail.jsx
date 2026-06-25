@@ -40,6 +40,7 @@ export function metaText(d) {
     if (d.train) bits.push(durLabel(d.train) + "/tratta");
     else if (d.area) bits.push(d.area);
   } else {
+    if (d.meta) bits.push(d.meta); // precomputed list tag (glasgow / neighbourhoods / experiences)
     if (d.tipo || d.cat) bits.push(d.tipo || d.cat);
     if (d.zone) bits.push(d.zone);
     if (d.dur) bits.push(durLabel(d.dur));
@@ -91,10 +92,11 @@ const EyeIcon = ({ c, s = 17 }) => (
 const ForkKnifeIcon = ({ c, s = 17 }) => (
   <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M7 2v7M5 2v7M9 2v7M7 9v13M16.5 2C15 2 14 4 14 7s1 4 2.5 4M16.5 2v20" /></svg>
 );
-// A colour-coded round icon badge (replaces the old text category tag).
+// A colour-coded round icon badge (replaces the old text category tag): a light icon
+// on a saturated background — navy for sights, red for eateries.
 const kindBadge = (eat) => (
-  <span style={{ flex: "none", width: 30, height: 30, borderRadius: 9, display: "inline-flex", alignItems: "center", justifyContent: "center", background: eat ? "#FBEDE9" : "#EEF0F8" }}>
-    {eat ? <ForkKnifeIcon c="#E6482A" /> : <EyeIcon c="#0E1542" />}
+  <span style={{ flex: "none", width: 30, height: 30, borderRadius: 9, display: "inline-flex", alignItems: "center", justifyContent: "center", background: eat ? "#E6482A" : "#0E1542" }}>
+    {eat ? <ForkKnifeIcon c="#fff" /> : <EyeIcon c="#fff" />}
   </span>
 );
 // Compact rectangular category tag (legible at small sizes — replaces the old round pills).

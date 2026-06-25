@@ -164,6 +164,7 @@ const enrich = (o, c) => {
   if (c.descrizione) o.descrizione = c.descrizione;
   if (c.curiosita) o.curiosita = c.curiosita;
   if (Array.isArray(c.info)) o.info = c.info;
+  if (c.meta) o.meta = c.meta;
 };
 
 // Merge the enriched descriptions/zones into the base lists.
@@ -237,7 +238,7 @@ function build() {
   const details = {};
   const add = (o) => { details[o.id] = o; };
   // Spreadable enriched fields (Round 2): summary / descrizione / curiosita / info.
-  const enr = (o) => ({ summary: o.summary || "", descrizione: o.descrizione || "", curiosita: o.curiosita || "", info: Array.isArray(o.info) ? o.info : [], photo: o.photo || "", credit: o.credit || "" });
+  const enr = (o) => ({ summary: o.summary || "", descrizione: o.descrizione || "", curiosita: o.curiosita || "", info: Array.isArray(o.info) ? o.info : [], meta: o.meta || "", photo: o.photo || "", credit: o.credit || "" });
   sights.forEach((s) => add({ id: s.id, name: s.name, kind: "sight", where: "Edimburgo", zone: s.zone || "", dur: s.dur, open: s.open || null, note: s.note, maps: mapsUrl(s.q), ...enr(s) }));
   eats.forEach((e) => add({ id: e.id, name: e.name, kind: "eat", where: "Mangiare a Edimburgo", zone: e.zone || "", tipo: e.tipo || e.cat || "", cat: e.cat || "", ordina: e.ordina || "", dur: e.dur, open: e.open || null, note: e.note, maps: mapsUrl(e.q), ...enr(e) }));
   trips.forEach((t) => add({ id: t.id, name: t.title, kind: "trip", where: "Gita in giornata", area: t.area || "", mode: t.mode || "", train: t.train, visit: t.visit, dur: t.visit + 2 * t.train, note: t.body, maps: mapsUrl(t.q), destQ: t.q, destName: t.title, transport: t.transport || null, venues: (t.venues || []).map((v, i) => ({ id: "tv-" + t.id + "-" + i, name: v.name, tipo: v.tipo, note: v.note, maps: mapsUrl(v.q) })), ...enr(t) }));
@@ -256,7 +257,7 @@ function build() {
         // Synthetic place: enrich it to the same depth as every other venue (descrizione +
         // curiosità + info) from content.expPlaces, falling back to the inline note.
         const ec = (CONTENT.expPlaces && CONTENT.expPlaces[id]) || {};
-        details[id] = { id, name: p.name, kind: "sight", where: "Esperienza · " + x.title, note: p.note || "", descrizione: ec.descrizione || p.note || "", curiosita: ec.curiosita || "", info: Array.isArray(ec.info) ? ec.info : [], maps, photo: "", credit: "" };
+        details[id] = { id, name: p.name, kind: "sight", where: "Esperienza · " + x.title, note: p.note || "", descrizione: ec.descrizione || p.note || "", curiosita: ec.curiosita || "", info: Array.isArray(ec.info) ? ec.info : [], meta: ec.meta || "", maps, photo: "", credit: "" };
         master[id] = { name: p.name, where: "Esperienza · " + x.title, note: p.note || "", maps };
       }
       return { name: p.name, maps: details[id].maps, ref: id };
