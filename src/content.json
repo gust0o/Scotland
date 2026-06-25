@@ -624,16 +624,24 @@
       "curiosita": "A Leith Links, nel 1744, la Honourable Company fissò per la prima volta le regole ufficiali del golf, prima ancora di St Andrews.",
       "info": [
         {
+          "k": "Tipo",
+          "v": "Quartiere · lungomare"
+        },
+        {
+          "k": "Dove",
+          "v": "Nord, sul Forth"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "The Shore e il Britannia"
+        },
+        {
+          "k": "Da mangiare",
+          "v": "Pesce e gastropub"
+        },
+        {
           "k": "Come arrivare",
-          "v": "20 min in bus o tram dal centro; circa un'ora a piedi lungo il Water of Leith"
-        },
-        {
-          "k": "Da vedere",
-          "v": "The Shore, Royal Yacht Britannia, Custom House, distillerie Port of Leith e Lind & Lime"
-        },
-        {
-          "k": "Zona",
-          "v": "Nord di Edimburgo, sul Firth of Forth"
+          "v": "Tram o bus dal centro"
         }
       ],
       "meta": "Quartiere · gourmet"
@@ -653,16 +661,24 @@
       "curiosita": "Il 27 marzo 1871, attorno a Raeburn Pl, 4000 tifosi assistettero al primo incontro di rugby fra nazioni, Scozia contro Inghilterra.",
       "info": [
         {
-          "k": "Da vedere",
-          "v": "Stockbridge Colonies, Stockbridge Market, negozi di beneficenza, vicino Inverleith Park"
+          "k": "Tipo",
+          "v": "Quartiere · chic"
+        },
+        {
+          "k": "Dove",
+          "v": "Nord-ovest, sul Water of Leith"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Le Colonies e il mercato"
+        },
+        {
+          "k": "Quando",
+          "v": "Mercato della domenica"
         },
         {
           "k": "Come arrivare",
-          "v": "A piedi dal centro lungo il Water of Leith o a nord della New Town"
-        },
-        {
-          "k": "Zona",
-          "v": "Nord di Edimburgo, sul Water of Leith"
+          "v": "A piedi da New Town"
         }
       ],
       "meta": "Quartiere · chic"
@@ -681,16 +697,24 @@
       "curiosita": "Il nome del vicino Inverleith deriva dal gaelico Inbhir Lite, 'foce del Leith'.",
       "info": [
         {
-          "k": "Prezzo",
-          "v": "Ingresso al giardino gratuito; biglietto per le serre (Glasshouses)"
+          "k": "Tipo",
+          "v": "Giardino botanico"
         },
         {
-          "k": "Da vedere",
-          "v": "Serre vittoriane, Inverleith House, Terrace Café"
+          "k": "Dove",
+          "v": "Inverleith, nord"
         },
         {
-          "k": "Zona",
-          "v": "Nord di Edimburgo, vicino a Stockbridge e Inverleith Park"
+          "k": "Ingresso",
+          "v": "Gratis (serre a pagamento)"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Le serre e la vista"
+        },
+        {
+          "k": "Quando",
+          "v": "Bel tempo"
         }
       ],
       "meta": "Giardini · gratis"
@@ -709,16 +733,24 @@
       "curiosita": "Si può raggiungere a piedi da Leith Links in circa 15 minuti, poi proseguire per due miglia di sabbia dorata fino a Joppa.",
       "info": [
         {
-          "k": "Da vedere",
-          "v": "Spiaggia e promenade, Portobello Swim Centre, passeggiata fino a Joppa"
+          "k": "Tipo",
+          "v": "Quartiere · spiaggia"
+        },
+        {
+          "k": "Dove",
+          "v": "Costa est, sul Forth"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Promenade e gelato"
+        },
+        {
+          "k": "Quando",
+          "v": "Giornate di sole"
         },
         {
           "k": "Come arrivare",
-          "v": "Bus dal centro; circa 15 min a piedi da Leith Links"
-        },
-        {
-          "k": "Zona",
-          "v": "Est di Edimburgo, sul Firth of Forth"
+          "v": "Bus dal centro"
         }
       ],
       "meta": "Quartiere · mare"
@@ -738,16 +770,24 @@
       "curiosita": "Alla Summerhall si tengono i ceilidh, le serate di musica e danze scozzesi in cui un insegnante mostra i passi prima di ogni ballo.",
       "info": [
         {
-          "k": "Da vedere",
-          "v": "Summerhall, Edinburgh Festival Theatre, The Meadows, distillerie di gin"
+          "k": "Tipo",
+          "v": "Quartiere · creativo"
+        },
+        {
+          "k": "Dove",
+          "v": "A sud della Old Town"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Summerhall"
+        },
+        {
+          "k": "Da scoprire",
+          "v": "Pub, gin e teatri"
         },
         {
           "k": "Come arrivare",
-          "v": "A piedi a sud della Old Town, oltre i Meadows"
-        },
-        {
-          "k": "Zona",
-          "v": "Sud di Edimburgo, porta d'accesso alle Pentland Hills"
+          "v": "A piedi o bus"
         }
       ],
       "meta": "Quartiere · arte"
@@ -765,16 +805,24 @@
       "curiosita": "A circa 20 minuti d'auto sorge la Rosslyn Chapel, resa celebre dal romanzo 'Il codice Da Vinci' di Dan Brown.",
       "info": [
         {
-          "k": "Da vedere",
-          "v": "Craigmillar Castle, e nei dintorni National Mining Museum e Rosslyn Chapel"
+          "k": "Tipo",
+          "v": "Quartiere · castello"
+        },
+        {
+          "k": "Dove",
+          "v": "Sud-est"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Craigmillar Castle"
+        },
+        {
+          "k": "Ingresso",
+          "v": "Castello a pagamento (HES)"
         },
         {
           "k": "Come arrivare",
-          "v": "Bus o auto, a sud-est del centro"
-        },
-        {
-          "k": "Zona",
-          "v": "Sud-est di Edimburgo, verso le Pentland Hills"
+          "v": "Bus dal centro"
         }
       ],
       "meta": "Castello · panorama"
@@ -794,16 +842,24 @@
       "curiosita": "Da qui parte l'alzaia dell'Union Canal che porta, oltre 50 km più a ovest, alla spettacolare Falkirk Wheel del 2002.",
       "info": [
         {
-          "k": "Da vedere",
-          "v": "Union Canal, Lochrin Basin, alzaia pedonale e ciclabile"
+          "k": "Tipo",
+          "v": "Quartiere · canale"
+        },
+        {
+          "k": "Dove",
+          "v": "Ovest dei Meadows"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "L'alzaia dell'Union Canal"
+        },
+        {
+          "k": "Da fare",
+          "v": "Passeggiata o bici"
         },
         {
           "k": "Come arrivare",
-          "v": "Circa 10 min a piedi a nord-ovest dei Meadows"
-        },
-        {
-          "k": "Zona",
-          "v": "Ovest del centro di Edimburgo"
+          "v": "A piedi dai Meadows"
         }
       ],
       "meta": "Canale · passeggiata"
@@ -3936,392 +3992,560 @@
   "glasgow": {
     "gl-0": {
       "summary": "Sfarzoso museo vittoriano che spazia dall'arte all'archeologia alla storia naturale, capolavoro del West End.",
-      "descrizione": "Costruito nello stile sfarzoso dell'epoca imperiale, questo museo vittoriano spazia dall'arte all'archeologia fino alla storia naturale. Accanto ai capolavori trovano posto un elefante impagliato, spade della Micronesia e uno Spitfire della seconda guerra mondiale. Tra le opere più celebri il 'Cristo di San Giovanni della Croce' di Salvador Dalí e 'Un uomo in armatura' di Rembrandt.",
-      "curiosita": "Da lunedì a sabato alle 13 (domenica alle 15) si tiene un concerto d'organo gratuito; il museo merita mezza giornata.",
+      "descrizione": "Costruito nello sfarzo dell'epoca edoardiana, il Kelvingrove è il museo più amato di Glasgow: un palazzo in arenaria rossa che spazia dall'arte all'archeologia fino alla storia naturale. Tra le sale convivono un elefante impagliato, uno Spitfire della seconda guerra mondiale appeso al soffitto e capolavori come il 'Cristo di San Giovanni della Croce' di Dalí e un Rembrandt. È enorme ma gratuito, perfetto anche se piove. Da non perdere il recital d'organo gratuito di metà giornata nella hall centrale.",
+      "curiosita": "Una leggenda vuole che il palazzo sia stato costruito al contrario per errore e che l'architetto si sia suicidato gettandosi da una torre: è solo un mito, ma resiste da generazioni.",
       "info": [
         {
-          "k": "Prezzo",
-          "v": "Ingresso gratuito alla collezione permanente"
+          "k": "Tipo",
+          "v": "Museo civico"
+        },
+        {
+          "k": "Dove",
+          "v": "West End, Argyle St"
+        },
+        {
+          "k": "Ingresso",
+          "v": "Gratis"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Dalí, lo Spitfire, l'organo"
         },
         {
           "k": "Quando",
-          "v": "Lun-gio e sab 10-17, ven e dom 11-17"
-        },
-        {
-          "k": "Da vedere",
-          "v": "Dalí, Rembrandt, l'elefante Sir Roger, i paesaggi delle Highlands"
-        },
-        {
-          "k": "Zona",
-          "v": "West End, vicino a Kelvingrove Park e all'Università di Glasgow"
+          "v": "Recital d'organo ~13"
         }
       ],
       "meta": "Museo · gratis"
     },
     "gl-1": {
       "summary": "La spina dorsale bohémien del West End: negozi indipendenti, vicoli nascosti e la fotogenica Ashton Lane.",
-      "descrizione": "L'animata Byres Road è la spina dorsale della zona bohémien del West End, ricca di negozi indipendenti, caffè e pub. Dai suoi lati si dipartono strette vie un tempo chiamate mews, come Ruthven Lane con i suoi negozi vintage e di vinili. La più fotogenica è Ashton Lane, vicolo acciottolato pieno di pub e ristoranti, tra cui il celebre Ubiquitous Chip.",
-      "curiosita": "In Ashton Lane si trova Jinty McGuinty's, tipico pub del West End con beer garden, musica live e un occhio di riguardo per i grandi scrittori.",
+      "descrizione": "Byres Road è la spina dorsale del West End bohémien, fiancheggiata da negozi indipendenti, caffè, librerie e pub frequentati dagli studenti dell'università. Dai suoi lati si aprono stretti vicoli un tempo chiamati mews, come Ruthven Lane con i negozi vintage e di vinili. Il gioiello è Ashton Lane, un vicolo acciottolato pieno di luci, pub e ristoranti — tra cui il celebre Ubiquitous Chip. È la zona perfetta per la sera, tra una pinta e un cinema d'essai.",
+      "curiosita": "Ashton Lane ospita la Grosvenor Picture Theatre, una delle sale cinematografiche più antiche ancora in attività in Scozia.",
       "info": [
         {
-          "k": "Da vedere",
-          "v": "Ashton Lane, Ruthven Lane, negozi e pub indipendenti"
+          "k": "Tipo",
+          "v": "Zona · vie & pub"
         },
         {
-          "k": "Come arrivare",
-          "v": "Metropolitana, fermata Hillhead"
+          "k": "Dove",
+          "v": "West End"
         },
         {
-          "k": "Zona",
-          "v": "West End, vicino all'Università e ai Botanic Gardens"
+          "k": "Ingresso",
+          "v": "Gratis (passeggiata)"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Ashton Lane la sera"
+        },
+        {
+          "k": "Quando",
+          "v": "Aperitivo e dopocena"
         }
       ],
       "meta": "West End · pub & vie"
     },
     "gl-2": {
       "summary": "Cattedrale gotica medievale sopravvissuta alla Riforma, con la tomba di san Mungo nella chiesa inferiore.",
-      "descrizione": "La Cattedrale di Glasgow è una magnifica struttura gotica che, a differenza di gran parte delle cattedrali scozzesi, sopravvisse quasi intatta alla Riforma. L'ambiente semibuio evoca atmosfere medievali, con travi originali del XIV secolo e vetrate istoriate moderne. Una scala scende all'antica chiesa inferiore, dove una selva di colonne circonda la tomba di san Mungo, che qui fondò una comunità monastica nel VI secolo.",
-      "curiosita": "Alle spalle della cattedrale, la Necropoli ottocentesca conta circa 3500 lapidi, alcune disegnate da architetti come Alexander 'Greek' Thomson e Charles Rennie Mackintosh.",
+      "descrizione": "La Cattedrale di Glasgow è una magnifica chiesa gotica che, a differenza di quasi tutte le cattedrali scozzesi, sopravvisse pressoché intatta alla Riforma. L'interno semibuio conserva travi originali del Trecento e moderne vetrate istoriate; una scala scende alla cripta dove una selva di colonne circonda la tomba di san Mungo, fondatore della città. Subito dietro si sale alla Necropoli, una collina-cimitero vittoriana costellata di mausolei e con una bella vista su Glasgow. Entrambe sono gratuite e si visitano insieme.",
+      "curiosita": "San Mungo, patrono di Glasgow, è legato a quattro miracoli ricordati nella filastrocca dell'uccello, dell'albero, della campana e del pesce — gli stessi simboli dello stemma cittadino.",
       "info": [
         {
-          "k": "Prezzo",
-          "v": "Ingresso gratuito alla cattedrale; Necropolis a accesso libero"
+          "k": "Tipo",
+          "v": "Cattedrale & cimitero"
         },
         {
-          "k": "Da vedere",
-          "v": "Chiesa inferiore e tomba di san Mungo, Necropolis, St Mungo's Museum"
+          "k": "Dove",
+          "v": "Castle Street, centro est"
         },
         {
-          "k": "Zona",
-          "v": "East End di Glasgow"
+          "k": "Ingresso",
+          "v": "Gratis"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "La cripta e la Necropoli"
+        },
+        {
+          "k": "Quando",
+          "v": "Di giorno"
         }
       ],
       "meta": "Gotico · gratis"
     },
     "gl-3": {
       "summary": "Museo dei trasporti firmato Zaha Hadid sul Clyde, con il veliero Glenlee ormeggiato accanto.",
-      "descrizione": "L'imponente edificio contemporaneo sul Glasgow Harbour, progettato da Zaha Hadid, ospita un affascinante museo dei trasporti. Tra automobili scozzesi, locomotive, tram e la prima bicicletta a pedali del 1847, i veicoli sono inseriti nella ricostruzione di una via commerciale di Glasgow dei primi del Novecento. Davanti al museo è ormeggiato il Glenlee, magnifico veliero a tre alberi varato nel 1896.",
-      "curiosita": "La visita al veliero Glenlee è gestita separatamente dal museo e prevede un piccolo supplemento (circa £4,50) per le spese di manutenzione.",
+      "descrizione": "Sul Glasgow Harbour, l'avveniristico Riverside Museum di Zaha Hadid ospita la collezione dei trasporti della città. Auto scozzesi, tram, locomotive e la prima bicicletta a pedali del 1847 sono inseriti nella ricostruzione di una via commerciale dei primi del Novecento, con negozi e una metropolitana d'epoca. Davanti al museo è ormeggiato il Glenlee, splendido veliero a tre alberi del 1896 visitabile gratuitamente. È gratuito, divertente per tutte le età e ottimo se piove.",
+      "curiosita": "La Glasgow Subway, ricostruita all'interno, è la terza metropolitana più antica del mondo dopo Londra e Budapest.",
       "info": [
         {
-          "k": "Prezzo",
-          "v": "Ingresso al museo gratuito; supplemento per il veliero Glenlee"
+          "k": "Tipo",
+          "v": "Museo dei trasporti"
         },
         {
-          "k": "Da vedere",
-          "v": "Auto e tram d'epoca, via ricostruita primi '900, Tall Ship Glenlee"
+          "k": "Dove",
+          "v": "Glasgow Harbour, Clyde"
         },
         {
-          "k": "Zona",
-          "v": "Glasgow Harbour, sul fiume Clyde"
+          "k": "Ingresso",
+          "v": "Gratis"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Il veliero Glenlee"
+        },
+        {
+          "k": "Quando",
+          "v": "Ideale se piove"
         }
       ],
       "meta": "Museo · gratis"
     },
     "gl-4": {
       "summary": "Collezione d'arte di rilevanza mondiale immersa nel verde del Pollok Country Park.",
-      "descrizione": "Donata alla città nel 1944 dall'industriale William Burrell, questa collezione d'arte di rilevanza internazionale ha sede dal 1983 in un museo dedicato dentro il Pollok Country Park. Spazia da porcellane cinesi a mobili medievali, da arazzi del XVI secolo a quadri impressionisti di Cézanne e Degas. Particolarmente pregiate le gallerie degli arazzi, realizzati tra il XIII e il XVI secolo.",
-      "curiosita": "Burrell (1861-1958) collezionò opere fino alla morte a 96 anni; nel 2024 il museo è stato premiato come miglior edificio della Scozia.",
+      "descrizione": "Donata alla città nel 1944 dall'armatore William Burrell, questa collezione d'arte di fama internazionale ha sede in un elegante museo di vetro immerso nel verde del Pollok Country Park. Spazia da porcellane cinesi e arte islamica a vetrate medievali, arazzi del XVI secolo e dipinti impressionisti di Cézanne e Degas. Riaperta nel 2022 dopo un lungo restauro, è di nuovo uno dei luoghi più amati di Glasgow. L'ingresso è gratuito e vale la passeggiata nel parco.",
+      "curiosita": "Burrell pose una condizione precisa al lascito: le opere dovevano essere esposte lontano dall'inquinamento cittadino — da qui la sede nel parco di Pollok.",
       "info": [
         {
-          "k": "Prezzo",
-          "v": "Ingresso gratuito"
+          "k": "Tipo",
+          "v": "Museo d'arte"
         },
         {
-          "k": "Da vedere",
-          "v": "Gallerie degli arazzi, impressionisti, Pollok Country Park"
+          "k": "Dove",
+          "v": "Pollok Country Park"
         },
         {
-          "k": "Zona",
-          "v": "Southside, nel Pollok Country Park"
+          "k": "Ingresso",
+          "v": "Gratis"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Arazzi e Degas"
+        },
+        {
+          "k": "Come arrivare",
+          "v": "Treno + passeggiata"
         }
       ],
       "meta": "Museo · gratis"
     },
     "gl-5": {
       "summary": "Il salotto civico di Glasgow e il quartiere dei mercanti, tra palazzi vittoriani, bar e ristoranti.",
-      "descrizione": "George Square, dominata dal municipio (City Chambers), è la piazza simbolo di Glasgow e punto di partenza ideale per esplorare Merchant City. Quest'ultima è il quartiere dei 'lord del tabacco', un tempo zona di magazzini e oggi animata da bar, ristoranti e centri commerciali tra splendidi palazzi vittoriani. Tra le tappe la Gallery of Modern Art, l'elegante Corinthian Club e la Merchant Square, ex mercato ortofrutticolo.",
-      "curiosita": "Le fortune dei mercanti nascevano dal commercio transatlantico basato sulla schiavitù: vie come Ingram, Wilson e Glassford portano i nomi di schiavisti dell'epoca.",
+      "descrizione": "George Square, dominata dall'imponente municipio (City Chambers), è la piazza simbolo di Glasgow e il punto di partenza ideale per esplorare Merchant City. Quest'ultima è il quartiere dei 'lord del tabacco', un tempo zona di magazzini e oggi animata da bar, ristoranti e boutique tra splendidi palazzi vittoriani. Tra le tappe ci sono la Gallery of Modern Art, l'elegante Corinthian Club e la Merchant Square coperta. È il cuore mondano del centro, perfetto per cena e dopocena.",
+      "curiosita": "Le sontuose scalinate in marmo delle City Chambers sono tra le più grandi d'Europa e hanno fatto da set, al cinema, a numerosi palazzi del Cremlino e del Vaticano.",
       "info": [
         {
-          "k": "Da vedere",
-          "v": "City Chambers, Gallery of Modern Art, Corinthian Club, Merchant Square"
+          "k": "Tipo",
+          "v": "Piazza & quartiere"
         },
         {
-          "k": "Come arrivare",
-          "v": "Stazione di Queen St e autostazione di Buchanan St, poi a piedi"
+          "k": "Dove",
+          "v": "Centro"
         },
         {
-          "k": "Zona",
-          "v": "Centro di Glasgow"
+          "k": "Ingresso",
+          "v": "Gratis (City Chambers in tour)"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Le City Chambers"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera per i locali"
         }
       ],
       "meta": "Centro · piazza"
     },
     "gl-6": {
       "summary": "Whisky bar d'altri tempi con pavimenti cigolanti e tavoli in ferro battuto, tappa fissa dei pub crawl.",
-      "descrizione": "The Pot Still è uno storico whisky bar dal fascino d'altri tempi, con pavimenti cigolanti e tavoli in ferro battuto. È una tappa immancabile nei giri dei pub di Glasgow, accanto a istituzioni come l'Horseshoe Bar. Il locale offre una vasta scelta di single malt in un'atmosfera tradizionale e accogliente.",
-      "curiosita": "Figura tra i pub tradizionali da non saltare in un giro per il centro, insieme al mitico Horseshoe Bar.",
+      "descrizione": "The Pot Still è uno storico whisky bar dal fascino d'altri tempi, con pavimenti cigolanti, legni scuri e una parete tappezzata da centinaia di bottiglie. È una tappa immancabile nei giri dei pub di Glasgow, dove farsi consigliare un dram al bancone dallo staff competente. Accompagna i whisky con pie casalinghe e zuppe, in un'atmosfera schietta e accogliente. Gestito dalla stessa famiglia, è un'istituzione cittadina.",
+      "curiosita": "La selezione supera spesso le 700 etichette di single malt, tra le più ampie di tutta la Scozia.",
       "info": [
         {
-          "k": "Da vedere",
-          "v": "Ampia selezione di whisky single malt"
+          "k": "Tipo",
+          "v": "Whisky bar"
         },
         {
-          "k": "Zona",
-          "v": "Centro di Glasgow, zona Sauchiehall St"
+          "k": "Dove",
+          "v": "Hope Street, centro"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Dram da economici a rari"
+        },
+        {
+          "k": "Da ordinare",
+          "v": "Un single malt + una pie"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera"
         }
       ],
       "meta": "Whisky bar"
     },
     "gl-7": {
       "summary": "Ristorante storico di Ashton Lane, dal 1971 paladino dei prodotti agricoli scozzesi.",
-      "descrizione": "In attività dal 1971, l'Ubiquitous Chip è stato il primo ristorante a promuovere i prodotti agricoli scozzesi ed è un'istituzione del West End. Si trova nella fotogenica Ashton Lane, vicolo acciottolato pieno di pub e ristoranti. Una viuzza laterale riconduce direttamente a Byres Road.",
-      "curiosita": "È considerato un pioniere della cucina del territorio scozzese, una tradizione che porta avanti da oltre mezzo secolo.",
+      "descrizione": "In attività dal 1971, l'Ubiquitous Chip è stato il primo ristorante a valorizzare i prodotti agricoli scozzesi ed è ormai un'istituzione del West End. Si trova nella fotogenica Ashton Lane, in un cortile-giardino coperto da una vetrata e ricco di verde. La cucina propone piatti scozzesi moderni, dal cervo alle ostriche, mentre al piano superiore il brasserie e il bar sono più informali ed economici. Una viuzza laterale riconduce direttamente a Byres Road.",
+      "curiosita": "Il nome scherzoso, 'l'onnipresente patatina', nacque per ironia: il locale voleva proprio allontanarsi dal cliché del fish & chips per celebrare l'alta cucina scozzese.",
       "info": [
         {
-          "k": "Quando",
-          "v": "12-24, ven-sab fino all'1; fascia alta (£££)"
+          "k": "Tipo",
+          "v": "Ristorante scozzese"
         },
         {
-          "k": "Zona",
-          "v": "Ashton Lane, West End di Glasgow"
+          "k": "Dove",
+          "v": "Ashton Lane, West End"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Brasserie £ · ristorante ££"
+        },
+        {
+          "k": "Da ordinare",
+          "v": "Cervo o ostriche"
+        },
+        {
+          "k": "Quando",
+          "v": "Pranzo più abbordabile"
         }
       ],
       "meta": "Ristorante · West End"
     },
     "gl-8": {
       "summary": "Il locale di musica dal vivo più leggendario di Glasgow: qui nel 1993 furono scoperti gli Oasis.",
-      "descrizione": "Aperto nel 1990 al 272a di St Vincent Street, King Tut's Wah Wah Hut è uno dei templi della musica dal vivo britannica: un club intimo da poche centinaia di posti con concerti quasi ogni sera. Sul suo palco sono passati, agli esordi, Oasis, Manic Street Preachers, Snow Patrol, Radiohead e Florence + the Machine. Sotto c'è un bar accogliente, sopra la sala concerti raggiunta da una ripida scala.",
-      "curiosita": "Il 31 maggio 1993 Alan McGee della Creation Records entrò per caso a vedere un'altra band e finì per mettere sotto contratto gli Oasis: una serata entrata nella storia del rock.",
+      "descrizione": "Aperto nel 1990 su St Vincent Street, King Tut's Wah Wah Hut è uno dei templi della musica dal vivo britannica: un club intimo da poche centinaia di posti con concerti quasi ogni sera. Sul suo palco sono passati agli esordi Oasis, Manic Street Preachers, Snow Patrol, Radiohead e Florence + the Machine. Sotto c'è un bar accogliente, sopra la sala concerti raggiunta da una ripida scala con i nomi delle band dipinti sui gradini. Controlla il cartellone: c'è quasi sempre qualcosa.",
+      "curiosita": "Fu qui, nel maggio 1993, che Alan McGee della Creation Records vide per caso gli Oasis e li mise sotto contratto: una delle scoperte più celebri della storia del rock britannico.",
       "info": [
         {
-          "k": "Dove",
-          "v": "272a St Vincent Street, Glasgow G2 5RL"
+          "k": "Tipo",
+          "v": "Live music club"
         },
         {
-          "k": "Cosa",
-          "v": "Sala concerti + bar · cartellone quasi ogni sera"
+          "k": "Dove",
+          "v": "St Vincent Street"
+        },
+        {
+          "k": "Prezzo",
+          "v": "Biglietti per concerto"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Il cartellone serale"
+        },
+        {
+          "k": "Quando",
+          "v": "Sera, quasi ogni giorno"
         }
       ],
       "meta": "Live music"
     },
     "gl-9": {
       "summary": "Leggendaria sala da ballo anni '30 con insegna al neon, oggi tempio del live rock, sopra lo storico mercato delle pulci.",
-      "descrizione": "Inaugurata nel 1934, la Barrowland Ballroom è una delle sale concerti più amate del Regno Unito, con il pavimento elastico e la celebre insegna luminosa. Al piano terra si estende The Barras, lo storico mercato di Glasgow attivo dal 1921, aperto nei weekend. Bancarelle di antiquariato, vinili, cibo di strada e curiosità riempiono i capannoni del quartiere Calton. È il cuore popolare e musicale dell'East End.",
-      "curiosita": "Molti artisti considerano un concerto alla Barrowland una tappa imprescindibile: l'acustica e il pubblico sono diventati leggendari.",
+      "descrizione": "Inaugurata nel 1934, la Barrowland Ballroom è una delle sale concerti più amate del Regno Unito, con il celebre pavimento elastico e una scenografica insegna luminosa al neon. Al piano terra si estende The Barras, lo storico mercato di Glasgow attivo dal 1921 e aperto nei weekend, tra bancarelle di antiquariato, vinili, cibo di strada e curiosità. È il cuore popolare e musicale del quartiere Calton, autenticamente glaswegiano. Conviene controllare il calendario dei concerti e l'apertura del mercato.",
+      "curiosita": "Molti musicisti giurano che la Barrowland abbia l'acustica e l'atmosfera migliori del Paese, complice il pavimento a molle pensato in origine per il ballo liscio.",
       "info": [
         {
-          "k": "Mercato",
-          "v": "Sab-Dom 10-16"
+          "k": "Tipo",
+          "v": "Sala concerti & mercato"
         },
         {
-          "k": "Concerti",
-          "v": "controlla calendario serale"
+          "k": "Dove",
+          "v": "Calton, est"
         },
         {
-          "k": "Quartiere",
-          "v": "Calton, Gallowgate"
+          "k": "Ingresso",
+          "v": "Mercato gratis · concerti a pagamento"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "L'insegna al neon"
+        },
+        {
+          "k": "Quando",
+          "v": "Mercato nel weekend"
         }
       ],
       "meta": "Live & mercato"
     },
     "gl-10": {
       "summary": "Museo interattivo sulla riva del Clyde con planetario, cinema IMAX e centinaia di exhibit per tutte le età.",
-      "descrizione": "Affacciato sul fiume Clyde a Pacific Quay, il Glasgow Science Centre è un'astronave argentata piena di exhibit interattivi su tre piani. Ospita il planetario più grande della Scozia e un cinema IMAX. È ideale per famiglie ma diverte anche gli adulti curiosi. All'esterno svetta la Glasgow Tower, l'unica torre al mondo capace di ruotare di 360 gradi.",
-      "curiosita": "La Glasgow Tower, alta 127 metri, è la struttura più alta interamente girevole al mondo.",
+      "descrizione": "Affacciato sul fiume Clyde a Pacific Quay, il Glasgow Science Centre è un'astronave argentata piena di exhibit interattivi distribuiti su tre piani. Ospita il planetario più grande della Scozia e un cinema IMAX, ed è pensato per le famiglie ma diverte anche gli adulti curiosi. All'esterno svetta la Glasgow Tower, l'unica torre al mondo capace di ruotare di 360 gradi. È a pagamento, con biglietti combinati per torre, planetario e IMAX.",
+      "curiosita": "Alta 127 metri, la Glasgow Tower detiene il Guinness come l'unica struttura al mondo in grado di ruotare completamente su sé stessa con il vento.",
       "info": [
         {
-          "k": "Biglietto",
-          "v": "a pagamento, meglio online"
+          "k": "Tipo",
+          "v": "Scienza interattiva"
         },
         {
-          "k": "Extra",
-          "v": "IMAX e planetario a parte"
+          "k": "Dove",
+          "v": "Pacific Quay, Clyde"
         },
         {
-          "k": "Bambini",
-          "v": "<3 anni gratis"
+          "k": "Ingresso",
+          "v": "A pagamento"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Planetario e Glasgow Tower"
+        },
+        {
+          "k": "Quando",
+          "v": "Ideale con bambini"
         }
       ],
       "meta": "Famiglie · a pagamento"
     },
     "gl-11": {
       "summary": "Arte contemporanea gratuita in un palazzo neoclassico, riconoscibile dalla statua del Duca col cono in testa.",
-      "descrizione": "La GoMA è la galleria d'arte moderna più visitata della Scozia, ospitata in un elegante edificio neoclassico in Royal Exchange Square. Quattro spazi espositivi propongono mostre temporanee di artisti contemporanei, oltre a una libreria e un caffè. L'ingresso è gratuito. Davanti all'entrata troneggia la statua equestre del Duca di Wellington, da decenni perennemente decorata con un cono stradale arancione.",
-      "curiosita": "Il cono sulla testa del Duca è diventato simbolo non ufficiale dell'umorismo irriverente di Glasgow.",
+      "descrizione": "La GoMA è la galleria d'arte moderna più visitata della Scozia, ospitata in un elegante edificio neoclassico in Royal Exchange Square, in pieno centro. Quattro spazi espositivi propongono mostre temporanee di artisti contemporanei, accanto a una libreria e a un caffè. L'ingresso è gratuito ed è una tappa veloce e piacevole tra una passeggiata e l'altra. Ma è ciò che sta fuori a renderla un'icona.",
+      "curiosita": "Davanti all'ingresso la statua equestre del Duca di Wellington porta da decenni un cono stradale in testa: il Comune ha rinunciato a rimuoverlo dopo le proteste dei cittadini, ed è diventato un simbolo dell'umorismo glaswegiano.",
       "info": [
         {
+          "k": "Tipo",
+          "v": "Arte moderna"
+        },
+        {
+          "k": "Dove",
+          "v": "Royal Exchange Square"
+        },
+        {
           "k": "Ingresso",
-          "v": "gratuito"
+          "v": "Gratis"
         },
         {
-          "k": "Giovedì",
-          "v": "aperto fino alle 20"
+          "k": "Da non perdere",
+          "v": "Il Duca col cono in testa"
         },
         {
-          "k": "Dom/Ven",
-          "v": "11-17"
+          "k": "Quando",
+          "v": "Tappa veloce in centro"
         }
       ],
       "meta": "Arte moderna · gratis"
     },
     "gl-12": {
       "summary": "Il museo pubblico più antico della Scozia, dentro lo spettacolare campus neogotico dell'Università di Glasgow.",
-      "descrizione": "Fondato nel 1807, l'Hunterian è il più antico museo pubblico della Scozia, custodito nel suggestivo edificio neogotico dell'Università di Glasgow. Le collezioni spaziano da reperti romani dell'Antonine Wall a fossili, monete, strumenti scientifici e meteoriti. Poco distante, la Hunterian Art Gallery ospita la Mackintosh House, ricostruzione fedele degli interni di Charles Rennie Mackintosh. L'ingresso al museo è gratuito.",
-      "curiosita": "Conserva strumenti e reperti legati a William Hunter e al chimico Joseph Lister, pioniere dell'antisettica.",
+      "descrizione": "Fondato nel 1807, l'Hunterian è il più antico museo pubblico della Scozia, custodito nel suggestivo edificio neogotico dell'Università di Glasgow che ricorda Hogwarts. Le collezioni spaziano da reperti romani dell'Antonine Wall a fossili, monete, strumenti scientifici e meteoriti. Poco distante, la Hunterian Art Gallery ospita la Mackintosh House, ricostruzione fedele degli interni di Charles Rennie Mackintosh e della moglie Margaret. L'ingresso è gratuito e il campus merita una passeggiata.",
+      "curiosita": "Il nucleo originario nacque dal lascito del medico e collezionista William Hunter, che donò all'università anche un'imponente raccolta anatomica.",
       "info": [
         {
+          "k": "Tipo",
+          "v": "Museo universitario"
+        },
+        {
+          "k": "Dove",
+          "v": "Università di Glasgow"
+        },
+        {
           "k": "Ingresso",
-          "v": "gratuito"
+          "v": "Gratis"
         },
         {
-          "k": "Chiuso",
-          "v": "lunedì"
+          "k": "Da non perdere",
+          "v": "La Mackintosh House"
         },
         {
-          "k": "Vicino",
-          "v": "Mackintosh House (a pagamento)"
+          "k": "Quando",
+          "v": "Di giorno"
         }
       ],
       "meta": "Museo · gratis"
     },
     "gl-13": {
       "summary": "Giardini vittoriani gratuiti con la spettacolare serra in ferro e vetro Kibble Palace, in cima a Byres Road.",
-      "descrizione": "In cima a Byres Road, i Botanic Gardens sono un'oasi verde molto amata dagli abitanti del West End. Il gioiello è la Kibble Palace, un'imponente serra circolare in ferro e vetro di epoca vittoriana, classificata di categoria A, che ospita felci arboree e statue di marmo. Le altre serre custodiscono orchidee, piante carnivore e specie tropicali. Giardini e serre sono gratuiti.",
-      "curiosita": "La Kibble Palace fu originariamente costruita come conservatorio privato sul Loch Long e poi trasferita qui nel 1873.",
+      "descrizione": "In cima a Byres Road, i Botanic Gardens sono un'oasi verde molto amata dagli abitanti del West End. Il gioiello è la Kibble Palace, un'imponente serra circolare in ferro e vetro di epoca vittoriana, classificata di categoria A, che custodisce felci arboree, piante delle terre temperate e statue di marmo. Le altre serre ospitano orchidee, piante carnivore e specie tropicali. Giardini e serre sono gratuiti e perfetti per una pausa.",
+      "curiosita": "La Kibble Palace fu costruita altrove come serra privata di un eccentrico ingegnere e poi smontata e trasportata via fiume fino a Glasgow nel 1873.",
       "info": [
         {
+          "k": "Tipo",
+          "v": "Giardino botanico"
+        },
+        {
+          "k": "Dove",
+          "v": "Great Western Road"
+        },
+        {
           "k": "Ingresso",
-          "v": "gratuito"
+          "v": "Gratis"
         },
         {
-          "k": "Serre",
-          "v": "10-18 (apr-set)"
+          "k": "Da non perdere",
+          "v": "La Kibble Palace"
         },
         {
-          "k": "Metro",
-          "v": "Hillhead, 7 min a piedi"
+          "k": "Quando",
+          "v": "Bel tempo"
         }
       ],
       "meta": "Giardini · gratis"
     },
     "gl-14": {
       "summary": "Casa progettata da Mackintosh nel 1901 e realizzata solo negli anni '90, immersa nel verde di Bellahouston Park.",
-      "descrizione": "Nel verde di Bellahouston Park sorge questa casa nata da un concorso di design vinto da Charles Rennie Mackintosh e Margaret Macdonald nel 1901, ma costruita solo negli anni '90 seguendo i loro disegni originali. Gli interni sublimano lo stile del movimento moderno scozzese, tra la Music Room e la Oval Room. C'è un caffè molto amato e i giardini sono gratuiti. La visita alla casa è a pagamento con audioguida.",
-      "curiosita": "Mackintosh non vide mai costruita questa casa: fu realizzata quasi un secolo dopo il suo progetto.",
+      "descrizione": "Nel verde di Bellahouston Park sorge questa casa nata da un concorso di design vinto da Charles Rennie Mackintosh e Margaret Macdonald nel 1901, ma costruita solo negli anni '90 seguendo i loro disegni originali. Gli interni sublimano lo stile del modernismo scozzese, tra la luminosa Music Room e la raffinata Oval Room. C'è un caffè molto amato e i giardini sono gratuiti, mentre la visita alla casa è a pagamento e a orari limitati. È meno turistica e molto suggestiva.",
+      "curiosita": "Mackintosh disegnò la casa per un concorso tedesco ma non vinse il primo premio per un cavillo formale: la consegna era incompleta. Fu realizzata quasi un secolo dopo.",
       "info": [
         {
-          "k": "Casa",
-          "v": "~£4,50 con audioguida"
+          "k": "Tipo",
+          "v": "Casa-museo Mackintosh"
         },
         {
-          "k": "Giardini",
-          "v": "gratuiti"
+          "k": "Dove",
+          "v": "Bellahouston Park"
         },
         {
-          "k": "Caffè",
-          "v": "10-17 tutti i giorni"
+          "k": "Ingresso",
+          "v": "Giardini gratis · casa a pagamento"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Music Room e Oval Room"
+        },
+        {
+          "k": "Quando",
+          "v": "Verificare gli orari"
         }
       ],
       "meta": "Mackintosh · parco"
     },
     "gl-15": {
       "summary": "Ex magazzini industriali sul Clyde diventati hub di musica live, club, arte urbana e street food.",
-      "descrizione": "SWG3 è uno spazio multifunzione ricavato da magazzini industriali vicino a Finnieston, oggi tra i poli creativi più vivaci della città. Ospita concerti, serate club, mostre, mercatini e installazioni di arte urbana negli Yard. Ogni primavera accoglie lo Yardworks, il maggior festival di street art e murales della Scozia. Il calendario varia molto: conviene controllare gli eventi in programma.",
-      "curiosita": "Lo Yardworks Festival nel 2026 festeggia il suo decimo anniversario, trasformando l'intero complesso in una tela vivente.",
+      "descrizione": "SWG3 è uno spazio multifunzione ricavato da ex magazzini industriali vicino a Finnieston, oggi tra i poli creativi più vivaci della città. Ospita concerti, serate club, mostre, mercatini e installazioni di arte urbana nei cortili chiamati Yard. Ogni primavera accoglie lo Yardworks, il maggior festival di street art e murales della Scozia. Il calendario è molto vario: conviene controllare gli eventi in programma prima di andare.",
+      "curiosita": "Per riscaldare gli ambienti SWG3 ha sperimentato il 'Bodyheat', un sistema che cattura il calore corporeo dei clubber in pista e lo riutilizza come energia.",
       "info": [
         {
-          "k": "Orari",
-          "v": "variano per evento"
+          "k": "Tipo",
+          "v": "Spazio eventi & arte"
         },
         {
-          "k": "Eventi",
-          "v": "concerti, club, festival"
+          "k": "Dove",
+          "v": "Finnieston"
         },
         {
-          "k": "Zona",
-          "v": "vicino a Finnieston"
+          "k": "Ingresso",
+          "v": "Secondo l'evento"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Street art negli Yard"
+        },
+        {
+          "k": "Quando",
+          "v": "Controllare il calendario"
         }
       ],
       "meta": "Eventi & arte"
     },
     "gl-16": {
       "summary": "Leggendario club underground in un seminterrato di Jamaica Street: il dancefloor più mitico della Scozia.",
-      "descrizione": "Aperto nel 1987 al numero 22 di Jamaica Street, il Sub Club è il più longevo club di musica dance underground al mondo. Il suo seminterrato intimo, da circa 410 persone, ha cresciuto generazioni di clubber e DJ. La serata Subculture di Harri & Domenic va in scena ogni sabato dal 1994. La pista è dotata di uno dei più grandi impianti bodysonic del Regno Unito.",
-      "curiosita": "Subculture è considerata la serata house e techno settimanale più longeva del pianeta.",
+      "descrizione": "Aperto nel 1987 al numero 22 di Jamaica Street, il Sub Club è il più longevo club di musica dance underground al mondo ancora in attività nella stessa sede. Il suo seminterrato intimo, da circa 410 persone, ha cresciuto generazioni di clubber e DJ. La serata Subculture di Harri & Domenic va in scena ogni sabato dal 1994, un punto di riferimento per la house. La pista è dotata di uno dei più grandi impianti bodysonic del Regno Unito.",
+      "curiosita": "Dopo un grave incendio in un edificio adiacente nel 1999, il club restò chiuso a lungo ma riaprì grazie alla fedeltà del suo pubblico, diventando un simbolo della scena cittadina.",
       "info": [
         {
-          "k": "Apertura",
-          "v": "serale, controlla eventi"
+          "k": "Tipo",
+          "v": "Club underground"
         },
         {
-          "k": "Storico",
-          "v": "dal 1987"
+          "k": "Dove",
+          "v": "Jamaica Street"
         },
         {
-          "k": "Capienza",
-          "v": "~410 persone"
+          "k": "Ingresso",
+          "v": "A pagamento, la sera"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Subculture il sabato"
+        },
+        {
+          "k": "Quando",
+          "v": "Notte nel weekend"
         }
       ],
       "meta": "Club · notte"
     },
     "gl-17": {
       "summary": "Chiesa sconsacrata in cima a Byres Road trasformata in bar, sala concerti e teatro con soffitto dipinto.",
-      "descrizione": "In cima a Byres Road, Òran Mór occupa una ex chiesa vittoriana convertita in un vivace centro di arti ed eventi. Comprende un bar, ristoranti e un auditorium con un magnifico soffitto a murale dipinto dall'artista e scrittore Alasdair Gray. È celebre per 'A Play, A Pie and A Pint', l'iniziativa teatrale diurna più longeva della Scozia: uno spettacolo di un'ora con tortino caldo e una pinta. Ospita anche concerti e serate.",
-      "curiosita": "Il soffitto a stelle dell'auditorium è opera di Alasdair Gray, autore del romanzo cult 'Lanark'.",
+      "descrizione": "In cima a Byres Road, Òran Mór occupa una ex chiesa vittoriana convertita in un vivace centro di arti ed eventi. Comprende un bar, ristoranti e un auditorium con un magnifico soffitto a murale dipinto dall'artista e scrittore Alasdair Gray. È celebre per 'A Play, A Pie and A Pint', la rassegna teatrale diurna più longeva della Scozia: uno spettacolo di un'ora accompagnato da un tortino caldo e una pinta. Ospita anche concerti e serate ceilidh.",
+      "curiosita": "Il nome in gaelico significa 'grande melodia' o 'grande inno'; il murale di Alasdair Gray sul soffitto è una delle opere d'arte pubblica più ambiziose di Scozia.",
       "info": [
         {
-          "k": "Teatro",
-          "v": "'A Play, A Pie and A Pint' a pranzo"
+          "k": "Tipo",
+          "v": "Arti, teatro & bar"
         },
         {
-          "k": "Eventi",
-          "v": "concerti e club serali"
+          "k": "Dove",
+          "v": "Byres Road, West End"
         },
         {
-          "k": "Posizione",
-          "v": "cima di Byres Road"
+          "k": "Ingresso",
+          "v": "Bar gratis · spettacoli a pagamento"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "A Play, A Pie and A Pint"
+        },
+        {
+          "k": "Quando",
+          "v": "Pranzo per il teatro"
         }
       ],
       "meta": "Arti & eventi"
     },
     "gl-18": {
       "summary": "Pub vittoriano di categoria A con uno dei bancone continui più lunghi del Regno Unito, in un vicolo del centro.",
-      "descrizione": "Nascosto nel vicolo di Drury Street, lo Horse Shoe è uno dei pub più amati e autentici di Glasgow, attivo dal XIX secolo. L'edificio, classificato di categoria A, conserva interni vittoriani originali e un imponente bancone a ferro di cavallo lungo oltre 30 metri, tra i più lunghi del Regno Unito. Pinte economiche, atmosfera schietta e celebri serate di karaoke al piano superiore. Un'istituzione cittadina.",
-      "curiosita": "Fu qui che nacque l'idea della band Travis: il batterista lavorava dietro al bancone.",
+      "descrizione": "Nascosto nel vicolo di Drury Street, lo Horse Shoe è uno dei pub più amati e autentici di Glasgow, in attività dal XIX secolo. L'edificio, classificato di categoria A, conserva interni vittoriani originali e un imponente bancone continuo a ferro di cavallo, tra i più lunghi del Regno Unito. Offre pinte economiche, pranzi sostanziosi a poco prezzo e celebri serate di karaoke al piano superiore. È un'istituzione genuina, perfetta per una sosta in centro.",
+      "curiosita": "Il bancone a ferro di cavallo, lungo oltre 30 metri, è spesso citato tra i più lunghi banconi continui d'Europa.",
       "info": [
         {
-          "k": "Bancone",
-          "v": "oltre 30 m, a ferro di cavallo"
+          "k": "Tipo",
+          "v": "Pub vittoriano"
         },
         {
-          "k": "Edificio",
-          "v": "categoria A dal 1988"
+          "k": "Dove",
+          "v": "Drury Street, centro"
         },
         {
-          "k": "Sopra",
-          "v": "karaoke al piano superiore"
+          "k": "Prezzo",
+          "v": "£ economico"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Il bancone e il karaoke"
+        },
+        {
+          "k": "Quando",
+          "v": "Pranzo o sera"
         }
       ],
       "meta": "Pub storico"
     },
     "gl-19": {
       "summary": "Caffè-bar vegano e venue live nascosto in King's Court, che condivide il tetto con un mitico negozio di vinili.",
-      "descrizione": "Vicino al Merchant City, Mono è un premiato caffè-bar vegano e spazio per concerti aperto dal 2002. Propone cibo casalingo senza prodotti animali, birre locali e bibite di produzione propria in un ambiente rilassato. Sotto lo stesso tetto c'è Monorail Music, fieramente indipendente negozio di dischi devoto al vinile. Spesso ospita serate live, letture e mercatini di dischi.",
-      "curiosita": "È diventato un punto di ritrovo della scena musicale indipendente di Glasgow grazie all'accoppiata caffè + negozio di vinili.",
+      "descrizione": "Vicino al Merchant City, Mono è un premiato caffè-bar vegano e spazio per concerti aperto dal 2002. Propone cibo casalingo interamente vegetale, birre locali e bibite di produzione propria in un ambiente rilassato e informale. Sotto lo stesso tetto c'è Monorail Music, fieramente indipendente negozio di dischi dedicato al vinile. Spesso ospita concerti, letture e mercatini di dischi, ed è un punto di ritrovo della scena alternativa.",
+      "curiosita": "Monorail Music è gestito da Stephen McRobbie della band cult The Pastels: è uno dei negozi di dischi più rispettati del Regno Unito.",
       "info": [
         {
-          "k": "Cucina",
-          "v": "100% vegana"
+          "k": "Tipo",
+          "v": "Vegano, dischi & live"
         },
         {
-          "k": "Dischi",
-          "v": "Monorail Music nello stesso spazio"
+          "k": "Dove",
+          "v": "King's Court, Merchant City"
         },
         {
-          "k": "Ven-Sab",
-          "v": "aperto fino all'1"
+          "k": "Prezzo",
+          "v": "£ economico"
+        },
+        {
+          "k": "Da non perdere",
+          "v": "Monorail Music"
+        },
+        {
+          "k": "Quando",
+          "v": "Pranzo o serate live"
         }
       ],
       "meta": "Vegano & dischi"
