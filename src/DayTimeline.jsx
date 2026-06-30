@@ -121,14 +121,14 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
               {e.lead && e.lead.min > 0 && (
                 <div style={{ position: "absolute", top: yOf(start - e.lead.min), left: leftPx, right: 4, height: Math.max((e.lead.min / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
                   <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.lead.icon} {e.lead.primary} · {fmt(start - e.lead.min)}</div>
-                  {e.lead.sub && (e.lead.min / 60) * HOUR_PX > 30 && <div style={{ fontSize: 9.5, fontWeight: 700, color: "#7a7560", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.lead.sub}</div>}
+                  {e.lead.sub && (e.lead.min / 60) * HOUR_PX > 22 && <div style={{ fontSize: 9.5, fontWeight: 700, color: "#7a7560", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.lead.sub}</div>}
                 </div>
               )}
               {/* outgoing transfer leg (Ritorno to Edinburgh on the last gita) */}
               {e.tail && e.tail.min > 0 && (
                 <div style={{ position: "absolute", top: yOf(start + dur), left: leftPx, right: 4, height: Math.max((e.tail.min / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
                   <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.tail.icon} {e.tail.primary} · {fmt(start + dur)}</div>
-                  {e.tail.sub && (e.tail.min / 60) * HOUR_PX > 30 && <div style={{ fontSize: 9.5, fontWeight: 700, color: "#7a7560", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.tail.sub}</div>}
+                  {e.tail.sub && (e.tail.min / 60) * HOUR_PX > 22 && <div style={{ fontSize: 9.5, fontWeight: 700, color: "#7a7560", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.tail.sub}</div>}
                 </div>
               )}
               <div

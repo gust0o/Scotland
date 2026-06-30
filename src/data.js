@@ -341,6 +341,10 @@ export function emptyScaffold() {
     pin: "0000",
     tel: "+00 000 000 0000",
     maps: "https://maps.google.com/…",
+    // Coordinate dell'alloggio (facoltative): servono solo per stimare i tempi/
+    // mezzi/costo da e verso l'hotel — utile se è fuori dal centro. Incolla
+    // "lat,lng" (es. "55.9321,-3.1042") o il link Maps con le coordinate.
+    coord: "lat,lng",
     link: "https://… (prenotazione)",
     // Codici di accesso forniti dall'hotel (portone, stanza, cassetta chiavi…).
     // Possono essere più d'uno: aggiungi/togli oggetti { tipo, codice } liberamente.

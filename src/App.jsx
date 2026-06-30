@@ -15,7 +15,7 @@ import { LogoMark, PlaneIcon, BedIcon, CutleryIcon, TimelineIcon } from "./icons
 import { BarIcon } from "./barIcons.jsx";
 import VenueDetail, { SummaryRow } from "./VenueDetail.jsx";
 import DayTimeline from "./DayTimeline.jsx";
-import { coordForEvent, travelLeg } from "./geo.js";
+import { coordForEvent, travelLeg, parseCoord, HUB } from "./geo.js";
 const MONO = "'Spline Sans Mono',monospace";
 const MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
 // Primary destinations for the fixed bottom tab bar (ids + scroll-spy order).
@@ -1772,45 +1772,70 @@ export default class App extends React.Component {
         };
       });
 
-      // Transfer legs — how you actually get from one activity to the next.
-      // Instead of a fixed round trip to Edinburgh per gita, the day is a chain:
-      // the first gita has an "Andata" from Edinburgh, each following gita starts
-      // from the PREVIOUS gita's town (estimated by distance + mode), and only the
-      // last gita has a "Ritorno". Consecutive city venues get a short walk/bus
-      // chip. All times are estimates (real timetables are tighter/looser).
+      // Transfer legs — how you actually get from one activity to the next, with
+      // an estimated time, transport mode AND cost (£) per leg.
+      //   · gite are CHAINED: first gita = "Andata" from Edinburgh, each next gita
+      //     departs from the PREVIOUS gita's town, only the last gita "Ritorna".
+      //   · city venues get the recommended mode (walk/bus/Uber) for the hop, with
+      //     a faster paid alternative shown alongside.
+      //   · on city days the HOTEL (if its coord is known) is the morning origin
+      //     and the evening destination — handy when it's out of the centre.
+      // The recommended pick is the cheap-but-sensible option; the app could let
+      // you switch. Everything is an estimate; real fares/timetables vary.
       const seq = events.slice().sort((a, b) => a.startMin - b.startMin);
       const isCity = (e) => e.kind === "sight" || e.kind === "eat" || e.kind === "london";
-      const legBlock = (leg, fromName, fallbackLabel) => {
-        if (!leg) return { min: 0, icon: "🚆", primary: fallbackLabel || "", sub: "" };
-        const alt = leg.alt ? " · o " + leg.alt.icon + " " + leg.alt.mode + " ~" + leg.alt.min + "′" : "";
+      const hotelCoord = parseCoord(
+        ((this.effReserved() || {}).alloggi || [])[dd.cityIdx] &&
+          (((this.effReserved() || {}).alloggi || [])[dd.cityIdx].coord),
+      );
+      // Format one travelLeg result into a timeline block: recommended mode as the
+      // headline, the cheapest-faster paid option as the alternative.
+      const fmtLeg = (leg, fromName, prefix) => {
+        if (!leg || !leg.pick) return null;
+        const p = leg.pick;
+        const alt = leg.options.find((o) => o !== p && (o.mode === "Uber" || o.mode === "Taxi"))
+          || leg.options.find((o) => o !== p);
+        const altTxt = alt ? " · o " + alt.icon + " " + alt.mode + " " + alt.min + "′ " + alt.costLabel : "";
         return {
-          min: leg.min, icon: leg.icon,
-          primary: leg.mode + (fromName ? " da " + fromName : ""),
-          sub: "~" + leg.min + "′" + (leg.est ? " stima" : "") + alt,
+          min: p.min, icon: p.icon,
+          primary: (prefix || "") + p.mode + (fromName ? " da " + fromName : ""),
+          sub: "~" + p.min + "′ · " + p.costLabel + altTxt + " · stima",
         };
       };
-      // city → city: short transfer chip (only when the previous stop is also in town)
+      // city → city hop (only when the previous stop is also in town)
       for (let i = 1; i < seq.length; i++) {
         const cur = seq[i], prev = seq[i - 1];
         if (isCity(cur) && isCity(prev)) {
-          const leg = travelLeg(prev.coord, cur.coord);
-          if (leg && leg.min >= 4) cur.lead = legBlock(leg, prev.name);
+          const blk = fmtLeg(travelLeg(prev.coord, cur.coord), prev.name);
+          if (blk && blk.min >= 4) cur.lead = blk;
         }
       }
-      // gite: Andata (first) → chained legs → Ritorno (last)
+      // hotel bookends on a pure Edinburgh day (role "edi"): leave from / return to
+      const cityRun = seq.filter(isCity);
+      if (hotelCoord && dd.role === "edi" && cityRun.length) {
+        const first = cityRun[0], last = cityRun[cityRun.length - 1];
+        if (!first.lead) first.lead = fmtLeg(travelLeg(hotelCoord, first.coord), "hotel");
+        const back = travelLeg(last.coord, hotelCoord);
+        if (back && back.pick) last.tail = { min: back.pick.min, icon: back.pick.icon, primary: "All'hotel · " + back.pick.mode, sub: "~" + back.pick.min + "′ · " + back.pick.costLabel + " · stima" };
+      }
+      // gite: Andata (first) → chained legs → Ritorno (last). Andata/Ritorno keep
+      // the curated train time; an Uber is noted only when it stays cheap (≤£20).
       const tripSeq = seq.filter((e) => e.kind === "trip");
+      const hubLeg = (t) => travelLeg(HUB.coord, t.coord);
+      const uberNote = (t) => {
+        const u = (hubLeg(t) || { options: [] }).options.find((o) => o.mode === "Uber");
+        return u ? " · o 🚕 Uber " + u.costLabel : "";
+      };
       tripSeq.forEach((t, i) => {
         if (i === 0) {
-          t.lead = { min: t.train, icon: "🚆", primary: "Andata da Edimburgo", sub: "~" + t.train + "′" };
+          t.lead = { min: t.train, icon: "🚆", primary: "Andata da Edimburgo", sub: "~" + t.train + "′" + uberNote(t) };
         } else {
           const prev = tripSeq[i - 1];
-          const leg = travelLeg(prev.coord, t.coord);
-          t.lead = leg
-            ? legBlock(leg, prev.name, "↪ ")
-            : { min: t.train, icon: "🚆", primary: "da " + prev.name, sub: "~" + t.train + "′ stima" };
+          t.lead = fmtLeg(travelLeg(prev.coord, t.coord), prev.name, "↪ ")
+            || { min: t.train, icon: "🚆", primary: "da " + prev.name, sub: "~" + t.train + "′ stima" };
         }
         if (i === tripSeq.length - 1) {
-          t.tail = { min: t.train, icon: "🚆", primary: "Ritorno a Edimburgo", sub: "~" + t.train + "′" };
+          t.tail = { min: t.train, icon: "🚆", primary: "Ritorno a Edimburgo", sub: "~" + t.train + "′" + uberNote(t) };
         }
       });
 
@@ -2296,7 +2321,7 @@ export default class App extends React.Component {
                     {d.multiTripWarn && (
                       <div style={{ display: "flex", gap: 8, background: "#FFF3CC", border: "1px solid #E9D08A", borderRadius: 10, padding: "8px 11px", margin: "6px 0 2px", fontSize: 11.5, fontWeight: 600, color: "#6a5410", lineHeight: 1.45 }}>
                         <span style={{ fontWeight: 900 }}>↪</span>
-                        <span>Più gite in giornata: l'app le <strong>concatena</strong> — Andata da Edimburgo solo alla prima, poi lo spostamento parte dalla gita precedente, e Ritorno solo dall'ultima. Tempi e mezzo (a piedi / bus / treno) sono <strong>stime</strong>: verifica gli orari reali e aggiusta in « Modifica orari ».</span>
+                        <span>Più gite in giornata: l'app le <strong>concatena</strong> — Andata da Edimburgo solo alla prima, poi lo spostamento parte dalla gita precedente, e Ritorno solo dall'ultima. Per ogni tratta stima tempo, mezzo (a piedi / bus / treno, Uber se resta sotto £20) e costo. Sono <strong>stime</strong>: verifica orari e tariffe reali e aggiusta in « Modifica orari ».</span>
                       </div>
                     )}
                     <DayTimeline
