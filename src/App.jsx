@@ -308,7 +308,7 @@ function Checklist({ items, onToggle, onAdd, onEdit, onRemove }) {
 
 // First-run guide (shown in "Oggi" until a partenza date is loaded): explains how the
 // app works and lets the user download the config JSON to fill in and re-import.
-function Onboarding({ onDownload, onCopy, msg }) {
+function Onboarding({ onDownload, onCopy, msg, jsonText, onJsonInput, onSave, onFile, onPaste, feedback }) {
   const step = (n, title, body, action, last) => (
     <div style={{ display: "flex", gap: 12 }}>
       <div style={{ flex: "none", display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -354,9 +354,19 @@ function Onboarding({ onDownload, onCopy, msg }) {
               <div style={{ fontSize: 11.5, color: "#6B6450", fontWeight: 600, lineHeight: 1.45, marginTop: 6 }}>Apri il file e sostituisci i segnaposto d'esempio con i tuoi dati.</div>
             </div>
           </div>)}
-        {step(2, "Importa e parti",
-          <>In <strong style={{ color: "#17142C" }}>Impostazioni</strong> usa « Importa file » (o incolla il JSON) e premi « Salva dati ». Si attivano conto alla rovescia, vista « Oggi », meteo e programma.</>,
-          <a href="#sSet" style={btn("rgba(14,21,66,.09)", "#0E1542")}>Apri Impostazioni →</a>,
+        {step(2, "Carica e parti",
+          <>Hai il JSON compilato? Caricalo qui — si attivano conto alla rovescia, « Oggi », meteo e programma.</>,
+          <div style={{ display: "grid", gap: 9 }}>
+            <div style={{ display: "flex", gap: 9, flexWrap: "wrap" }}>
+              <label style={{ ...btn("#14C08C", "#fff"), cursor: "pointer" }}>📁 Carica file
+                <input type="file" accept=".json,application/json,text/json,text/plain,application/octet-stream" onChange={onFile} style={{ display: "none" }} />
+              </label>
+              <button onClick={onPaste} style={btn("rgba(14,21,66,.09)", "#0E1542")}>📋 Incolla</button>
+            </div>
+            <textarea value={jsonText || ""} onChange={onJsonInput} placeholder="…oppure incolla qui il JSON compilato" style={{ width: "100%", minHeight: 92, fontFamily: "ui-monospace, Menlo, monospace", fontSize: 11.5, color: "#17142C", background: "#fff", border: "1.5px solid #E1D7BF", borderRadius: 12, padding: 10, resize: "vertical", lineHeight: 1.5, boxSizing: "border-box" }} />
+            <button onClick={onSave} style={{ ...btn("#FFD23F", "#0E1542"), display: "block", width: "100%", textAlign: "center" }}>Salva dati e parti</button>
+            {feedback && <div style={{ fontSize: 12, fontWeight: 800, color: feedback.ok ? "#0E3A2A" : "#fff", background: feedback.ok ? "#9BE8C8" : "#E6482A", padding: "9px 11px", borderRadius: 10, lineHeight: 1.45 }}>{feedback.msg}</div>}
+          </div>,
           true)}
         {msg && <div style={{ marginTop: 14, fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#FFE9A8", padding: "10px 12px", borderRadius: 10 }}>{msg}</div>}
       </div>
@@ -941,8 +951,10 @@ export default class App extends React.Component {
     const r = this.effReserved() || emptyScaffold();
     this.setState({ jsonText: JSON.stringify(r, null, 2), copyMsg: "" });
   };
-  saveReserved = () => {
-    const t = (this.state.jsonText || "").trim();
+  // Import reserved-data JSON (or a full backup) from arbitrary text — shared by the
+  // paste box, the "Salva dati" button, the file picker and the clipboard button.
+  importReservedText = (raw) => {
+    const t = (raw || "").trim();
     if (!t) {
       this.setState({ feedback: { ok: false, msg: "Incolla prima il JSON nel riquadro." } });
       return;
@@ -981,6 +993,28 @@ export default class App extends React.Component {
     const msg = (isBackup ? "✓ Backup importato: " : "✓ Caricati: ") + clean.voli.length + " voli, " + clean.alloggi.length + " alloggi" + extra +
       (dateOk ? " · partenza " + clean.partenza : " · ⚠ aggiungi « partenza » (AAAA-MM-GG) per attivare le date");
     this.setState({ reserved: clean, feedback: { ok: true, msg } });
+  };
+  saveReserved = () => this.importReservedText(this.state.jsonText);
+  // Load a filled .json (reserved scaffold OR full backup) straight from a file.
+  importConfigFile = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => this.importReservedText(String(reader.result).replace(/^﻿/, ""));
+    reader.onerror = () => this.setState({ feedback: { ok: false, msg: "Impossibile leggere il file." } });
+    reader.readAsText(file);
+    e.target.value = "";
+  };
+  // One-tap paste from the clipboard, then import. Falls back to the box if blocked.
+  pasteFromClipboard = async () => {
+    try {
+      const t = navigator.clipboard && (await navigator.clipboard.readText());
+      if (!t || !t.trim()) { this.setState({ feedback: { ok: false, msg: "Appunti vuoti — incolla il JSON nel riquadro qui sotto." } }); return; }
+      this.setState({ jsonText: t });
+      this.importReservedText(t);
+    } catch (err) {
+      this.setState({ feedback: { ok: false, msg: "Incolla a mano nel riquadro qui sotto, poi « Salva dati »." } });
+    }
   };
   clearReserved = () => {
     try {
@@ -2024,7 +2058,9 @@ export default class App extends React.Component {
           {/* ===== OGGI / DINAMICO ===== */}
           <section id="sNow" style={{ ...sec, padding: "22px 16px", background: "#ECE3D0" }}>
             {noData ? (
-              <Onboarding onDownload={this.downloadEmpty} onCopy={this.copyEmpty} msg={this.state.copyMsg} />
+              <Onboarding onDownload={this.downloadEmpty} onCopy={this.copyEmpty} msg={this.state.copyMsg}
+                jsonText={this.state.jsonText} onJsonInput={this.onJsonInput} onSave={this.saveReserved}
+                onFile={this.importConfigFile} onPaste={this.pasteFromClipboard} feedback={this.state.feedback} />
             ) : (
               <>
                 <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 4 }}>
