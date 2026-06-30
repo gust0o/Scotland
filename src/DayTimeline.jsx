@@ -74,6 +74,36 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
     move: { bg: "#EDE7D7", bd: "#d8cdb2", txt: "#5b5644", accent: "#b9ac8d", icon: "" },
   };
 
+  // Render a transfer (incoming `lead` / outgoing `tail`). Anchored to the
+  // activity edge so it never overlaps the visit: `up` grows above the start,
+  // `down` grows below the end. When the leg is too short to fit text we draw a
+  // dashed connector with just the mode icon + minutes; with room we show the
+  // full block (mode, clock, and — taller still — cost + alternative).
+  const transferEl = (t, anchorMin, dir, leftPx, isDrag) => {
+    const pxH = (t.min / 60) * HOUR_PX;
+    const departMin = dir === "up" ? anchorMin - t.min : anchorMin;
+    const z = isDrag ? 9 : 1;
+    if (pxH < 24) {
+      const blockH = Math.max(pxH, 15);
+      const topPx = dir === "up" ? yOf(anchorMin) - blockH : yOf(anchorMin);
+      const chip = t.icon + " " + t.min + "′" + (t.costLabel ? " · " + t.costLabel : "");
+      return (
+        <div style={{ position: "absolute", top: topPx, left: leftPx, right: 4, height: blockH, display: "flex", alignItems: "center", zIndex: z }}>
+          <div style={{ flex: 1, borderTop: "2px dashed #c4b896" }} />
+          <span style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", background: "#FCFAF3", padding: "0 6px", fontSize: 10, fontWeight: 800, color: "#6b6450", whiteSpace: "nowrap" }}>{chip}</span>
+        </div>
+      );
+    }
+    const blockH = Math.max(pxH, 18);
+    const topPx = dir === "up" ? yOf(anchorMin) - blockH : yOf(anchorMin);
+    return (
+      <div style={{ position: "absolute", top: topPx, left: leftPx, right: 4, height: blockH, background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: z }}>
+        <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.icon} {t.primary} · {fmt(departMin)}</div>
+        {t.sub && blockH > 32 && <div style={{ fontSize: 9.5, fontWeight: 700, color: "#7a7560", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.sub}</div>}
+      </div>
+    );
+  };
+
   return (
     <div ref={scroller} style={{ position: "relative", marginTop: 6, maxHeight: "70vh", overflowY: "auto", overscrollBehavior: "contain", borderRadius: 12, border: "1px solid #E7DEC9", background: "#FCFAF3" }}>
       <div style={{ position: "relative", height }}>
@@ -117,20 +147,10 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
           const leftPx = GUTTER + (isVenueBlock ? 16 : 0);
           return (
             <React.Fragment key={e.idx}>
-              {/* incoming transfer leg (Andata, chained hop, or city walk/bus) */}
-              {e.lead && e.lead.min > 0 && (
-                <div style={{ position: "absolute", top: yOf(start - e.lead.min), left: leftPx, right: 4, height: Math.max((e.lead.min / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
-                  <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.lead.icon} {e.lead.primary} · {fmt(start - e.lead.min)}</div>
-                  {e.lead.sub && (e.lead.min / 60) * HOUR_PX > 22 && <div style={{ fontSize: 9.5, fontWeight: 700, color: "#7a7560", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.lead.sub}</div>}
-                </div>
-              )}
-              {/* outgoing transfer leg (Ritorno to Edinburgh on the last gita) */}
-              {e.tail && e.tail.min > 0 && (
-                <div style={{ position: "absolute", top: yOf(start + dur), left: leftPx, right: 4, height: Math.max((e.tail.min / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
-                  <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.tail.icon} {e.tail.primary} · {fmt(start + dur)}</div>
-                  {e.tail.sub && (e.tail.min / 60) * HOUR_PX > 22 && <div style={{ fontSize: 9.5, fontWeight: 700, color: "#7a7560", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.tail.sub}</div>}
-                </div>
-              )}
+              {/* incoming transfer (Andata, chained hop, hotel→, or city walk/bus) */}
+              {e.lead && e.lead.min > 0 && transferEl(e.lead, start, "up", leftPx, isDrag)}
+              {/* outgoing transfer (Ritorno to Edinburgh / back to the hotel) */}
+              {e.tail && e.tail.min > 0 && transferEl(e.tail, start + dur, "down", leftPx, isDrag)}
               <div
                 onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
                 style={{ position: "absolute", top, left: leftPx, right: 4, height: h, background: e.bg, border: isTripBlock ? `2px solid ${e.accent}` : "1px solid rgba(20,16,40,.05)", borderLeft: isVenueBlock ? `4px dashed ${e.accent}` : `5px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "none", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer" }}
