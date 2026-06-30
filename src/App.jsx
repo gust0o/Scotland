@@ -337,17 +337,24 @@ function Onboarding({ onDownload, onCopy, msg }) {
       <h2 style={{ fontWeight: 900, fontSize: 30, lineHeight: 1.02, margin: "0 0 3px", color: "#0E1542", letterSpacing: "-0.02em" }}>Benvenuto nel Taccuino</h2>
       <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#6B6450", lineHeight: 1.5 }}>La tua guida da campo <strong style={{ color: "#17142C" }}>offline</strong> per il viaggio Londra → Edimburgo. Funziona senza rete e i tuoi dati restano <strong style={{ color: "#17142C" }}>solo su questo dispositivo</strong>.</p>
 
-      {/* Config card — one clear action per step */}
+      {/* Config card — same file, two alternative methods (AI or by hand), then import */}
       <div style={{ background: "#F6F0E2", borderRadius: 18, padding: "16px 16px 18px", marginBottom: 12, border: "1.5px solid #E1D7BF" }}>
         <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase", color: "#9a7a14" }}>Configura il viaggio</div>
-        <div style={{ fontWeight: 900, fontSize: 19, color: "#17142C", margin: "4px 0 14px" }}>Carica i tuoi dati in 3 passi</div>
-        {step(1, "Scarica il modello",
-          "Un file JSON con segnaposto d'esempio che mostrano come compilare ogni campo (partenza, voli, alloggi).",
-          <button onClick={onDownload} style={btn("#FFD23F", "#0E1542")}>Scarica configurazione ↓</button>)}
-        {step(2, "Compilalo — o fallo fare a un'AI ✨",
-          <>Apri il file e sostituisci i segnaposto con i tuoi dati. <strong style={{ color: "#17142C" }}>Non hai voglia?</strong> Copia il modello, incollalo in un'AI (ChatGPT, Claude…) insieme alle tue prenotazioni e chiedile di riempirlo.</>,
-          <button onClick={onCopy} style={btn("#14C08C", "#fff")}>Copia il modello per l'AI</button>)}
-        {step(3, "Reimporta e parti",
+        <div style={{ fontWeight: 900, fontSize: 19, color: "#17142C", margin: "4px 0 4px" }}>Carica i tuoi dati</div>
+        <p style={{ margin: "0 0 14px", fontSize: 12.5, color: "#5b5644", fontWeight: 600, lineHeight: 1.5 }}>Ti serve un file JSON con i tuoi voli, alloggi e date. Prendi il modello con <strong style={{ color: "#17142C" }}>uno</strong> dei due metodi qui sotto, riempilo e importalo.</p>
+        {step(1, "Prendi e riempi il modello",
+          <>Stesso file, due strade: scegli quella che preferisci.</>,
+          <div style={{ display: "grid", gap: 13 }}>
+            <div>
+              <button onClick={onCopy} style={btn("#14C08C", "#fff")}>✨ Fallo fare a un'AI · Copia</button>
+              <div style={{ fontSize: 11.5, color: "#6B6450", fontWeight: 600, lineHeight: 1.45, marginTop: 6 }}>Incollalo in ChatGPT o Claude con le tue prenotazioni e chiedi di riempirlo. <strong style={{ color: "#17142C" }}>Il modo più veloce.</strong></div>
+            </div>
+            <div>
+              <button onClick={onDownload} style={btn("#FFD23F", "#0E1542")}>✎ Compila a mano · Scarica .json</button>
+              <div style={{ fontSize: 11.5, color: "#6B6450", fontWeight: 600, lineHeight: 1.45, marginTop: 6 }}>Apri il file e sostituisci i segnaposto d'esempio con i tuoi dati.</div>
+            </div>
+          </div>)}
+        {step(2, "Importa e parti",
           <>In <strong style={{ color: "#17142C" }}>Impostazioni</strong> usa « Importa file » (o incolla il JSON) e premi « Salva dati ». Si attivano conto alla rovescia, vista « Oggi », meteo e programma.</>,
           <a href="#sSet" style={btn("rgba(14,21,66,.09)", "#0E1542")}>Apri Impostazioni →</a>,
           true)}
