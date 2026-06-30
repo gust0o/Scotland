@@ -24,7 +24,7 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
   useEffect(() => {
     if (!scroller.current) return;
     const all = [
-      ...events.map((e) => e.startMin - (e.train || 0)),
+      ...events.map((e) => e.startMin - (e.lead ? e.lead.min : 0)),
       ...flights.map((f) => f.startMin),
     ];
     const earliest = all.length ? Math.max(0, Math.min(...all) - 40) : (typeof nowMin === "number" ? Math.max(0, nowMin - 60) : 8 * 60);
@@ -112,22 +112,24 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
           const dur = isDrag ? (drag.mode === "resize" ? drag.dur : e.dur) : e.dur;
           const top = yOf(start);
           const h = Math.max((dur / 60) * HOUR_PX, 30);
-          const train = e.train || 0;
           const isTripBlock = e.kind === "trip";
           const isVenueBlock = e.kind === "tvenue";
           const leftPx = GUTTER + (isVenueBlock ? 16 : 0);
           return (
             <React.Fragment key={e.idx}>
-              {/* day-trip travel blocks (move with the visit) */}
-              {train > 0 && (
-                <>
-                  <div style={{ position: "absolute", top: yOf(start - train), left: leftPx, right: 4, height: Math.max((train / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
-                    <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>🚆 Andata · {fmt(start - train)}</div>
-                  </div>
-                  <div style={{ position: "absolute", top: yOf(start + dur), left: leftPx, right: 4, height: Math.max((train / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
-                    <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>🚆 Ritorno · {fmt(start + dur)}</div>
-                  </div>
-                </>
+              {/* incoming transfer leg (Andata, chained hop, or city walk/bus) */}
+              {e.lead && e.lead.min > 0 && (
+                <div style={{ position: "absolute", top: yOf(start - e.lead.min), left: leftPx, right: 4, height: Math.max((e.lead.min / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
+                  <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.lead.icon} {e.lead.primary} · {fmt(start - e.lead.min)}</div>
+                  {e.lead.sub && (e.lead.min / 60) * HOUR_PX > 30 && <div style={{ fontSize: 9.5, fontWeight: 700, color: "#7a7560", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.lead.sub}</div>}
+                </div>
+              )}
+              {/* outgoing transfer leg (Ritorno to Edinburgh on the last gita) */}
+              {e.tail && e.tail.min > 0 && (
+                <div style={{ position: "absolute", top: yOf(start + dur), left: leftPx, right: 4, height: Math.max((e.tail.min / 60) * HOUR_PX, 18), background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: isDrag ? 9 : 1 }}>
+                  <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.tail.icon} {e.tail.primary} · {fmt(start + dur)}</div>
+                  {e.tail.sub && (e.tail.min / 60) * HOUR_PX > 30 && <div style={{ fontSize: 9.5, fontWeight: 700, color: "#7a7560", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.tail.sub}</div>}
+                </div>
               )}
               <div
                 onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}

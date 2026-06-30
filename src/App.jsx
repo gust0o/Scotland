@@ -15,6 +15,7 @@ import { LogoMark, PlaneIcon, BedIcon, CutleryIcon, TimelineIcon } from "./icons
 import { BarIcon } from "./barIcons.jsx";
 import VenueDetail, { SummaryRow } from "./VenueDetail.jsx";
 import DayTimeline from "./DayTimeline.jsx";
+import { coordForEvent, travelLeg } from "./geo.js";
 const MONO = "'Spline Sans Mono',monospace";
 const MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
 // Primary destinations for the fixed bottom tab bar (ids + scroll-spy order).
@@ -1741,7 +1742,6 @@ export default class App extends React.Component {
       const isToday = !!(date && date === today);
       const pool = dd.cityIdx === 0 ? D.poolLon : D.poolEdi;
       const entriesRaw = this.dayEntries(key);
-      let total = 0;
       const events = entriesRaw.map((en, idx) => {
         const a = D.catalog[en.id] || { name: en.id, dur: 60, q: "", note: "", kind: "sight" };
         const isTrip = a.kind === "trip";
@@ -1750,7 +1750,6 @@ export default class App extends React.Component {
         const base = isTrip ? this.tripVisitOf(en.id, a.baseVisit || a.dur) : a.dur || 60;
         const dur = en.dur != null ? en.dur : base;
         const transferMin = a.transferMin || 0; // extra hop to reach the venue (e.g. Tantallon)
-        total += dur + 2 * train + 2 * transferMin;
         const startMin = this.parseMin(en.start) != null ? this.parseMin(en.start) : 9 * 60;
         const PAL = {
           eat: { a: "#E6482A", b: "#FBEDE9", l: "Mangiare" },
@@ -1766,11 +1765,61 @@ export default class App extends React.Component {
         }
         return {
           idx, id: en.id, name: a.name, note: a.note || "", kind: a.kind, kindLabel: pal.l,
-          durLabel: this.durLabel(dur), dur, train, startMin, accent: pal.a, bg: pal.b, warn,
+          durLabel: this.durLabel(dur), dur, train, transferMin, startMin, accent: pal.a, bg: pal.b, warn,
+          coord: coordForEvent(a), lead: null, tail: null,
           maps: this.M(a.q || a.name),
           onResize: (min) => this.setDur(key, idx, min),
         };
       });
+
+      // Transfer legs — how you actually get from one activity to the next.
+      // Instead of a fixed round trip to Edinburgh per gita, the day is a chain:
+      // the first gita has an "Andata" from Edinburgh, each following gita starts
+      // from the PREVIOUS gita's town (estimated by distance + mode), and only the
+      // last gita has a "Ritorno". Consecutive city venues get a short walk/bus
+      // chip. All times are estimates (real timetables are tighter/looser).
+      const seq = events.slice().sort((a, b) => a.startMin - b.startMin);
+      const isCity = (e) => e.kind === "sight" || e.kind === "eat" || e.kind === "london";
+      const legBlock = (leg, fromName, fallbackLabel) => {
+        if (!leg) return { min: 0, icon: "🚆", primary: fallbackLabel || "", sub: "" };
+        const alt = leg.alt ? " · o " + leg.alt.icon + " " + leg.alt.mode + " ~" + leg.alt.min + "′" : "";
+        return {
+          min: leg.min, icon: leg.icon,
+          primary: leg.mode + (fromName ? " da " + fromName : ""),
+          sub: "~" + leg.min + "′" + (leg.est ? " stima" : "") + alt,
+        };
+      };
+      // city → city: short transfer chip (only when the previous stop is also in town)
+      for (let i = 1; i < seq.length; i++) {
+        const cur = seq[i], prev = seq[i - 1];
+        if (isCity(cur) && isCity(prev)) {
+          const leg = travelLeg(prev.coord, cur.coord);
+          if (leg && leg.min >= 4) cur.lead = legBlock(leg, prev.name);
+        }
+      }
+      // gite: Andata (first) → chained legs → Ritorno (last)
+      const tripSeq = seq.filter((e) => e.kind === "trip");
+      tripSeq.forEach((t, i) => {
+        if (i === 0) {
+          t.lead = { min: t.train, icon: "🚆", primary: "Andata da Edimburgo", sub: "~" + t.train + "′" };
+        } else {
+          const prev = tripSeq[i - 1];
+          const leg = travelLeg(prev.coord, t.coord);
+          t.lead = leg
+            ? legBlock(leg, prev.name, "↪ ")
+            : { min: t.train, icon: "🚆", primary: "da " + prev.name, sub: "~" + t.train + "′ stima" };
+        }
+        if (i === tripSeq.length - 1) {
+          t.tail = { min: t.train, icon: "🚆", primary: "Ritorno a Edimburgo", sub: "~" + t.train + "′" };
+        }
+      });
+
+      // Day total: visits + within-town hops (tvenue transfers) + every transfer leg.
+      const total = events.reduce(
+        (s, e) => s + e.dur + (e.kind === "tvenue" ? 2 * (e.transferMin || 0) : 0)
+          + (e.lead ? e.lead.min : 0) + (e.tail ? e.tail.min : 0),
+        0,
+      );
       // flights on this day + the time they really occupy: transfer to airport,
       // gate/boarding, flight, deplaning, transfer from airport.
       const flightBlocks = [];
@@ -2246,8 +2295,8 @@ export default class App extends React.Component {
                     )}
                     {d.multiTripWarn && (
                       <div style={{ display: "flex", gap: 8, background: "#FFF3CC", border: "1px solid #E9D08A", borderRadius: 10, padding: "8px 11px", margin: "6px 0 2px", fontSize: 11.5, fontWeight: 600, color: "#6a5410", lineHeight: 1.45 }}>
-                        <span style={{ fontWeight: 900 }}>⚠</span>
-                        <span>Due gite nello stesso giorno: l'app conta due andata/ritorno separati. Nella realtà puoi concatenarle (gli orari reali sono più stretti) — aggiusta a mano in « Modifica orari ».</span>
+                        <span style={{ fontWeight: 900 }}>↪</span>
+                        <span>Più gite in giornata: l'app le <strong>concatena</strong> — Andata da Edimburgo solo alla prima, poi lo spostamento parte dalla gita precedente, e Ritorno solo dall'ultima. Tempi e mezzo (a piedi / bus / treno) sono <strong>stime</strong>: verifica gli orari reali e aggiusta in « Modifica orari ».</span>
                       </div>
                     )}
                     <DayTimeline
