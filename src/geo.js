@@ -70,12 +70,54 @@ export const VENUE_COORDS = {
   "ea-alandasgelato": [55.9466, -3.1903], "ea-cairngormcoffee": [55.9525, -3.1981],
 };
 
+// Sub-venues INSIDE each gita, pinned individually so a move within a day trip
+// (Seabird Centre → Tantallon, Old Course → Cathedral, Balloch → Luss…) gets a
+// real distance/mode/cost instead of collapsing onto the town centre. Anything
+// not listed falls back to its trip's town. Keyed by the "tv-<trip>-<i>" id.
+export const TVENUE_COORDS = {
+  // Glasgow
+  "tv-dt-glasgow-0": [55.8686, -4.2906], "tv-dt-glasgow-1": [55.8654, -4.3066],
+  "tv-dt-glasgow-2": [55.8627, -4.2349], "tv-dt-glasgow-3": [55.8656, -4.2647],
+  "tv-dt-glasgow-4": [55.8745, -4.2925], "tv-dt-glasgow-5": [55.8744, -4.2926],
+  "tv-dt-glasgow-6": [55.8745, -4.2861],
+  // Stirling
+  "tv-dt-stirling-0": [56.124, -3.9477], "tv-dt-stirling-1": [56.1387, -3.9189],
+  "tv-dt-stirling-2": [56.0905, -3.917], "tv-dt-stirling-3": [56.1235, -3.9466],
+  "tv-dt-stirling-4": [56.123, -3.943], "tv-dt-stirling-5": [56.1188, -3.936],
+  // St Andrews
+  "tv-dt-standrews-0": [56.3433, -2.8025], "tv-dt-standrews-1": [56.3398, -2.7889],
+  "tv-dt-standrews-2": [56.3424, -2.7906], "tv-dt-standrews-3": [56.3387, -2.7956],
+  "tv-dt-standrews-4": [56.3389, -2.7949], "tv-dt-standrews-5": [56.3399, -2.796],
+  "tv-dt-standrews-6": [56.3475, -2.806],
+  // Loch Lomond
+  "tv-dt-lochlomond-0": [56.0028, -4.5826], "tv-dt-lochlomond-1": [56.0064, -4.576],
+  "tv-dt-lochlomond-2": [56.0, -4.581], "tv-dt-lochlomond-3": [56.1006, -4.636],
+  "tv-dt-lochlomond-4": [56.1008, -4.6358], "tv-dt-lochlomond-5": [55.9996, -4.5805],
+  "tv-dt-lochlomond-6": [56.026, -4.336],
+  // Musselburgh
+  "tv-dt-musselburgh-0": [55.947, -3.049], "tv-dt-musselburgh-1": [55.9447, -3.066],
+  "tv-dt-musselburgh-2": [55.951, -3.033], "tv-dt-musselburgh-3": [55.9418, -3.0556],
+  "tv-dt-musselburgh-4": [55.943, -3.061], "tv-dt-musselburgh-5": [55.942, -3.0545],
+  // North Berwick
+  "tv-dt-nberwick-0": [56.0596, -2.7195], "tv-dt-nberwick-1": [56.056, -2.651],
+  "tv-dt-nberwick-2": [56.049, -2.714], "tv-dt-nberwick-3": [56.0578, -2.722],
+  "tv-dt-nberwick-4": [56.0598, -2.719], "tv-dt-nberwick-5": [56.0588, -2.717],
+  // Falkirk
+  "tv-dt-falkirk-0": [56.0017, -3.8407], "tv-dt-falkirk-1": [56.0197, -3.756],
+  "tv-dt-falkirk-2": [56.019, -3.759], "tv-dt-falkirk-3": [56.0008, -3.779],
+  "tv-dt-falkirk-4": [56.0017, -3.84], "tv-dt-falkirk-5": [56.001, -3.784],
+  // South Queensferry
+  "tv-dt-queensferry-0": [56.0019, -3.3886], "tv-dt-queensferry-1": [56.0317, -3.3018],
+  "tv-dt-queensferry-2": [55.987, -3.353], "tv-dt-queensferry-3": [55.9905, -3.388],
+  "tv-dt-queensferry-4": [55.9905, -3.399], "tv-dt-queensferry-5": [55.9905, -3.397],
+};
+
 // Resolve the coordinate of a scheduled event from its catalog entry.
 export function coordForEvent(catalogEntry) {
   if (!catalogEntry) return CITY_DEFAULT;
   const { id, kind, trip, pool } = catalogEntry;
   if (kind === "trip") return TRIP_COORDS[id] || HUB.coord;
-  if (kind === "tvenue") return TRIP_COORDS[trip] || HUB.coord;
+  if (kind === "tvenue") return TVENUE_COORDS[id] || TRIP_COORDS[trip] || HUB.coord;
   if (pool === "lon" || kind === "london") return LONDON_DEFAULT;
   return VENUE_COORDS[id] || CITY_DEFAULT;
 }

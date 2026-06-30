@@ -1766,7 +1766,7 @@ export default class App extends React.Component {
         return {
           idx, id: en.id, name: a.name, note: a.note || "", kind: a.kind, kindLabel: pal.l,
           durLabel: this.durLabel(dur), dur, train, transferMin, startMin, accent: pal.a, bg: pal.b, warn,
-          coord: coordForEvent(a), lead: null, tail: null,
+          tripId: a.trip || "", coord: coordForEvent(a), lead: null, tail: null,
           maps: this.M(a.q || a.name),
           onResize: (min) => this.setDur(key, idx, min),
         };
@@ -1802,10 +1802,14 @@ export default class App extends React.Component {
           sub: "~" + p.min + "′ · " + p.costLabel + altTxt + " · stima",
         };
       };
-      // city → city hop (only when the previous stop is also in town)
+      // local hops — between two city venues, OR between two sub-venues of the
+      // SAME gita (Seabird Centre → Tantallon, Old Course → Cathedral…).
+      const localPair = (cur, prev) =>
+        (isCity(cur) && isCity(prev)) ||
+        (cur.kind === "tvenue" && prev.kind === "tvenue" && cur.tripId && cur.tripId === prev.tripId);
       for (let i = 1; i < seq.length; i++) {
         const cur = seq[i], prev = seq[i - 1];
-        if (isCity(cur) && isCity(prev)) {
+        if (localPair(cur, prev)) {
           const blk = fmtLeg(travelLeg(prev.coord, cur.coord), prev.name);
           if (blk && blk.min >= 4) cur.lead = blk;
         }
@@ -1839,10 +1843,11 @@ export default class App extends React.Component {
         }
       });
 
-      // Day total: visits + within-town hops (tvenue transfers) + every transfer leg.
+      // Day total: visit durations + every computed transfer leg (lead/tail).
+      // (Movement is now modeled by the legs, so transferMin is no longer added
+      // separately — it survives only as curated detail text.)
       const total = events.reduce(
-        (s, e) => s + e.dur + (e.kind === "tvenue" ? 2 * (e.transferMin || 0) : 0)
-          + (e.lead ? e.lead.min : 0) + (e.tail ? e.tail.min : 0),
+        (s, e) => s + e.dur + (e.lead ? e.lead.min : 0) + (e.tail ? e.tail.min : 0),
         0,
       );
       // flights on this day + the time they really occupy: transfer to airport,
