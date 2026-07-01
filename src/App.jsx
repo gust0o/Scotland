@@ -307,9 +307,85 @@ function Checklist({ items, onToggle, onAdd, onEdit, onRemove }) {
   );
 }
 
+// Best-effort OS + browser sniff (UA-based) to tailor the "install as app"
+// instructions. SSR-safe: returns a generic shape when navigator is absent.
+function detectPlatform() {
+  if (typeof navigator === "undefined") return { os: "", browser: "il browser", kind: "generic" };
+  const ua = navigator.userAgent || "";
+  const iOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const android = /Android/.test(ua);
+  const win = /Windows/.test(ua);
+  const mac = /Macintosh/.test(ua) && !iOS;
+  const edge = /Edg\//.test(ua);
+  const samsung = /SamsungBrowser/.test(ua);
+  const firefox = /Firefox\/|FxiOS/.test(ua);
+  const criOS = /CriOS/.test(ua);
+  const chromium = /Chrome\//.test(ua) && !edge && !samsung;
+  const os = iOS ? "iPhone / iPad" : android ? "Android" : win ? "Windows" : mac ? "Mac" : "";
+  let browser = iOS ? "Safari" : "il browser";
+  if (edge) browser = "Edge"; else if (samsung) browser = "Samsung Internet"; else if (criOS) browser = "Chrome"; else if (firefox) browser = "Firefox"; else if (chromium) browser = "Chrome";
+  let kind = "generic";
+  if (iOS) kind = criOS || firefox ? "ios-other" : "ios-safari";
+  else if (android) kind = "android";
+  else if (win || mac) kind = firefox ? "desktop-firefox" : "desktop";
+  return { os, browser, kind, iOS, android };
+}
+
+// Tailored, numbered steps for adding the app to the home screen / installing it.
+function installSteps(kind) {
+  switch (kind) {
+    case "ios-safari":
+      return ["Tocca l’icona Condividi (il quadrato con la freccia ↑) nella barra in basso.", "Scorri e scegli « Aggiungi a Home ».", "Tocca « Aggiungi »: l’icona del Taccuino comparirà come un’app."];
+    case "ios-other":
+      return ["Apri il menu del browser e tocca « Aggiungi a Home » (Add to Home Screen).", "Conferma per creare l’icona.", "Suggerimento: in Safari l’installazione è ancora più semplice."];
+    case "android":
+      return ["Tocca il menu ⋮ in alto a destra.", "Scegli « Installa app » (o « Aggiungi a schermata Home »).", "Conferma: l’icona finisce tra le tue app."];
+    case "desktop":
+      return ["Clicca l’icona « Installa » (uno schermo con ↓) nella barra degli indirizzi.", "In alternativa: menu ⋮ → « Installa Taccuino Scozia… ».", "L’app si apre in una sua finestra dedicata."];
+    case "desktop-firefox":
+      return ["Firefox su desktop non installa le web app.", "Salva la pagina nei preferiti (Ctrl/Cmd + D) per ritrovarla al volo.", "Su telefono, aggiungila alla schermata Home dal menu del browser."];
+    default:
+      return ["Apri il menu del tuo browser.", "Cerca « Installa app » o « Aggiungi a schermata Home ».", "Conferma per creare l’icona."];
+  }
+}
+
+// "Use it as an app" invitation. Shows the native install button when the
+// browser offers one (Chromium), otherwise the right manual steps for the
+// detected OS/browser. Renders nothing once the app is already installed.
+function InstallCard({ platform, canPrompt, onInstall, compact }) {
+  const steps = installSteps(platform.kind);
+  const detected = platform.os ? platform.os + " · " + platform.browser : "";
+  const btn = { cursor: "pointer", border: "none", borderRadius: 999, fontWeight: 900, fontSize: 14, padding: "11px 18px", background: "#FFD23F", color: "#0E1542" };
+  return (
+    <div style={{ background: "#0E1542", borderRadius: 18, padding: compact ? "14px 15px" : "17px 16px 18px", marginBottom: compact ? 0 : 12, position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, background: "#14C08C", borderRadius: "50%", opacity: 0.22 }} />
+      <div style={{ position: "relative" }}>
+        <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase", color: "#2BE3A8" }}>Usala come un’app</div>
+        <div style={{ fontWeight: 900, fontSize: compact ? 17 : 20, color: "#fff", margin: "3px 0 5px" }}>📲 Installa il Taccuino</div>
+        <p style={{ margin: "0 0 12px", fontSize: 12.5, color: "#C2C9EC", fontWeight: 600, lineHeight: 1.5 }}>Si apre a tutto schermo, parte con un tocco e <strong style={{ color: "#fff" }}>funziona offline</strong> — perfetta in aereo o senza rete. {detected && <span style={{ color: "#8089b8" }}>Rilevato: {detected}.</span>}</p>
+        {canPrompt ? (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 9, alignItems: "center" }}>
+            <button onClick={onInstall} style={btn}>⇩ Installa ora</button>
+            <span style={{ fontSize: 11.5, fontWeight: 700, color: "#8089b8" }}>un tocco, ci pensa il browser</span>
+          </div>
+        ) : (
+          <ol style={{ margin: 0, paddingLeft: 0, listStyle: "none", display: "grid", gap: 8 }}>
+            {steps.map((s, i) => (
+              <li key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <span style={{ flex: "none", width: 21, height: 21, borderRadius: 999, background: "#FFD23F", color: "#0E1542", fontWeight: 900, fontSize: 11.5, display: "flex", alignItems: "center", justifyContent: "center" }}>{i + 1}</span>
+                <span style={{ fontSize: 12.5, color: "#EAEDF9", fontWeight: 600, lineHeight: 1.45 }}>{s}</span>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // First-run guide (shown in "Oggi" until a partenza date is loaded): explains how the
 // app works and lets the user download the config JSON to fill in and re-import.
-function Onboarding({ onDownload, onCopy, msg, jsonText, onJsonInput, onSave, onFile, onPaste, feedback }) {
+function Onboarding({ onDownload, onCopy, msg, jsonText, onJsonInput, onSave, onFile, onPaste, feedback, installCard }) {
   const step = (n, title, body, action, last) => (
     <div style={{ display: "flex", gap: 12 }}>
       <div style={{ flex: "none", display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -337,6 +413,9 @@ function Onboarding({ onDownload, onCopy, msg, jsonText, onJsonInput, onSave, on
       </div>
       <h2 style={{ fontWeight: 900, fontSize: 30, lineHeight: 1.02, margin: "0 0 3px", color: "#0E1542", letterSpacing: "-0.02em" }}>Benvenuto nel Taccuino</h2>
       <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#6B6450", lineHeight: 1.5 }}>La tua guida da campo <strong style={{ color: "#17142C" }}>offline</strong> per il viaggio Londra → Edimburgo. Funziona senza rete e i tuoi dati restano <strong style={{ color: "#17142C" }}>solo su questo dispositivo</strong>.</p>
+
+      {/* Install-as-app invitation (first thing a new visitor should do) */}
+      {installCard}
 
       {/* Config card — same file, two alternative methods (AI or by hand), then import */}
       <div style={{ background: "#F6F0E2", borderRadius: 18, padding: "16px 16px 18px", marginBottom: 12, border: "1.5px solid #E1D7BF" }}>
@@ -382,7 +461,6 @@ function Onboarding({ onDownload, onCopy, msg, jsonText, onJsonInput, onSave, on
           {feat("Tutto è consultabile offline: in aereo, in metro o senza rete.")}
           {feat("Nessun account e nessun server: i dati riservati restano sul tuo dispositivo.")}
         </div>
-        <div style={{ marginTop: 13, paddingTop: 11, borderTop: "1px solid rgba(255,255,255,.12)", fontSize: 12, color: "#C2C9EC", fontWeight: 600, lineHeight: 1.55 }}>💡 Suggerimento: aggiungi l'app alla schermata Home del telefono per usarla come un'app vera, anche offline.</div>
       </div>
     </div>
   );
@@ -429,9 +507,21 @@ export default class App extends React.Component {
     editDays: {},
     navCompact: false,
     setOpen: {},
+    installEvt: null, // deferred beforeinstallprompt (Chromium: Android/desktop)
+    installed: false, // running as an installed PWA (standalone)
   };
 
   componentDidMount() {
+    // PWA install: capture the native prompt where the browser offers it, and
+    // detect whether we're already running as an installed app.
+    try {
+      const standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+      if (standalone) this.setState({ installed: true });
+    } catch (e) {}
+    this._onBIP = (e) => { e.preventDefault(); this.setState({ installEvt: e }); };
+    this._onInstalled = () => this.setState({ installed: true, installEvt: null });
+    window.addEventListener("beforeinstallprompt", this._onBIP);
+    window.addEventListener("appinstalled", this._onInstalled);
     const ld = (k) => {
       try {
         const v = localStorage.getItem(k);
@@ -469,7 +559,17 @@ export default class App extends React.Component {
     window.removeEventListener("deviceorientation", this.onTilt, true);
     window.removeEventListener("scroll", this.schedulePaint, true);
     window.removeEventListener("resize", this.schedulePaint);
+    if (this._onBIP) window.removeEventListener("beforeinstallprompt", this._onBIP);
+    if (this._onInstalled) window.removeEventListener("appinstalled", this._onInstalled);
   }
+
+  // Fire the browser's native install prompt (Chromium only; captured above).
+  promptInstall = async () => {
+    const e = this.state.installEvt;
+    if (!e) return;
+    try { e.prompt(); await e.userChoice; } catch (err) {}
+    this.setState({ installEvt: null });
+  };
 
   componentDidUpdate() {
     // positions shift when sections open/close or data loads
@@ -2043,6 +2143,13 @@ export default class App extends React.Component {
     // New user: no partenza date loaded yet → show the first-run onboarding guide.
     const noData = !this.tripDates();
 
+    // "Install as app" invitation — hidden once we're already running installed.
+    const platform = detectPlatform();
+    const showInstall = !this.state.installed;
+    const installCard = showInstall
+      ? <InstallCard platform={platform} canPrompt={!!this.state.installEvt} onInstall={this.promptInstall} />
+      : null;
+
     // sim
     const simD = this.state.sim ? new Date(this.state.sim) : now;
     const simDate = this.iso(simD);
@@ -2180,7 +2287,8 @@ export default class App extends React.Component {
             {noData ? (
               <Onboarding onDownload={this.downloadEmpty} onCopy={this.copyEmpty} msg={this.state.copyMsg}
                 jsonText={this.state.jsonText} onJsonInput={this.onJsonInput} onSave={this.saveReserved}
-                onFile={this.importConfigFile} onPaste={this.pasteFromClipboard} feedback={this.state.feedback} />
+                onFile={this.importConfigFile} onPaste={this.pasteFromClipboard} feedback={this.state.feedback}
+                installCard={installCard} />
             ) : (
               <>
                 <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 4 }}>
@@ -2636,6 +2744,12 @@ export default class App extends React.Component {
               <h2 style={h2("#fff")}>Impostazioni</h2>
             </div>
             <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#9d98c4" }}>Dati riservati solo su questo dispositivo</p>
+
+            {showInstall && (
+              <div style={{ marginBottom: 14 }}>
+                <InstallCard platform={platform} canPrompt={!!this.state.installEvt} onInstall={this.promptInstall} compact />
+              </div>
+            )}
 
             <Collapsible open={!!this.state.setOpen.sim} onToggle={() => this.toggleSet("sim")} title="Simula data e ora" sub="Anteprima del viaggio in qualsiasi momento">
               <button onClick={() => this.setState({ simOpen: true })} style={{ cursor: "pointer", fontSize: 12.5, fontWeight: 900, color: "#17142C", background: this.state.sim ? "#14C08C" : "#FFD23F", border: "none", padding: "10px 15px", borderRadius: 999 }}>{this.state.sim ? "Simulazione attiva — modifica" : "Apri simulatore"}</button>
