@@ -153,7 +153,14 @@ export default function VenueDetail({ d, onClose, onBack, canBack, isFav, onTogg
   if (d.zone) meta.push({ t: d.zone, bg: "#EFE7D6", fg: "#5b5644" });
   if (d.area) meta.push({ t: d.area, bg: "#EFE7D6", fg: "#5b5644" });
   if (d.dur && d.kind !== "trip") meta.push({ t: durLabel(d.dur), bg: "#EFE7D6", fg: "#5b5644" });
-  if (d.open) meta.push({ t: "Aperto " + fmtH(d.open[0]) + "–" + fmtH(d.open[1]), bg: "#EFE7D6", fg: "#5b5644" });
+  // Eateries: show the KITCHEN (food service) window — that's what matters for a
+  // meal. Falls back to the venue's open hours; always indicative (verify live).
+  if (d.kind === "eat" && (d.cucina || d.open)) {
+    const kh = d.cucina || d.open;
+    meta.push({ t: "🍽 Cucina " + fmtH(kh[0]) + "–" + fmtH(kh[1]), bg: "#FBEDE9", fg: "#9c2a18" });
+  } else if (d.open) {
+    meta.push({ t: "Aperto " + fmtH(d.open[0]) + "–" + fmtH(d.open[1]), bg: "#EFE7D6", fg: "#5b5644" });
+  }
   if (d.transferMin) meta.push({ t: "🚌 +" + durLabel(d.transferMin) + " transfer", bg: "#FFF3CC", fg: "#6a5410" });
 
   return (

@@ -167,9 +167,20 @@ const enrich = (o, c) => {
   if (c.meta) o.meta = c.meta;
 };
 
+// Kitchen (food service) hours [open, close] for eateries where the KITCHEN
+// closes noticeably before the venue does — mostly pubs/bars that stay open for
+// drinks long after last food orders. Indicative, meant to steer planning; the
+// detail card always links to Google Maps for the live hours. Where a place's
+// `open` already IS its food window (restaurants/cafés), no override is needed.
+const KITCHEN = {
+  "ea-sandybells": [12, 21], "ea-bowbar": [12, 20], "ea-devilsadvocate": [12, 22],
+  "ea-bennetsbar": [12, 21], "ea-caferoyal": [12, 22], "ea-cannyman": [12, 21],
+  "ea-sheepheid": [12, 21.5], "ea-scranscallie": [12, 22],
+};
+
 // Merge the enriched descriptions/zones into the base lists.
 sights.forEach((s) => { const c = CONTENT.sights[s.id]; if (c) { s.note = c.note || s.note; s.zone = c.zone; enrich(s, c); } });
-eats.forEach((e) => { const c = CONTENT.eats[e.id]; if (c) { e.note = c.note || e.note; e.zone = c.zone; e.tipo = c.tipo; e.ordina = c.ordina; enrich(e, c); } });
+eats.forEach((e) => { const c = CONTENT.eats[e.id]; if (c) { e.note = c.note || e.note; e.zone = c.zone; e.tipo = c.tipo; e.ordina = c.ordina; enrich(e, c); } if (KITCHEN[e.id]) e.cucina = KITCHEN[e.id]; });
 trips.forEach((t) => { const c = CONTENT.trips[t.id]; if (c) { t.body = c.note || t.body; t.area = c.area; t.transport = c.transport || t.transport; enrich(t, c); } t.venues = (CONTENT.tripVenues && CONTENT.tripVenues[t.id]) || []; });
 
 const glasgow = [
@@ -206,7 +217,7 @@ enrichById(experiences, CONTENT.experiences);
 function build() {
   const catalog = {};
   sights.forEach((s) => (catalog[s.id] = { id: s.id, name: s.name, dur: s.dur, open: s.open, kind: "sight", q: s.q, note: s.note }));
-  eats.forEach((e) => (catalog[e.id] = { id: e.id, name: e.name, dur: e.dur, open: e.open, kind: "eat", q: e.q, note: e.note }));
+  eats.forEach((e) => (catalog[e.id] = { id: e.id, name: e.name, dur: e.dur, open: e.open, cucina: e.cucina || null, kind: "eat", q: e.q, note: e.note }));
   trips.forEach((t) => (catalog[t.id] = { id: t.id, name: t.title, dur: t.visit + 2 * t.train, baseVisit: t.visit, train: t.train, open: null, kind: "trip", q: t.q, note: t.body }));
   london.forEach((l) => (catalog[l.id] = { id: l.id, name: l.name, dur: l.dur, open: l.open, kind: l.cat ? "eat" : "sight", q: l.q, pool: "lon", note: l.note }));
 
@@ -240,7 +251,7 @@ function build() {
   // Spreadable enriched fields (Round 2): summary / descrizione / curiosita / info.
   const enr = (o) => ({ summary: o.summary || "", descrizione: o.descrizione || "", curiosita: o.curiosita || "", info: Array.isArray(o.info) ? o.info : [], meta: o.meta || "", photo: o.photo || "", credit: o.credit || "" });
   sights.forEach((s) => add({ id: s.id, name: s.name, kind: "sight", where: "Edimburgo", zone: s.zone || "", dur: s.dur, open: s.open || null, note: s.note, maps: mapsUrl(s.q), ...enr(s) }));
-  eats.forEach((e) => add({ id: e.id, name: e.name, kind: "eat", where: "Mangiare a Edimburgo", zone: e.zone || "", tipo: e.tipo || e.cat || "", cat: e.cat || "", ordina: e.ordina || "", dur: e.dur, open: e.open || null, note: e.note, maps: mapsUrl(e.q), ...enr(e) }));
+  eats.forEach((e) => add({ id: e.id, name: e.name, kind: "eat", where: "Mangiare a Edimburgo", zone: e.zone || "", tipo: e.tipo || e.cat || "", cat: e.cat || "", ordina: e.ordina || "", dur: e.dur, open: e.open || null, cucina: e.cucina || null, note: e.note, maps: mapsUrl(e.q), ...enr(e) }));
   trips.forEach((t) => add({ id: t.id, name: t.title, kind: "trip", where: "Gita in giornata", area: t.area || "", mode: t.mode || "", train: t.train, visit: t.visit, dur: t.visit + 2 * t.train, note: t.body, maps: mapsUrl(t.q), destQ: t.q, destName: t.title, transport: t.transport || null, venues: (t.venues || []).map((v, i) => ({ id: "tv-" + t.id + "-" + i, name: v.name, tipo: v.tipo, note: v.note, maps: mapsUrl(v.q) })), ...enr(t) }));
   trips.forEach((t) => (t.venues || []).forEach((v, i) => add({ id: "tv-" + t.id + "-" + i, name: v.name, kind: "tvenue", where: "In gita · " + t.title, tipo: v.tipo, dur: v.tipo === "mangiare" ? 60 : 90, note: v.note, maps: mapsUrl(v.q), trip: t.id, tripName: t.title, transferMin: v.transferMin || 0, transferNote: v.transferNote || "", ...enr(v) })));
   london.forEach((l) => add({ id: l.id, name: l.name, kind: "london", where: "Londra", zone: l.zone || "", cat: l.cat || "", tipo: l.cat || "", dur: l.dur, open: l.open || null, note: l.note, maps: mapsUrl(l.q), ...enr(l) }));

@@ -112,13 +112,41 @@ export const TVENUE_COORDS = {
   "tv-dt-queensferry-4": [55.9905, -3.399], "tv-dt-queensferry-5": [55.9905, -3.397],
 };
 
+// London spots (Shoreditch / Spitalfields / Brick Lane + a few in the City),
+// pinned so intra-London hops are real too (Old Truman Brewery → Beigel Bake…).
+export const LONDON_COORDS = {
+  "lo-colazione-allpress": [51.5245, -0.0745], "lo-colazione-friends": [51.53, -0.0863],
+  "lo-colazione-ozone": [51.525, -0.0836], "lo-beigel": [51.5238, -0.0716],
+  "lo-bricklane": [51.5215, -0.0716], "lo-truman": [51.5206, -0.0719],
+  "lo-spitalfields": [51.5194, -0.0755], "lo-christ-church": [51.5192, -0.0745],
+  "lo-boxpark": [51.5232, -0.0755], "lo-redchurch": [51.524, -0.074],
+  "lo-ten-bells": [51.5197, -0.0748], "lo-stpauls": [51.5138, -0.0984],
+  "lo-millennium": [51.5095, -0.0985], "lo-tate-modern": [51.5076, -0.0994],
+  "lo-dishoomshoreditch": [51.5257, -0.0776], "lo-smokinggoat": [51.524, -0.077],
+  "lo-gunpowderspitalfields": [51.5185, -0.076], "lo-tayyabs": [51.5165, -0.0655],
+  "lo-sundayupmarket": [51.521, -0.072], "lo-columbiaroad": [51.53, -0.067],
+  "lo-queenhoxton": [51.5232, -0.081], "lo-oldblue": [51.5243, -0.0805],
+  "lo-skygarden": [51.5113, -0.0837], "lo-leadenhallmarket": [51.5128, -0.0836],
+};
+
+// Transport hubs you can drop into a day as places, so the app estimates the
+// hop from your last venue to the station/airport (e.g. to the Stansted
+// Express). `city` scopes which day offers them ("lon" / "edi").
+export const TRANSIT = {
+  "tx-liverpoolst": { name: "Liverpool St · Stansted Express", coord: [51.5178, -0.0823], city: "lon", q: "Liverpool Street Station London", hint: "Stansted Express per l'aeroporto" },
+  "tx-stansted": { name: "Stansted Airport (STN)", coord: [51.886, 0.2389], city: "lon", q: "London Stansted Airport", hint: "Aeroporto di Londra Stansted" },
+  "tx-waverley": { name: "Edinburgh Waverley", coord: [55.9521, -3.1903], city: "edi", q: "Edinburgh Waverley Station", hint: "Treni per le gite" },
+  "tx-haymarket": { name: "Haymarket", coord: [55.9457, -3.2185], city: "edi", q: "Haymarket Station Edinburgh", hint: "Stazione ovest · tram per l'aeroporto" },
+  "tx-ediairport": { name: "Edinburgh Airport (EDI)", coord: [55.95, -3.3725], city: "edi", q: "Edinburgh Airport", hint: "Aeroporto · tram/bus dal centro" },
+};
+
 // Resolve the coordinate of a scheduled event from its catalog entry.
 export function coordForEvent(catalogEntry) {
   if (!catalogEntry) return CITY_DEFAULT;
   const { id, kind, trip, pool } = catalogEntry;
   if (kind === "trip") return TRIP_COORDS[id] || HUB.coord;
   if (kind === "tvenue") return TVENUE_COORDS[id] || TRIP_COORDS[trip] || HUB.coord;
-  if (pool === "lon" || kind === "london") return LONDON_DEFAULT;
+  if (pool === "lon" || kind === "london") return LONDON_COORDS[id] || LONDON_DEFAULT;
   return VENUE_COORDS[id] || CITY_DEFAULT;
 }
 

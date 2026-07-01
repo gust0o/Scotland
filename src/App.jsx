@@ -15,7 +15,7 @@ import { LogoMark, PlaneIcon, BedIcon, CutleryIcon, TimelineIcon } from "./icons
 import { BarIcon } from "./barIcons.jsx";
 import VenueDetail, { SummaryRow } from "./VenueDetail.jsx";
 import DayTimeline from "./DayTimeline.jsx";
-import { coordForEvent, travelLeg, parseCoord, HUB } from "./geo.js";
+import { coordForEvent, travelLeg, parseCoord, HUB, TRANSIT } from "./geo.js";
 const MONO = "'Spline Sans Mono',monospace";
 const MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
 // Primary destinations for the fixed bottom tab bar (ids + scroll-spy order).
@@ -845,10 +845,11 @@ export default class App extends React.Component {
     const start = Math.min(last, 22 * 60);
     const hh = String(Math.floor(start / 60)).padStart(2, "0") + ":" + String(start % 60).padStart(2, "0");
     // Duplicate across days: warn, but add anyway (you might want to go back).
-    // The hotel is expected in many days, so it never warns.
+    // Hotels and transport hubs are expected in many days, so they never warn.
+    const isNode = id === "hotel" || /^hotel\d+$/.test(id) || /^tx-/.test(id);
     let dupKey = null;
     const days = this.state.plan && this.state.plan.days;
-    if (days && id !== "hotel") for (const k in days) { if (k !== key && Array.isArray(days[k]) && days[k].some((e) => e.id === id)) { dupKey = k; break; } }
+    if (days && !isNode) for (const k in days) { if (k !== key && Array.isArray(days[k]) && days[k].some((e) => e.id === id)) { dupKey = k; break; } }
     this.planMut((p) => {
       this.ensureDay(p, key);
       p.days[key].push({ id, start: hh });
@@ -1874,14 +1875,26 @@ export default class App extends React.Component {
       // comes from the reserved `coord` field, or — as a fallback — from coords
       // embedded in its Maps link. The hotel is also an insertable timeline stop
       // (id "hotel"), so you can always drop a "return to the hotel" into a day.
-      const nightHotel = ((this.effReserved() || {}).alloggi || [])[dd.cityIdx] || null;
+      const alloggi = ((this.effReserved() || {}).alloggi) || [];
+      const nightHotel = alloggi[dd.cityIdx] || null;
       const hotelCoord = nightHotel ? (parseCoord(nightHotel.coord) || parseCoord(nightHotel.maps)) : null;
       const hotelName = (nightHotel && nightHotel.nome) ? nightHotel.nome : "Hotel";
+      // Resolve a hotel entry id to its accommodation: "hotel" = this night's
+      // hotel (legacy), "hotel0"/"hotel1" = London / Edinburgh explicitly.
+      const hotelOf = (id) => (id === "hotel" ? nightHotel : alloggi[parseInt(id.slice(5), 10)] || null);
       const events = entriesRaw.map((en, idx) => {
-        const isHotel = en.id === "hotel";
-        const a = isHotel
-          ? { name: "🏨 " + hotelName, dur: 20, kind: "hotel", q: (nightHotel && (nightHotel.indirizzo || nightHotel.nome)) || "hotel", note: (nightHotel && nightHotel.indirizzo) || "La tua base — rientro" }
-          : (D.catalog[en.id] || { name: en.id, dur: 60, q: "", note: "", kind: "sight" });
+        const isHotel = en.id === "hotel" || /^hotel\d+$/.test(en.id);
+        const isTransit = /^tx-/.test(en.id);
+        let a;
+        if (isHotel) {
+          const al = hotelOf(en.id);
+          a = { name: "🏨 " + ((al && al.nome) || "Hotel"), dur: 20, kind: "hotel", q: (al && (al.indirizzo || al.nome)) || "hotel", note: (al && al.indirizzo) || "La tua base — rientro", _coord: al ? (parseCoord(al.coord) || parseCoord(al.maps)) : null };
+        } else if (isTransit) {
+          const tx = TRANSIT[en.id];
+          a = { name: "🚉 " + (tx ? tx.name : "Stazione"), dur: 10, kind: "transit", q: tx ? tx.q : "", note: tx ? tx.hint : "", _coord: tx ? tx.coord : null };
+        } else {
+          a = D.catalog[en.id] || { name: en.id, dur: 60, q: "", note: "", kind: "sight" };
+        }
         const isTrip = a.kind === "trip";
         const train = isTrip ? a.train || 0 : 0;
         // main (visit) duration: per-entry override, else trip default, else catalog dur
@@ -1895,17 +1908,21 @@ export default class App extends React.Component {
           tvenue: { a: "#0E8F6B", b: "#E3F5EE", l: "In gita" },
           sight: { a: "#0E1542", b: "#EEF0F8", l: "Visita" },
           hotel: { a: "#6C4CF1", b: "#ECE9FB", l: "Hotel" },
+          transit: { a: "#3B6FE0", b: "#E7EEFB", l: "Trasporti" },
         };
         const pal = PAL[a.kind] || PAL.sight;
+        // For eateries the window that matters is the KITCHEN (food service):
+        // warn if the meal falls outside it. Uses `cucina` when set, else `open`.
         let warn = "";
-        if (a.open) {
+        const hrs = a.kind === "eat" ? (a.cucina || a.open) : a.open;
+        if (hrs) {
           const t = startMin / 60;
-          if (t < a.open[0] || t + dur / 60 > a.open[1]) warn = "aperto " + this.fmtH(a.open[0]) + "–" + this.fmtH(a.open[1]);
+          if (t < hrs[0] || t + dur / 60 > hrs[1]) warn = (a.kind === "eat" ? "cucina " : "aperto ") + this.fmtH(hrs[0]) + "–" + this.fmtH(hrs[1]);
         }
         return {
           idx, id: en.id, name: a.name, note: a.note || "", kind: a.kind, kindLabel: pal.l,
           durLabel: this.durLabel(dur), dur, train, transferMin, startMin, accent: pal.a, bg: pal.b, warn,
-          tripId: a.trip || "", coord: isHotel ? hotelCoord : coordForEvent(a), lead: null, tail: null,
+          tripId: a.trip || "", coord: (isHotel || isTransit) ? a._coord : coordForEvent(a), lead: null, tail: null,
           maps: this.M(a.q || a.name),
           onResize: (min) => this.setDur(key, idx, min),
         };
@@ -1923,7 +1940,8 @@ export default class App extends React.Component {
       // you switch. Everything is an estimate; real fares/timetables vary.
       const seq = events.slice().sort((a, b) => a.startMin - b.startMin);
       const isCity = (e) => e.kind === "sight" || e.kind === "eat" || e.kind === "london";
-      const isLocalNode = (e) => isCity(e) || e.kind === "hotel"; // walkable within the city
+      const isLocalNode = (e) => isCity(e) || e.kind === "hotel" || e.kind === "transit"; // in-town nodes
+      const SAME_CITY_KM = 35; // a "local hop" can't cross cities (London↔Edinburgh)
       // Format one travelLeg result into a timeline block: recommended mode as the
       // headline, the cheapest-faster paid option as the alternative.
       const fmtLeg = (leg, fromName, prefix) => {
@@ -1946,8 +1964,11 @@ export default class App extends React.Component {
       for (let i = 1; i < seq.length; i++) {
         const cur = seq[i], prev = seq[i - 1];
         if (localPair(cur, prev)) {
-          const blk = fmtLeg(travelLeg(prev.coord, cur.coord), prev.name.replace(/^🏨 /, ""));
-          if (blk && blk.min >= 4) cur.lead = blk;
+          const leg = travelLeg(prev.coord, cur.coord);
+          if (leg && leg.km < SAME_CITY_KM) { // never route a local hop across cities
+            const blk = fmtLeg(leg, prev.name.replace(/^(🏨|🚉) /, ""));
+            if (blk && blk.min >= 4) cur.lead = blk;
+          }
         }
       }
       // Hotel bookends — you sleep at the hotel every night, so the day starts
@@ -1964,10 +1985,11 @@ export default class App extends React.Component {
         const first = cityRun[0], last = cityRun[cityRun.length - 1];
         const morningDepart = dd.role === "edi" || dd.role === "rientro";
         const eveningReturn = dd.role !== "rientro";
-        if (morningDepart && !first.lead) first.lead = fmtLeg(travelLeg(hotelCoord, first.coord), "hotel");
+        const fwd = travelLeg(hotelCoord, first.coord);
+        if (morningDepart && !first.lead && fwd && fwd.km < SAME_CITY_KM) first.lead = fmtLeg(fwd, "hotel");
         if (eveningReturn) {
           const back = travelLeg(last.coord, hotelCoord);
-          if (back && back.pick) last.tail = { min: back.pick.min, icon: back.pick.icon, costLabel: back.pick.costLabel, primary: "All'hotel · " + back.pick.mode, sub: "~" + back.pick.min + "′ · " + back.pick.costLabel + " · stima" };
+          if (back && back.pick && back.km < SAME_CITY_KM) last.tail = { min: back.pick.min, icon: back.pick.icon, costLabel: back.pick.costLabel, primary: "All'hotel · " + back.pick.mode, sub: "~" + back.pick.min + "′ · " + back.pick.costLabel + " · stima" };
         }
       }
       // gite: Andata (first) → chained legs → Ritorno (last). Andata/Ritorno keep
@@ -2051,12 +2073,18 @@ export default class App extends React.Component {
         // long scroll.
         const zoneOf = (id) => { const d = D.details[id] || {}; return d.zone || d.area || ""; };
         const mk = (id, catKey) => {
-          if (id === "hotel") return { id, name: "🏨 " + hotelName, note: (nightHotel && nightHotel.indirizzo) || "La tua base — torna quando vuoi", durLabel: "sosta", category: catKey, zone: "", onAdd: () => this.addEntry(key, "hotel") };
+          if (id === "hotel" || /^hotel\d+$/.test(id)) { const al = hotelOf(id); return { id, name: "🏨 " + ((al && al.nome) || "Hotel"), note: (al && al.citta) ? ("Rientro · " + al.citta) : "La tua base", durLabel: "sosta", category: catKey, zone: "", onAdd: () => this.addEntry(key, id) }; }
+          if (/^tx-/.test(id)) { const tx = TRANSIT[id]; return { id, name: "🚉 " + (tx ? tx.name : id), note: tx ? tx.hint : "", durLabel: "sosta", category: catKey, zone: "", onAdd: () => this.addEntry(key, id) }; }
           const a = D.catalog[id]; return { id, name: a.name, note: a.note || "", durLabel: this.durLabel(a.dur), category: catKey, zone: zoneOf(id), onAdd: () => this.addEntry(key, id) };
         };
-        // Ordered categories available on this day. The hotel is always first so
-        // you can drop a "return to the hotel" into any day.
-        const cats = [{ key: "base", label: "🏨 Hotel / rientro", ids: ["hotel"] }];
+        // Ordered categories. Hotels (both cities, so travel days work) and the
+        // stations/airports relevant to this day come first — you can always drop
+        // a "return to the hotel" or "get to the Stansted Express" into any day.
+        const hotelIds = alloggi.length ? alloggi.map((_, i) => "hotel" + i) : ["hotel"];
+        const cities = dd.key === "g1" ? ["lon", "edi"] : dd.cityIdx === 0 ? ["lon"] : ["edi"];
+        const txIds = Object.keys(TRANSIT).filter((k) => cities.includes(TRANSIT[k].city));
+        const cats = [{ key: "base", label: "🏨 Hotel / rientro", ids: hotelIds }];
+        if (txIds.length) cats.push({ key: "transit", label: "🚉 Stazioni & aeroporti", ids: txIds });
         if (dd.cityIdx === 0) {
           cats.push({ key: "lon", label: "Londra · da fare", ids: pool });
         } else {
