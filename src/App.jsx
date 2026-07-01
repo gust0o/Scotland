@@ -845,9 +845,10 @@ export default class App extends React.Component {
     const start = Math.min(last, 22 * 60);
     const hh = String(Math.floor(start / 60)).padStart(2, "0") + ":" + String(start % 60).padStart(2, "0");
     // Duplicate across days: warn, but add anyway (you might want to go back).
+    // The hotel is expected in many days, so it never warns.
     let dupKey = null;
     const days = this.state.plan && this.state.plan.days;
-    if (days) for (const k in days) { if (k !== key && Array.isArray(days[k]) && days[k].some((e) => e.id === id)) { dupKey = k; break; } }
+    if (days && id !== "hotel") for (const k in days) { if (k !== key && Array.isArray(days[k]) && days[k].some((e) => e.id === id)) { dupKey = k; break; } }
     this.planMut((p) => {
       this.ensureDay(p, key);
       p.days[key].push({ id, start: hh });
@@ -1869,8 +1870,18 @@ export default class App extends React.Component {
       const isToday = !!(date && date === today);
       const pool = dd.cityIdx === 0 ? D.poolLon : D.poolEdi;
       const entriesRaw = this.dayEntries(key);
+      // The hotel where you sleep this night (alloggi[cityIdx]); its coordinate
+      // comes from the reserved `coord` field, or — as a fallback — from coords
+      // embedded in its Maps link. The hotel is also an insertable timeline stop
+      // (id "hotel"), so you can always drop a "return to the hotel" into a day.
+      const nightHotel = ((this.effReserved() || {}).alloggi || [])[dd.cityIdx] || null;
+      const hotelCoord = nightHotel ? (parseCoord(nightHotel.coord) || parseCoord(nightHotel.maps)) : null;
+      const hotelName = (nightHotel && nightHotel.nome) ? nightHotel.nome : "Hotel";
       const events = entriesRaw.map((en, idx) => {
-        const a = D.catalog[en.id] || { name: en.id, dur: 60, q: "", note: "", kind: "sight" };
+        const isHotel = en.id === "hotel";
+        const a = isHotel
+          ? { name: "🏨 " + hotelName, dur: 20, kind: "hotel", q: (nightHotel && (nightHotel.indirizzo || nightHotel.nome)) || "hotel", note: (nightHotel && nightHotel.indirizzo) || "La tua base — rientro" }
+          : (D.catalog[en.id] || { name: en.id, dur: 60, q: "", note: "", kind: "sight" });
         const isTrip = a.kind === "trip";
         const train = isTrip ? a.train || 0 : 0;
         // main (visit) duration: per-entry override, else trip default, else catalog dur
@@ -1883,6 +1894,7 @@ export default class App extends React.Component {
           trip: { a: "#14C08C", b: "#DBF3E9", l: "Gita" },
           tvenue: { a: "#0E8F6B", b: "#E3F5EE", l: "In gita" },
           sight: { a: "#0E1542", b: "#EEF0F8", l: "Visita" },
+          hotel: { a: "#6C4CF1", b: "#ECE9FB", l: "Hotel" },
         };
         const pal = PAL[a.kind] || PAL.sight;
         let warn = "";
@@ -1893,7 +1905,7 @@ export default class App extends React.Component {
         return {
           idx, id: en.id, name: a.name, note: a.note || "", kind: a.kind, kindLabel: pal.l,
           durLabel: this.durLabel(dur), dur, train, transferMin, startMin, accent: pal.a, bg: pal.b, warn,
-          tripId: a.trip || "", coord: coordForEvent(a), lead: null, tail: null,
+          tripId: a.trip || "", coord: isHotel ? hotelCoord : coordForEvent(a), lead: null, tail: null,
           maps: this.M(a.q || a.name),
           onResize: (min) => this.setDur(key, idx, min),
         };
@@ -1911,11 +1923,7 @@ export default class App extends React.Component {
       // you switch. Everything is an estimate; real fares/timetables vary.
       const seq = events.slice().sort((a, b) => a.startMin - b.startMin);
       const isCity = (e) => e.kind === "sight" || e.kind === "eat" || e.kind === "london";
-      // The hotel where you sleep this night (alloggi[cityIdx]); its coordinate
-      // comes from the reserved `coord` field, or — as a fallback — from coords
-      // embedded in its Maps link.
-      const nightHotel = ((this.effReserved() || {}).alloggi || [])[dd.cityIdx] || null;
-      const hotelCoord = nightHotel ? (parseCoord(nightHotel.coord) || parseCoord(nightHotel.maps)) : null;
+      const isLocalNode = (e) => isCity(e) || e.kind === "hotel"; // walkable within the city
       // Format one travelLeg result into a timeline block: recommended mode as the
       // headline, the cheapest-faster paid option as the alternative.
       const fmtLeg = (leg, fromName, prefix) => {
@@ -1930,15 +1938,15 @@ export default class App extends React.Component {
           sub: "~" + p.min + "′ · " + p.costLabel + altTxt + " · stima",
         };
       };
-      // local hops — between two city venues, OR between two sub-venues of the
-      // SAME gita (Seabird Centre → Tantallon, Old Course → Cathedral…).
+      // local hops — between two city stops (venues OR the hotel, all walkable in
+      // town), OR between two sub-venues of the SAME gita.
       const localPair = (cur, prev) =>
-        (isCity(cur) && isCity(prev)) ||
+        (isLocalNode(cur) && isLocalNode(prev)) ||
         (cur.kind === "tvenue" && prev.kind === "tvenue" && cur.tripId && cur.tripId === prev.tripId);
       for (let i = 1; i < seq.length; i++) {
         const cur = seq[i], prev = seq[i - 1];
         if (localPair(cur, prev)) {
-          const blk = fmtLeg(travelLeg(prev.coord, cur.coord), prev.name);
+          const blk = fmtLeg(travelLeg(prev.coord, cur.coord), prev.name.replace(/^🏨 /, ""));
           if (blk && blk.min >= 4) cur.lead = blk;
         }
       }
@@ -1948,8 +1956,11 @@ export default class App extends React.Component {
       // return to that night's hotel on every night except the day you leave.
       // Attached to the first/last *city* stop (a gita already shows its own
       // Andata/Ritorno to Edinburgh).
+      // If the user dropped an explicit hotel stop in the day, they're in control
+      // of the returns — skip the automatic bookends to avoid doubling them.
+      const hasHotelStop = seq.some((e) => e.kind === "hotel");
       const cityRun = seq.filter(isCity);
-      if (hotelCoord && cityRun.length) {
+      if (hotelCoord && cityRun.length && !hasHotelStop) {
         const first = cityRun[0], last = cityRun[cityRun.length - 1];
         const morningDepart = dd.role === "edi" || dd.role === "rientro";
         const eveningReturn = dd.role !== "rientro";
@@ -2039,9 +2050,13 @@ export default class App extends React.Component {
         // be filtered by a category chip, a zone chip and free-text — not just a
         // long scroll.
         const zoneOf = (id) => { const d = D.details[id] || {}; return d.zone || d.area || ""; };
-        const mk = (id, catKey) => { const a = D.catalog[id]; return { id, name: a.name, note: a.note || "", durLabel: this.durLabel(a.dur), category: catKey, zone: zoneOf(id), onAdd: () => this.addEntry(key, id) }; };
-        // Ordered categories available on this day.
-        const cats = [];
+        const mk = (id, catKey) => {
+          if (id === "hotel") return { id, name: "🏨 " + hotelName, note: (nightHotel && nightHotel.indirizzo) || "La tua base — torna quando vuoi", durLabel: "sosta", category: catKey, zone: "", onAdd: () => this.addEntry(key, "hotel") };
+          const a = D.catalog[id]; return { id, name: a.name, note: a.note || "", durLabel: this.durLabel(a.dur), category: catKey, zone: zoneOf(id), onAdd: () => this.addEntry(key, id) };
+        };
+        // Ordered categories available on this day. The hotel is always first so
+        // you can drop a "return to the hotel" into any day.
+        const cats = [{ key: "base", label: "🏨 Hotel / rientro", ids: ["hotel"] }];
         if (dd.cityIdx === 0) {
           cats.push({ key: "lon", label: "Londra · da fare", ids: pool });
         } else {
@@ -2103,7 +2118,7 @@ export default class App extends React.Component {
         nowMin: isToday ? now.getHours() * 60 + now.getMinutes() : null,
         onToggle: () => this.toggleDay(key),
         onToggleEdit: () => this.toggleEditDay(key),
-        onSelect: (idx) => { const ev = events[idx]; if (ev) this.openDetail(ev.id, events.map((e) => e.id).filter((id) => D.details[id])); },
+        onSelect: (idx) => { const ev = events[idx]; if (ev && D.details[ev.id]) this.openDetail(ev.id, events.map((e) => e.id).filter((id) => D.details[id])); },
         onChangeStart: (idx, min) => this.setStart(key, idx, min),
         onResize: (idx, min) => this.setDur(key, idx, min),
         onRemove: (idx) => this.removeEntry(key, idx),
