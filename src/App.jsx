@@ -508,7 +508,8 @@ export default class App extends React.Component {
     pickerFor: null,
     pickerQuery: "",
     pickerCat: "",
-    pickerZone: "",
+    pickerHood: "", // city neighbourhood filter (Old Town, Leith, Shoreditch…)
+    pickerArea: "", // day-trip geographic-area filter (Fife, Glasgow, East Lothian…)
     forecast: null,
     wxErr: null,
     coverVar: null,
@@ -2095,16 +2096,33 @@ export default class App extends React.Component {
       });
       const pf = this.state.pickerFor;
       const pickerOpen = !!(pf && pf.key === key);
-      let pickerGroups = [], pickerCats = [], pickerZones = [];
+      let pickerGroups = [], pickerCats = [], pickerHoods = [], pickerAreas = [];
       if (pickerOpen) {
-        // Every addable place tagged with its category + zone, so the picker can
-        // be filtered by a category chip, a zone chip and free-text — not just a
-        // long scroll.
-        const zoneOf = (id) => { const d = D.details[id] || {}; return d.zone || d.area || ""; };
+        // Every addable place tagged with its category, neighbourhood/area, AND
+        // its distance from where the day currently ends — so the picker can be
+        // filtered by category + neighbourhood/area chips + free-text, and sorted
+        // by "what's actually close to my last stop" instead of a static list.
+        // `zone` = city-scale neighbourhood (Old Town, Leith, Shoreditch…);
+        // `area` = day-trip-scale geographic region (Fife, Glasgow, East
+        // Lothian…) — kept as two separate dimensions (see pickerHoods/Areas
+        // below), since mixing them made the filter chips read as one chaotic list.
+        const refCoord = seq.length ? seq[seq.length - 1].coord : hotelCoord;
+        const coordOf = (id) => {
+          if (id === "hotel" || /^hotel\d+$/.test(id)) { const al = hotelOf(id); return al ? (parseCoord(al.coord) || parseCoord(al.maps)) : null; }
+          if (/^tx-/.test(id)) return (TRANSIT[id] || {}).coord || null;
+          return coordForEvent(D.catalog[id]);
+        };
+        const distOf = (itemCoord) => {
+          if (!refCoord || !itemCoord) return null;
+          const leg = travelLeg(refCoord, itemCoord);
+          return leg && leg.pick ? { km: leg.km, label: leg.pick.icon + " " + leg.pick.min + "′" } : null;
+        };
         const mk = (id, catKey) => {
-          if (id === "hotel" || /^hotel\d+$/.test(id)) { const al = hotelOf(id); return { id, name: "🏨 " + ((al && al.nome) || "Hotel"), note: (al && al.citta) ? ("Rientro · " + al.citta) : "La tua base", durLabel: "sosta", category: catKey, zone: "", onAdd: () => this.addEntry(key, id) }; }
-          if (/^tx-/.test(id)) { const tx = TRANSIT[id]; return { id, name: "🚉 " + (tx ? tx.name : id), note: tx ? tx.hint : "", durLabel: "sosta", category: catKey, zone: "", onAdd: () => this.addEntry(key, id) }; }
-          const a = D.catalog[id]; return { id, name: a.name, note: a.note || "", durLabel: this.durLabel(a.dur), category: catKey, zone: zoneOf(id), onAdd: () => this.addEntry(key, id) };
+          const dist = distOf(coordOf(id));
+          if (id === "hotel" || /^hotel\d+$/.test(id)) { const al = hotelOf(id); return { id, name: "🏨 " + ((al && al.nome) || "Hotel"), note: (al && al.citta) ? ("Rientro · " + al.citta) : "La tua base", durLabel: "sosta", category: catKey, zone: "", area: "", dist, onAdd: () => this.addEntry(key, id) }; }
+          if (/^tx-/.test(id)) { const tx = TRANSIT[id]; return { id, name: "🚉 " + (tx ? tx.name : id), note: tx ? tx.hint : "", durLabel: "sosta", category: catKey, zone: "", area: "", dist, onAdd: () => this.addEntry(key, id) }; }
+          const a = D.catalog[id]; const d = D.details[id] || {};
+          return { id, name: a.name, note: a.note || "", durLabel: this.durLabel(a.dur), category: catKey, zone: d.zone || "", area: d.area || "", dist, onAdd: () => this.addEntry(key, id) };
         };
         // Ordered categories. Hotels (both cities, so travel days work) and the
         // stations/airports relevant to this day come first — you can always drop
@@ -2139,19 +2157,27 @@ export default class App extends React.Component {
 
         const q = (this.state.pickerQuery || "").trim().toLowerCase();
         const selCat = this.state.pickerCat || "";
-        const selZone = this.state.pickerZone || "";
-        // Zone chips: only zones present in the (category-scoped) set, ordered.
-        const zoneScope = all.filter((it) => !selCat || it.category === selCat);
-        const present = new Set(zoneScope.map((it) => it.zone).filter(Boolean));
-        const ordered = [...ZONES_ORDER, ...AREAS_ORDER];
-        pickerZones = [...ordered.filter((z) => present.has(z)), ...[...present].filter((z) => !ordered.includes(z))];
+        const selHood = this.state.pickerHood || "";
+        const selArea = this.state.pickerArea || "";
+        // Neighbourhood / area chips: only values present in the (category-scoped)
+        // set, ordered — two SEPARATE dimensions so a city neighbourhood never
+        // shares a row with a day-trip region.
+        const scope = all.filter((it) => !selCat || it.category === selCat);
+        const presentHood = new Set(scope.map((it) => it.zone).filter(Boolean));
+        pickerHoods = [...ZONES_ORDER.filter((z) => presentHood.has(z)), ...[...presentHood].filter((z) => !ZONES_ORDER.includes(z))];
+        const presentArea = new Set(scope.map((it) => it.area).filter(Boolean));
+        pickerAreas = [...AREAS_ORDER.filter((z) => presentArea.has(z)), ...[...presentArea].filter((z) => !AREAS_ORDER.includes(z))];
 
         const filtered = all.filter((it) =>
           (!selCat || it.category === selCat) &&
-          (!selZone || it.zone === selZone) &&
+          (!selHood || it.zone === selHood) &&
+          (!selArea || it.area === selArea) &&
           (!q || it.name.toLowerCase().includes(q)));
+        // Sort each group by distance from the day's current last stop (closest
+        // first); items with no computable distance sink to the end, stable order.
+        const byDist = (a, b) => (a.dist ? a.dist.km : Infinity) - (b.dist ? b.dist.km : Infinity);
         pickerGroups = cats
-          .map((c) => ({ label: c.label, items: filtered.filter((it) => it.category === c.key) }))
+          .map((c) => ({ label: c.label, items: filtered.filter((it) => it.category === c.key).slice().sort(byDist) }))
           .filter((g) => g.items.length);
       }
       const open = this.state.dayOpen[key] !== undefined ? this.state.dayOpen[key] : isToday;
@@ -2179,16 +2205,19 @@ export default class App extends React.Component {
         onChangeStart: (idx, min) => this.setStart(key, idx, min),
         onResize: (idx, min) => this.setDur(key, idx, min),
         onRemove: (idx) => this.removeEntry(key, idx),
-        canAdd: !frozen, pickerOpen, pickerGroups, pickerCats, pickerZones,
+        canAdd: !frozen, pickerOpen, pickerGroups, pickerCats, pickerHoods, pickerAreas,
         addLabel: pickerOpen ? "Chiudi" : "+ Aggiungi attività",
-        onToggleAdd: () => this.setState((s) => ({ pickerFor: pickerOpen ? null : { key }, pickerQuery: "", pickerCat: "", pickerZone: "" })),
+        onToggleAdd: () => this.setState((s) => ({ pickerFor: pickerOpen ? null : { key }, pickerQuery: "", pickerCat: "", pickerHood: "", pickerArea: "" })),
         pickerQuery: this.state.pickerQuery,
         onPickerQuery: (v) => this.setState({ pickerQuery: v }),
         pickerCat: this.state.pickerCat,
-        pickerZone: this.state.pickerZone,
-        // Changing category resets the zone (zones are category-scoped).
-        onPickerCat: (k) => this.setState((s) => ({ pickerCat: s.pickerCat === k ? "" : k, pickerZone: "" })),
-        onPickerZone: (z) => this.setState((s) => ({ pickerZone: s.pickerZone === z ? "" : z })),
+        pickerHood: this.state.pickerHood,
+        pickerArea: this.state.pickerArea,
+        // Changing category resets neighbourhood/area (both are category-scoped).
+        onPickerCat: (k) => this.setState((s) => ({ pickerCat: s.pickerCat === k ? "" : k, pickerHood: "", pickerArea: "" })),
+        // Neighbourhood and area are mutually exclusive — picking one clears the other.
+        onPickerHood: (z) => this.setState((s) => ({ pickerHood: s.pickerHood === z ? "" : z, pickerArea: "" })),
+        onPickerArea: (z) => this.setState((s) => ({ pickerArea: s.pickerArea === z ? "" : z, pickerHood: "" })),
       };
     });
 
@@ -2626,13 +2655,28 @@ export default class App extends React.Component {
                                 })}
                               </div>
                             )}
-                            {/* zone chips */}
-                            {d.pickerZones.length > 0 && (
-                              <div style={{ display: "flex", flexWrap: "wrap", gap: 5, margin: "0 1px 8px" }}>
-                                {["", ...d.pickerZones].map((z) => {
-                                  const on = (d.pickerZone || "") === z;
-                                  return <button key={z || "allz"} onClick={() => d.onPickerZone(z)} style={{ cursor: "pointer", fontSize: 10.5, fontWeight: 700, border: "1px solid " + (on ? "#14C08C" : "#E4DAC2"), background: on ? "#E3F5EE" : "#FBF7EC", color: on ? "#0a7d5d" : "#6B6450", borderRadius: 999, padding: "3px 10px", whiteSpace: "nowrap" }}>{z || "Ogni zona"}</button>;
-                                })}
+                            {/* neighbourhood chips (city-scale: Old Town, Leith, Shoreditch…) */}
+                            {d.pickerHoods.length > 0 && (
+                              <div style={{ margin: "0 1px 6px" }}>
+                                <div style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#9a937c", margin: "0 2px 3px" }}>Quartiere</div>
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                                  {["", ...d.pickerHoods].map((z) => {
+                                    const on = (d.pickerHood || "") === z;
+                                    return <button key={z || "allhood"} onClick={() => d.onPickerHood(z)} style={{ cursor: "pointer", fontSize: 10.5, fontWeight: 700, border: "1px solid " + (on ? "#14C08C" : "#E4DAC2"), background: on ? "#E3F5EE" : "#FBF7EC", color: on ? "#0a7d5d" : "#6B6450", borderRadius: 999, padding: "3px 10px", whiteSpace: "nowrap" }}>{z || "Ogni quartiere"}</button>;
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                            {/* geographic-area chips (day-trip scale: Fife, Glasgow, East Lothian…) */}
+                            {d.pickerAreas.length > 0 && (
+                              <div style={{ margin: "0 1px 8px" }}>
+                                <div style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#9a937c", margin: "0 2px 3px" }}>Zona geografica · gite</div>
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                                  {["", ...d.pickerAreas].map((z) => {
+                                    const on = (d.pickerArea || "") === z;
+                                    return <button key={z || "allarea"} onClick={() => d.onPickerArea(z)} style={{ cursor: "pointer", fontSize: 10.5, fontWeight: 700, border: "1px solid " + (on ? "#3B6FE0" : "#E4DAC2"), background: on ? "#E7EEFB" : "#FBF7EC", color: on ? "#1d4ba8" : "#6B6450", borderRadius: 999, padding: "3px 10px", whiteSpace: "nowrap" }}>{z || "Ogni zona"}</button>;
+                                  })}
+                                </div>
                               </div>
                             )}
                             {d.pickerGroups.length === 0 && (
@@ -2647,7 +2691,10 @@ export default class App extends React.Component {
                                       <span style={{ fontSize: 13, fontWeight: 800, color: "#17142C" }}>{p.name}</span>
                                       {p.note && <span style={{ fontSize: 11, fontWeight: 600, color: "#6B6450", lineHeight: 1.35 }}>{p.note}</span>}
                                     </span>
-                                    <span style={{ flex: "none", marginTop: 1, fontSize: 10.5, fontWeight: 800, color: "#6B6450", background: "#ECE3D0", borderRadius: 999, padding: "1px 7px", whiteSpace: "nowrap" }}>{p.durLabel}</span>
+                                    <span style={{ flex: "none", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
+                                      <span style={{ marginTop: 1, fontSize: 10.5, fontWeight: 800, color: "#6B6450", background: "#ECE3D0", borderRadius: 999, padding: "1px 7px", whiteSpace: "nowrap" }}>{p.durLabel}</span>
+                                      {p.dist && <span style={{ fontSize: 10, fontWeight: 800, color: "#0a7d5d", whiteSpace: "nowrap" }}>{p.dist.label}</span>}
+                                    </span>
                                   </button>
                                 ))}
                               </div>
