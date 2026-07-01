@@ -1,0 +1,49 @@
+# Build the app and publish it to the `gh-pages` branch on every push to main,
+# so a merged PR goes live automatically (no more manual deploy step).
+# Keeps the existing Pages setup: Settings → Pages → "Deploy from a branch:
+# gh-pages". Nothing to change there.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # also runnable by hand from the Actions tab
+
+# The job pushes the built site to the gh-pages branch.
+permissions:
+  contents: write
+
+# Never let two deploys race; keep only the latest.
+concurrency:
+  group: deploy-gh-pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # Single-page fallback: serve the app for unknown paths too.
+      - name: SPA 404 fallback
+        run: cp dist/index.html dist/404.html
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          # .nojekyll is added automatically so /assets is served verbatim.

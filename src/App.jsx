@@ -413,6 +413,7 @@ export default class App extends React.Component {
     dayOpen: {},
     dupWarn: "",
     pickerFor: null,
+    pickerQuery: "",
     forecast: null,
     wxErr: null,
     coverVar: null,
@@ -1784,10 +1785,11 @@ export default class App extends React.Component {
       // you switch. Everything is an estimate; real fares/timetables vary.
       const seq = events.slice().sort((a, b) => a.startMin - b.startMin);
       const isCity = (e) => e.kind === "sight" || e.kind === "eat" || e.kind === "london";
-      const hotelCoord = parseCoord(
-        ((this.effReserved() || {}).alloggi || [])[dd.cityIdx] &&
-          (((this.effReserved() || {}).alloggi || [])[dd.cityIdx].coord),
-      );
+      // The hotel where you sleep this night (alloggi[cityIdx]); its coordinate
+      // comes from the reserved `coord` field, or — as a fallback — from coords
+      // embedded in its Maps link.
+      const nightHotel = ((this.effReserved() || {}).alloggi || [])[dd.cityIdx] || null;
+      const hotelCoord = nightHotel ? (parseCoord(nightHotel.coord) || parseCoord(nightHotel.maps)) : null;
       // Format one travelLeg result into a timeline block: recommended mode as the
       // headline, the cheapest-faster paid option as the alternative.
       const fmtLeg = (leg, fromName, prefix) => {
@@ -1797,7 +1799,7 @@ export default class App extends React.Component {
           || leg.options.find((o) => o !== p);
         const altTxt = alt ? " · o " + alt.icon + " " + alt.mode + " " + alt.min + "′ " + alt.costLabel : "";
         return {
-          min: p.min, icon: p.icon,
+          min: p.min, icon: p.icon, costLabel: p.costLabel || "",
           primary: (prefix || "") + p.mode + (fromName ? " da " + fromName : ""),
           sub: "~" + p.min + "′ · " + p.costLabel + altTxt + " · stima",
         };
@@ -1814,13 +1816,22 @@ export default class App extends React.Component {
           if (blk && blk.min >= 4) cur.lead = blk;
         }
       }
-      // hotel bookends on a pure Edinburgh day (role "edi"): leave from / return to
+      // Hotel bookends — you sleep at the hotel every night, so the day starts
+      // from it and ends back at it. Morning departure on the full days that
+      // start at the hotel (Edinburgh days + the departure morning); evening
+      // return to that night's hotel on every night except the day you leave.
+      // Attached to the first/last *city* stop (a gita already shows its own
+      // Andata/Ritorno to Edinburgh).
       const cityRun = seq.filter(isCity);
-      if (hotelCoord && dd.role === "edi" && cityRun.length) {
+      if (hotelCoord && cityRun.length) {
         const first = cityRun[0], last = cityRun[cityRun.length - 1];
-        if (!first.lead) first.lead = fmtLeg(travelLeg(hotelCoord, first.coord), "hotel");
-        const back = travelLeg(last.coord, hotelCoord);
-        if (back && back.pick) last.tail = { min: back.pick.min, icon: back.pick.icon, primary: "All'hotel · " + back.pick.mode, sub: "~" + back.pick.min + "′ · " + back.pick.costLabel + " · stima" };
+        const morningDepart = dd.role === "edi" || dd.role === "rientro";
+        const eveningReturn = dd.role !== "rientro";
+        if (morningDepart && !first.lead) first.lead = fmtLeg(travelLeg(hotelCoord, first.coord), "hotel");
+        if (eveningReturn) {
+          const back = travelLeg(last.coord, hotelCoord);
+          if (back && back.pick) last.tail = { min: back.pick.min, icon: back.pick.icon, costLabel: back.pick.costLabel, primary: "All'hotel · " + back.pick.mode, sub: "~" + back.pick.min + "′ · " + back.pick.costLabel + " · stima" };
+        }
       }
       // gite: Andata (first) → chained legs → Ritorno (last). Andata/Ritorno keep
       // the curated train time; an Uber is noted only when it stays cheap (≤£20).
@@ -1923,6 +1934,13 @@ export default class App extends React.Component {
           });
         }
         pickerGroups = pickerGroups.filter((g) => g.items.length);
+        // Quick filter: type to narrow the (long) list by name across all groups.
+        const q = (this.state.pickerQuery || "").trim().toLowerCase();
+        if (q) {
+          pickerGroups = pickerGroups
+            .map((g) => ({ ...g, items: g.items.filter((it) => it.name.toLowerCase().includes(q)) }))
+            .filter((g) => g.items.length);
+        }
       }
       const open = this.state.dayOpen[key] !== undefined ? this.state.dayOpen[key] : isToday;
       const sorted = events.slice().sort((a, b) => a.startMin - b.startMin);
@@ -1951,7 +1969,9 @@ export default class App extends React.Component {
         onRemove: (idx) => this.removeEntry(key, idx),
         canAdd: !frozen, pickerOpen, pickerGroups,
         addLabel: pickerOpen ? "Chiudi" : "+ Aggiungi attività",
-        onToggleAdd: () => this.setState((s) => ({ pickerFor: pickerOpen ? null : { key } })),
+        onToggleAdd: () => this.setState((s) => ({ pickerFor: pickerOpen ? null : { key }, pickerQuery: "" })),
+        pickerQuery: this.state.pickerQuery,
+        onPickerQuery: (v) => this.setState({ pickerQuery: v }),
       };
     });
 
@@ -2343,10 +2363,28 @@ export default class App extends React.Component {
                       <div style={{ marginTop: 10 }}>
                         <button onClick={d.onToggleAdd} style={{ cursor: "pointer", width: "100%", border: "1.5px dashed #bcae8f", background: "transparent", borderRadius: 10, padding: 9, fontSize: 12.5, fontWeight: 800, color: "#0E1542" }}>{d.addLabel}</button>
                         {d.pickerOpen && (
-                          <div style={{ marginTop: 7, background: "#F6F0E2", border: "1.5px solid #D9CFB7", borderRadius: 12, padding: 9, maxHeight: 320, overflowY: "auto" }}>
+                          <div style={{ marginTop: 7, background: "#F6F0E2", border: "1.5px solid #D9CFB7", borderRadius: 12, padding: 9, maxHeight: 360, overflowY: "auto", overscrollBehavior: "contain" }}>
+                            {/* quick filter — type to narrow the long catalogue */}
+                            <div style={{ position: "sticky", top: -9, zIndex: 4, background: "#F6F0E2", paddingTop: 2, margin: "-2px -1px 8px" }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#fff", border: "1.5px solid #D9CFB7", borderRadius: 9, padding: "7px 10px" }}>
+                                <span style={{ fontSize: 13, opacity: 0.6 }} aria-hidden>🔎</span>
+                                <input
+                                  value={d.pickerQuery}
+                                  onChange={(e) => d.onPickerQuery(e.target.value)}
+                                  placeholder="Cerca un luogo…"
+                                  style={{ flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent", fontSize: 13, fontWeight: 600, color: "#17142C" }}
+                                />
+                                {d.pickerQuery && (
+                                  <button onClick={() => d.onPickerQuery("")} title="Pulisci" style={{ flex: "none", cursor: "pointer", border: "none", background: "transparent", color: "#9a937c", fontSize: 16, fontWeight: 900, lineHeight: 1, padding: 0 }}>×</button>
+                                )}
+                              </div>
+                            </div>
+                            {d.pickerGroups.length === 0 && (
+                              <div style={{ textAlign: "center", fontSize: 12.5, fontWeight: 600, color: "#9a937c", padding: "14px 6px" }}>Nessun luogo trovato per «{d.pickerQuery}».</div>
+                            )}
                             {d.pickerGroups.map((grp, gi2) => (
                               <div key={gi2} style={{ marginBottom: 6 }}>
-                                <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#9a937c", margin: "4px 2px 6px" }}>{grp.label}</div>
+                                <div style={{ position: "sticky", top: 38, zIndex: 3, fontSize: 10, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color: "#9a937c", background: "#F6F0E2", margin: "0 2px", padding: "4px 0 6px" }}>{grp.label}</div>
                                 {grp.items.map((p, pi) => (
                                   <button key={pi} onClick={p.onAdd} style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, background: "#fff", border: "1px solid #E4DAC2", borderRadius: 9, padding: "8px 10px", marginBottom: 6 }}>
                                     <span style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
