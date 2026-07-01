@@ -401,10 +401,14 @@ function Onboarding({ onDownload, onCopy, msg, jsonText, onJsonInput, onSave, on
   );
   const btn = (bg, fg) => ({ cursor: "pointer", display: "inline-block", fontSize: 13, fontWeight: 900, color: fg, background: bg, border: "none", padding: "10px 15px", borderRadius: 999, textDecoration: "none" });
   const feat = (t) => (
-    <div style={{ display: "flex", gap: 10, marginTop: 11, fontSize: 13.5, lineHeight: 1.55, fontWeight: 600, color: "#EAEDF9" }}>
-      <span style={{ flex: "none", color: "#2BE3A8", fontWeight: 900 }}>✓</span><span>{t}</span>
+    <div style={{ display: "flex", gap: 10, marginTop: 10, fontSize: 13, lineHeight: 1.5, fontWeight: 600, color: "#5b5644" }}>
+      <span style={{ flex: "none", color: "#14C08C", fontWeight: 900 }}>✓</span><span>{t}</span>
     </div>
   );
+  // Keep first run uncluttered: the JSON config (only for who has bookings) is
+  // tucked behind a disclosure, auto-opened once there's something to report.
+  const [cfgOpen, setCfgOpen] = useState(false);
+  const configOpen = cfgOpen || !!feedback || !!(jsonText && jsonText.trim());
   return (
     <div>
       <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 4 }}>
@@ -417,10 +421,30 @@ function Onboarding({ onDownload, onCopy, msg, jsonText, onJsonInput, onSave, on
       {/* Install-as-app invitation (first thing a new visitor should do) */}
       {installCard}
 
-      {/* Config card — same file, two alternative methods (AI or by hand), then import */}
+      {/* How it works — for everyone, shown before the (optional) data config */}
       <div style={{ background: "#F6F0E2", borderRadius: 18, padding: "16px 16px 18px", marginBottom: 12, border: "1.5px solid #E1D7BF" }}>
-        <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase", color: "#9a7a14" }}>Configura il viaggio</div>
-        <div style={{ fontWeight: 900, fontSize: 19, color: "#17142C", margin: "4px 0 4px" }}>Carica i tuoi dati</div>
+        <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase", color: "#9a7a14" }}>Come funziona</div>
+        <div style={{ marginTop: 8 }}>
+          {feat("Esplora le sezioni: Edimburgo, Mangiare & locali, Esperienze, Dintorni & gite, Glasgow, Londra.")}
+          {feat("Salva i preferiti con la ★ su qualsiasi luogo o attività.")}
+          {feat("Costruisci il Programma giorno per giorno — trascinando le tappe, anche con l'aiuto di un'AI.")}
+          {feat("Tutto è consultabile offline: in aereo, in metro o senza rete.")}
+          {feat("Nessun account e nessun server: i dati riservati restano sul tuo dispositivo.")}
+        </div>
+      </div>
+
+      {/* Config card — optional, behind a disclosure (only who has bookings) */}
+      <div style={{ background: "#F6F0E2", borderRadius: 18, padding: configOpen ? "16px 16px 18px" : "4px 6px", marginBottom: 4, border: "1.5px solid #E1D7BF" }}>
+        <button onClick={() => setCfgOpen((o) => !o)} style={{ cursor: "pointer", width: "100%", background: "transparent", border: "none", display: "flex", alignItems: "center", gap: 10, padding: "12px 10px", textAlign: "left" }}>
+          <span style={{ flex: "none", fontSize: 18 }} aria-hidden>🧳</span>
+          <span style={{ flex: 1, minWidth: 0 }}>
+            <span style={{ display: "block", fontWeight: 900, fontSize: 15, color: "#17142C" }}>Ho le mie prenotazioni</span>
+            <span style={{ display: "block", fontSize: 12, color: "#6B6450", fontWeight: 600 }}>Carica voli, alloggi e date per attivare « Oggi », meteo e conto alla rovescia</span>
+          </span>
+          <span style={{ flex: "none", fontSize: 13, fontWeight: 900, color: "#9a7a14" }}>{configOpen ? "▾" : "▸"}</span>
+        </button>
+        {configOpen && (
+        <div style={{ padding: "6px 10px 4px" }}>
         <p style={{ margin: "0 0 14px", fontSize: 12.5, color: "#5b5644", fontWeight: 600, lineHeight: 1.5 }}>Ti serve un file JSON con i tuoi voli, alloggi e date. Prendi il modello con <strong style={{ color: "#17142C" }}>uno</strong> dei due metodi qui sotto, riempilo e importalo.</p>
         {step(1, "Prendi e riempi il modello",
           <>Stesso file, due strade: scegli quella che preferisci.</>,
@@ -449,18 +473,8 @@ function Onboarding({ onDownload, onCopy, msg, jsonText, onJsonInput, onSave, on
           </div>,
           true)}
         {msg && <div style={{ marginTop: 14, fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#FFE9A8", padding: "10px 12px", borderRadius: 10 }}>{msg}</div>}
-      </div>
-
-      {/* How it works */}
-      <div style={{ background: "#0E1542", borderRadius: 18, padding: "16px 16px 18px", marginBottom: 4 }}>
-        <div style={{ fontSize: 10.5, fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase", color: "#FFD23F" }}>Come funziona</div>
-        <div style={{ marginTop: 8 }}>
-          {feat("Esplora le sezioni: Edimburgo, Mangiare & locali, Esperienze, Dintorni & gite, Glasgow, Londra.")}
-          {feat("Salva i preferiti con la ★ su qualsiasi luogo o attività.")}
-          {feat("Costruisci il Programma giorno per giorno — trascinando le tappe, anche con l'aiuto di un'AI.")}
-          {feat("Tutto è consultabile offline: in aereo, in metro o senza rete.")}
-          {feat("Nessun account e nessun server: i dati riservati restano sul tuo dispositivo.")}
         </div>
+        )}
       </div>
     </div>
   );
@@ -481,6 +495,7 @@ export default class App extends React.Component {
     planText: "",
     feedback: null,
     copyMsg: "",
+    toast: null, // { msg, ok } transient confirmation, auto-dismissed
     favCopyMsg: "",
     favImpMsg: "",
     planCopyMsg: "",
@@ -749,7 +764,7 @@ export default class App extends React.Component {
       const v = Math.round((min / 60) * 10) / 10;
       return (v % 1 ? v.toFixed(1) : v) + "h";
     }
-    return ((h ? h + "h " : "") + (m ? m + "'" : "")).trim() || "—";
+    return ((h ? h + "h " : "") + (m ? m + "′" : "")).trim() || "—";
   }
   fmtH(d) {
     const h = Math.floor(d),
@@ -759,6 +774,14 @@ export default class App extends React.Component {
   toggle(id) {
     this.setState((s) => ({ open: { ...s.open, [id]: !s.open[id] } }));
   }
+  // One transient toast for quick confirmations (copy / download / save), so
+  // feedback is consistent instead of scattered inline messages.
+  showToast = (msg, ok = true) => {
+    this.setState({ toast: { msg, ok } });
+    clearTimeout(this._toastT);
+    this._toastT = setTimeout(() => this.setState({ toast: null }), 2600);
+  };
+
   copyText(t, cb) {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1038,17 +1061,17 @@ export default class App extends React.Component {
   onJsonInput = (e) => this.setState({ jsonText: e.target.value });
   copyEmpty = () =>
     this.copyText(JSON.stringify(emptyScaffold(), null, 2), () =>
-      this.setState({ copyMsg: "Modello con segnaposto copiato ✓" })
+      this.showToast("Modello copiato ✓ — incollalo a un'AI o compilalo")
     );
   // Download the config template as a file the user can open, fill in, and re-import.
   downloadEmpty = () => {
     this.downloadText("scozia-configurazione.json", JSON.stringify(emptyScaffold(), null, 2));
-    this.setState({ copyMsg: "Configurazione scaricata ✓ — aprila, compilala e reimportala in Impostazioni" });
+    this.showToast("Configurazione scaricata ✓");
   };
   copyCurrent = () => {
     const r = this.effReserved() || emptyScaffold();
     this.copyText(JSON.stringify(r, null, 2), () =>
-      this.setState({ copyMsg: "JSON attuale copiato negli appunti ✓" })
+      this.showToast("JSON attuale copiato ✓")
     );
   };
   fillFromCurrent = () => {
@@ -1097,6 +1120,7 @@ export default class App extends React.Component {
     const msg = (isBackup ? "✓ Backup importato: " : "✓ Caricati: ") + clean.voli.length + " voli, " + clean.alloggi.length + " alloggi" + extra +
       (dateOk ? " · partenza " + clean.partenza : " · ⚠ aggiungi « partenza » (AAAA-MM-GG) per attivare le date");
     this.setState({ reserved: clean, feedback: { ok: true, msg } });
+    this.showToast(dateOk ? "Dati salvati ✓ — buon viaggio!" : "Dati salvati ✓ — aggiungi « partenza »", dateOk);
   };
   saveReserved = () => this.importReservedText(this.state.jsonText);
   // Load a filled .json (reserved scaffold OR full backup) straight from a file.
@@ -1133,7 +1157,7 @@ export default class App extends React.Component {
   exportFavs = () => {
     const favs = (this.state.plan && this.state.plan.favs) || [];
     this.copyText(JSON.stringify({ preferiti: favs }, null, 2), () =>
-      this.setState({ favCopyMsg: "Lista preferiti copiata ✓ (" + favs.length + ")" })
+      this.showToast("Preferiti copiati ✓ (" + favs.length + ")")
     );
   };
   onFavInput = (e) => this.setState({ favText: e.target.value });
@@ -1160,7 +1184,7 @@ export default class App extends React.Component {
     const p = this.state.plan || seedPlan();
     const out = { programma: { days: p.days || {}, tripVisit: p.tripVisit || {}, checklist: p.checklist || [] } };
     const n = Object.values(out.programma.days).reduce((s, a) => s + (Array.isArray(a) ? a.length : 0), 0);
-    this.copyText(JSON.stringify(out, null, 2), () => this.setState({ planCopyMsg: "Programma copiato ✓ (" + n + " attività)" }));
+    this.copyText(JSON.stringify(out, null, 2), () => this.showToast("Programma copiato ✓ (" + n + " attività)"));
   };
   onPlanInput = (e) => this.setState({ planText: e.target.value });
   importPlan = () => {
@@ -1234,11 +1258,11 @@ export default class App extends React.Component {
     return { _istruzioni: istruzioni, giorni, venue_disponibili: { edimburgo, londra, gite }, programma: { days: p.days || {}, tripVisit: p.tripVisit || {} } };
   }
   exportPlanTemplate = () => {
-    this.copyText(JSON.stringify(this.planTemplateObj(), null, 2), () => this.setState({ planTplMsg: "Template AI copiato ✓ — incollalo a Claude" }));
+    this.copyText(JSON.stringify(this.planTemplateObj(), null, 2), () => this.showToast("Template AI copiato ✓ — incollalo a Claude"));
   };
   downloadPlanTemplate = () => {
     this.downloadText("scozia-programma-template.json", JSON.stringify(this.planTemplateObj(), null, 2));
-    this.setState({ planTplMsg: "Template scaricato ✓ (salvalo in Files/Drive)" });
+    this.showToast("Template scaricato ✓");
   };
 
   // ---------- file IO (download + import) for folder sync ----------
@@ -1263,7 +1287,7 @@ export default class App extends React.Component {
   }
   downloadBackup = () => {
     this.downloadText("scozia-backup.json", JSON.stringify(this.backupObj(), null, 2));
-    this.setState({ backupMsg: "Backup scaricato ✓ — salvalo nella tua cartella (Files/iCloud/Drive)." });
+    this.showToast("Backup scaricato ✓");
   };
   importBackupFile = (e) => {
     const file = e.target.files && e.target.files[0];
@@ -2427,7 +2451,13 @@ export default class App extends React.Component {
               <span style={{ flex: "none", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 34, height: 34, background: "#14C08C", borderRadius: 999 }}><TimelineIcon size={19} fill="#fff" /></span>
               <h2 style={h2("#0E1542")}>Programma</h2>
             </div>
-            <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Trascina gli eventi per l'orario (maniglia ⠿) · voli fissi · tocca il giorno per aprirlo/chiuderlo · i giorni passati si bloccano</p>
+            <p style={{ margin: "0 0 10px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Trascina gli eventi per l'orario (maniglia ⠿) · voli fissi · tocca il giorno per aprirlo/chiuderlo · i giorni passati si bloccano</p>
+            {/* transfer legend — what the dashed connectors between tappe mean */}
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "4px 12px", background: "#F6F0E2", border: "1px solid #E1D7BF", borderRadius: 12, padding: "9px 12px", marginBottom: 16, fontSize: 11.5, fontWeight: 700, color: "#6B6450" }}>
+              <span style={{ fontWeight: 900, color: "#0E1542" }}>Spostamenti</span>
+              <span>🚶 a piedi</span><span>🚌 bus/tram</span><span>🚆 treno/bus</span><span>🚕 Uber</span>
+              <span style={{ color: "#9a937c" }}>· tempi e costi (£) sono <strong style={{ color: "#6B6450" }}>stime</strong></span>
+            </div>
             {planDays.map((d) => (
               <div key={d.key} style={{ borderRadius: 18, marginBottom: 13, overflow: "hidden", background: "#fff", boxShadow: tiltShadow(12, 26, -20, 0.4), opacity: d.dim }}>
                 <div onClick={d.onToggle} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 15px", background: d.headBg, color: d.headFg, cursor: "pointer", gap: 8 }}>
@@ -2476,6 +2506,13 @@ export default class App extends React.Component {
                       <div style={{ display: "flex", gap: 8, background: "#FFF3CC", border: "1px solid #E9D08A", borderRadius: 10, padding: "8px 11px", margin: "6px 0 2px", fontSize: 11.5, fontWeight: 600, color: "#6a5410", lineHeight: 1.45 }}>
                         <span style={{ fontWeight: 900 }}>↪</span>
                         <span>Più gite in giornata: l'app le <strong>concatena</strong> — Andata da Edimburgo solo alla prima, poi lo spostamento parte dalla gita precedente, e Ritorno solo dall'ultima. Per ogni tratta stima tempo, mezzo (a piedi / bus / treno, Uber se resta sotto £20) e costo. Sono <strong>stime</strong>: verifica orari e tariffe reali e aggiusta in « Modifica orari ».</span>
+                      </div>
+                    )}
+                    {d.events.length === 0 && d.summary.flightCount === 0 && (
+                      <div style={{ textAlign: "center", border: "1.5px dashed #d8cdb2", borderRadius: 12, padding: "16px 14px", margin: "4px 0 2px", background: "#FCFAF3" }}>
+                        <div style={{ fontSize: 22, marginBottom: 4 }} aria-hidden>🗓️</div>
+                        <div style={{ fontSize: 13.5, fontWeight: 900, color: "#0E1542" }}>Giornata ancora libera</div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "#6B6450", marginTop: 3, lineHeight: 1.45 }}>{d.canEdit ? (d.editMode ? "Aggiungi la prima tappa qui sotto ↓" : "Tocca « Modifica orari » per aggiungere visite, pasti e gite.") : "Nessuna attività in programma."}</div>
                       </div>
                     )}
                     <DayTimeline
@@ -2881,6 +2918,16 @@ export default class App extends React.Component {
         {this.state.dupWarn && (
           <div style={{ position: "fixed", left: 0, right: 0, bottom: "calc(env(safe-area-inset-bottom) + 16px)", display: "flex", justifyContent: "center", zIndex: 120, pointerEvents: "none" }}>
             <div style={{ maxWidth: 420, margin: "0 16px", background: "#0E1542", color: "#fff", fontSize: 12.5, fontWeight: 700, padding: "10px 14px", borderRadius: 12, boxShadow: "0 12px 30px rgba(0,0,0,.45)" }}>⚠ {this.state.dupWarn}</div>
+          </div>
+        )}
+
+        {/* unified confirmation toast (copy / download / save) */}
+        {this.state.toast && (
+          <div style={{ position: "fixed", left: "50%", bottom: "calc(env(safe-area-inset-bottom) + 74px)", zIndex: 130, pointerEvents: "none", animation: "scoziaToastIn .2s ease-out", transform: "translateX(-50%)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, maxWidth: 360, background: this.state.toast.ok ? "#14C08C" : "#E6482A", color: "#fff", fontSize: 13, fontWeight: 800, padding: "11px 16px", borderRadius: 999, boxShadow: "0 14px 34px rgba(0,0,0,.4)" }}>
+              <span aria-hidden>{this.state.toast.ok ? "✓" : "⚠"}</span>
+              <span>{this.state.toast.msg}</span>
+            </div>
           </div>
         )}
       </div>

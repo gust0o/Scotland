@@ -53,6 +53,32 @@ body {
   width: 0;
 }
 
+/* Tactile feedback: every button dips slightly when pressed, and lifts on hover
+   (pointer devices only), so taps feel responsive without per-button wiring. */
+button {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.08s ease, opacity 0.12s ease, filter 0.12s ease;
+}
+button:active {
+  transform: scale(0.96);
+}
+@media (hover: hover) {
+  button:hover {
+    filter: brightness(1.05);
+  }
+}
+
+@keyframes scoziaToastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 12px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 @keyframes scoziaPulse {
   0%,
   100% {

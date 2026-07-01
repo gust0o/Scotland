@@ -212,5 +212,5 @@ function this_durLabel(min) {
   if (!min) return "—";
   const h = Math.floor(min / 60), m = min % 60;
   if (min >= 240) { const v = Math.round((min / 60) * 10) / 10; return (v % 1 ? v.toFixed(1) : v) + "h"; }
-  return ((h ? h + "h " : "") + (m ? m + "'" : "")).trim() || "—";
+  return ((h ? h + "h " : "") + (m ? m + "′" : "")).trim() || "—";
 }
