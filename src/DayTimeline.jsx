@@ -74,32 +74,25 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
     move: { bg: "#EDE7D7", bd: "#d8cdb2", txt: "#5b5644", accent: "#b9ac8d", icon: "" },
   };
 
-  // Render a transfer (incoming `lead` / outgoing `tail`). Anchored to the
-  // activity edge so it never overlaps the visit: `up` grows above the start,
-  // `down` grows below the end. When the leg is too short to fit text we draw a
-  // dashed connector with just the mode icon + minutes; with room we show the
-  // full block (mode, clock, and — taller still — cost + alternative).
+  // Render a transfer (incoming `lead` / outgoing `tail`) as a VERTICAL dashed
+  // connector that links one activity to the next, with the transport icon on
+  // the line. `up` runs from the activity's top upward (toward the previous
+  // stop); `down` runs from its bottom downward. A floating chip beside the line
+  // shows the mode/time/cost — more detail the longer the gap.
   const transferEl = (t, anchorMin, dir, leftPx, isDrag) => {
     const pxH = (t.min / 60) * HOUR_PX;
-    const departMin = dir === "up" ? anchorMin - t.min : anchorMin;
-    const z = isDrag ? 9 : 1;
-    if (pxH < 24) {
-      const blockH = Math.max(pxH, 15);
-      const topPx = dir === "up" ? yOf(anchorMin) - blockH : yOf(anchorMin);
-      const chip = t.icon + " " + t.min + "′" + (t.costLabel ? " · " + t.costLabel : "");
-      return (
-        <div style={{ position: "absolute", top: topPx, left: leftPx, right: 4, height: blockH, display: "flex", alignItems: "center", zIndex: z }}>
-          <div style={{ flex: 1, borderTop: "2px dashed #c4b896" }} />
-          <span style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", background: "#FCFAF3", padding: "0 6px", fontSize: 10, fontWeight: 800, color: "#6b6450", whiteSpace: "nowrap" }}>{chip}</span>
-        </div>
-      );
-    }
-    const blockH = Math.max(pxH, 18);
-    const topPx = dir === "up" ? yOf(anchorMin) - blockH : yOf(anchorMin);
+    const lineH = Math.max(pxH, 16); // keep the connector visible even when tiny
+    const topPx = dir === "up" ? yOf(anchorMin) - lineH : yOf(anchorMin);
+    const x = leftPx + 15; // sits just inside the block's left edge
+    const z = isDrag ? 9 : 3;
+    // Chip detail scales with the available vertical room.
+    let chip;
+    if (lineH >= 46) chip = t.icon + " " + t.primary + " · " + t.min + "′" + (t.costLabel ? " · " + t.costLabel : "");
+    else if (lineH >= 26) chip = t.icon + " " + t.min + "′" + (t.costLabel ? " · " + t.costLabel : "");
+    else chip = t.icon + " " + t.min + "′";
     return (
-      <div style={{ position: "absolute", top: topPx, left: leftPx, right: 4, height: blockH, background: "#EDE7D7", border: "1px solid #d8cdb2", borderLeft: "4px solid #b9ac8d", borderRadius: 9, padding: "3px 8px", overflow: "hidden", boxSizing: "border-box", zIndex: z }}>
-        <div style={{ fontSize: 10.5, fontWeight: 800, color: "#5b5644", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.icon} {t.primary} · {fmt(departMin)}</div>
-        {t.sub && blockH > 32 && <div style={{ fontSize: 9.5, fontWeight: 700, color: "#7a7560", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.sub}</div>}
+      <div style={{ position: "absolute", top: topPx, left: x, height: lineH, width: 0, borderLeft: "2px dashed #b9ac8d", zIndex: z }}>
+        <span style={{ position: "absolute", left: 7, top: "50%", transform: "translateY(-50%)", whiteSpace: "nowrap", background: "#FCFAF3", padding: "1px 6px", borderRadius: 6, boxShadow: "0 0 0 1px #E7DEC9", fontSize: 9.5, fontWeight: 800, color: "#6b6450" }}>{chip}</span>
       </div>
     );
   };
