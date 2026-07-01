@@ -45,7 +45,7 @@ const LEGS = [
   // guide is openly about that trip. fromCode/fromCity/toCode/toCity are overridden
   // per-leg from reserved data in the flights map below.
   { fromCode: "•••", fromCity: "Partenza", toCode: "STN", toCity: "Stansted", tag: "Andata", tagBg: "#FF2E7E", arrow: "#FF2E7E", toMin: 40, toLabel: "→ aeroporto di partenza", secMin: 55, fromMin: 47, fromLabel: "Stansted Express → Londra" },
-  { fromCode: "STN", fromCity: "Stansted", toCode: "EDI", toCity: "Edimburgo", tag: "", tagBg: "#14C08C", arrow: "#14C08C", toMin: 47, toLabel: "Stansted Express → aeroporto", secMin: 80, fromMin: 25, fromLabel: "Tram → Haymarket" },
+  { fromCode: "STN", fromCity: "Stansted", toCode: "EDI", toCity: "Edimburgo", tag: "", tagBg: "#14C08C", arrow: "#14C08C", toMin: 47, toLabel: "Stansted Express → aeroporto", board: "tx-liverpoolst", secMin: 80, fromMin: 25, fromLabel: "Tram → Haymarket" },
   { fromCode: "EDI", fromCity: "Edimburgo", toCode: "•••", toCity: "Scalo", tag: "Rientro", tagBg: "#FF2E7E", arrow: "#FF2E7E", toMin: 25, toLabel: "Tram → aeroporto Edimburgo", secMin: 70, fromMin: 0, fromLabel: "" },
   { fromCode: "•••", fromCity: "Scalo", toCode: "•••", toCity: "Arrivo", tag: "Scalo", tagBg: "#0E1542", arrow: "#14C08C", toMin: 0, toLabel: "", secMin: 0, fromMin: 30, fromLabel: "→ destinazione finale" },
 ];
@@ -879,6 +879,19 @@ export default class App extends React.Component {
     this.planMut((p) => {
       this.ensureDay(p, key);
       if (p.days[key][idx]) p.days[key][idx].start = hh;
+    });
+  }
+  // Per-leg transport override: tap a connector to switch a•piedi ↔ bus ↔ Uber.
+  legModeOf(key, idx) {
+    const p = this.state.plan;
+    return (p && p.legMode && p.legMode[key] && p.legMode[key][idx]) || null;
+  }
+  setLegMode(key, idx, mode) {
+    this.planMut((p) => {
+      if (!p.legMode) p.legMode = {};
+      if (!p.legMode[key]) p.legMode[key] = {};
+      if (p.legMode[key][idx] === mode) delete p.legMode[key][idx];
+      else p.legMode[key][idx] = mode;
     });
   }
   toggleDay(key) {
@@ -1944,9 +1957,11 @@ export default class App extends React.Component {
       const SAME_CITY_KM = 35; // a "local hop" can't cross cities (London↔Edinburgh)
       // Format one travelLeg result into a timeline block: recommended mode as the
       // headline, the cheapest-faster paid option as the alternative.
-      const fmtLeg = (leg, fromName, prefix) => {
-        if (!leg || !leg.pick) return null;
-        const p = leg.pick;
+      const fmtLeg = (leg, fromName, prefix, chooseIdx) => {
+        if (!leg || !leg.options || !leg.options.length) return null;
+        // Honour a per-leg mode the user picked by tapping the connector.
+        const chosen = chooseIdx != null ? this.legModeOf(key, chooseIdx) : null;
+        const p = (chosen && leg.options.find((o) => o.mode === chosen)) || leg.pick;
         const alt = leg.options.find((o) => o !== p && (o.mode === "Uber" || o.mode === "Taxi"))
           || leg.options.find((o) => o !== p);
         const altTxt = alt ? " · o " + alt.icon + " " + alt.mode + " " + alt.min + "′ " + alt.costLabel : "";
@@ -1954,6 +1969,10 @@ export default class App extends React.Component {
           min: p.min, icon: p.icon, costLabel: p.costLabel || "",
           primary: (prefix || "") + p.mode + (fromName ? " da " + fromName : ""),
           sub: "~" + p.min + "′ · " + p.costLabel + altTxt + " · stima",
+          // options + switcher (only when there's a real choice and a stable key)
+          options: leg.options.length > 1 ? leg.options : null,
+          chosen: p.mode,
+          onMode: chooseIdx != null && leg.options.length > 1 ? (m) => this.setLegMode(key, chooseIdx, m) : null,
         };
       };
       // local hops — between two city stops (venues OR the hotel, all walkable in
@@ -1966,7 +1985,7 @@ export default class App extends React.Component {
         if (localPair(cur, prev)) {
           const leg = travelLeg(prev.coord, cur.coord);
           if (leg && leg.km < SAME_CITY_KM) { // never route a local hop across cities
-            const blk = fmtLeg(leg, prev.name.replace(/^(🏨|🚉) /, ""));
+            const blk = fmtLeg(leg, prev.name.replace(/^(🏨|🚉) /, ""), "", cur.idx);
             if (blk && blk.min >= 4) cur.lead = blk;
           }
         }
@@ -1986,7 +2005,7 @@ export default class App extends React.Component {
         const morningDepart = dd.role === "edi" || dd.role === "rientro";
         const eveningReturn = dd.role !== "rientro";
         const fwd = travelLeg(hotelCoord, first.coord);
-        if (morningDepart && !first.lead && fwd && fwd.km < SAME_CITY_KM) first.lead = fmtLeg(fwd, "hotel");
+        if (morningDepart && !first.lead && fwd && fwd.km < SAME_CITY_KM) first.lead = fmtLeg(fwd, "hotel", "", first.idx);
         if (eveningReturn) {
           const back = travelLeg(last.coord, hotelCoord);
           if (back && back.pick && back.km < SAME_CITY_KM) last.tail = { min: back.pick.min, icon: back.pick.icon, costLabel: back.pick.costLabel, primary: "All'hotel · " + back.pick.mode, sub: "~" + back.pick.min + "′ · " + back.pick.costLabel + " · stima" };
@@ -2005,7 +2024,7 @@ export default class App extends React.Component {
           t.lead = { min: t.train, icon: "🚆", primary: "Andata da Edimburgo", sub: "~" + t.train + "′" + uberNote(t) };
         } else {
           const prev = tripSeq[i - 1];
-          t.lead = fmtLeg(travelLeg(prev.coord, t.coord), prev.name, "↪ ")
+          t.lead = fmtLeg(travelLeg(prev.coord, t.coord), prev.name, "↪ ", t.idx)
             || { min: t.train, icon: "🚆", primary: "da " + prev.name, sub: "~" + t.train + "′ stima" };
         }
         if (i === tripSeq.length - 1) {
@@ -2047,6 +2066,16 @@ export default class App extends React.Component {
           // transfer TO the airport (estimate), ending when security starts
           if (fl.toMin) {
             const e = secStart, s = e - fl.toMin;
+            // reach the boarding station from your last stop (e.g. hotel → the
+            // Stansted Express at Liverpool Street) — the missing first hop.
+            if (fl.board && TRANSIT[fl.board] && seq.length) {
+              const lastEv = seq[seq.length - 1];
+              const wl = lastEv.coord ? travelLeg(lastEv.coord, TRANSIT[fl.board].coord) : null;
+              if (wl && wl.pick && wl.km < SAME_CITY_KM) {
+                const ws = s - wl.pick.min;
+                flightBlocks.push({ tone: "move", label: wl.pick.icon + " → " + TRANSIT[fl.board].name, sub: "~" + wl.pick.min + "′ · " + wl.pick.costLabel + " · stima", timeLabel: span(ws, s), startMin: ws, endMin: s });
+              }
+            }
             flightBlocks.push({ tone: "move", label: fl.toLabel, sub: "~" + fl.toMin + "′ · stima", timeLabel: span(s, e), startMin: s, endMin: e });
           }
           // the flight itself

@@ -86,13 +86,27 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
     const x = leftPx + 15; // sits just inside the block's left edge
     const z = isDrag ? 9 : 3;
     // Chip detail scales with the available vertical room.
+    const canSwitch = !!(t.onMode && t.options && t.options.length > 1);
+    const sw = canSwitch ? " ⇄" : "";
     let chip;
-    if (lineH >= 46) chip = t.icon + " " + t.primary + " · " + t.min + "′" + (t.costLabel ? " · " + t.costLabel : "");
-    else if (lineH >= 26) chip = t.icon + " " + t.min + "′" + (t.costLabel ? " · " + t.costLabel : "");
-    else chip = t.icon + " " + t.min + "′";
+    if (lineH >= 46) chip = t.icon + " " + t.primary + " · " + t.min + "′" + (t.costLabel ? " · " + t.costLabel : "") + sw;
+    else if (lineH >= 26) chip = t.icon + " " + t.min + "′" + (t.costLabel ? " · " + t.costLabel : "") + sw;
+    else chip = t.icon + " " + t.min + "′" + sw;
+    // Tap the chip to cycle to the next mode (a piedi ↔ bus ↔ Uber).
+    const cycle = (ev) => {
+      ev.stopPropagation();
+      const opts = t.options;
+      const i = Math.max(0, opts.findIndex((o) => o.mode === t.chosen));
+      t.onMode(opts[(i + 1) % opts.length].mode);
+    };
     return (
       <div style={{ position: "absolute", top: topPx, left: x, height: lineH, width: 0, borderLeft: "2px dashed #b9ac8d", zIndex: z }}>
-        <span style={{ position: "absolute", left: 7, top: "50%", transform: "translateY(-50%)", whiteSpace: "nowrap", background: "#FCFAF3", padding: "1px 6px", borderRadius: 6, boxShadow: "0 0 0 1px #E7DEC9", fontSize: 9.5, fontWeight: 800, color: "#6b6450" }}>{chip}</span>
+        <span
+          onClick={canSwitch ? cycle : undefined}
+          onPointerDown={canSwitch ? (e) => e.stopPropagation() : undefined}
+          title={canSwitch ? "Tocca per cambiare mezzo" : undefined}
+          style={{ position: "absolute", left: 7, top: "50%", transform: "translateY(-50%)", whiteSpace: "nowrap", background: canSwitch ? "#FFF6DD" : "#FCFAF3", padding: "1px 6px", borderRadius: 6, boxShadow: "0 0 0 1px " + (canSwitch ? "#E7C766" : "#E7DEC9"), fontSize: 9.5, fontWeight: 800, color: "#6b6450", cursor: canSwitch ? "pointer" : "default" }}
+        >{chip}</span>
       </div>
     );
   };
