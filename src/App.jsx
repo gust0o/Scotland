@@ -414,6 +414,8 @@ export default class App extends React.Component {
     dupWarn: "",
     pickerFor: null,
     pickerQuery: "",
+    pickerCat: "",
+    pickerZone: "",
     forecast: null,
     wxErr: null,
     coverVar: null,
@@ -1907,21 +1909,23 @@ export default class App extends React.Component {
       });
       const pf = this.state.pickerFor;
       const pickerOpen = !!(pf && pf.key === key);
-      let pickerGroups = [];
+      let pickerGroups = [], pickerCats = [], pickerZones = [];
       if (pickerOpen) {
-        const item = (id) => { const a = D.catalog[id]; return { name: a.name, note: a.note || "", durLabel: this.durLabel(a.dur), onAdd: () => this.addEntry(key, id) }; };
+        // Every addable place tagged with its category + zone, so the picker can
+        // be filtered by a category chip, a zone chip and free-text — not just a
+        // long scroll.
+        const zoneOf = (id) => { const d = D.details[id] || {}; return d.zone || d.area || ""; };
+        const mk = (id, catKey) => { const a = D.catalog[id]; return { id, name: a.name, note: a.note || "", durLabel: this.durLabel(a.dur), category: catKey, zone: zoneOf(id), onAdd: () => this.addEntry(key, id) }; };
+        // Ordered categories available on this day.
+        const cats = [];
         if (dd.cityIdx === 0) {
-          pickerGroups = [{ label: "Londra · da fare", items: pool.map(item) }];
+          cats.push({ key: "lon", label: "Londra · da fare", ids: pool });
         } else {
-          // Travel day (Londra → Edimburgo): the morning is still in London, so
-          // offer London (colazione incl.) before the Edinburgh options.
-          if (dd.key === "g1") {
-            pickerGroups.push({ label: "Londra · mattina (colazione)", items: D.poolLon.map(item) });
-          }
-          pickerGroups.push(
-            { label: "Visite", items: D.sights.map((s) => s.id).map(item) },
-            { label: "Mangiare & locali", items: D.eats.map((e) => e.id).map(item) },
-            { label: "Gite (in giornata)", items: D.trips.map((t) => t.id).map(item) },
+          if (dd.key === "g1") cats.push({ key: "lon", label: "Londra · mattina (colazione)", ids: D.poolLon });
+          cats.push(
+            { key: "sight", label: "Visite", ids: D.sights.map((s) => s.id) },
+            { key: "eat", label: "Mangiare & locali", ids: D.eats.map((e) => e.id) },
+            { key: "trip", label: "Gite (in giornata)", ids: D.trips.map((t) => t.id) },
           );
           // Venues of a day trip appear ONLY once that trip is added to this day.
           const seenTrip = {};
@@ -1929,18 +1933,30 @@ export default class App extends React.Component {
             const a = D.catalog[en.id];
             if (a && a.kind === "trip" && !seenTrip[en.id] && D.tripPools[en.id] && D.tripPools[en.id].length) {
               seenTrip[en.id] = 1;
-              pickerGroups.push({ label: "In gita · " + a.name, items: D.tripPools[en.id].map(item) });
+              cats.push({ key: "tv-" + en.id, label: "In gita · " + a.name, ids: D.tripPools[en.id] });
             }
           });
         }
-        pickerGroups = pickerGroups.filter((g) => g.items.length);
-        // Quick filter: type to narrow the (long) list by name across all groups.
+        const all = [];
+        cats.forEach((c) => c.ids.forEach((id) => all.push(mk(id, c.key))));
+        pickerCats = cats.map((c) => ({ key: c.key, label: c.label }));
+
         const q = (this.state.pickerQuery || "").trim().toLowerCase();
-        if (q) {
-          pickerGroups = pickerGroups
-            .map((g) => ({ ...g, items: g.items.filter((it) => it.name.toLowerCase().includes(q)) }))
-            .filter((g) => g.items.length);
-        }
+        const selCat = this.state.pickerCat || "";
+        const selZone = this.state.pickerZone || "";
+        // Zone chips: only zones present in the (category-scoped) set, ordered.
+        const zoneScope = all.filter((it) => !selCat || it.category === selCat);
+        const present = new Set(zoneScope.map((it) => it.zone).filter(Boolean));
+        const ordered = [...ZONES_ORDER, ...AREAS_ORDER];
+        pickerZones = [...ordered.filter((z) => present.has(z)), ...[...present].filter((z) => !ordered.includes(z))];
+
+        const filtered = all.filter((it) =>
+          (!selCat || it.category === selCat) &&
+          (!selZone || it.zone === selZone) &&
+          (!q || it.name.toLowerCase().includes(q)));
+        pickerGroups = cats
+          .map((c) => ({ label: c.label, items: filtered.filter((it) => it.category === c.key) }))
+          .filter((g) => g.items.length);
       }
       const open = this.state.dayOpen[key] !== undefined ? this.state.dayOpen[key] : isToday;
       const sorted = events.slice().sort((a, b) => a.startMin - b.startMin);
@@ -1967,11 +1983,16 @@ export default class App extends React.Component {
         onChangeStart: (idx, min) => this.setStart(key, idx, min),
         onResize: (idx, min) => this.setDur(key, idx, min),
         onRemove: (idx) => this.removeEntry(key, idx),
-        canAdd: !frozen, pickerOpen, pickerGroups,
+        canAdd: !frozen, pickerOpen, pickerGroups, pickerCats, pickerZones,
         addLabel: pickerOpen ? "Chiudi" : "+ Aggiungi attività",
-        onToggleAdd: () => this.setState((s) => ({ pickerFor: pickerOpen ? null : { key }, pickerQuery: "" })),
+        onToggleAdd: () => this.setState((s) => ({ pickerFor: pickerOpen ? null : { key }, pickerQuery: "", pickerCat: "", pickerZone: "" })),
         pickerQuery: this.state.pickerQuery,
         onPickerQuery: (v) => this.setState({ pickerQuery: v }),
+        pickerCat: this.state.pickerCat,
+        pickerZone: this.state.pickerZone,
+        // Changing category resets the zone (zones are category-scoped).
+        onPickerCat: (k) => this.setState((s) => ({ pickerCat: s.pickerCat === k ? "" : k, pickerZone: "" })),
+        onPickerZone: (z) => this.setState((s) => ({ pickerZone: s.pickerZone === z ? "" : z })),
       };
     });
 
@@ -2379,8 +2400,26 @@ export default class App extends React.Component {
                                 )}
                               </div>
                             </div>
+                            {/* category chips */}
+                            {d.pickerCats.length > 1 && (
+                              <div style={{ display: "flex", flexWrap: "wrap", gap: 5, margin: "0 1px 7px" }}>
+                                {[{ key: "", label: "Tutte" }, ...d.pickerCats].map((c) => {
+                                  const on = (d.pickerCat || "") === c.key;
+                                  return <button key={c.key || "all"} onClick={() => d.onPickerCat(c.key)} style={{ cursor: "pointer", fontSize: 11, fontWeight: 800, border: "1.5px solid " + (on ? "#0E1542" : "#D9CFB7"), background: on ? "#0E1542" : "#fff", color: on ? "#fff" : "#4b463a", borderRadius: 999, padding: "4px 11px", whiteSpace: "nowrap" }}>{c.label.replace(/ \(.*\)| ·.*/, "")}</button>;
+                                })}
+                              </div>
+                            )}
+                            {/* zone chips */}
+                            {d.pickerZones.length > 0 && (
+                              <div style={{ display: "flex", flexWrap: "wrap", gap: 5, margin: "0 1px 8px" }}>
+                                {["", ...d.pickerZones].map((z) => {
+                                  const on = (d.pickerZone || "") === z;
+                                  return <button key={z || "allz"} onClick={() => d.onPickerZone(z)} style={{ cursor: "pointer", fontSize: 10.5, fontWeight: 700, border: "1px solid " + (on ? "#14C08C" : "#E4DAC2"), background: on ? "#E3F5EE" : "#FBF7EC", color: on ? "#0a7d5d" : "#6B6450", borderRadius: 999, padding: "3px 10px", whiteSpace: "nowrap" }}>{z || "Ogni zona"}</button>;
+                                })}
+                              </div>
+                            )}
                             {d.pickerGroups.length === 0 && (
-                              <div style={{ textAlign: "center", fontSize: 12.5, fontWeight: 600, color: "#9a937c", padding: "14px 6px" }}>Nessun luogo trovato per «{d.pickerQuery}».</div>
+                              <div style={{ textAlign: "center", fontSize: 12.5, fontWeight: 600, color: "#9a937c", padding: "14px 6px" }}>Nessun luogo trovato con questi filtri.</div>
                             )}
                             {d.pickerGroups.map((grp, gi2) => (
                               <div key={gi2} style={{ marginBottom: 6 }}>
