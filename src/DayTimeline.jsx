@@ -148,9 +148,10 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                 onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
                 style={{ position: "absolute", top, left: leftPx, right: 4, height: h, background: e.bg, border: isTripBlock ? `2px solid ${e.accent}` : "1px solid rgba(20,16,40,.05)", borderLeft: isVenueBlock ? `4px dashed ${e.accent}` : `5px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "none", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer" }}
               >
-                {/* trip = container ribbon */}
-                {isTripBlock && (
-                  <span style={{ position: "absolute", top: 0, right: 0, fontSize: 8.5, fontWeight: 900, letterSpacing: ".08em", color: "#fff", background: e.accent, borderRadius: "0 0 0 8px", padding: "2px 7px", zIndex: 3 }}>GITA</span>
+                {/* trip = container ribbon (decorative; hidden in edit mode so it
+                    never covers the × delete button, and pointer-transparent) */}
+                {isTripBlock && !editable && (
+                  <span style={{ position: "absolute", top: 0, right: 0, pointerEvents: "none", fontSize: 8.5, fontWeight: 900, letterSpacing: ".08em", color: "#fff", background: e.accent, borderRadius: "0 0 0 8px", padding: "2px 7px", zIndex: 3 }}>GITA</span>
                 )}
                 {/* drag-to-move header (drag only in edit mode; tap opens detail in consult) */}
                 <div
