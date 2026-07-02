@@ -869,14 +869,131 @@ export default class App extends React.Component {
       p.days[key].splice(idx, 1);
     });
   }
+  // ---------- magnetic chaining (shared with the render's leg rules) ----------
+  // Travel times must actually connect consecutive tappe, not just estimate a
+  // number that floats in whatever gap the user happened to leave. So: moving a
+  // tappa to reorder it SNAPS its start to (predecessor's end + real travel
+  // time), and lengthening a stay CASCADES that push onto whatever comes right
+  // after it — the only way to add slack is to make the stay longer. Covers the
+  // common, unambiguous adjacencies (local venues/hotel/transit chain; a gita's
+  // own tvenue chain); anything else (e.g. gita-to-gita, which chains to the
+  // previous GITA rather than the immediately-prior tappa) falls back to free
+  // positioning, same as before — see the render's own leg logic for those.
+  //
+  // Resolve an entry id's travel coordinate + kind/tripId — the same rules the
+  // render uses to build each event's `.coord`, but standalone (no full leg
+  // objects), so it can run from setStart/setDur without the render's context.
+  entryGeo(key, id, dd) {
+    if (id === "hotel" || /^hotel\d+$/.test(id)) {
+      const alloggi = ((this.effReserved() || {}).alloggi) || [];
+      const nightHotel = alloggi[dd.cityIdx] || null;
+      const al = id === "hotel" ? nightHotel : alloggi[parseInt(id.slice(5), 10)] || null;
+      return { id, kind: "hotel", tripId: "", coord: al ? (parseCoord(al.coord) || parseCoord(al.maps)) : null };
+    }
+    if (/^tx-/.test(id)) {
+      const tx = TRANSIT[id];
+      return { id, kind: "transit", tripId: "", coord: tx ? tx.coord : null };
+    }
+    const a = getData().catalog[id];
+    if (!a) return { id, kind: "sight", tripId: "", coord: null };
+    return { id, kind: a.kind, tripId: a.trip || "", coord: coordForEvent(a) };
+  }
+  // Minutes from `prevGeo` to `curGeo`, for the adjacencies covered by magnetic
+  // snapping (see comment above). Null = not a recognized linked pair — the
+  // caller should leave the position free rather than force a guess.
+  gapMinutesBetween(prevGeo, curGeo) {
+    if (!prevGeo || !curGeo || !prevGeo.coord || !curGeo.coord) return null;
+    const isLocal = (g) => g.kind === "sight" || g.kind === "eat" || g.kind === "london" || g.kind === "hotel" || g.kind === "transit";
+    if (curGeo.kind === "tvenue" && prevGeo.kind === "trip" && prevGeo.id === curGeo.tripId) {
+      const leg = travelLeg(prevGeo.coord, curGeo.coord);
+      return leg ? leg.pick.min : null;
+    }
+    if (curGeo.kind === "tvenue" && prevGeo.kind === "tvenue" && curGeo.tripId && curGeo.tripId === prevGeo.tripId) {
+      const leg = travelLeg(prevGeo.coord, curGeo.coord);
+      return leg ? leg.pick.min : null;
+    }
+    if (isLocal(curGeo) && isLocal(prevGeo)) {
+      const leg = travelLeg(prevGeo.coord, curGeo.coord);
+      return leg && leg.km < 35 ? leg.pick.min : null;
+    }
+    return null;
+  }
+  // On-screen duration for an entry (mirrors the render's own dur resolution).
+  entryDuration(id, en) {
+    if (id === "hotel" || /^hotel\d+$/.test(id)) return (en && en.dur != null) ? en.dur : 20;
+    if (/^tx-/.test(id)) return (en && en.dur != null) ? en.dur : 10;
+    const a = getData().catalog[id];
+    if (!a) return (en && en.dur != null) ? en.dur : 60;
+    const base = a.kind === "trip" ? this.tripVisitOf(id, a.baseVisit || a.dur) : (a.dur || 60);
+    return (en && en.dur != null) ? en.dur : base;
+  }
+
   setDur(key, idx, min) {
+    const dd = DAYS.find((d) => d.key === key);
+    const entries = this.dayEntries(key);
+    const entry = entries[idx];
+    const newDur = Math.max(15, Math.min(600, Math.round(min)));
+    const shifts = {};
+    if (entry && dd) {
+      const oldDur = this.entryDuration(entry.id, entry);
+      const delta = newDur - oldDur;
+      if (delta !== 0) {
+        // Chronological order BEFORE the resize: walk forward from the resized
+        // tappa, pushing every immediately-following entry that was TIGHTLY
+        // chained (its gap already equalled the real travel time — no
+        // intentional slack) by the same delta. Stops at the first real gap or
+        // unrecognized pairing, so deliberate breaks in the day are untouched.
+        const withTimes = entries.map((en, i) => ({ id: en.id, idx: i, en, start: this.parseMin(en.start) ?? 9 * 60 }));
+        withTimes.sort((a, b) => a.start - b.start);
+        const pos = withTimes.findIndex((e) => e.idx === idx);
+        if (pos >= 0) {
+          // Tightness is checked against the ORIGINAL (pre-resize) chain the
+          // whole way down — comparing against an already-shifted cursor would
+          // make every downstream link look "loose" after the first shift and
+          // stop the cascade one hop too early. The write value is always
+          // `original start + delta`; only the tightness check stays in the
+          // original timeline.
+          let origCursorEnd = withTimes[pos].start + oldDur;
+          let curGeo = this.entryGeo(key, entry.id, dd);
+          for (let j = pos + 1; j < withTimes.length; j++) {
+            const next = withTimes[j];
+            const nextGeo = this.entryGeo(key, next.id, dd);
+            const gap = this.gapMinutesBetween(curGeo, nextGeo);
+            if (gap == null || Math.abs(next.start - (origCursorEnd + gap)) > 1) break;
+            shifts[next.idx] = next.start + delta;
+            origCursorEnd = next.start + this.entryDuration(next.id, next.en);
+            curGeo = nextGeo;
+          }
+        }
+      }
+    }
     this.planMut((p) => {
       this.ensureDay(p, key);
-      if (p.days[key][idx]) p.days[key][idx].dur = Math.max(15, Math.min(600, Math.round(min)));
+      if (p.days[key][idx]) p.days[key][idx].dur = newDur;
+      Object.keys(shifts).forEach((k) => { const i = Number(k); if (p.days[key][i]) p.days[key][i].start = this.hhmm(shifts[i]); });
     });
   }
   setStart(key, idx, min) {
-    const hh = String(Math.floor(min / 60)).padStart(2, "0") + ":" + String(Math.round(min % 60)).padStart(2, "0");
+    const dd = DAYS.find((d) => d.key === key);
+    const entries = this.dayEntries(key);
+    const entry = entries[idx];
+    let snapped = min;
+    if (entry && dd) {
+      // Where would this tappa land chronologically if dropped at `min`? Snap
+      // to (its new predecessor's end + real travel time) when that's a
+      // recognized linked pair — "magnetic": you choose the ORDER by dragging,
+      // the exact time comes from the actual distance.
+      const withNew = entries.map((en, i) => ({ id: en.id, idx: i, start: i === idx ? min : (this.parseMin(en.start) ?? 9 * 60) }));
+      withNew.sort((a, b) => a.start - b.start);
+      const pos = withNew.findIndex((e) => e.idx === idx);
+      if (pos > 0) {
+        const prevItem = withNew[pos - 1];
+        const prevEntry = entries[prevItem.idx];
+        const gap = this.gapMinutesBetween(this.entryGeo(key, prevEntry.id, dd), this.entryGeo(key, entry.id, dd));
+        if (gap != null) snapped = prevItem.start + this.entryDuration(prevEntry.id, prevEntry) + gap;
+      }
+    }
+    const hh = this.hhmm(snapped);
     this.planMut((p) => {
       this.ensureDay(p, key);
       if (p.days[key][idx]) p.days[key][idx].start = hh;
@@ -2610,7 +2727,7 @@ export default class App extends React.Component {
               <span style={{ flex: "none", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 34, height: 34, background: "#14C08C", borderRadius: 999 }}><TimelineIcon size={19} fill="#fff" /></span>
               <h2 style={h2("#0E1542")}>Programma</h2>
             </div>
-            <p style={{ margin: "0 0 10px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Trascina gli eventi per l'orario (maniglia ⠿) · voli fissi · tocca il giorno per aprirlo/chiuderlo · i giorni passati si bloccano</p>
+            <p style={{ margin: "0 0 10px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Trascina gli eventi per l'orario (maniglia ⠿, è magnetica: si aggancia al tempo di spostamento reale) · allunga una tappa per spingere avanti quella dopo · voli fissi · tocca il giorno per aprirlo/chiuderlo · i giorni passati si bloccano</p>
             {/* transfer legend — what the dashed connectors between tappe mean */}
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "4px 12px", background: "#F6F0E2", border: "1px solid #E1D7BF", borderRadius: 12, padding: "9px 12px", marginBottom: 16, fontSize: 11.5, fontWeight: 700, color: "#6B6450" }}>
               <span style={{ fontWeight: 900, color: "#0E1542" }}>Spostamenti</span>
