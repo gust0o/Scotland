@@ -2045,7 +2045,11 @@ export default class App extends React.Component {
         const train = isTrip ? a.train || 0 : 0;
         // main (visit) duration: per-entry override, else trip default, else catalog dur
         const base = isTrip ? this.tripVisitOf(en.id, a.baseVisit || a.dur) : a.dur || 60;
-        const dur = en.dur != null ? en.dur : base;
+        // Clamp defensively — an old build's drag-to-resize allowed up to 24h
+        // on a single tappa by mistake; a stray value that large, still
+        // sitting in someone's saved plan, would cascade the whole day (and
+        // beyond) into nonsense. Same ceiling the duration editor itself uses.
+        const dur = Math.max(15, Math.min(isTrip ? 600 : 360, en.dur != null ? en.dur : base));
         const transferMin = a.transferMin || 0; // extra hop to reach the venue (e.g. Tantallon)
         const PAL = {
           eat: { a: "#E6482A", b: "#FBEDE9", l: "Mangiare" },
@@ -2171,7 +2175,15 @@ export default class App extends React.Component {
         const vehicle = st.mode === "bus" ? "bus" : "treno";
         const total = t.train + dwell.depart + dwell.arrive;
         if (i === 0) {
-          t.lead = { min: total, icon, primary: "Andata · Waverley → " + st.name, sub: "~" + total + "′ totali · " + t.train + "′ " + vehicle + " · 🕐 attesa stimata ~" + (dwell.depart + dwell.arrive) + "′" + uberNote(t) };
+          // Default origin is the Waverley hub — UNLESS the tappa right
+          // before this gita in the day is a station/hotel stop the user
+          // actually placed there (e.g. dropped in "Haymarket" first): then
+          // that's where you're really leaving from, not Waverley.
+          const globalIdx = seq.indexOf(t);
+          const prevInDay = globalIdx > 0 ? seq[globalIdx - 1] : null;
+          const fromStop = prevInDay && prevInDay.coord && isLocalNode(prevInDay) ? prevInDay : null;
+          t.lead = (fromStop && fmtLeg(travelLeg(fromStop.coord, t.coord), fromStop.name.replace(/^(🏨|🚉) /, ""), "", t.idx))
+            || { min: total, icon, primary: "Andata · Waverley → " + st.name, sub: "~" + total + "′ totali · " + t.train + "′ " + vehicle + " · 🕐 attesa stimata ~" + (dwell.depart + dwell.arrive) + "′" + uberNote(t) };
         } else {
           const prev = tripSeq[i - 1];
           t.lead = fmtLeg(travelLeg(prev.coord, t.coord), prev.name, "↪ ", t.idx)
