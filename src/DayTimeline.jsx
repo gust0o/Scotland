@@ -168,7 +168,7 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                   <div style={{ position: "absolute", top, left: leftPx, width: 4, height: h, background: e.accent, borderRadius: 3, pointerEvents: "none", zIndex: 1 }} />
                   <div
                     onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
-                    style={{ position: "absolute", top, left: leftPx + 10, right: 4, background: "#fff", border: `1px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "0 2px 7px -2px rgba(20,16,40,.18)", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer" }}
+                    style={{ position: "absolute", top, left: leftPx + 10, right: 4, background: "#fff", border: `1px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "0 2px 7px -2px rgba(20,16,40,.18)", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
                   >
                     {!editable && (
                       <span style={{ position: "absolute", top: 0, right: 0, pointerEvents: "none", fontSize: 8.5, fontWeight: 900, letterSpacing: ".08em", color: "#fff", background: e.accent, borderRadius: "0 0 0 8px", padding: "2px 7px", zIndex: 3 }}>GITA</span>
@@ -178,7 +178,7 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                       onPointerMove={move}
                       onPointerUp={up}
                       onPointerCancel={up}
-                      style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", userSelect: "none" }}
+                      style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
                     >
                       {editable && (
                         <span style={{ flex: "none", display: "grid", gridTemplateColumns: "2px 2px", gap: 2, opacity: 0.5 }} aria-hidden>
@@ -211,7 +211,7 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                       onPointerCancel={up}
                       onClick={(ev) => ev.stopPropagation()}
                       title="Trascina per la durata"
-                      style={{ position: "absolute", top: top + h - 14, left: leftPx, right: 4, height: 14, cursor: "ns-resize", touchAction: "none", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 2, zIndex: 2 }}
+                      style={{ position: "absolute", top: top + h - 14, left: leftPx, right: 4, height: 14, cursor: "ns-resize", touchAction: "none", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 2, zIndex: 2, WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
                     >
                       <span style={{ width: 26, height: 3, borderRadius: 3, background: e.accent, opacity: 0.55 }} />
                     </div>
@@ -220,7 +220,7 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
               ) : (
                 <div
                   onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
-                  style={{ position: "absolute", top, left: leftPx, right: 4, height: h, background: e.bg, border: "1px solid rgba(20,16,40,.05)", borderLeft: isVenueBlock ? `4px dashed ${e.accent}` : `5px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "none", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer" }}
+                  style={{ position: "absolute", top, left: leftPx, right: 4, height: h, background: e.bg, border: "1px solid rgba(20,16,40,.05)", borderLeft: isVenueBlock ? `4px dashed ${e.accent}` : `5px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "none", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
                 >
                   {/* drag-to-move header (drag only in edit mode; tap opens detail in consult) */}
                   <div
@@ -228,7 +228,7 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                     onPointerMove={move}
                     onPointerUp={up}
                     onPointerCancel={up}
-                    style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", userSelect: "none" }}
+                    style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
                   >
                     {editable && (
                       <span style={{ flex: "none", display: "grid", gridTemplateColumns: "2px 2px", gap: 2, opacity: 0.5 }} aria-hidden>
@@ -262,7 +262,7 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                       onPointerCancel={up}
                       onClick={(ev) => ev.stopPropagation()}
                       title="Trascina per la durata"
-                      style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 14, cursor: "ns-resize", touchAction: "none", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 2 }}
+                      style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 14, cursor: "ns-resize", touchAction: "none", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 2, WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
                     >
                       <span style={{ width: 26, height: 3, borderRadius: 3, background: e.accent, opacity: 0.55 }} />
                     </div>
