@@ -15,7 +15,7 @@ import { LogoMark, PlaneIcon, BedIcon, CutleryIcon, TimelineIcon } from "./icons
 import { BarIcon } from "./barIcons.jsx";
 import VenueDetail, { SummaryRow } from "./VenueDetail.jsx";
 import DayTimeline from "./DayTimeline.jsx";
-import { coordForEvent, travelLeg, parseCoord, HUB, TRANSIT } from "./geo.js";
+import { coordForEvent, travelLeg, parseCoord, HUB, TRANSIT, STATION_META, STATION_DWELL } from "./geo.js";
 const MONO = "'Spline Sans Mono',monospace";
 const MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
 // Primary destinations for the fixed bottom tab bar (ids + scroll-spy order).
@@ -2012,24 +2012,82 @@ export default class App extends React.Component {
           if (back && back.pick && back.km < SAME_CITY_KM) last.tail = { min: back.pick.min, icon: back.pick.icon, costLabel: back.pick.costLabel, primary: "All'hotel · " + back.pick.mode, sub: "~" + back.pick.min + "′ · " + back.pick.costLabel + " · stima" };
         }
       }
-      // gite: Andata (first) → chained legs → Ritorno (last). Andata/Ritorno keep
-      // the curated train time; an Uber is noted only when it stays cheap (≤£20).
+      // gite: Andata (first) → chained legs → Ritorno (last). Andata/Ritorno name
+      // the two real stations that bracket the ride (Waverley ↔ the gita's own
+      // station/stop) and fold in a small, honest dwell — time to reach the
+      // platform and board, time to get off and out at the other end — on top of
+      // the curated train/bus time. An Uber is noted only when it stays cheap.
       const tripSeq = seq.filter((e) => e.kind === "trip");
       const hubLeg = (t) => travelLeg(HUB.coord, t.coord);
       const uberNote = (t) => {
         const u = (hubLeg(t) || { options: [] }).options.find((o) => o.mode === "Uber");
         return u ? " · o 🚕 Uber " + u.costLabel : "";
       };
+      const stationOf = (t) => STATION_META[t.id] || { name: t.name, mode: "train" };
+      // Venues actually on the timeline for each trip, chronological — computed
+      // up front because it changes where the Ritorno belongs (see below).
+      const venuesByTrip = {};
+      tripSeq.forEach((t) => { venuesByTrip[t.id] = seq.filter((e) => e.kind === "tvenue" && e.tripId === t.id); });
       tripSeq.forEach((t, i) => {
+        const st = stationOf(t);
+        const dwell = STATION_DWELL[st.mode] || STATION_DWELL.train;
+        const icon = st.mode === "bus" ? "🚌" : "🚆";
+        const vehicle = st.mode === "bus" ? "bus" : "treno";
+        const total = t.train + dwell.depart + dwell.arrive;
         if (i === 0) {
-          t.lead = { min: t.train, icon: "🚆", primary: "Andata da Edimburgo", sub: "~" + t.train + "′" + uberNote(t) };
+          t.lead = { min: total, icon, primary: "Andata · Waverley → " + st.name, sub: "~" + total + "′ (" + t.train + "′ " + vehicle + " + " + (dwell.depart + dwell.arrive) + "′ attesa/uscita)" + uberNote(t) };
         } else {
           const prev = tripSeq[i - 1];
           t.lead = fmtLeg(travelLeg(prev.coord, t.coord), prev.name, "↪ ", t.idx)
-            || { min: t.train, icon: "🚆", primary: "da " + prev.name, sub: "~" + t.train + "′ stima" };
+            || { min: t.train, icon, primary: "da " + prev.name, sub: "~" + t.train + "′ stima" };
         }
+        // The Ritorno sits directly on the trip block ONLY when it has no venue
+        // chain to anchor to instead — otherwise it belongs on the last venue
+        // (below), so it never lands earlier than where the day actually ends.
+        if (i === tripSeq.length - 1 && !venuesByTrip[t.id].length) {
+          t.tail = { min: total, icon, primary: "Ritorno · " + st.name + " → Waverley", sub: "~" + total + "′ (" + t.train + "′ " + vehicle + " + " + (dwell.depart + dwell.arrive) + "′ attesa/uscita)" + uberNote(t) };
+        }
+      });
+      // Fix the hops at each gita's boundary: the FIRST venue you visit starts
+      // from the STATION (not from Edinburgh, not from nowhere), and the LAST
+      // venue's return anchors to where the day's schedule really ends — not to
+      // the trip block's own (possibly stale, independently resizable) declared
+      // duration, which used to leave the Ritorno chip stranded mid-gita
+      // whenever the venues ran later than the block's nominal end.
+      tripSeq.forEach((t, i) => {
+        const venues = venuesByTrip[t.id];
+        if (!venues.length) return;
+        const st = stationOf(t);
+        const first = venues[0], last = venues[venues.length - 1];
+        if (!first.lead) first.lead = fmtLeg(travelLeg(t.coord, first.coord), st.name, "", first.idx);
+        if (last.tail) return;
+        const back = travelLeg(last.coord, t.coord);
+        if (!back || !back.pick) return;
+        const p = back.pick;
         if (i === tripSeq.length - 1) {
-          t.tail = { min: t.train, icon: "🚆", primary: "Ritorno a Edimburgo", sub: "~" + t.train + "′" + uberNote(t) };
+          // Last gita of the day: merge the local hop with the Ritorno home,
+          // so the return time reflects the LAST activity, not a stale duration.
+          const dwell = STATION_DWELL[st.mode] || STATION_DWELL.train;
+          const vehicle = st.mode === "bus" ? "bus" : "treno";
+          const totalMin = p.min + t.train + dwell.depart + dwell.arrive;
+          const stIcon = st.mode === "bus" ? "🚌" : "🚆";
+          last.tail = {
+            min: totalMin, icon: stIcon,
+            primary: "↩ " + st.name + " → Waverley",
+            sub: "~" + totalMin + "′ (" + p.min + "′ " + p.mode.toLowerCase() + " + " + t.train + "′ " + vehicle + " + " + (dwell.depart + dwell.arrive) + "′ attesa/uscita)",
+          };
+        } else {
+          // Not the last gita: just the local hop back to THIS gita's own
+          // station — the chained hop to the next gita picks up from there.
+          const alt = back.options.find((o) => o !== p && (o.mode === "Uber" || o.mode === "Taxi")) || back.options.find((o) => o !== p);
+          const altTxt = alt ? " · o " + alt.icon + " " + alt.mode + " " + alt.min + "′ " + alt.costLabel : "";
+          last.tail = {
+            min: p.min, icon: p.icon, costLabel: p.costLabel,
+            primary: "↩ " + p.mode + " · " + st.name,
+            sub: "~" + p.min + "′ · " + p.costLabel + altTxt + " · stima",
+            options: back.options.length > 1 ? back.options : null, chosen: p.mode,
+            onMode: back.options.length > 1 ? (m) => this.setLegMode(key, last.idx, m) : null,
+          };
         }
       });
 

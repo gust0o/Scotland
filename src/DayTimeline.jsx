@@ -158,61 +158,117 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
               {e.lead && e.lead.min > 0 && transferEl(e.lead, start, "up", leftPx, isDrag)}
               {/* outgoing transfer (Ritorno to Edinburgh / back to the hotel) */}
               {e.tail && e.tail.min > 0 && transferEl(e.tail, start + dur, "down", leftPx, isDrag)}
-              <div
-                onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
-                style={{ position: "absolute", top, left: leftPx, right: 4, height: h, background: e.bg, border: isTripBlock ? `2px solid ${e.accent}` : "1px solid rgba(20,16,40,.05)", borderLeft: isVenueBlock ? `4px dashed ${e.accent}` : `5px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "none", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer" }}
-              >
-                {/* trip = container ribbon (decorative; hidden in edit mode so it
-                    never covers the × delete button, and pointer-transparent) */}
-                {isTripBlock && !editable && (
-                  <span style={{ position: "absolute", top: 0, right: 0, pointerEvents: "none", fontSize: 8.5, fontWeight: 900, letterSpacing: ".08em", color: "#fff", background: e.accent, borderRadius: "0 0 0 8px", padding: "2px 7px", zIndex: 3 }}>GITA</span>
-                )}
-                {/* drag-to-move header (drag only in edit mode; tap opens detail in consult) */}
-                <div
-                  onPointerDown={begin(e.idx, "move", e.startMin, e.dur)}
-                  onPointerMove={move}
-                  onPointerUp={up}
-                  onPointerCancel={up}
-                  style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", userSelect: "none" }}
-                >
-                  {editable && (
-                    <span style={{ flex: "none", display: "grid", gridTemplateColumns: "2px 2px", gap: 2, opacity: 0.5 }} aria-hidden>
-                      {Array.from({ length: 6 }).map((_, i) => (<span key={i} style={{ width: 2, height: 2, borderRadius: 2, background: "#17142C" }} />))}
-                    </span>
-                  )}
-                  <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, color: "#17142C", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.name}</span>
-                  <span style={{ flex: "none", fontSize: 10.5, fontWeight: 700, color: "#6B6450", fontFamily: "'Spline Sans Mono',monospace" }}>{fmt(start)}</span>
-                  {editable && (
-                    <button onClick={(ev) => { ev.stopPropagation(); onRemove(e.idx); }} onPointerDown={(ev) => ev.stopPropagation()} title="Rimuovi" style={{ flex: "none", cursor: "pointer", border: "none", background: "transparent", color: "#E6482A", fontSize: 14, fontWeight: 900, lineHeight: 1, padding: "0 2px" }}>×</button>
-                  )}
-                </div>
-                {h > 48 && (
-                  <div style={{ padding: "0 9px 6px 9px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-                      <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: e.accent, borderRadius: 999, padding: "1px 6px" }}>{e.kindLabel}</span>
-                      <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{this_durLabel(dur)}</span>
-                      {e.maps && <a href={e.maps} target="_blank" rel="noopener" onPointerDown={(ev) => ev.stopPropagation()} onClick={(ev) => ev.stopPropagation()} style={{ fontSize: 10, fontWeight: 800, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 6, padding: "1px 7px" }}>Maps ↗</a>}
-                      {!editable && <span style={{ fontSize: 9.5, fontWeight: 800, color: "#9a937c" }}>tocca per i dettagli ›</span>}
-                    </div>
-                    {e.note && h > 76 && <div style={{ marginTop: 4, fontSize: 11, fontWeight: 600, color: "#6B6450", lineHeight: 1.35, overflow: "hidden" }}>{e.note}</div>}
-                    {e.warn && <div style={{ marginTop: 3, fontSize: 10.5, fontWeight: 700, color: "#E6482A" }}>⚠ {e.warn}</div>}
-                  </div>
-                )}
-                {/* drag-to-resize handle */}
-                {editable && (
+              {isTripBlock ? (
+                <>
+                  {/* A gita is a SPAN, not a card: a thin colored spine marks how
+                      long you're out for, and a small header pill (auto height,
+                      not stretched over the whole visit) carries the name/
+                      actions — so any venues placed inside its time range stay
+                      fully legible instead of sitting on top of a filled box. */}
+                  <div style={{ position: "absolute", top, left: leftPx, width: 4, height: h, background: e.accent, borderRadius: 3, pointerEvents: "none", zIndex: 1 }} />
                   <div
-                    onPointerDown={begin(e.idx, "resize", e.startMin, e.dur)}
+                    onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
+                    style={{ position: "absolute", top, left: leftPx + 10, right: 4, background: "#fff", border: `1px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "0 2px 7px -2px rgba(20,16,40,.18)", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer" }}
+                  >
+                    {!editable && (
+                      <span style={{ position: "absolute", top: 0, right: 0, pointerEvents: "none", fontSize: 8.5, fontWeight: 900, letterSpacing: ".08em", color: "#fff", background: e.accent, borderRadius: "0 0 0 8px", padding: "2px 7px", zIndex: 3 }}>GITA</span>
+                    )}
+                    <div
+                      onPointerDown={begin(e.idx, "move", e.startMin, e.dur)}
+                      onPointerMove={move}
+                      onPointerUp={up}
+                      onPointerCancel={up}
+                      style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", userSelect: "none" }}
+                    >
+                      {editable && (
+                        <span style={{ flex: "none", display: "grid", gridTemplateColumns: "2px 2px", gap: 2, opacity: 0.5 }} aria-hidden>
+                          {Array.from({ length: 6 }).map((_, i) => (<span key={i} style={{ width: 2, height: 2, borderRadius: 2, background: "#17142C" }} />))}
+                        </span>
+                      )}
+                      <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, color: "#17142C", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.name}</span>
+                      <span style={{ flex: "none", fontSize: 10.5, fontWeight: 700, color: "#6B6450", fontFamily: "'Spline Sans Mono',monospace" }}>{fmt(start)}</span>
+                      {editable && (
+                        <button onClick={(ev) => { ev.stopPropagation(); onRemove(e.idx); }} onPointerDown={(ev) => ev.stopPropagation()} title="Rimuovi" style={{ flex: "none", cursor: "pointer", border: "none", background: "transparent", color: "#E6482A", fontSize: 14, fontWeight: 900, lineHeight: 1, padding: "0 2px" }}>×</button>
+                      )}
+                    </div>
+                    <div style={{ padding: "0 9px 6px 9px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                        <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: e.accent, borderRadius: 999, padding: "1px 6px" }}>{e.kindLabel}</span>
+                        <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{this_durLabel(dur)} sul posto</span>
+                        {e.maps && <a href={e.maps} target="_blank" rel="noopener" onPointerDown={(ev) => ev.stopPropagation()} onClick={(ev) => ev.stopPropagation()} style={{ fontSize: 10, fontWeight: 800, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 6, padding: "1px 7px" }}>Maps ↗</a>}
+                        {!editable && <span style={{ fontSize: 9.5, fontWeight: 800, color: "#9a937c" }}>tocca per i dettagli ›</span>}
+                      </div>
+                      {e.warn && <div style={{ marginTop: 3, fontSize: 10.5, fontWeight: 700, color: "#E6482A" }}>⚠ {e.warn}</div>}
+                    </div>
+                  </div>
+                  {/* resize handle sits at the bottom of the SPINE (the real end
+                      of the visit), independent of the pill's own small height */}
+                  {editable && (
+                    <div
+                      onPointerDown={begin(e.idx, "resize", e.startMin, e.dur)}
+                      onPointerMove={move}
+                      onPointerUp={up}
+                      onPointerCancel={up}
+                      onClick={(ev) => ev.stopPropagation()}
+                      title="Trascina per la durata"
+                      style={{ position: "absolute", top: top + h - 14, left: leftPx, right: 4, height: 14, cursor: "ns-resize", touchAction: "none", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 2, zIndex: 2 }}
+                    >
+                      <span style={{ width: 26, height: 3, borderRadius: 3, background: e.accent, opacity: 0.55 }} />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div
+                  onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
+                  style={{ position: "absolute", top, left: leftPx, right: 4, height: h, background: e.bg, border: "1px solid rgba(20,16,40,.05)", borderLeft: isVenueBlock ? `4px dashed ${e.accent}` : `5px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "none", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer" }}
+                >
+                  {/* drag-to-move header (drag only in edit mode; tap opens detail in consult) */}
+                  <div
+                    onPointerDown={begin(e.idx, "move", e.startMin, e.dur)}
                     onPointerMove={move}
                     onPointerUp={up}
                     onPointerCancel={up}
-                    onClick={(ev) => ev.stopPropagation()}
-                    title="Trascina per la durata"
-                    style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 14, cursor: "ns-resize", touchAction: "none", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 2 }}
+                    style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", userSelect: "none" }}
                   >
-                    <span style={{ width: 26, height: 3, borderRadius: 3, background: e.accent, opacity: 0.55 }} />
+                    {editable && (
+                      <span style={{ flex: "none", display: "grid", gridTemplateColumns: "2px 2px", gap: 2, opacity: 0.5 }} aria-hidden>
+                        {Array.from({ length: 6 }).map((_, i) => (<span key={i} style={{ width: 2, height: 2, borderRadius: 2, background: "#17142C" }} />))}
+                      </span>
+                    )}
+                    <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, color: "#17142C", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.name}</span>
+                    <span style={{ flex: "none", fontSize: 10.5, fontWeight: 700, color: "#6B6450", fontFamily: "'Spline Sans Mono',monospace" }}>{fmt(start)}</span>
+                    {editable && (
+                      <button onClick={(ev) => { ev.stopPropagation(); onRemove(e.idx); }} onPointerDown={(ev) => ev.stopPropagation()} title="Rimuovi" style={{ flex: "none", cursor: "pointer", border: "none", background: "transparent", color: "#E6482A", fontSize: 14, fontWeight: 900, lineHeight: 1, padding: "0 2px" }}>×</button>
+                    )}
                   </div>
-                )}
-              </div>
+                  {h > 48 && (
+                    <div style={{ padding: "0 9px 6px 9px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                        <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: e.accent, borderRadius: 999, padding: "1px 6px" }}>{e.kindLabel}</span>
+                        <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{this_durLabel(dur)}</span>
+                        {e.maps && <a href={e.maps} target="_blank" rel="noopener" onPointerDown={(ev) => ev.stopPropagation()} onClick={(ev) => ev.stopPropagation()} style={{ fontSize: 10, fontWeight: 800, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 6, padding: "1px 7px" }}>Maps ↗</a>}
+                        {!editable && <span style={{ fontSize: 9.5, fontWeight: 800, color: "#9a937c" }}>tocca per i dettagli ›</span>}
+                      </div>
+                      {e.note && h > 76 && <div style={{ marginTop: 4, fontSize: 11, fontWeight: 600, color: "#6B6450", lineHeight: 1.35, overflow: "hidden" }}>{e.note}</div>}
+                      {e.warn && <div style={{ marginTop: 3, fontSize: 10.5, fontWeight: 700, color: "#E6482A" }}>⚠ {e.warn}</div>}
+                    </div>
+                  )}
+                  {/* drag-to-resize handle */}
+                  {editable && (
+                    <div
+                      onPointerDown={begin(e.idx, "resize", e.startMin, e.dur)}
+                      onPointerMove={move}
+                      onPointerUp={up}
+                      onPointerCancel={up}
+                      onClick={(ev) => ev.stopPropagation()}
+                      title="Trascina per la durata"
+                      style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 14, cursor: "ns-resize", touchAction: "none", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 2 }}
+                    >
+                      <span style={{ width: 26, height: 3, borderRadius: 3, background: e.accent, opacity: 0.55 }} />
+                    </div>
+                  )}
+                </div>
+              )}
             </React.Fragment>
           );
         })}
