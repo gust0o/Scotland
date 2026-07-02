@@ -3241,6 +3241,15 @@ export default class App extends React.Component {
               ) : (
                 <button onClick={() => this.checkForUpdate(true)} disabled={this.state.updateInfo.checking} style={{ cursor: this.state.updateInfo.checking ? "default" : "pointer", fontSize: 12.5, fontWeight: 900, color: "#17142C", background: "#FFD23F", border: "none", padding: "10px 15px", borderRadius: 999, opacity: this.state.updateInfo.checking ? 0.6 : 1 }}>{this.state.updateInfo.checking ? "Controllo…" : "Controlla aggiornamenti"}</button>
               )}
+              {/* Escape hatch: the check above can give a false "already
+                  updated" — it depends on version.json reaching you fresh,
+                  and on iOS a PWA's service worker can sit on an old
+                  index.html for a long time regardless of what the CDN is
+                  serving by now. This works even when the check is wrong. */}
+              <div style={{ marginTop: 12, paddingTop: 11, borderTop: "1px solid #34305a" }}>
+                <div style={{ fontSize: 11.5, color: "#9d98c4", lineHeight: 1.5, marginBottom: 8, fontWeight: 600 }}>Il controllo dice "già aggiornato" ma sospetti di vedere una versione vecchia? Succede — cancella comunque la copia offline, senza aspettare che il controllo lo confermi.</div>
+                <button onClick={this.applyUpdate} style={{ cursor: "pointer", fontSize: 12, fontWeight: 800, color: "#cfc8ee", background: "transparent", border: "1.5px solid #4a4570", padding: "8px 13px", borderRadius: 999 }}>Forza aggiornamento ↻</button>
+              </div>
             </Collapsible>
 
             <div style={{ textAlign: "center", marginTop: 24, fontWeight: 900, fontSize: 15, color: "#fff" }}>Slàinte mhath · <span style={{ background: "#FF2E7E", borderRadius: 999, padding: "3px 12px" }}>buon viaggio</span></div>
