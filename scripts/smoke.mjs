@@ -2,6 +2,7 @@
 // errors (e.g. a hook used without importing it) that `vite build` cannot detect.
 // Run: node scripts/smoke.mjs
 import { build } from "esbuild";
+import { execSync } from "child_process";
 import { renderToString } from "react-dom/server";
 import React from "react";
 import { join } from "path";
@@ -10,10 +11,13 @@ import { unlinkSync } from "fs";
 globalThis.localStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
 // Emit inside node_modules so the bundle's external `import "react"` resolves.
 const out = join(process.cwd(), "node_modules", ".scozia-smoke." + process.pid + ".mjs");
+let appVersion = "dev";
+try { appVersion = execSync("git rev-parse --short HEAD").toString().trim(); } catch {}
 await build({
   entryPoints: ["src/App.jsx"], bundle: true, format: "esm", outfile: out,
   loader: { ".json": "json" }, jsx: "automatic", logLevel: "silent",
   external: ["react", "react-dom", "react/jsx-runtime", "react-dom/server"],
+  define: { __APP_VERSION__: JSON.stringify(appVersion) },
 });
 try {
   const { default: App } = await import("file://" + out);
