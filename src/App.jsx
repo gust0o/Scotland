@@ -912,6 +912,26 @@ export default class App extends React.Component {
       const leg = travelLeg(prevGeo.coord, curGeo.coord);
       return leg ? leg.pick.min : null;
     }
+    // Gita-to-gita: mirrors the render's own tripSeq[i-1] chaining (see the
+    // "Andata"/"Ritorno" leg builder) so dragging a gita snaps to a realistic
+    // hop from wherever the PREVIOUS gita actually left off, instead of being
+    // free-form — which is what let a dragged gita's transport time overlap
+    // the previous gita's own stay in the first place.
+    if (curGeo.kind === "trip" && prevGeo.kind === "trip" && prevGeo.id !== curGeo.id) {
+      const leg = travelLeg(prevGeo.coord, curGeo.coord);
+      return leg ? leg.pick.min : null;
+    }
+    if (curGeo.kind === "trip" && prevGeo.kind === "tvenue" && prevGeo.tripId && prevGeo.tripId !== curGeo.id) {
+      // Chained from another gita's last venue: local hop back to THAT gita's
+      // own station, then station-to-station to this gita — same two legs the
+      // render shows as the last venue's tail chip + this gita's lead chip.
+      const prevTrip = getData().catalog[prevGeo.tripId];
+      const prevTripCoord = prevTrip ? coordForEvent(prevTrip) : null;
+      if (!prevTripCoord) return null;
+      const hop1 = travelLeg(prevGeo.coord, prevTripCoord);
+      const hop2 = travelLeg(prevTripCoord, curGeo.coord);
+      return (hop1 && hop2) ? hop1.pick.min + hop2.pick.min : null;
+    }
     if (isLocal(curGeo) && isLocal(prevGeo)) {
       const leg = travelLeg(prevGeo.coord, curGeo.coord);
       return leg && leg.km < 35 ? leg.pick.min : null;
@@ -969,6 +989,11 @@ export default class App extends React.Component {
         const geo = this.entryGeo(key, item.id, dd);
         const gap = this.gapMinutesBetween(prevGeo, geo);
         if (gap != null) finalStart = prevEnd + gap;
+        // Anti-overlap safety net: even when no precise travel-time rule
+        // applies (e.g. nothing links this gita to whatever precedes it),
+        // the item the user just dragged can never start before the
+        // previous entry's own stay actually finishes.
+        else if (isTarget) finalStart = Math.max(finalStart, prevEnd);
       }
       if (finalStart !== item.start) writes[item.idx] = finalStart;
       prevEnd = finalStart + durFor(item);
