@@ -525,6 +525,7 @@ export default class App extends React.Component {
     setOpen: {},
     installEvt: null, // deferred beforeinstallprompt (Chromium: Android/desktop)
     installed: false, // running as an installed PWA (standalone)
+    updateInfo: { checking: false, latest: null, available: false, checkedOnce: false },
   };
 
   componentDidMount() {
@@ -538,6 +539,7 @@ export default class App extends React.Component {
     this._onInstalled = () => this.setState({ installed: true, installEvt: null });
     window.addEventListener("beforeinstallprompt", this._onBIP);
     window.addEventListener("appinstalled", this._onInstalled);
+    this.checkForUpdate(false);
     const ld = (k) => {
       try {
         const v = localStorage.getItem(k);
@@ -781,6 +783,45 @@ export default class App extends React.Component {
     this.setState({ toast: { msg, ok } });
     clearTimeout(this._toastT);
     this._toastT = setTimeout(() => this.setState({ toast: null }), 2600);
+  };
+
+  // Version check: fetch the just-deployed version.json (no-store, so it
+  // never comes from the HTTP cache or the service worker — .json isn't in
+  // its precache list) and compare against __APP_VERSION__ baked into THIS
+  // running bundle at build time. `manual` just controls whether we surface
+  // a toast for a "you're already up to date" result (silent on mount).
+  checkForUpdate = (manual) => {
+    this.setState((s) => ({ updateInfo: { ...s.updateInfo, checking: true } }));
+    fetch("./version.json?t=" + Date.now(), { cache: "no-store" })
+      .then((r) => r.json())
+      .then((data) => {
+        const available = !!(data && data.version && data.version !== __APP_VERSION__);
+        this.setState({ updateInfo: { checking: false, latest: data && data.version, available, checkedOnce: true } });
+        if (manual) this.showToast(available ? "Nuova versione disponibile ✨" : "Sei già aggiornato ✓", true);
+      })
+      .catch(() => {
+        this.setState((s) => ({ updateInfo: { ...s.updateInfo, checking: false, checkedOnce: true } }));
+        if (manual) this.showToast("Impossibile controllare (sei offline?)", false);
+      });
+  };
+  // Clears only the app's own build cache (CacheStorage + service worker
+  // registration) so the next load fetches the new build fresh — never
+  // touches localStorage, so il programma, i preferiti e i dati riservati
+  // restano intatti.
+  applyUpdate = async () => {
+    this.showToast("Aggiornamento in corso…", true);
+    try {
+      if (window.caches) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map((k) => caches.delete(k)));
+      }
+      if (navigator.serviceWorker) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map((r) => r.unregister()));
+      }
+    } finally {
+      window.location.reload();
+    }
   };
 
   copyText(t, cb) {
@@ -3171,6 +3212,22 @@ export default class App extends React.Component {
                 </label>
               </div>
               {this.state.backupMsg && <div style={{ marginTop: 10, fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#14C08C", padding: "10px 12px", borderRadius: 12 }}>{this.state.backupMsg}</div>}
+            </Collapsible>
+
+            {/* ===== VERSION / UPDATE CHECK ===== */}
+            <Collapsible open={!!this.state.setOpen.ver} onToggle={() => this.toggleSet("ver")} title="Versione app" sub={this.state.updateInfo.available ? "Nuova versione disponibile" : "Controlla se hai l'ultima versione"}>
+              <div style={{ fontSize: 12.5, color: "#9d98c4", lineHeight: 1.55, marginBottom: 11, fontWeight: 600 }}>
+                In uso: <span style={{ fontFamily: MONO, color: "#cfc8ee" }}>{__APP_VERSION__}</span>
+                {this.state.updateInfo.checkedOnce && this.state.updateInfo.available && <> · ultima: <span style={{ fontFamily: MONO, color: "#cfc8ee" }}>{this.state.updateInfo.latest}</span></>}
+              </div>
+              {this.state.updateInfo.available ? (
+                <div>
+                  <div style={{ marginBottom: 10, fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#FFD23F", padding: "10px 12px", borderRadius: 12 }}>È disponibile una nuova versione. L'aggiornamento non tocca i tuoi dati (programma, preferiti, dati riservati) — cancella solo la copia offline dell'app.</div>
+                  <button onClick={this.applyUpdate} style={{ cursor: "pointer", fontSize: 13.5, fontWeight: 900, color: "#fff", background: "#14C08C", border: "none", padding: "11px 18px", borderRadius: 999 }}>Aggiorna ora ↻</button>
+                </div>
+              ) : (
+                <button onClick={() => this.checkForUpdate(true)} disabled={this.state.updateInfo.checking} style={{ cursor: this.state.updateInfo.checking ? "default" : "pointer", fontSize: 12.5, fontWeight: 900, color: "#17142C", background: "#FFD23F", border: "none", padding: "10px 15px", borderRadius: 999, opacity: this.state.updateInfo.checking ? 0.6 : 1 }}>{this.state.updateInfo.checking ? "Controllo…" : "Controlla aggiornamenti"}</button>
+              )}
             </Collapsible>
 
             <div style={{ textAlign: "center", marginTop: 24, fontWeight: 900, fontSize: 15, color: "#fff" }}>Slàinte mhath · <span style={{ background: "#FF2E7E", borderRadius: 999, padding: "3px 12px" }}>buon viaggio</span></div>
