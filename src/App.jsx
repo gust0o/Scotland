@@ -2210,6 +2210,22 @@ export default class App extends React.Component {
       // up front because it changes where the Ritorno belongs (see below).
       const venuesByTrip = {};
       tripSeq.forEach((t) => { venuesByTrip[t.id] = seq.filter((e) => e.kind === "tvenue" && e.tripId === t.id); });
+      // A gita's "sul posto" span is a single free-standing number ONLY until
+      // it has venues attached — once you schedule venues, THEY define how
+      // long you're actually there, so the block's own duration (and the
+      // spine height it draws) is derived from arrival to the last venue's
+      // end instead of the independently-resizable placeholder. This is what
+      // keeps the spine from ending well before the venues it's supposed to
+      // bracket (leaving a dead gap on the timeline).
+      tripSeq.forEach((t) => {
+        const venues = venuesByTrip[t.id];
+        if (!venues.length) return;
+        const last = venues[venues.length - 1];
+        const span = Math.max(30, (last.startMin + last.dur) - t.startMin);
+        t.dur = span;
+        t.durLabel = this.durLabel(span);
+        t.durLocked = true;
+      });
       tripSeq.forEach((t, i) => {
         const st = stationOf(t);
         const dwell = STATION_DWELL[st.mode] || STATION_DWELL.train;
