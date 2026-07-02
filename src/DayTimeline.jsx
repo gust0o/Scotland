@@ -1,71 +1,102 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 
-const HOUR_PX = 64; // height of one hour (full 0–24 ≈ two phone screens of scroll)
-const GUTTER = 46; // left hour-label gutter
+const HOUR_PX = 64; // px-per-hour scale for a tappa's minimum height / resize feel
 const SNAP = 5; // minutes
-const DAY_MIN = 24 * 60;
+const MONO = "'Spline Sans Mono',monospace";
 
 const pad = (n) => String(n).padStart(2, "0");
 const fmt = (min) => pad(Math.floor(min / 60)) + ":" + pad(Math.round(min % 60));
 
-// Full-day (00:00–24:00) calendar for one day, in a screen-height scroll box.
-// Events are positioned by start and sized by duration; day trips also render
-// their travel time as transfer blocks before/after the visit. Drag the top
-// handle to move, the bottom handle to change duration (touch-friendly).
-export default function DayTimeline({ events, flights, editable, nowMin, onChangeStart, onResize, onRemove, onSelect }) {
-  const [drag, setDrag] = useState(null); // { idx, mode, start, dur }
-  const st = useRef(null);
-  const scroller = useRef(null);
+// small duration formatter
+function durLbl(min) {
+  if (!min) return "—";
+  const h = Math.floor(min / 60), m = min % 60;
+  if (min >= 240) { const v = Math.round((min / 60) * 10) / 10; return (v % 1 ? v.toFixed(1) : v) + "h"; }
+  return ((h ? h + "h " : "") + (m ? m + "′" : "")).trim() || "—";
+}
 
-  const height = DAY_MIN / 60 * HOUR_PX;
-  const yOf = (min) => (min / 60) * HOUR_PX;
+// One day = a SEQUENCE of blocks, not a clock canvas. Every block's start/end
+// is computed by the caller (App.jsx) from the day's own start time + the
+// real travel gap since the previous block — there's no independent position
+// to drag onto an arbitrary time, so overlaps and stray gaps can't happen.
+// What you CAN do: drag the ⠿ handle to reorder, or drag a block's bottom
+// edge to change how long you stay (which reflows everyone after it, for
+// free, since this is now a normal flow layout).
+export default function DayTimeline({ events, flights, editable, nowMin, onReorder, onResize, onRemove, onSelect }) {
+  const [dragResize, setDragResize] = useState(null); // { idx, dur }
+  const [dragReorder, setDragReorder] = useState(null); // { fromIdx, order }
+  const rst = useRef(null);
+  const ost = useRef(null);
+  const cardH = useRef({});
 
-  // Auto-scroll to the earliest content (minus a little headroom) on first paint.
-  useEffect(() => {
-    if (!scroller.current) return;
-    const all = [
-      ...events.map((e) => e.startMin - (e.lead ? e.lead.min : 0)),
-      ...flights.map((f) => f.startMin),
-    ];
-    const earliest = all.length ? Math.max(0, Math.min(...all) - 40) : (typeof nowMin === "number" ? Math.max(0, nowMin - 60) : 8 * 60);
-    scroller.current.scrollTop = yOf(earliest);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const hours = [];
-  for (let h = 0; h <= 24; h++) hours.push(h);
-
-  const begin = (idx, mode, start, dur) => (ev) => {
+  const beginResize = (idx, dur) => (ev) => {
     if (!editable) return;
     ev.preventDefault();
     ev.stopPropagation();
     try { ev.currentTarget.setPointerCapture(ev.pointerId); } catch (e) {}
-    st.current = { idx, mode, start, dur, y0: ev.clientY };
-    setDrag({ idx, mode, start, dur });
+    rst.current = { idx, dur, y0: ev.clientY };
+    setDragResize({ idx, dur });
   };
-  const move = (ev) => {
-    if (!st.current) return;
+  const moveResize = (ev) => {
+    if (!rst.current) return;
     ev.preventDefault();
-    const dMin = ((ev.clientY - st.current.y0) / HOUR_PX) * 60;
-    if (st.current.mode === "move") {
-      let s = Math.round((st.current.start + dMin) / SNAP) * SNAP;
-      s = Math.max(0, Math.min(DAY_MIN - st.current.dur, s));
-      setDrag({ ...st.current, start: s });
-    } else {
-      let dur = Math.round((st.current.dur + dMin) / SNAP) * SNAP;
-      dur = Math.max(15, Math.min(DAY_MIN - st.current.start, dur));
-      setDrag({ ...st.current, dur });
+    const dMin = ((ev.clientY - rst.current.y0) / HOUR_PX) * 60;
+    let dur = Math.round((rst.current.dur + dMin) / SNAP) * SNAP;
+    dur = Math.max(15, Math.min(24 * 60, dur));
+    setDragResize({ idx: rst.current.idx, dur });
+  };
+  const upResize = (ev) => {
+    if (!rst.current) return;
+    ev.preventDefault();
+    const { idx } = rst.current;
+    const final = dragResize ? dragResize.dur : rst.current.dur;
+    rst.current = null;
+    setDragResize(null);
+    onResize(idx, final);
+  };
+
+  const beginReorder = (idx) => (ev) => {
+    if (!editable) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    try { ev.currentTarget.setPointerCapture(ev.pointerId); } catch (e) {}
+    ost.current = { fromIdx: idx, order: events.map((_, i) => i), y0: ev.clientY };
+    setDragReorder({ fromIdx: idx, order: ost.current.order.slice() });
+  };
+  const moveReorder = (ev) => {
+    const st = ost.current;
+    if (!st) return;
+    ev.preventDefault();
+    const dy = ev.clientY - st.y0;
+    const pos = st.order.indexOf(st.fromIdx);
+    if (dy > 0 && pos < st.order.length - 1) {
+      const belowIdx = st.order[pos + 1];
+      const belowH = (cardH.current[belowIdx] || 60) + 10;
+      if (dy > belowH / 2) {
+        st.order[pos] = st.order[pos + 1];
+        st.order[pos + 1] = st.fromIdx;
+        st.y0 = ev.clientY;
+        setDragReorder({ fromIdx: st.fromIdx, order: st.order.slice() });
+      }
+    } else if (dy < 0 && pos > 0) {
+      const aboveIdx = st.order[pos - 1];
+      const aboveH = (cardH.current[aboveIdx] || 60) + 10;
+      if (-dy > aboveH / 2) {
+        st.order[pos] = st.order[pos - 1];
+        st.order[pos - 1] = st.fromIdx;
+        st.y0 = ev.clientY;
+        setDragReorder({ fromIdx: st.fromIdx, order: st.order.slice() });
+      }
     }
   };
-  const up = (ev) => {
-    if (!st.current) return;
+  const upReorder = (ev) => {
+    const st = ost.current;
+    if (!st) return;
     ev.preventDefault();
-    const cur = drag || st.current;
-    const { idx, mode } = st.current;
-    st.current = null;
-    setDrag(null);
-    if (mode === "move") onChangeStart(idx, cur.start);
-    else onResize(idx, cur.dur);
+    ost.current = null;
+    setDragReorder(null);
+    const toIdx = st.order.indexOf(st.fromIdx);
+    if (toIdx !== st.fromIdx) onReorder(st.fromIdx, toIdx);
   };
 
   const TONES = {
@@ -74,25 +105,10 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
     move: { bg: "#EDE7D7", bd: "#d8cdb2", txt: "#5b5644", accent: "#b9ac8d", icon: "" },
   };
 
-  // Render a transfer (incoming `lead` / outgoing `tail`) as a VERTICAL dashed
-  // connector that links one activity to the next, with the transport icon on
-  // the line. `up` runs from the activity's top upward (toward the previous
-  // stop); `down` runs from its bottom downward. A floating chip beside the line
-  // shows the mode/time/cost — more detail the longer the gap.
-  const transferEl = (t, anchorMin, dir, leftPx, isDrag) => {
-    const pxH = (t.min / 60) * HOUR_PX;
-    const lineH = Math.max(pxH, 16); // keep the connector visible even when tiny
-    const topPx = dir === "up" ? yOf(anchorMin) - lineH : yOf(anchorMin);
-    const x = leftPx + 15; // sits just inside the block's left edge
-    const z = isDrag ? 9 : 3;
-    // Chip detail scales with the available vertical room.
+  // A transfer gap as a slim inline chip between two cards — mode/time/cost,
+  // tap to cycle mode where a switch is possible.
+  const TransferChip = ({ t }) => {
     const canSwitch = !!(t.onMode && t.options && t.options.length > 1);
-    const sw = canSwitch ? " ⇄" : "";
-    let chip;
-    if (lineH >= 46) chip = t.icon + " " + t.primary + " · " + t.min + "′" + (t.costLabel ? " · " + t.costLabel : "") + sw;
-    else if (lineH >= 26) chip = t.icon + " " + t.min + "′" + (t.costLabel ? " · " + t.costLabel : "") + sw;
-    else chip = t.icon + " " + t.min + "′" + sw;
-    // Tap the chip to cycle to the next mode (a piedi ↔ bus ↔ Uber).
     const cycle = (ev) => {
       ev.stopPropagation();
       const opts = t.options;
@@ -100,190 +116,124 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
       t.onMode(opts[(i + 1) % opts.length].mode);
     };
     return (
-      <div style={{ position: "absolute", top: topPx, left: x, height: lineH, width: 0, borderLeft: "2px dashed #b9ac8d", zIndex: z }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "3px 4px 3px 22px", margin: "-2px 0" }}>
+        <div style={{ flex: "none", width: 0, height: 14, borderLeft: "2px dashed #b9ac8d" }} />
         <span
           onClick={canSwitch ? cycle : undefined}
-          onPointerDown={canSwitch ? (e) => e.stopPropagation() : undefined}
           title={canSwitch ? "Tocca per cambiare mezzo" : undefined}
-          style={{ position: "absolute", left: 7, top: "50%", transform: "translateY(-50%)", whiteSpace: "nowrap", background: canSwitch ? "#FFF6DD" : "#FCFAF3", padding: "1px 6px", borderRadius: 6, boxShadow: "0 0 0 1px " + (canSwitch ? "#E7C766" : "#E7DEC9"), fontSize: 9.5, fontWeight: 800, color: "#6b6450", cursor: canSwitch ? "pointer" : "default" }}
-        >{chip}</span>
+          style={{ fontSize: 10, fontWeight: 800, color: "#6b6450", background: canSwitch ? "#FFF6DD" : "transparent", borderRadius: 6, padding: canSwitch ? "1px 7px" : 0, cursor: canSwitch ? "pointer" : "default" }}
+        >
+          {t.icon} {t.primary} · {t.min}′{t.costLabel ? " · " + t.costLabel : ""}{canSwitch ? " ⇄" : ""}
+        </span>
       </div>
     );
   };
 
+  // Reorder into the LIVE drag order when a drag is in progress, so the DOM
+  // already shows the swap as it happens.
+  const order = dragReorder ? dragReorder.order : events.map((_, i) => i);
+  const ordered = order.map((i) => events[i]);
+
   return (
-    <div ref={scroller} style={{ position: "relative", marginTop: 6, maxHeight: "70vh", overflowY: "auto", overscrollBehavior: "contain", borderRadius: 12, border: "1px solid #E7DEC9", background: "#FCFAF3" }}>
-      <div style={{ position: "relative", height }}>
-        {/* hour grid */}
-        {hours.map((h) => (
-          <div key={h} style={{ position: "absolute", top: yOf(h * 60), left: 0, right: 0, height: 1, borderTop: "1px solid #EFE7D3" }}>
-            <span style={{ position: "absolute", top: -7, left: 6, fontSize: 10, fontWeight: 700, color: "#b3a98c", fontFamily: "'Spline Sans Mono',monospace" }}>{pad(h)}:00</span>
-          </div>
-        ))}
-
-        {/* now line */}
-        {typeof nowMin === "number" && (
-          <div style={{ position: "absolute", top: yOf(nowMin), left: GUTTER - 4, right: 4, height: 0, borderTop: "2px solid #FF2E7E", zIndex: 6 }}>
-            <span style={{ position: "absolute", left: -6, top: -4, width: 8, height: 8, borderRadius: 999, background: "#FF2E7E" }} />
-          </div>
-        )}
-
-        {/* fixed blocks: flight + transfers + gate/security */}
-        {flights.map((f, i) => {
-          const top = yOf(f.startMin);
-          const h = Math.max(yOf(f.endMin) - top, 26);
-          const t = f.tone === "flight" ? { bg: "#FBE4E0", bd: "#f3c4bb", txt: "#9c2a18", accent: f.accent || "#E6482A", icon: "✈ " } : TONES[f.tone] || TONES.move;
-          return (
-            <div key={"f" + i} style={{ position: "absolute", top, left: GUTTER, right: 4, height: h, background: t.bg, border: `1px solid ${t.bd}`, borderLeft: `4px solid ${t.accent}`, borderRadius: 9, padding: "4px 8px", overflow: "hidden", boxSizing: "border-box" }}>
-              <div style={{ fontSize: 12, fontWeight: 800, color: t.txt, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.icon}{f.label}</div>
-              {f.sub && h > 46 && <div style={{ fontSize: 10, fontWeight: 600, color: t.txt, opacity: 0.85, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{f.sub}</div>}
-              {f.timeLabel && h > 30 && <div style={{ fontSize: 10, fontWeight: 700, color: t.txt, opacity: 0.9, fontFamily: "'Spline Sans Mono',monospace" }}>{f.timeLabel}</div>}
+    <div style={{ borderRadius: 12, border: "1px solid #E7DEC9", background: "#FCFAF3", padding: 8 }}>
+      {flights.map((f, i) => {
+        const t = f.tone === "flight" ? { bg: "#FBE4E0", bd: "#f3c4bb", txt: "#9c2a18", accent: f.accent || "#E6482A", icon: "✈ " } : TONES[f.tone] || TONES.move;
+        return (
+          <div key={"f" + i} style={{ background: t.bg, border: `1px solid ${t.bd}`, borderLeft: `4px solid ${t.accent}`, borderRadius: 9, padding: "7px 10px", marginBottom: 6 }}>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
+              <span style={{ fontSize: 12.5, fontWeight: 800, color: t.txt }}>{t.icon}{f.label}</span>
+              {f.timeLabel && <span style={{ fontSize: 10.5, fontWeight: 800, color: t.txt, opacity: 0.9, fontFamily: MONO, whiteSpace: "nowrap" }}>{f.timeLabel}</span>}
             </div>
-          );
-        })}
+            {f.sub && <div style={{ fontSize: 10.5, fontWeight: 600, color: t.txt, opacity: 0.85, marginTop: 2 }}>{f.sub}</div>}
+          </div>
+        );
+      })}
 
-        {/* events */}
-        {events.map((e) => {
-          const isDrag = drag && drag.idx === e.idx;
-          const start = isDrag ? drag.start : e.startMin;
-          const dur = isDrag ? (drag.mode === "resize" ? drag.dur : e.dur) : e.dur;
-          const top = yOf(start);
-          const h = Math.max((dur / 60) * HOUR_PX, 30);
-          const isTripBlock = e.kind === "trip";
-          const isVenueBlock = e.kind === "tvenue";
-          const leftPx = GUTTER + (isVenueBlock ? 16 : 0);
-          return (
-            <React.Fragment key={e.idx}>
-              {/* incoming transfer (Andata, chained hop, hotel→, or city walk/bus) */}
-              {e.lead && e.lead.min > 0 && transferEl(e.lead, start, "up", leftPx, isDrag)}
-              {/* outgoing transfer (Ritorno to Edinburgh / back to the hotel) */}
-              {e.tail && e.tail.min > 0 && transferEl(e.tail, start + dur, "down", leftPx, isDrag)}
-              {isTripBlock ? (
-                <>
-                  {/* A gita is a SPAN, not a card: a thin colored spine marks how
-                      long you're out for, and a small header pill (auto height,
-                      not stretched over the whole visit) carries the name/
-                      actions — so any venues placed inside its time range stay
-                      fully legible instead of sitting on top of a filled box. */}
-                  <div style={{ position: "absolute", top, left: leftPx, width: 4, height: h, background: e.accent, borderRadius: 3, pointerEvents: "none", zIndex: 1 }} />
-                  <div
-                    onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
-                    style={{ position: "absolute", top, left: leftPx + 10, right: 4, background: "#fff", border: `1px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "0 2px 7px -2px rgba(20,16,40,.18)", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
-                  >
-                    {!editable && (
-                      <span style={{ position: "absolute", top: 0, right: 0, pointerEvents: "none", fontSize: 8.5, fontWeight: 900, letterSpacing: ".08em", color: "#fff", background: e.accent, borderRadius: "0 0 0 8px", padding: "2px 7px", zIndex: 3 }}>GITA</span>
-                    )}
-                    <div
-                      onPointerDown={begin(e.idx, "move", e.startMin, e.dur)}
-                      onPointerMove={move}
-                      onPointerUp={up}
-                      onPointerCancel={up}
-                      style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
-                    >
-                      {editable && (
-                        <span style={{ flex: "none", display: "grid", gridTemplateColumns: "2px 2px", gap: 2, opacity: 0.5 }} aria-hidden>
-                          {Array.from({ length: 6 }).map((_, i) => (<span key={i} style={{ width: 2, height: 2, borderRadius: 2, background: "#17142C" }} />))}
-                        </span>
-                      )}
-                      <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, color: "#17142C", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.name}</span>
-                      <span style={{ flex: "none", fontSize: 10.5, fontWeight: 700, color: "#6B6450", fontFamily: "'Spline Sans Mono',monospace" }}>{fmt(start)}</span>
-                      {editable && (
-                        <button onClick={(ev) => { ev.stopPropagation(); onRemove(e.idx); }} onPointerDown={(ev) => ev.stopPropagation()} title="Rimuovi" style={{ flex: "none", cursor: "pointer", border: "none", background: "transparent", color: "#E6482A", fontSize: 14, fontWeight: 900, lineHeight: 1, padding: "0 2px" }}>×</button>
-                      )}
-                    </div>
-                    <div style={{ padding: "0 9px 6px 9px" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: e.accent, borderRadius: 999, padding: "1px 6px" }}>{e.kindLabel}</span>
-                        <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{this_durLabel(dur)} sul posto{e.durLocked ? " · dalle venue" : ""}</span>
-                        {e.maps && <a href={e.maps} target="_blank" rel="noopener" onPointerDown={(ev) => ev.stopPropagation()} onClick={(ev) => ev.stopPropagation()} style={{ fontSize: 10, fontWeight: 800, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 6, padding: "1px 7px" }}>Maps ↗</a>}
-                        {!editable && <span style={{ fontSize: 9.5, fontWeight: 800, color: "#9a937c" }}>tocca per i dettagli ›</span>}
-                      </div>
-                      {e.warn && <div style={{ marginTop: 3, fontSize: 10.5, fontWeight: 700, color: "#E6482A" }}>⚠ {e.warn}</div>}
-                    </div>
-                  </div>
-                  {/* resize handle sits at the bottom of the SPINE (the real end
-                      of the visit), independent of the pill's own small height —
-                      hidden once venues are attached, since the span is then
-                      derived from them (see App.jsx) and dragging it wouldn't
-                      stick. */}
-                  {editable && !e.durLocked && (
-                    <div
-                      onPointerDown={begin(e.idx, "resize", e.startMin, e.dur)}
-                      onPointerMove={move}
-                      onPointerUp={up}
-                      onPointerCancel={up}
-                      onClick={(ev) => ev.stopPropagation()}
-                      title="Trascina per la durata"
-                      style={{ position: "absolute", top: top + h - 14, left: leftPx, right: 4, height: 14, cursor: "ns-resize", touchAction: "none", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 2, zIndex: 2, WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
-                    >
-                      <span style={{ width: 26, height: 3, borderRadius: 3, background: e.accent, opacity: 0.55 }} />
-                    </div>
-                  )}
-                </>
-              ) : (
+      {typeof nowMin === "number" && events.length > 0 && (
+        <div style={{ display: "flex", alignItems: "center", gap: 6, margin: "2px 0 6px" }}>
+          <span style={{ width: 8, height: 8, borderRadius: 999, background: "#FF2E7E", flex: "none" }} />
+          <span style={{ fontSize: 10.5, fontWeight: 800, color: "#FF2E7E" }}>adesso {fmt(nowMin)}</span>
+          <div style={{ flex: 1, height: 0, borderTop: "2px solid #FF2E7E", opacity: 0.35 }} />
+        </div>
+      )}
+
+      {ordered.map((e, pos) => {
+        const isDrag = dragResize && dragResize.idx === e.idx;
+        const dur = isDrag ? dragResize.dur : e.dur;
+        const start = e.startMin; // not re-derived client-side during a resize drag — reflects last-committed schedule
+        const isReordering = dragReorder && dragReorder.fromIdx === e.idx;
+        const isTripBlock = e.kind === "trip";
+        const isVenueBlock = e.kind === "tvenue";
+        const minH = Math.max((e.dur / 60) * HOUR_PX * 0.4, 30); // a soft visual cue, not a hard clip
+        return (
+          <React.Fragment key={e.idx}>
+            {e.lead && e.lead.min > 0 && <TransferChip t={e.lead} />}
+            <div
+              ref={(el) => { if (el) cardH.current[e.idx] = el.offsetHeight; }}
+              onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
+              style={{
+                position: "relative", marginLeft: isVenueBlock ? 14 : 0, minHeight: minH,
+                background: isTripBlock ? "#fff" : e.bg, border: isTripBlock ? `1.5px solid ${e.accent}` : "1px solid rgba(20,16,40,.05)",
+                borderLeft: isVenueBlock ? `4px dashed ${e.accent}` : isTripBlock ? `5px solid ${e.accent}` : `5px solid ${e.accent}`,
+                borderRadius: 10, overflow: "hidden", boxSizing: "border-box", marginBottom: 4,
+                boxShadow: isReordering ? "0 10px 24px -8px rgba(0,0,0,.4)" : "none",
+                zIndex: isReordering ? 10 : 1, cursor: editable ? "default" : "pointer",
+                WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none",
+                opacity: isReordering ? 0.92 : 1,
+              }}
+            >
+              {isTripBlock && !editable && (
+                <span style={{ position: "absolute", top: 0, right: 0, pointerEvents: "none", fontSize: 8.5, fontWeight: 900, letterSpacing: ".08em", color: "#fff", background: e.accent, borderRadius: "0 0 0 8px", padding: "2px 7px", zIndex: 3 }}>GITA</span>
+              )}
+              <div
+                onPointerDown={beginReorder(e.idx)}
+                onPointerMove={moveReorder}
+                onPointerUp={upReorder}
+                onPointerCancel={upReorder}
+                style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
+              >
+                {editable && (
+                  <span style={{ flex: "none", display: "grid", gridTemplateColumns: "2px 2px", gap: 2, opacity: 0.5 }} aria-hidden>
+                    {Array.from({ length: 6 }).map((_, i) => (<span key={i} style={{ width: 2, height: 2, borderRadius: 2, background: "#17142C" }} />))}
+                  </span>
+                )}
+                <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, color: "#17142C", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.name}</span>
+                <span style={{ flex: "none", fontSize: 10.5, fontWeight: 700, color: "#6B6450", fontFamily: MONO }}>{fmt(start)}–{fmt(start + dur)}</span>
+                {editable && (
+                  <button onClick={(ev) => { ev.stopPropagation(); onRemove(e.idx); }} onPointerDown={(ev) => ev.stopPropagation()} title="Rimuovi" style={{ flex: "none", cursor: "pointer", border: "none", background: "transparent", color: "#E6482A", fontSize: 14, fontWeight: 900, lineHeight: 1, padding: "0 2px" }}>×</button>
+                )}
+              </div>
+              <div style={{ padding: "0 9px 7px 9px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                  <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: e.accent, borderRadius: 999, padding: "1px 6px" }}>{e.kindLabel}</span>
+                  <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{durLbl(dur)}{isTripBlock ? " sul posto" : ""}{e.durLocked ? " · dalle venue" : ""}</span>
+                  {e.maps && <a href={e.maps} target="_blank" rel="noopener" onPointerDown={(ev) => ev.stopPropagation()} onClick={(ev) => ev.stopPropagation()} style={{ fontSize: 10, fontWeight: 800, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 6, padding: "1px 7px" }}>Maps ↗</a>}
+                  {!editable && <span style={{ fontSize: 9.5, fontWeight: 800, color: "#9a937c" }}>tocca per i dettagli ›</span>}
+                </div>
+                {!isTripBlock && e.note && <div style={{ marginTop: 4, fontSize: 11, fontWeight: 600, color: "#6B6450", lineHeight: 1.35 }}>{e.note}</div>}
+                {e.warn && <div style={{ marginTop: 3, fontSize: 10.5, fontWeight: 700, color: "#E6482A" }}>⚠ {e.warn}</div>}
+              </div>
+              {/* drag-to-resize handle: hidden on a gita once venues are
+                  attached, since its span is then derived from them (see
+                  App.jsx) and dragging it wouldn't stick. */}
+              {editable && !e.durLocked && (
                 <div
-                  onClick={() => { if (!editable && onSelect) onSelect(e.idx); }}
-                  style={{ position: "absolute", top, left: leftPx, right: 4, height: h, background: e.bg, border: "1px solid rgba(20,16,40,.05)", borderLeft: isVenueBlock ? `4px dashed ${e.accent}` : `5px solid ${e.accent}`, borderRadius: 10, overflow: "hidden", boxSizing: "border-box", boxShadow: isDrag ? "0 10px 24px -8px rgba(0,0,0,.4)" : "none", zIndex: isDrag ? 10 : 2, cursor: editable ? "default" : "pointer", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
+                  onPointerDown={beginResize(e.idx, e.dur)}
+                  onPointerMove={moveResize}
+                  onPointerUp={upResize}
+                  onPointerCancel={upResize}
+                  onClick={(ev) => ev.stopPropagation()}
+                  title="Trascina per la durata"
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 16, cursor: "ns-resize", touchAction: "none", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
                 >
-                  {/* drag-to-move header (drag only in edit mode; tap opens detail in consult) */}
-                  <div
-                    onPointerDown={begin(e.idx, "move", e.startMin, e.dur)}
-                    onPointerMove={move}
-                    onPointerUp={up}
-                    onPointerCancel={up}
-                    style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 7px 3px 9px", touchAction: editable ? "none" : "pan-y", cursor: editable ? "grab" : "pointer", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
-                  >
-                    {editable && (
-                      <span style={{ flex: "none", display: "grid", gridTemplateColumns: "2px 2px", gap: 2, opacity: 0.5 }} aria-hidden>
-                        {Array.from({ length: 6 }).map((_, i) => (<span key={i} style={{ width: 2, height: 2, borderRadius: 2, background: "#17142C" }} />))}
-                      </span>
-                    )}
-                    <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, color: "#17142C", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.name}</span>
-                    <span style={{ flex: "none", fontSize: 10.5, fontWeight: 700, color: "#6B6450", fontFamily: "'Spline Sans Mono',monospace" }}>{fmt(start)}</span>
-                    {editable && (
-                      <button onClick={(ev) => { ev.stopPropagation(); onRemove(e.idx); }} onPointerDown={(ev) => ev.stopPropagation()} title="Rimuovi" style={{ flex: "none", cursor: "pointer", border: "none", background: "transparent", color: "#E6482A", fontSize: 14, fontWeight: 900, lineHeight: 1, padding: "0 2px" }}>×</button>
-                    )}
-                  </div>
-                  {h > 48 && (
-                    <div style={{ padding: "0 9px 6px 9px" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: e.accent, borderRadius: 999, padding: "1px 6px" }}>{e.kindLabel}</span>
-                        <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{this_durLabel(dur)}</span>
-                        {e.maps && <a href={e.maps} target="_blank" rel="noopener" onPointerDown={(ev) => ev.stopPropagation()} onClick={(ev) => ev.stopPropagation()} style={{ fontSize: 10, fontWeight: 800, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 6, padding: "1px 7px" }}>Maps ↗</a>}
-                        {!editable && <span style={{ fontSize: 9.5, fontWeight: 800, color: "#9a937c" }}>tocca per i dettagli ›</span>}
-                      </div>
-                      {e.note && h > 76 && <div style={{ marginTop: 4, fontSize: 11, fontWeight: 600, color: "#6B6450", lineHeight: 1.35, overflow: "hidden" }}>{e.note}</div>}
-                      {e.warn && <div style={{ marginTop: 3, fontSize: 10.5, fontWeight: 700, color: "#E6482A" }}>⚠ {e.warn}</div>}
-                    </div>
-                  )}
-                  {/* drag-to-resize handle */}
-                  {editable && (
-                    <div
-                      onPointerDown={begin(e.idx, "resize", e.startMin, e.dur)}
-                      onPointerMove={move}
-                      onPointerUp={up}
-                      onPointerCancel={up}
-                      onClick={(ev) => ev.stopPropagation()}
-                      title="Trascina per la durata"
-                      style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 14, cursor: "ns-resize", touchAction: "none", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 2, WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
-                    >
-                      <span style={{ width: 26, height: 3, borderRadius: 3, background: e.accent, opacity: 0.55 }} />
-                    </div>
-                  )}
+                  <span style={{ width: 26, height: 3, borderRadius: 3, background: e.accent, opacity: 0.55 }} />
                 </div>
               )}
-            </React.Fragment>
-          );
-        })}
-      </div>
+            </div>
+            {e.tail && e.tail.min > 0 && <TransferChip t={e.tail} />}
+          </React.Fragment>
+        );
+      })}
     </div>
   );
-}
-
-// small duration formatter (kept local to avoid prop drilling)
-function this_durLabel(min) {
-  if (!min) return "—";
-  const h = Math.floor(min / 60), m = min % 60;
-  if (min >= 240) { const v = Math.round((min / 60) * 10) / 10; return (v % 1 ? v.toFixed(1) : v) + "h"; }
-  return ((h ? h + "h " : "") + (m ? m + "′" : "")).trim() || "—";
 }

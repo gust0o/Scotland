@@ -865,27 +865,48 @@ export default class App extends React.Component {
     } catch (e) {}
     this.setState({ plan: p });
   }
-  // Day = flat array of { id, start:"HH:MM" }.
+  // Day = flat array of { id, dur? }. Order in the array IS the chronological
+  // order — there's no independent start time to fall out of sync with it.
+  // (Older saves may still carry a legacy `start`, only used once as a
+  // one-time sort seed — see dayEntries.)
   ensureDay(p, key) {
     if (!p.days) p.days = {};
     if (!Array.isArray(p.days[key])) p.days[key] = [];
   }
   dayEntries(key) {
     const p = this.state.plan;
-    return (p && p.days && Array.isArray(p.days[key]) && p.days[key]) || [];
+    const raw = (p && p.days && Array.isArray(p.days[key]) && p.days[key]) || [];
+    // Legacy migration: plans saved before the sequential model stored an
+    // explicit clock time per entry. Sort by that ONCE (stable, so entries
+    // without one keep their relative array position) so an old plan opens
+    // in the order it already displayed — from here on, order comes purely
+    // from the array (drag-to-reorder splices it directly).
+    if (!raw.some((en) => en.start != null)) return raw;
+    return raw.slice().sort((a, b) => {
+      const pa = this.parseMin(a.start), pb = this.parseMin(b.start);
+      if (pa == null && pb == null) return 0;
+      if (pa == null) return 1;
+      if (pb == null) return -1;
+      return pa - pb;
+    });
+  }
+  // When the day begins — "parti dall'hotel alle…". Everything after this is
+  // derived: entry 0 starts here (+ its lead, e.g. the walk to the station),
+  // every next entry starts when the previous one ends + the travel gap.
+  dayStartOf(key) {
+    const p = this.state.plan;
+    const v = p && p.dayStart && p.dayStart[key];
+    const m = v != null ? this.parseMin(v) : null;
+    return m != null ? m : 9 * 60;
+  }
+  setDayStart(key, hhmm) {
+    this.planMut((p) => {
+      if (!p.dayStart) p.dayStart = {};
+      p.dayStart[key] = hhmm;
+    });
   }
   addEntry(key, id) {
     const D = getData();
-    const cur = this.dayEntries(key);
-    // default start: after the last activity, else 09:00
-    let last = 9 * 60;
-    cur.forEach((en) => {
-      const a = D.catalog[en.id];
-      const s = this.parseMin(en.start);
-      if (s != null) last = Math.max(last, s + ((a && a.dur) || 60));
-    });
-    const start = Math.min(last, 22 * 60);
-    const hh = String(Math.floor(start / 60)).padStart(2, "0") + ":" + String(start % 60).padStart(2, "0");
     // Duplicate across days: warn, but add anyway (you might want to go back).
     // Hotels and transport hubs are expected in many days, so they never warn.
     const isNode = id === "hotel" || /^hotel\d+$/.test(id) || /^tx-/.test(id);
@@ -894,7 +915,7 @@ export default class App extends React.Component {
     if (days && !isNode) for (const k in days) { if (k !== key && Array.isArray(days[k]) && days[k].some((e) => e.id === id)) { dupKey = k; break; } }
     this.planMut((p) => {
       this.ensureDay(p, key);
-      p.days[key].push({ id, start: hh });
+      p.days[key].push({ id }); // appended at the end — the new last tappa
     });
     this.setState({ pickerFor: null });
     if (dupKey) {
@@ -910,20 +931,28 @@ export default class App extends React.Component {
       p.days[key].splice(idx, 1);
     });
   }
-  // ---------- magnetic chaining (shared with the render's leg rules) ----------
-  // Travel times must actually connect consecutive tappe, not just estimate a
-  // number that floats in whatever gap the user happened to leave. So: moving a
-  // tappa to reorder it SNAPS its start to (predecessor's end + real travel
-  // time), and lengthening a stay CASCADES that push onto whatever comes right
-  // after it — the only way to add slack is to make the stay longer. Covers the
-  // common, unambiguous adjacencies (local venues/hotel/transit chain; a gita's
-  // own tvenue chain); anything else (e.g. gita-to-gita, which chains to the
-  // previous GITA rather than the immediately-prior tappa) falls back to free
-  // positioning, same as before — see the render's own leg logic for those.
+  reorderDay(key, fromIdx, toIdx) {
+    if (fromIdx === toIdx) return;
+    this.planMut((p) => {
+      this.ensureDay(p, key);
+      const arr = p.days[key];
+      if (!arr[fromIdx]) return;
+      const [item] = arr.splice(fromIdx, 1);
+      arr.splice(Math.max(0, Math.min(arr.length, toIdx)), 0, item);
+    });
+  }
+  // ---------- sequential scheduling (shared with the render's leg rules) ----------
+  // A day is an ORDERED list, not a canvas: the only thing you ever set by
+  // hand is the day's own start time and each tappa's own duration. Every
+  // start time in between is always derived — previous tappa's end + the
+  // real travel gap — so reordering (drag ⠿) or lengthening a stay (drag the
+  // resize handle) can never produce an overlap or a stray gap: there's no
+  // independent position left to disagree with reality.
   //
   // Resolve an entry id's travel coordinate + kind/tripId — the same rules the
-  // render uses to build each event's `.coord`, but standalone (no full leg
-  // objects), so it can run from setStart/setDur without the render's context.
+  // render uses to build each event's `.coord`, but standalone, so it can run
+  // outside the render's own context (e.g. for the lightweight home-screen
+  // previews in planCardFor/nowNextCard).
   entryGeo(key, id, dd) {
     if (id === "hotel" || /^hotel\d+$/.test(id)) {
       const alloggi = ((this.effReserved() || {}).alloggi) || [];
@@ -939,45 +968,15 @@ export default class App extends React.Component {
     if (!a) return { id, kind: "sight", tripId: "", coord: null };
     return { id, kind: a.kind, tripId: a.trip || "", coord: coordForEvent(a) };
   }
-  // Minutes from `prevGeo` to `curGeo`, for the adjacencies covered by magnetic
-  // snapping (see comment above). Null = not a recognized linked pair — the
-  // caller should leave the position free rather than force a guess.
+  // Generic fallback gap: a straight travelLeg between two coordinates, no
+  // kind-specific rules — used for any adjacency the render's own curated
+  // legs (Andata/Ritorno, local hops, tvenue chains…) don't already cover,
+  // and by the lightweight previews below. 0 (immediately after) when no
+  // coordinate is known, rather than inventing a number.
   gapMinutesBetween(prevGeo, curGeo) {
-    if (!prevGeo || !curGeo || !prevGeo.coord || !curGeo.coord) return null;
-    const isLocal = (g) => g.kind === "sight" || g.kind === "eat" || g.kind === "london" || g.kind === "hotel" || g.kind === "transit";
-    if (curGeo.kind === "tvenue" && prevGeo.kind === "trip" && prevGeo.id === curGeo.tripId) {
-      const leg = travelLeg(prevGeo.coord, curGeo.coord);
-      return leg ? leg.pick.min : null;
-    }
-    if (curGeo.kind === "tvenue" && prevGeo.kind === "tvenue" && curGeo.tripId && curGeo.tripId === prevGeo.tripId) {
-      const leg = travelLeg(prevGeo.coord, curGeo.coord);
-      return leg ? leg.pick.min : null;
-    }
-    // Gita-to-gita: mirrors the render's own tripSeq[i-1] chaining (see the
-    // "Andata"/"Ritorno" leg builder) so dragging a gita snaps to a realistic
-    // hop from wherever the PREVIOUS gita actually left off, instead of being
-    // free-form — which is what let a dragged gita's transport time overlap
-    // the previous gita's own stay in the first place.
-    if (curGeo.kind === "trip" && prevGeo.kind === "trip" && prevGeo.id !== curGeo.id) {
-      const leg = travelLeg(prevGeo.coord, curGeo.coord);
-      return leg ? leg.pick.min : null;
-    }
-    if (curGeo.kind === "trip" && prevGeo.kind === "tvenue" && prevGeo.tripId && prevGeo.tripId !== curGeo.id) {
-      // Chained from another gita's last venue: local hop back to THAT gita's
-      // own station, then station-to-station to this gita — same two legs the
-      // render shows as the last venue's tail chip + this gita's lead chip.
-      const prevTrip = getData().catalog[prevGeo.tripId];
-      const prevTripCoord = prevTrip ? coordForEvent(prevTrip) : null;
-      if (!prevTripCoord) return null;
-      const hop1 = travelLeg(prevGeo.coord, prevTripCoord);
-      const hop2 = travelLeg(prevTripCoord, curGeo.coord);
-      return (hop1 && hop2) ? hop1.pick.min + hop2.pick.min : null;
-    }
-    if (isLocal(curGeo) && isLocal(prevGeo)) {
-      const leg = travelLeg(prevGeo.coord, curGeo.coord);
-      return leg && leg.km < 35 ? leg.pick.min : null;
-    }
-    return null;
+    if (!prevGeo || !curGeo || !prevGeo.coord || !curGeo.coord) return 0;
+    const leg = travelLeg(prevGeo.coord, curGeo.coord);
+    return leg && leg.pick ? leg.pick.min : 0;
   }
   // On-screen duration for an entry (mirrors the render's own dur resolution).
   entryDuration(id, en) {
@@ -988,80 +987,37 @@ export default class App extends React.Component {
     const base = a.kind === "trip" ? this.tripVisitOf(id, a.baseVisit || a.dur) : (a.dur || 60);
     return (en && en.dur != null) ? en.dur : base;
   }
-
-  // Recompute the day's magnetic chain after moving or resizing entry `idx`.
-  // `overrides` = { start } for a move (drop position), or { dur } for a
-  // resize — never both. Returns { idx: newStartMin, … } for every entry whose
-  // start actually changes (the target included, if it snapped).
-  //
-  // Two passes:
-  //  1. TIGHTNESS, in the chain as it stood BEFORE this edit: which entries'
-  //     gap to their then-predecessor already equalled the real travel time
-  //     (no slack)? Only those are "fair game" to cascade — an entry the user
-  //     deliberately left a gap before keeps its own time untouched.
-  //  2. REPLAY forward through the NEW chronological order (which may differ
-  //     from the old one, if this was a reorder): the target always snaps to
-  //     its new predecessor (that's the whole point of dragging it); every
-  //     other entry resnaps to ITS new predecessor only if pass 1 marked it
-  //     tight — so moving one tappa correctly drags every tightly-linked tappa
-  //     after it along, even across a reorder, not just a same-order resize.
-  magneticShift(key, dd, entries, idx, overrides) {
-    const startOf = (en) => this.parseMin(en.start) ?? 9 * 60;
-    const orig = entries.map((en, i) => ({ id: en.id, idx: i, en, start: startOf(en) }));
-    orig.sort((a, b) => a.start - b.start);
-    const tight = new Set();
-    for (let j = 1; j < orig.length; j++) {
-      const gap = this.gapMinutesBetween(this.entryGeo(key, orig[j - 1].id, dd), this.entryGeo(key, orig[j].id, dd));
-      const prevEnd = orig[j - 1].start + this.entryDuration(orig[j - 1].id, orig[j - 1].en);
-      if (gap != null && Math.abs(orig[j].start - (prevEnd + gap)) <= 1) tight.add(orig[j].idx);
-    }
-    const next = entries.map((en, i) => ({ id: en.id, idx: i, en, start: (i === idx && overrides.start != null) ? overrides.start : startOf(en) }));
-    next.sort((a, b) => a.start - b.start);
-    const durFor = (item) => (item.idx === idx && overrides.dur != null) ? overrides.dur : this.entryDuration(item.id, item.en);
-
-    const writes = {};
-    let prevEnd = null, prevGeo = null;
-    for (let j = 0; j < next.length; j++) {
-      const item = next[j];
-      const isTarget = item.idx === idx;
-      const shouldSnap = isTarget ? overrides.start != null : tight.has(item.idx);
-      let finalStart = item.start;
-      if (shouldSnap && prevEnd != null) {
-        const geo = this.entryGeo(key, item.id, dd);
-        const gap = this.gapMinutesBetween(prevGeo, geo);
-        if (gap != null) finalStart = prevEnd + gap;
-        // Anti-overlap safety net: even when no precise travel-time rule
-        // applies (e.g. nothing links this gita to whatever precedes it),
-        // the item the user just dragged can never start before the
-        // previous entry's own stay actually finishes.
-        else if (isTarget) finalStart = Math.max(finalStart, prevEnd);
-      }
-      if (finalStart !== item.start) writes[item.idx] = finalStart;
-      prevEnd = finalStart + durFor(item);
-      prevGeo = this.entryGeo(key, item.id, dd);
-    }
-    return writes;
+  // Lightweight schedule for the home-screen previews (planCardFor/nowNextCard)
+  // — same sequential-cascade idea as the main render, but generic gaps only
+  // (no curated Andata/Ritorno text, that's not shown there anyway).
+  sequentialStarts(key) {
+    const dd = DAYS.find((d) => d.key === key);
+    if (!dd) return [];
+    const D = getData();
+    const entries = this.dayEntries(key);
+    // A gita with venues attached carries zero weight of its own — same as
+    // the main render, its venues are what actually take up the time.
+    const tripsWithVenues = new Set(
+      entries.filter((en) => { const a = D.catalog[en.id]; return a && a.kind === "tvenue"; })
+        .map((en) => D.catalog[en.id].trip),
+    );
+    let running = this.dayStartOf(key);
+    let prevGeo = null;
+    return entries.map((en) => {
+      const geo = this.entryGeo(key, en.id, dd);
+      const gap = prevGeo ? this.gapMinutesBetween(prevGeo, geo) : 0;
+      const dur = (geo.kind === "trip" && tripsWithVenues.has(en.id)) ? 0 : this.entryDuration(en.id, en);
+      const start = running + gap;
+      running = start + dur;
+      prevGeo = geo;
+      return { id: en.id, startMin: start, dur };
+    });
   }
   setDur(key, idx, min) {
-    const dd = DAYS.find((d) => d.key === key);
-    const entries = this.dayEntries(key);
     const newDur = Math.max(15, Math.min(600, Math.round(min)));
-    const writes = (entries[idx] && dd) ? this.magneticShift(key, dd, entries, idx, { dur: newDur }) : {};
     this.planMut((p) => {
       this.ensureDay(p, key);
       if (p.days[key][idx]) p.days[key][idx].dur = newDur;
-      Object.keys(writes).forEach((k) => { const i = Number(k); if (p.days[key][i]) p.days[key][i].start = this.hhmm(writes[i]); });
-    });
-  }
-  setStart(key, idx, min) {
-    const dd = DAYS.find((d) => d.key === key);
-    const entries = this.dayEntries(key);
-    const writes = (entries[idx] && dd) ? this.magneticShift(key, dd, entries, idx, { start: min }) : {};
-    const finalMin = writes[idx] != null ? writes[idx] : min;
-    this.planMut((p) => {
-      this.ensureDay(p, key);
-      if (p.days[key][idx]) p.days[key][idx].start = this.hhmm(finalMin);
-      Object.keys(writes).forEach((k) => { const i = Number(k); if (i !== idx && p.days[key][i]) p.days[key][i].start = this.hhmm(writes[i]); });
     });
   }
   // Per-leg transport override: tap a connector to switch a•piedi ↔ bus ↔ Uber.
@@ -1664,13 +1620,12 @@ export default class App extends React.Component {
   }
   planCardFor(key) {
     const D = getData();
-    const day = this.dayEntries(key);
-    if (!day.length) return null;
-    const rows = [...day]
-      .sort((a, b) => (this.parseMin(a.start) || 0) - (this.parseMin(b.start) || 0))
-      .map((en) => {
-        const a = D.catalog[en.id];
-        return a ? { k: en.start || "—", v: a.name, ff: MONO } : null;
+    const sched = this.sequentialStarts(key);
+    if (!sched.length) return null;
+    const rows = sched
+      .map((s) => {
+        const a = D.catalog[s.id];
+        return a ? { k: this.hhmm(s.startMin), v: a.name, ff: MONO } : null;
       })
       .filter(Boolean);
     if (!rows.length) return null;
@@ -1689,21 +1644,16 @@ export default class App extends React.Component {
     const idx = dates.indexOf(this.iso(now));
     if (idx < 0) return null;
     const key = DAYS[idx] && DAYS[idx].key;
-    const day = this.dayEntries(key);
-    if (!day.length) return null;
+    const sched = this.sequentialStarts(key);
+    if (!sched.length) return null;
     const D = getData();
     const nowMin = now.getHours() * 60 + now.getMinutes();
-    const items = day
-      .map((en) => {
-        const a = D.catalog[en.id];
-        if (!a) return null;
-        const s = this.parseMin(en.start);
-        if (s == null) return null;
-        const dur = en.dur != null ? en.dur : a.kind === "trip" ? this.tripVisitOf(en.id, a.baseVisit || a.dur) : a.dur || 60;
-        return { name: a.name, start: s, end: s + dur };
+    const items = sched
+      .map((s) => {
+        const a = D.catalog[s.id];
+        return a ? { name: a.name, start: s.startMin, end: s.startMin + s.dur } : null;
       })
-      .filter(Boolean)
-      .sort((a, b) => a.start - b.start);
+      .filter(Boolean);
     if (!items.length) return null;
     const current = items.find((x) => nowMin >= x.start && nowMin < x.end);
     const next = items.find((x) => x.start > nowMin);
@@ -2097,7 +2047,6 @@ export default class App extends React.Component {
         const base = isTrip ? this.tripVisitOf(en.id, a.baseVisit || a.dur) : a.dur || 60;
         const dur = en.dur != null ? en.dur : base;
         const transferMin = a.transferMin || 0; // extra hop to reach the venue (e.g. Tantallon)
-        const startMin = this.parseMin(en.start) != null ? this.parseMin(en.start) : 9 * 60;
         const PAL = {
           eat: { a: "#E6482A", b: "#FBEDE9", l: "Mangiare" },
           trip: { a: "#14C08C", b: "#DBF3E9", l: "Gita" },
@@ -2107,17 +2056,13 @@ export default class App extends React.Component {
           transit: { a: "#3B6FE0", b: "#E7EEFB", l: "Trasporti" },
         };
         const pal = PAL[a.kind] || PAL.sight;
-        // For eateries the window that matters is the KITCHEN (food service):
-        // warn if the meal falls outside it. Uses `cucina` when set, else `open`.
-        let warn = "";
-        const hrs = a.kind === "eat" ? (a.cucina || a.open) : a.open;
-        if (hrs) {
-          const t = startMin / 60;
-          if (t < hrs[0] || t + dur / 60 > hrs[1]) warn = (a.kind === "eat" ? "cucina " : "aperto ") + this.fmtH(hrs[0]) + "–" + this.fmtH(hrs[1]);
-        }
         return {
+          // startMin/warn aren't known yet — array order is the only thing
+          // that's authoritative at this point; both get filled in below,
+          // once every tappa's incoming travel gap has been computed.
           idx, id: en.id, name: a.name, note: a.note || "", kind: a.kind, kindLabel: pal.l,
-          durLabel: this.durLabel(dur), dur, train, transferMin, startMin, accent: pal.a, bg: pal.b, warn,
+          durLabel: this.durLabel(dur), dur, train, transferMin, startMin: 0, accent: pal.a, bg: pal.b, warn: "",
+          openHrs: a.kind === "eat" ? (a.cucina || a.open) : a.open, isEat: a.kind === "eat",
           tripId: a.trip || "", coord: (isHotel || isTransit) ? a._coord : coordForEvent(a), lead: null, tail: null,
           maps: this.M(a.q || a.name),
           onResize: (min) => this.setDur(key, idx, min),
@@ -2134,7 +2079,9 @@ export default class App extends React.Component {
       //     and the evening destination — handy when it's out of the centre.
       // The recommended pick is the cheap-but-sensible option; the app could let
       // you switch. Everything is an estimate; real fares/timetables vary.
-      const seq = events.slice().sort((a, b) => a.startMin - b.startMin);
+      // `seq` is simply `events` in array order — that order IS the day's
+      // chronological order now, there's no separate clock time to sort by.
+      const seq = events;
       const isCity = (e) => e.kind === "sight" || e.kind === "eat" || e.kind === "london";
       const isLocalNode = (e) => isCity(e) || e.kind === "hotel" || e.kind === "transit"; // in-town nodes
       const SAME_CITY_KM = 35; // a "local hop" can't cross cities (London↔Edinburgh)
@@ -2210,22 +2157,13 @@ export default class App extends React.Component {
       // up front because it changes where the Ritorno belongs (see below).
       const venuesByTrip = {};
       tripSeq.forEach((t) => { venuesByTrip[t.id] = seq.filter((e) => e.kind === "tvenue" && e.tripId === t.id); });
-      // A gita's "sul posto" span is a single free-standing number ONLY until
-      // it has venues attached — once you schedule venues, THEY define how
-      // long you're actually there, so the block's own duration (and the
-      // spine height it draws) is derived from arrival to the last venue's
-      // end instead of the independently-resizable placeholder. This is what
-      // keeps the spine from ending well before the venues it's supposed to
-      // bracket (leaving a dead gap on the timeline).
-      tripSeq.forEach((t) => {
-        const venues = venuesByTrip[t.id];
-        if (!venues.length) return;
-        const last = venues[venues.length - 1];
-        const span = Math.max(30, (last.startMin + last.dur) - t.startMin);
-        t.dur = span;
-        t.durLabel = this.durLabel(span);
-        t.durLocked = true;
-      });
+      // A gita's own "dur" only matters for the sequence when it has NO
+      // venues yet — once venues are attached, THEY carry all the "sul posto"
+      // time (each with its own computed gap), so the trip entry becomes a
+      // zero-weight header in the cascade. Its display duration/spine height
+      // gets recomputed for real further down, once every tappa's actual
+      // position is known.
+      tripSeq.forEach((t) => { if (venuesByTrip[t.id].length) t.dur = 0; });
       tripSeq.forEach((t, i) => {
         const st = stationOf(t);
         const dwell = STATION_DWELL[st.mode] || STATION_DWELL.train;
@@ -2287,6 +2225,52 @@ export default class App extends React.Component {
             onMode: back.options.length > 1 ? (m) => this.setLegMode(key, last.idx, m) : null,
           };
         }
+      });
+
+      // Anything not covered by a curated rule above (e.g. a plain sight right
+      // after a gita, or two activities with no specific adjacency rule) still
+      // needs a gap — the day is fully sequential now, so "no lead" would
+      // silently mean "starts the instant the previous tappa ends", which is
+      // only right when that's actually true. Generic travelLeg fallback for
+      // anything still missing one.
+      for (let i = 1; i < seq.length; i++) {
+        const cur = seq[i];
+        if (cur.lead) continue;
+        const prev = seq[i - 1];
+        const gap = this.gapMinutesBetween({ coord: prev.coord }, { coord: cur.coord });
+        if (gap > 0) cur.lead = { min: gap, icon: "➡️", primary: "da " + prev.name, sub: "~" + gap + "′ · stima" };
+      }
+
+      // Every start time is derived, in order — this is the only place
+      // startMin gets assigned: the day's own start time (+ this tappa's own
+      // lead) seeds the first tappa, then each next one starts when the
+      // previous ends (+ its own lead). No independent position exists to
+      // fall out of sync, so overlaps and stray gaps are structurally
+      // impossible, not just avoided case by case.
+      let running = this.dayStartOf(key);
+      seq.forEach((e) => {
+        e.startMin = running + (e.lead ? e.lead.min : 0);
+        running = e.startMin + e.dur;
+        // For eateries the window that matters is the KITCHEN (food service):
+        // warn if the meal falls outside it. Uses `cucina` when set, else `open`.
+        const hrs = e.openHrs;
+        if (hrs) {
+          const t = e.startMin / 60;
+          if (t < hrs[0] || t + e.dur / 60 > hrs[1]) e.warn = (e.isEat ? "cucina " : "aperto ") + this.fmtH(hrs[0]) + "–" + this.fmtH(hrs[1]);
+        }
+      });
+      // Now that every tappa's real position is known, give a venued gita
+      // block back a meaningful display duration — arrival to the last
+      // venue's end — instead of the zero we used to keep it out of the
+      // cascade above. Purely cosmetic (spine height + "sul posto" label):
+      // it doesn't feed back into anyone's position.
+      tripSeq.forEach((t) => {
+        const venues = venuesByTrip[t.id];
+        if (!venues.length) return;
+        const last = venues[venues.length - 1];
+        t.dur = Math.max(30, (last.startMin + last.dur) - t.startMin);
+        t.durLabel = this.durLabel(t.dur);
+        t.durLocked = true;
       });
 
       // Day total: visit durations + every computed transfer leg (lead/tail).
@@ -2437,7 +2421,6 @@ export default class App extends React.Component {
           .filter((g) => g.items.length);
       }
       const open = this.state.dayOpen[key] !== undefined ? this.state.dayOpen[key] : isToday;
-      const sorted = events.slice().sort((a, b) => a.startMin - b.startMin);
       const editMode = !frozen && !!this.state.editDays[key];
       const tripCount = events.filter((e) => e.kind === "trip").length;
       return {
@@ -2448,17 +2431,19 @@ export default class App extends React.Component {
         badgeBg: isToday ? "#0E1542" : "rgba(255,255,255,.2)",
         events, flightBlocks, flightChips,
         multiTripWarn: tripCount >= 2,
+        dayStart: this.hhmm(this.dayStartOf(key)),
+        onDayStart: (hhmm) => this.setDayStart(key, hhmm),
         summary: {
           count: events.length,
           totalLabel: total ? this.durLabel(total) : "vuoto",
           flightCount: (FLIGHT_DAYS[key] || []).length,
-          names: sorted.map((e) => e.name),
+          names: events.map((e) => e.name),
         },
         nowMin: isToday ? now.getHours() * 60 + now.getMinutes() : null,
         onToggle: () => this.toggleDay(key),
         onToggleEdit: () => this.toggleEditDay(key),
         onSelect: (idx) => { const ev = events[idx]; if (ev && D.details[ev.id]) this.openDetail(ev.id, events.map((e) => e.id).filter((id) => D.details[id])); },
-        onChangeStart: (idx, min) => this.setStart(key, idx, min),
+        onReorder: (fromIdx, toIdx) => this.reorderDay(key, fromIdx, toIdx),
         onResize: (idx, min) => this.setDur(key, idx, min),
         onRemove: (idx) => this.removeEntry(key, idx),
         canAdd: !frozen, pickerOpen, pickerGroups, pickerCats, pickerHoods, pickerAreas,
@@ -2808,7 +2793,7 @@ export default class App extends React.Component {
               <span style={{ flex: "none", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 34, height: 34, background: "#14C08C", borderRadius: 999 }}><TimelineIcon size={19} fill="#fff" /></span>
               <h2 style={h2("#0E1542")}>Programma</h2>
             </div>
-            <p style={{ margin: "0 0 10px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Trascina gli eventi per l'orario (maniglia ⠿, è magnetica: si aggancia al tempo di spostamento reale) · allunga una tappa per spingere avanti quella dopo · voli fissi · tocca il giorno per aprirlo/chiuderlo · i giorni passati si bloccano</p>
+            <p style={{ margin: "0 0 10px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Ogni giorno è una sequenza: trascina la maniglia ⠿ per riordinare le tappe, allunga una tappa per fermarti di più (spinge avanti tutto il resto) · gli orari si calcolano da soli, in base a quando si parte e ai tempi di spostamento reali · voli fissi · tocca il giorno per aprirlo/chiuderlo · i giorni passati si bloccano</p>
             {/* transfer legend — what the dashed connectors between tappe mean */}
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "4px 12px", background: "#F6F0E2", border: "1px solid #E1D7BF", borderRadius: 12, padding: "9px 12px", marginBottom: 16, fontSize: 11.5, fontWeight: 700, color: "#6B6450" }}>
               <span style={{ fontWeight: 900, color: "#0E1542" }}>Spostamenti</span>
@@ -2852,11 +2837,23 @@ export default class App extends React.Component {
                     {d.canEdit && (
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, margin: "8px 0 2px" }}>
                         <span style={{ fontSize: 11, fontWeight: 700, color: "#8a836c" }}>
-                          {d.editMode ? "Modifica · trascina e ridimensiona" : "Tocca un blocco per i dettagli"}
+                          {d.editMode ? "Modifica · trascina ⠿ per riordinare" : "Tocca un blocco per i dettagli"}
                         </span>
                         <button onClick={d.onToggleEdit} style={{ cursor: "pointer", fontSize: 11.5, fontWeight: 900, border: "none", borderRadius: 999, padding: "6px 13px", color: d.editMode ? "#fff" : "#0E1542", background: d.editMode ? "#14C08C" : "#FFD23F" }}>
                           {d.editMode ? "Fine ✓" : "Modifica orari"}
                         </button>
+                      </div>
+                    )}
+                    {d.canEdit && d.editMode && (
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "0 0 8px" }}>
+                        <span style={{ fontSize: 11.5, fontWeight: 700, color: "#6B6450" }}>Si parte alle</span>
+                        <input
+                          type="time"
+                          value={d.dayStart}
+                          onChange={(e) => e.target.value && d.onDayStart(e.target.value)}
+                          style={{ fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#F6F0E2", border: "1.5px solid #D9CFB7", borderRadius: 8, padding: "5px 8px", fontFamily: MONO }}
+                        />
+                        <span style={{ fontSize: 11, fontWeight: 600, color: "#9a937c" }}>dall'hotel — il resto si calcola da solo</span>
                       </div>
                     )}
                     {d.multiTripWarn && (
@@ -2877,7 +2874,7 @@ export default class App extends React.Component {
                       flights={d.flightBlocks}
                       editable={d.editMode}
                       nowMin={d.nowMin}
-                      onChangeStart={d.onChangeStart}
+                      onReorder={d.onReorder}
                       onResize={d.onResize}
                       onRemove={d.onRemove}
                       onSelect={d.onSelect}
