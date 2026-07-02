@@ -37,6 +37,36 @@ export const TRIP_COORDS = {
   "dt-anstruthereast": [56.222, -2.7],
 };
 
+// The real station/stop each gita arrives at (TRIP_COORDS above is already
+// pinned there) — named so Andata/Ritorno reads as "Waverley → <this>" rather
+// than a vague town name, and used as the actual origin for legs to the gita's
+// venues (see App.jsx). `mode` picks the icon/dwell: "train" or "bus".
+export const STATION_META = {
+  "dt-glasgow": { name: "Glasgow Queen Street", mode: "train" },
+  "dt-stirling": { name: "Stirling", mode: "train" },
+  "dt-standrews": { name: "Leuchars + bus", mode: "train" },
+  "dt-lochlomond": { name: "Balloch (via Glasgow)", mode: "train" },
+  "dt-musselburgh": { name: "Musselburgh", mode: "train" },
+  "dt-nberwick": { name: "North Berwick", mode: "train" },
+  "dt-falkirk": { name: "Falkirk Grahamston", mode: "train" },
+  "dt-queensferry": { name: "Dalmeny", mode: "train" },
+  "dt-linlithgow": { name: "Linlithgow", mode: "train" },
+  "dt-dunfermline": { name: "Dunfermline", mode: "train" },
+  "dt-rosslynchapel": { name: "Roslin (bus 37)", mode: "bus" },
+  "dt-dunbar": { name: "Dunbar", mode: "train" },
+  "dt-peebles": { name: "Peebles (bus X62)", mode: "bus" },
+  "dt-culross": { name: "Dunfermline + bus", mode: "train" },
+  "dt-anstruthereast": { name: "Anstruther (bus X60)", mode: "bus" },
+};
+
+// Small, honest buffer folded into Andata/Ritorno: time to reach the platform
+// and board, and to get off/out of the station at the other end. Never a
+// substitute for the live timetable — just makes the shown duration realistic.
+export const STATION_DWELL = {
+  train: { depart: 6, arrive: 4 },
+  bus: { depart: 8, arrive: 3 },
+};
+
 // Every schedulable city venue, pinned. Out-of-centre spots (Leith, Stockbridge,
 // Morningside, Tollcross, Duddingston, Arthur's Seat) are what make the mode
 // choice meaningful — a walk in the Old Town vs a bus out to The Shore.
