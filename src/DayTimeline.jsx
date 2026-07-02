@@ -194,7 +194,7 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                     <div style={{ padding: "0 9px 6px 9px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                         <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: e.accent, borderRadius: 999, padding: "1px 6px" }}>{e.kindLabel}</span>
-                        <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{this_durLabel(dur)} sul posto</span>
+                        <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{this_durLabel(dur)} sul posto{e.durLocked ? " · dalle venue" : ""}</span>
                         {e.maps && <a href={e.maps} target="_blank" rel="noopener" onPointerDown={(ev) => ev.stopPropagation()} onClick={(ev) => ev.stopPropagation()} style={{ fontSize: 10, fontWeight: 800, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 6, padding: "1px 7px" }}>Maps ↗</a>}
                         {!editable && <span style={{ fontSize: 9.5, fontWeight: 800, color: "#9a937c" }}>tocca per i dettagli ›</span>}
                       </div>
@@ -202,8 +202,11 @@ export default function DayTimeline({ events, flights, editable, nowMin, onChang
                     </div>
                   </div>
                   {/* resize handle sits at the bottom of the SPINE (the real end
-                      of the visit), independent of the pill's own small height */}
-                  {editable && (
+                      of the visit), independent of the pill's own small height —
+                      hidden once venues are attached, since the span is then
+                      derived from them (see App.jsx) and dragging it wouldn't
+                      stick. */}
+                  {editable && !e.durLocked && (
                     <div
                       onPointerDown={begin(e.idx, "resize", e.startMin, e.dur)}
                       onPointerMove={move}
