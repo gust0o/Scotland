@@ -1,11 +1,14 @@
 import React, { useState, useRef } from "react";
 
-const HOUR_PX = 64; // px-per-hour scale for a tappa's minimum height / resize feel
-const SNAP = 5; // minutes
+const HOUR_PX = 64; // px-per-hour scale for a tappa's minimum visual height
 const MONO = "'Spline Sans Mono',monospace";
 
 const pad = (n) => String(n).padStart(2, "0");
 const fmt = (min) => pad(Math.floor(min / 60)) + ":" + pad(Math.round(min % 60));
+const parseHHMM = (s) => {
+  const m = String(s || "").match(/(\d{1,2}):(\d{2})/);
+  return m ? +m[1] * 60 + +m[2] : null;
+};
 
 // small duration formatter
 function durLbl(min) {
@@ -19,41 +22,15 @@ function durLbl(min) {
 // is computed by the caller (App.jsx) from the day's own start time + the
 // real travel gap since the previous block — there's no independent position
 // to drag onto an arbitrary time, so overlaps and stray gaps can't happen.
-// What you CAN do: drag the ⠿ handle to reorder, or drag a block's bottom
-// edge to change how long you stay (which reflows everyone after it, for
-// free, since this is now a normal flow layout).
+// What you CAN do: drag the ⠿ handle to reorder, or tap a block's duration
+// badge to open a slider + "fino alle" time picker underneath it — changing
+// either reflows everyone after it, for free, since this is now a normal
+// flow layout.
 export default function DayTimeline({ events, flights, editable, nowMin, onReorder, onResize, onRemove, onSelect }) {
-  const [dragResize, setDragResize] = useState(null); // { idx, dur }
+  const [editingIdx, setEditingIdx] = useState(null); // idx of the tappa whose duration editor is open
   const [dragReorder, setDragReorder] = useState(null); // { fromIdx, order }
-  const rst = useRef(null);
   const ost = useRef(null);
   const cardH = useRef({});
-
-  const beginResize = (idx, dur) => (ev) => {
-    if (!editable) return;
-    ev.preventDefault();
-    ev.stopPropagation();
-    try { ev.currentTarget.setPointerCapture(ev.pointerId); } catch (e) {}
-    rst.current = { idx, dur, y0: ev.clientY };
-    setDragResize({ idx, dur });
-  };
-  const moveResize = (ev) => {
-    if (!rst.current) return;
-    ev.preventDefault();
-    const dMin = ((ev.clientY - rst.current.y0) / HOUR_PX) * 60;
-    let dur = Math.round((rst.current.dur + dMin) / SNAP) * SNAP;
-    dur = Math.max(15, Math.min(24 * 60, dur));
-    setDragResize({ idx: rst.current.idx, dur });
-  };
-  const upResize = (ev) => {
-    if (!rst.current) return;
-    ev.preventDefault();
-    const { idx } = rst.current;
-    const final = dragResize ? dragResize.dur : rst.current.dur;
-    rst.current = null;
-    setDragResize(null);
-    onResize(idx, final);
-  };
 
   const beginReorder = (idx) => (ev) => {
     if (!editable) return;
@@ -116,15 +93,20 @@ export default function DayTimeline({ events, flights, editable, nowMin, onReord
       t.onMode(opts[(i + 1) % opts.length].mode);
     };
     return (
-      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "3px 4px 3px 22px", margin: "-2px 0" }}>
-        <div style={{ flex: "none", width: 0, height: 14, borderLeft: "2px dashed #b9ac8d" }} />
-        <span
-          onClick={canSwitch ? cycle : undefined}
-          title={canSwitch ? "Tocca per cambiare mezzo" : undefined}
-          style={{ fontSize: 10, fontWeight: 800, color: "#6b6450", background: canSwitch ? "#FFF6DD" : "transparent", borderRadius: 6, padding: canSwitch ? "1px 7px" : 0, cursor: canSwitch ? "pointer" : "default" }}
-        >
-          {t.icon} {t.primary} · {t.min}′{t.costLabel ? " · " + t.costLabel : ""}{canSwitch ? " ⇄" : ""}
-        </span>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 6, padding: "3px 4px 4px 22px", margin: "-2px 0" }}>
+        <div style={{ flex: "none", width: 0, height: 14, marginTop: 3, borderLeft: "2px dashed #b9ac8d" }} />
+        <div style={{ minWidth: 0 }}>
+          <span
+            onClick={canSwitch ? cycle : undefined}
+            title={canSwitch ? "Tocca per cambiare mezzo" : undefined}
+            style={{ display: "inline-block", fontSize: 10, fontWeight: 800, color: "#6b6450", background: canSwitch ? "#FFF6DD" : "transparent", borderRadius: 6, padding: canSwitch ? "1px 7px" : 0, cursor: canSwitch ? "pointer" : "default" }}
+          >
+            {t.icon} {t.primary} · {t.min}′{t.costLabel ? " · " + t.costLabel : ""}{canSwitch ? " ⇄" : ""}
+          </span>
+          {/* the fuller breakdown (mode split, station wait/boarding estimate,
+              cheaper/faster alternative) — computed all along, now actually shown */}
+          {t.sub && <div style={{ fontSize: 9.5, fontWeight: 600, color: "#9a937c", marginTop: 1 }}>{t.sub}</div>}
+        </div>
       </div>
     );
   };
@@ -158,12 +140,13 @@ export default function DayTimeline({ events, flights, editable, nowMin, onReord
       )}
 
       {ordered.map((e, pos) => {
-        const isDrag = dragResize && dragResize.idx === e.idx;
-        const dur = isDrag ? dragResize.dur : e.dur;
-        const start = e.startMin; // not re-derived client-side during a resize drag — reflects last-committed schedule
+        const dur = e.dur;
+        const start = e.startMin;
         const isReordering = dragReorder && dragReorder.fromIdx === e.idx;
         const isTripBlock = e.kind === "trip";
         const isVenueBlock = e.kind === "tvenue";
+        const isEditingDur = editingIdx === e.idx;
+        const durMax = isTripBlock ? 600 : 360;
         const minH = Math.max((e.dur / 60) * HOUR_PX * 0.4, 30); // a soft visual cue, not a hard clip
         return (
           <React.Fragment key={e.idx}>
@@ -206,29 +189,54 @@ export default function DayTimeline({ events, flights, editable, nowMin, onReord
               <div style={{ padding: "0 9px 7px 9px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                   <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: e.accent, borderRadius: 999, padding: "1px 6px" }}>{e.kindLabel}</span>
-                  <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{durLbl(dur)}{isTripBlock ? " sul posto" : ""}{e.durLocked ? " · dalle venue" : ""}</span>
+                  {editable && !e.durLocked ? (
+                    <button
+                      onClick={(ev) => { ev.stopPropagation(); setEditingIdx(isEditingDur ? null : e.idx); }}
+                      onPointerDown={(ev) => ev.stopPropagation()}
+                      style={{ cursor: "pointer", fontSize: 10, fontWeight: 800, color: isEditingDur ? "#fff" : e.accent, background: isEditingDur ? e.accent : "transparent", border: `1.5px solid ${e.accent}`, borderRadius: 999, padding: "1px 8px" }}
+                    >
+                      {durLbl(dur)}{isTripBlock ? " sul posto" : ""} ✎
+                    </button>
+                  ) : (
+                    <span style={{ fontSize: 10, fontWeight: 800, color: "#6B6450" }}>{durLbl(dur)}{isTripBlock ? " sul posto" : ""}{e.durLocked ? " · dalle venue" : ""}</span>
+                  )}
                   {e.maps && <a href={e.maps} target="_blank" rel="noopener" onPointerDown={(ev) => ev.stopPropagation()} onClick={(ev) => ev.stopPropagation()} style={{ fontSize: 10, fontWeight: 800, color: "#0E1542", textDecoration: "none", background: "#FFD23F", borderRadius: 6, padding: "1px 7px" }}>Maps ↗</a>}
                   {!editable && <span style={{ fontSize: 9.5, fontWeight: 800, color: "#9a937c" }}>tocca per i dettagli ›</span>}
                 </div>
                 {!isTripBlock && e.note && <div style={{ marginTop: 4, fontSize: 11, fontWeight: 600, color: "#6B6450", lineHeight: 1.35 }}>{e.note}</div>}
                 {e.warn && <div style={{ marginTop: 3, fontSize: 10.5, fontWeight: 700, color: "#E6482A" }}>⚠ {e.warn}</div>}
+                {/* duration editor — appears/disappears below the block
+                    (replaces the old drag-a-thin-bar gesture, which fought
+                    with the page's own vertical scroll). Horizontal slider +
+                    steppers, or type the end time directly. */}
+                {isEditingDur && (
+                  <div style={{ marginTop: 8, padding: "9px 10px", background: "rgba(20,16,40,.04)", borderRadius: 10 }} onClick={(ev) => ev.stopPropagation()}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <button onClick={() => onResize(e.idx, Math.max(15, dur - 15))} style={{ cursor: "pointer", fontSize: 12, fontWeight: 900, color: "#17142C", background: "#fff", border: "1.5px solid #D9CFB7", borderRadius: 999, padding: "4px 9px", flex: "none" }}>−15′</button>
+                      <input
+                        type="range" min={15} max={durMax} step={15} value={Math.min(dur, durMax)}
+                        onChange={(ev) => onResize(e.idx, Number(ev.target.value))}
+                        style={{ flex: 1, accentColor: e.accent }}
+                      />
+                      <button onClick={() => onResize(e.idx, Math.min(durMax, dur + 15))} style={{ cursor: "pointer", fontSize: 12, fontWeight: 900, color: "#17142C", background: "#fff", border: "1.5px solid #D9CFB7", borderRadius: 999, padding: "4px 9px", flex: "none" }}>+15′</button>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 9 }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: "#6B6450" }}>Fino alle</span>
+                      <input
+                        type="time" value={fmt(start + dur)}
+                        onChange={(ev) => {
+                          const endMin = parseHHMM(ev.target.value);
+                          if (endMin == null) return;
+                          let d = endMin - start;
+                          if (d <= 0) d += 24 * 60;
+                          onResize(e.idx, Math.max(15, Math.min(durMax, d)));
+                        }}
+                        style={{ fontSize: 12.5, fontWeight: 800, color: "#17142C", background: "#fff", border: "1.5px solid #D9CFB7", borderRadius: 8, padding: "5px 8px", fontFamily: MONO }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-              {/* drag-to-resize handle: hidden on a gita once venues are
-                  attached, since its span is then derived from them (see
-                  App.jsx) and dragging it wouldn't stick. */}
-              {editable && !e.durLocked && (
-                <div
-                  onPointerDown={beginResize(e.idx, e.dur)}
-                  onPointerMove={moveResize}
-                  onPointerUp={upResize}
-                  onPointerCancel={upResize}
-                  onClick={(ev) => ev.stopPropagation()}
-                  title="Trascina per la durata"
-                  style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 16, cursor: "ns-resize", touchAction: "none", WebkitUserSelect: "none", userSelect: "none", WebkitTouchCallout: "none" }}
-                >
-                  <span style={{ width: 26, height: 3, borderRadius: 3, background: e.accent, opacity: 0.55 }} />
-                </div>
-              )}
             </div>
             {e.tail && e.tail.min > 0 && <TransferChip t={e.tail} />}
           </React.Fragment>

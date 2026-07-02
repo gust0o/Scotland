@@ -2171,7 +2171,7 @@ export default class App extends React.Component {
         const vehicle = st.mode === "bus" ? "bus" : "treno";
         const total = t.train + dwell.depart + dwell.arrive;
         if (i === 0) {
-          t.lead = { min: total, icon, primary: "Andata · Waverley → " + st.name, sub: "~" + total + "′ (" + t.train + "′ " + vehicle + " + " + (dwell.depart + dwell.arrive) + "′ attesa/uscita)" + uberNote(t) };
+          t.lead = { min: total, icon, primary: "Andata · Waverley → " + st.name, sub: "~" + total + "′ totali · " + t.train + "′ " + vehicle + " · 🕐 attesa stimata ~" + (dwell.depart + dwell.arrive) + "′" + uberNote(t) };
         } else {
           const prev = tripSeq[i - 1];
           t.lead = fmtLeg(travelLeg(prev.coord, t.coord), prev.name, "↪ ", t.idx)
@@ -2181,7 +2181,7 @@ export default class App extends React.Component {
         // chain to anchor to instead — otherwise it belongs on the last venue
         // (below), so it never lands earlier than where the day actually ends.
         if (i === tripSeq.length - 1 && !venuesByTrip[t.id].length) {
-          t.tail = { min: total, icon, primary: "Ritorno · " + st.name + " → Waverley", sub: "~" + total + "′ (" + t.train + "′ " + vehicle + " + " + (dwell.depart + dwell.arrive) + "′ attesa/uscita)" + uberNote(t) };
+          t.tail = { min: total, icon, primary: "Ritorno · " + st.name + " → Waverley", sub: "~" + total + "′ totali · " + t.train + "′ " + vehicle + " · 🕐 attesa stimata ~" + (dwell.depart + dwell.arrive) + "′" + uberNote(t) };
         }
       });
       // Fix the hops at each gita's boundary: the FIRST venue you visit starts
@@ -2210,7 +2210,7 @@ export default class App extends React.Component {
           last.tail = {
             min: totalMin, icon: stIcon,
             primary: "↩ " + st.name + " → Waverley",
-            sub: "~" + totalMin + "′ (" + p.min + "′ " + p.mode.toLowerCase() + " + " + t.train + "′ " + vehicle + " + " + (dwell.depart + dwell.arrive) + "′ attesa/uscita)",
+            sub: "~" + totalMin + "′ totali · " + p.min + "′ " + p.mode.toLowerCase() + " + " + t.train + "′ " + vehicle + " · 🕐 attesa stimata ~" + (dwell.depart + dwell.arrive) + "′",
           };
         } else {
           // Not the last gita: just the local hop back to THIS gita's own
@@ -2793,7 +2793,7 @@ export default class App extends React.Component {
               <span style={{ flex: "none", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 34, height: 34, background: "#14C08C", borderRadius: 999 }}><TimelineIcon size={19} fill="#fff" /></span>
               <h2 style={h2("#0E1542")}>Programma</h2>
             </div>
-            <p style={{ margin: "0 0 10px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Ogni giorno è una sequenza: trascina la maniglia ⠿ per riordinare le tappe, allunga una tappa per fermarti di più (spinge avanti tutto il resto) · gli orari si calcolano da soli, in base a quando si parte e ai tempi di spostamento reali · voli fissi · tocca il giorno per aprirlo/chiuderlo · i giorni passati si bloccano</p>
+            <p style={{ margin: "0 0 10px", fontSize: 13.5, fontWeight: 600, color: "#6B6450" }}>Ogni giorno è una sequenza: trascina la maniglia ⠿ per riordinare le tappe, tocca la durata di una tappa per allungarla o accorciarla (spinge avanti tutto il resto) · gli orari si calcolano da soli, in base a quando si parte e ai tempi di spostamento reali · voli fissi · tocca il giorno per aprirlo/chiuderlo · i giorni passati si bloccano</p>
             {/* transfer legend — what the dashed connectors between tappe mean */}
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "4px 12px", background: "#F6F0E2", border: "1px solid #E1D7BF", borderRadius: 12, padding: "9px 12px", marginBottom: 16, fontSize: 11.5, fontWeight: 700, color: "#6B6450" }}>
               <span style={{ fontWeight: 900, color: "#0E1542" }}>Spostamenti</span>
