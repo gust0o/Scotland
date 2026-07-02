@@ -928,75 +928,74 @@ export default class App extends React.Component {
     return (en && en.dur != null) ? en.dur : base;
   }
 
+  // Recompute the day's magnetic chain after moving or resizing entry `idx`.
+  // `overrides` = { start } for a move (drop position), or { dur } for a
+  // resize — never both. Returns { idx: newStartMin, … } for every entry whose
+  // start actually changes (the target included, if it snapped).
+  //
+  // Two passes:
+  //  1. TIGHTNESS, in the chain as it stood BEFORE this edit: which entries'
+  //     gap to their then-predecessor already equalled the real travel time
+  //     (no slack)? Only those are "fair game" to cascade — an entry the user
+  //     deliberately left a gap before keeps its own time untouched.
+  //  2. REPLAY forward through the NEW chronological order (which may differ
+  //     from the old one, if this was a reorder): the target always snaps to
+  //     its new predecessor (that's the whole point of dragging it); every
+  //     other entry resnaps to ITS new predecessor only if pass 1 marked it
+  //     tight — so moving one tappa correctly drags every tightly-linked tappa
+  //     after it along, even across a reorder, not just a same-order resize.
+  magneticShift(key, dd, entries, idx, overrides) {
+    const startOf = (en) => this.parseMin(en.start) ?? 9 * 60;
+    const orig = entries.map((en, i) => ({ id: en.id, idx: i, en, start: startOf(en) }));
+    orig.sort((a, b) => a.start - b.start);
+    const tight = new Set();
+    for (let j = 1; j < orig.length; j++) {
+      const gap = this.gapMinutesBetween(this.entryGeo(key, orig[j - 1].id, dd), this.entryGeo(key, orig[j].id, dd));
+      const prevEnd = orig[j - 1].start + this.entryDuration(orig[j - 1].id, orig[j - 1].en);
+      if (gap != null && Math.abs(orig[j].start - (prevEnd + gap)) <= 1) tight.add(orig[j].idx);
+    }
+    const next = entries.map((en, i) => ({ id: en.id, idx: i, en, start: (i === idx && overrides.start != null) ? overrides.start : startOf(en) }));
+    next.sort((a, b) => a.start - b.start);
+    const durFor = (item) => (item.idx === idx && overrides.dur != null) ? overrides.dur : this.entryDuration(item.id, item.en);
+
+    const writes = {};
+    let prevEnd = null, prevGeo = null;
+    for (let j = 0; j < next.length; j++) {
+      const item = next[j];
+      const isTarget = item.idx === idx;
+      const shouldSnap = isTarget ? overrides.start != null : tight.has(item.idx);
+      let finalStart = item.start;
+      if (shouldSnap && prevEnd != null) {
+        const geo = this.entryGeo(key, item.id, dd);
+        const gap = this.gapMinutesBetween(prevGeo, geo);
+        if (gap != null) finalStart = prevEnd + gap;
+      }
+      if (finalStart !== item.start) writes[item.idx] = finalStart;
+      prevEnd = finalStart + durFor(item);
+      prevGeo = this.entryGeo(key, item.id, dd);
+    }
+    return writes;
+  }
   setDur(key, idx, min) {
     const dd = DAYS.find((d) => d.key === key);
     const entries = this.dayEntries(key);
-    const entry = entries[idx];
     const newDur = Math.max(15, Math.min(600, Math.round(min)));
-    const shifts = {};
-    if (entry && dd) {
-      const oldDur = this.entryDuration(entry.id, entry);
-      const delta = newDur - oldDur;
-      if (delta !== 0) {
-        // Chronological order BEFORE the resize: walk forward from the resized
-        // tappa, pushing every immediately-following entry that was TIGHTLY
-        // chained (its gap already equalled the real travel time — no
-        // intentional slack) by the same delta. Stops at the first real gap or
-        // unrecognized pairing, so deliberate breaks in the day are untouched.
-        const withTimes = entries.map((en, i) => ({ id: en.id, idx: i, en, start: this.parseMin(en.start) ?? 9 * 60 }));
-        withTimes.sort((a, b) => a.start - b.start);
-        const pos = withTimes.findIndex((e) => e.idx === idx);
-        if (pos >= 0) {
-          // Tightness is checked against the ORIGINAL (pre-resize) chain the
-          // whole way down — comparing against an already-shifted cursor would
-          // make every downstream link look "loose" after the first shift and
-          // stop the cascade one hop too early. The write value is always
-          // `original start + delta`; only the tightness check stays in the
-          // original timeline.
-          let origCursorEnd = withTimes[pos].start + oldDur;
-          let curGeo = this.entryGeo(key, entry.id, dd);
-          for (let j = pos + 1; j < withTimes.length; j++) {
-            const next = withTimes[j];
-            const nextGeo = this.entryGeo(key, next.id, dd);
-            const gap = this.gapMinutesBetween(curGeo, nextGeo);
-            if (gap == null || Math.abs(next.start - (origCursorEnd + gap)) > 1) break;
-            shifts[next.idx] = next.start + delta;
-            origCursorEnd = next.start + this.entryDuration(next.id, next.en);
-            curGeo = nextGeo;
-          }
-        }
-      }
-    }
+    const writes = (entries[idx] && dd) ? this.magneticShift(key, dd, entries, idx, { dur: newDur }) : {};
     this.planMut((p) => {
       this.ensureDay(p, key);
       if (p.days[key][idx]) p.days[key][idx].dur = newDur;
-      Object.keys(shifts).forEach((k) => { const i = Number(k); if (p.days[key][i]) p.days[key][i].start = this.hhmm(shifts[i]); });
+      Object.keys(writes).forEach((k) => { const i = Number(k); if (p.days[key][i]) p.days[key][i].start = this.hhmm(writes[i]); });
     });
   }
   setStart(key, idx, min) {
     const dd = DAYS.find((d) => d.key === key);
     const entries = this.dayEntries(key);
-    const entry = entries[idx];
-    let snapped = min;
-    if (entry && dd) {
-      // Where would this tappa land chronologically if dropped at `min`? Snap
-      // to (its new predecessor's end + real travel time) when that's a
-      // recognized linked pair — "magnetic": you choose the ORDER by dragging,
-      // the exact time comes from the actual distance.
-      const withNew = entries.map((en, i) => ({ id: en.id, idx: i, start: i === idx ? min : (this.parseMin(en.start) ?? 9 * 60) }));
-      withNew.sort((a, b) => a.start - b.start);
-      const pos = withNew.findIndex((e) => e.idx === idx);
-      if (pos > 0) {
-        const prevItem = withNew[pos - 1];
-        const prevEntry = entries[prevItem.idx];
-        const gap = this.gapMinutesBetween(this.entryGeo(key, prevEntry.id, dd), this.entryGeo(key, entry.id, dd));
-        if (gap != null) snapped = prevItem.start + this.entryDuration(prevEntry.id, prevEntry) + gap;
-      }
-    }
-    const hh = this.hhmm(snapped);
+    const writes = (entries[idx] && dd) ? this.magneticShift(key, dd, entries, idx, { start: min }) : {};
+    const finalMin = writes[idx] != null ? writes[idx] : min;
     this.planMut((p) => {
       this.ensureDay(p, key);
-      if (p.days[key][idx]) p.days[key][idx].start = hh;
+      if (p.days[key][idx]) p.days[key][idx].start = this.hhmm(finalMin);
+      Object.keys(writes).forEach((k) => { const i = Number(k); if (i !== idx && p.days[key][i]) p.days[key][i].start = this.hhmm(writes[i]); });
     });
   }
   // Per-leg transport override: tap a connector to switch a•piedi ↔ bus ↔ Uber.
